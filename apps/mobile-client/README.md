@@ -66,10 +66,11 @@ version, receives optional-update, force-update, maintenance, blocked, or
 deprecated states, shows store links/update messages, and avoids unsafe old
 version behavior.
 
-## Current Phase 3 State
+## Current Phase 5 State
 
 This directory now contains a complete Laravel 13 + Livewire 4 + NativePHP
-Mobile application copied from the verified root mobile client.
+Mobile application copied from the verified root mobile client, plus the first
+tested API/auth service boundary for talking to `apps/api-admin`.
 
 Implemented foundation:
 
@@ -84,6 +85,20 @@ Implemented foundation:
 - Dedicated `mobile_local` SQLite connection, migrations, models,
   repositories, queue/sync worker, local notifications, and health command.
 - Focused Pest coverage copied with the app.
+- `config/mobile_auth.php` exposes the mobile API base URL and timeout
+  settings through `MOBILE_API_BASE_URL`, `MOBILE_API_TIMEOUT_SECONDS`, and
+  `MOBILE_API_CONNECT_TIMEOUT_SECONDS`.
+- `App\Services\MobileApi\MobileApiClient` sends standard JSON requests to the
+  versioned mobile API and converts standard error envelopes into
+  `MobileApiException`.
+- `App\Services\MobileAuth\MobileAuthApiService` calls the API/admin auth
+  endpoints for login, register, refresh, logout, logout-all, current user, and
+  profile update.
+- Returned access and refresh tokens are stored through `MobileTokenStore`,
+  which defaults to NativePHP secure storage and uses the session adapter for
+  tests or safe development fallback.
+- `MobileDeviceContext` sends stable device id, device name, platform, and app
+  version metadata with auth requests.
 
 Fresh verification:
 
@@ -91,6 +106,7 @@ Fresh verification:
 composer validate --strict
 php artisan route:list --name=mobile
 php artisan test --compact
+php artisan test --compact --filter=MobileAuthApiServiceTest
 vendor/bin/pint --dirty --format agent
 npm run build
 php artisan native:plugin:validate --no-interaction
@@ -103,3 +119,7 @@ directories.
 The repository root app remains temporarily as a transition mirror. Future
 mobile work should target `apps/mobile-client` unless a cleanup task explicitly
 removes or rewires the root app.
+
+Next auth work is to rewire the Livewire login, register, profile, logout, and
+sessions screens to this service, then call mobile bootstrap after successful
+authentication.

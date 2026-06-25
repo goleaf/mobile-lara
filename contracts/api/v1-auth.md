@@ -77,6 +77,25 @@ Mobile may keep a last-known authenticated presentation state while offline,
 but protected writes must wait for a valid API session. Refresh failures caused
 by revocation require local logout and token deletion.
 
+## Mobile Client Integration
+
+`apps/mobile-client` contains the first tested client-side service boundary for
+this contract:
+
+- `App\Services\MobileApi\MobileApiClient` sends standard JSON requests to the
+  configured v1 mobile API base URL and raises `MobileApiException` for standard
+  error envelopes.
+- `App\Services\MobileApi\MobileDeviceContext` attaches device id, device name,
+  platform, and app version metadata to login/register requests.
+- `App\Services\MobileAuth\MobileAuthApiService` calls login, register,
+  refresh, logout, logout-all, current user, and profile update routes.
+- Returned access and refresh tokens are stored through `MobileTokenStore`, so
+  NativePHP secure storage remains the default token home and the session
+  adapter remains available for tests and safe development fallback.
+
+The Livewire auth/profile/session screens still need to consume this service in
+a later Phase 5 slice.
+
 ## Audit
 
 Login, refresh rotation, logout, logout-all, profile update, failed login,
@@ -94,4 +113,5 @@ Fresh checks for this phase:
 ```bash
 php artisan test --compact --filter=MobileAuthApiTest
 php artisan test --compact --filter=MobileTokenAuthenticatorTest
+cd ../mobile-client && php artisan test --compact --filter=MobileAuthApiServiceTest
 ```

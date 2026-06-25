@@ -68,3 +68,7 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added API/admin session authentication for platform-admin users, protected the
   admin dashboard, added admin login/logout routes and Blade view, and audited
   admin login/logout attempts.
+- Added the mobile client auth API service boundary with configurable API base
+  URL/timeouts, standard JSON/error handling, device context payloads,
+  secure-token-store persistence, and focused coverage for login, register,
+  refresh, current user, profile update, logout, and logout-all calls.
