@@ -12,6 +12,8 @@ Every future feature should satisfy these principles before implementation begin
 
 The documentation-first architecture standard in [Documentation-First Architecture](documentation-first-architecture.md) defines how those principles become planning requirements: every feature, admin control, mobile screen, sync behavior, permission, and risk is documented before coding.
 
+The [Admin Control Center Logic](admin-control-center-logic.md) defines how admin authority becomes operational control over tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, and support.
+
 The role model in [Target User Roles](user-roles.md) defines who can see and control product surfaces. Role boundaries are part of every principle below.
 
 The [SaaS Value Map](saas-value-map.md) defines why each product surface matters. Stakeholder value is part of every principle below: admin control, mobile access, offline sync, notifications, reports, security, and feature flags must create clear value for the right role without leaking authority to the wrong one.
@@ -35,6 +37,8 @@ This includes tenants, users, roles, permissions, devices, feature flags, remote
 Product rule: if a mobile behavior can affect business data, tenant access, billing, support, security, or sync, it must have an admin/API control story.
 
 Use [Admin/API Responsibilities](admin-api-responsibilities.md) to name the exact control-plane responsibility before planning the feature.
+
+Use [Admin Control Center Logic](admin-control-center-logic.md) to name the exact admin control area, scope, mobile effect, API context, audit expectation, support meaning, and offline behavior.
 
 ## 2. Mobile Client Never Bypasses API
 
@@ -168,6 +172,7 @@ Before a future feature is implemented, answer:
 | Question | Required answer |
 | --- | --- |
 | Who controls it? | Admin/API owns the business decision. |
+| Which admin control owns it? | Tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, or support control maps to `docs/admin-control-center-logic.md`. |
 | Which roles see it? | Visibility and control map to `docs/user-roles.md`. |
 | Who receives value? | Stakeholder value maps to `docs/saas-value-map.md`. |
 | Which system owns it? | Boundary ownership maps to `docs/two-system-boundary.md`. |
@@ -210,6 +215,7 @@ Those belong in future implementation prompts with tests and acceptance criteria
 | Admin controls become UI-only | API remains the enforcement layer. |
 | Mobile duplicates business logic | Mobile renders server policy and replays work through the API. |
 | Feature flags become unmanaged sprawl | Every feature needs owner, scope, disable behavior, support visibility, and audit trail. |
+| Admin controls become unmanaged sprawl | Use Admin Control Center logic to define scope, role authority, mobile effect, API context, audit, support, offline behavior, and risk. |
 | Feature value becomes unclear | Use the SaaS value map to name the stakeholder, outcome, and proof metric before implementation. |
 | Ownership boundary becomes blurry | Use the two-system boundary before deciding where state, authority, cache, queue, or offline behavior belongs. |
 | API behavior becomes accidental | Use the API-first principles before deciding response shape, operating context, mobile errors, sync/conflict, or tenant-scoped responses. |

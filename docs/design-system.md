@@ -17,6 +17,8 @@ UI decisions must follow [Core Product Principles](product-principles.md): admin
 
 UI decisions must follow [Documentation-First Architecture](documentation-first-architecture.md): every admin control documents its mobile effect, every mobile screen documents its API dependency, every sync state documents online/offline behavior, and every UX risk is recorded before coding.
 
+UI decisions must follow [Admin Control Center Logic](admin-control-center-logic.md): admin controls for tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance, force update, sync, notifications, reports, billing, and support must show scope, consequence, support meaning, and API-derived mobile effect.
+
 UI decisions must also follow [Target User Roles](user-roles.md): each role should see the controls, diagnostics, billing context, support context, tenant scope, or pre-login state that matches its job.
 
 UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform owners need high-level control and risk visibility, tenant admins need scoped management, mobile workers need simple next actions, support needs safe diagnostics, and billing/operations needs entitlement clarity without tenant workflow overreach.
@@ -72,6 +74,8 @@ Admin users include SaaS owners, platform operators, tenant admins, support, bil
 The admin UI should distinguish platform owner, super admin, tenant admin, tenant manager, support agent, and billing manager actions instead of presenting one generic admin surface.
 
 The admin UI should also distinguish responsibility areas. Tenant management, users and permissions, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reports, audit, conflicts, and security should not collapse into one unscoped settings page.
+
+The admin UI should also distinguish Admin Control Center areas: tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, and support each need visible scope and consequence.
 
 - Optimize for repeated operations, not landing-page presentation.
 - Use tables, filters, tabs, segmented controls, and clear state badges.

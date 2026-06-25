@@ -22,6 +22,8 @@ The mobile client may remember server decisions for usability, but it must never
 
 The documentation-first architecture model is defined in [Documentation-First Architecture](documentation-first-architecture.md). Use it with this boundary document to record every feature, admin mobile effect, mobile screen API dependency, sync behavior, permission owner, and risk before implementation.
 
+The Admin Control Center model is defined in [Admin Control Center Logic](admin-control-center-logic.md). Use it with this boundary document whenever admin control touches tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, or support.
+
 The detailed control-plane responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Use it with this boundary document whenever a feature touches tenants, users, permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, or security enforcement.
 
 The detailed API contract model is defined in [API-First Principles](api-first-principles.md). Use it with this boundary document whenever a feature touches mobile/API communication, operating context, predictable responses, mobile-friendly errors, sync replay, conflict logic, version rules, or tenant-scoped responses.
@@ -163,6 +165,8 @@ Local cache must avoid secrets, payment credentials, private keys, raw access to
 
 Any behavior that affects business access, tenant trust, or SaaS operations must be remotely controlled by Admin/API.
 
+See [Admin Control Center Logic](admin-control-center-logic.md) for the control checklist behind tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, and support controls.
+
 Remote admin control includes:
 
 - Tenant enablement, tenant limits, plan state, data-retention posture, and support tier.
@@ -296,3 +300,5 @@ If the mobile-client responsibility owner is also unclear, the feature is not re
 If the API purpose, response, context, error, sync/conflict, or tenant-boundary behavior is unclear, the feature is not ready for product planning.
 
 If the feature's documentation-first checklist is incomplete, the feature is not ready for implementation planning.
+
+If the Admin Control Center scope, role authority, mobile effect, API context, audit expectation, support meaning, or offline behavior is unclear, the feature is not ready for admin planning.

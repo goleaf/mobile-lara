@@ -14,6 +14,8 @@ The positioning depends on [Core Product Principles](product-principles.md): adm
 
 It depends on [Documentation-First Architecture](documentation-first-architecture.md): positioning stays useful only when features, admin effects, mobile API dependencies, sync behavior, permission ownership, and risks are documented before implementation.
 
+It depends on [Admin Control Center Logic](admin-control-center-logic.md): admin control stays useful only when tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance, force update, sync behavior, notifications, reports, billing, and support are scoped, authorized, auditable, and API-driven.
+
 It also depends on [Target User Roles](user-roles.md): each role has a different responsibility, visibility boundary, and control surface.
 
 It is made measurable by the [SaaS Value Map](saas-value-map.md): each positioning angle must create clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
@@ -44,6 +46,8 @@ The control center owns:
 This positioning matters because mobile operations cannot be controlled safely from each device. SaaS control belongs in one server-side operating layer.
 
 The detailed control-plane responsibility map lives in [Admin/API Responsibilities](admin-api-responsibilities.md).
+
+The detailed admin control model lives in [Admin Control Center Logic](admin-control-center-logic.md).
 
 ### Mobile Workforce And Client Platform
 
@@ -184,15 +188,16 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 6. Tenants are the primary commercial and security boundary.
 7. Secure-by-default is part of the product position, not a separate hardening phase.
 8. Documentation-first architecture records feature behavior, admin mobile effects, screen API dependencies, sync behavior, permission ownership, and risks before coding.
-9. Role boundaries determine who can see or control each surface.
-10. Stakeholder value determines why a feature exists and which outcome it should prove.
-11. Web-only is insufficient for mobile work.
-12. Mobile-only is insufficient for SaaS governance.
-13. Product positioning should guide every future modular feature slice.
-14. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
-15. API-first principles decide the purpose, predictability, context, error, sync/conflict, and tenant-scope expectations for mobile/API behavior.
-16. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
-17. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
+9. Admin Control Center logic records who can control tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, and support before coding.
+10. Role boundaries determine who can see or control each surface.
+11. Stakeholder value determines why a feature exists and which outcome it should prove.
+12. Web-only is insufficient for mobile work.
+13. Mobile-only is insufficient for SaaS governance.
+14. Product positioning should guide every future modular feature slice.
+15. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
+16. API-first principles decide the purpose, predictability, context, error, sync/conflict, and tenant-scope expectations for mobile/API behavior.
+17. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
+18. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
 
 ## Risks
 
@@ -200,6 +205,7 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 | --- | --- |
 | Positioning becomes too broad | Keep the six angles tied to one promise: governed mobile operations. |
 | Admin grows into generic CRM/admin software | Keep admin focused on controlling mobile behavior, tenants, support, billing, reports, and sync. |
+| Admin Control Center scope becomes vague | Use the control-center checklist before planning tenant, user, role, permission, feature, config, version, maintenance, force-update, sync, notification, report, billing, or support controls. |
 | Mobile grows into an independent app | Keep mobile API-driven and policy-controlled. |
 | Offline features undermine authority | Treat local writes as intents and reconcile through the API. |
 | Tenant flexibility becomes custom code | Prefer tenant config, feature flags, entitlements, and versioned API contracts. |

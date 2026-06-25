@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the logical responsibilities of the Admin/API system in Mobile Lara. It explains what the SaaS control plane owns, why it owns it, how that authority relates to the mobile client, and which risks the responsibility model prevents. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, or application logic.
 
-Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), and [Mobile Client Responsibilities](mobile-client-responsibilities.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution, and every feature/control/risk is documented before implementation.
+Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), and [Admin Control Center Logic](admin-control-center-logic.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution, admin controls are scoped and auditable, and every feature/control/risk is documented before implementation.
 
 ## Responsibility Statement
 
@@ -84,6 +84,8 @@ Principles:
 - Admin panel visibility is not enough; Admin/API policy still enforces every action.
 
 The mobile client should never expose admin controls. It receives the operational outcome of those controls through API responses.
+
+The detailed control checklist for admin panel behavior lives in [Admin Control Center Logic](admin-control-center-logic.md).
 
 ## API Contracts
 

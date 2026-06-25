@@ -20,6 +20,8 @@ The API-first model is explicit: mobile communicates only with API, API response
 
 The documentation-first architecture model is explicit: every feature, admin control, mobile screen, sync behavior, permission, and risk must be documented before implementation.
 
+The Admin Control Center model is explicit: admins control tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, and support through scoped, authorized, auditable server-side controls.
+
 The product solves a common business problem: mobile teams need a simple app, but the organization needs tenant-safe control over permissions, billing, feature availability, app versions, support, notifications, reports, and sync behavior without publishing a new mobile build for every policy change.
 
 The product is split into two cooperating systems:
@@ -70,6 +72,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
 | [docs/admin-api-responsibilities.md](docs/admin-api-responsibilities.md) | Admin/API responsibility map for tenant management, users and permissions, API contracts, feature/config/version control, notifications, billing, support, reports, audit, conflicts, and security. |
 | [docs/mobile-client-responsibilities.md](docs/mobile-client-responsibilities.md) | Mobile-client responsibility map for UX, secure local session, cache, offline actions, NativePHP capabilities, navigation, permissions UX, sync display, drafts, feedback, and feature visibility. |
+| [docs/admin-control-center-logic.md](docs/admin-control-center-logic.md) | Admin Control Center logic for tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, and support controls. |
 | [docs/saas-mobile-admin-platform.md](docs/saas-mobile-admin-platform.md) | Canonical product and system concept. |
 | [docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md](docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md) | ADR for the two-system architecture. |
 | [docs/mobile-stack.md](docs/mobile-stack.md) | Stack, package, and boundary notes. |
@@ -77,6 +80,10 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/nativephp-local-storage.md](docs/nativephp-local-storage.md) | Offline-first local SQLite and sync principles. |
 | [docs/nativephp-run.md](docs/nativephp-run.md) | NativePHP run, release, and app-version operating notes. |
 | [docs/design-system.md](docs/design-system.md) | Mobile and admin UX principles. |
+| [docs/implementation-status.md](docs/implementation-status.md) | Current implementation checklist grouped by phase and feature area. |
+| [docs/remaining-tasks.md](docs/remaining-tasks.md) | Active remaining work, external blockers, and future enhancements. |
+| [contracts/api](contracts/api) | Target home for versioned mobile API contract documents. |
+| [apps](apps) | Target monorepo boundary for `api-admin` and `mobile-client`. |
 | [AGENTS.md](AGENTS.md) / [CLAUDE.md](CLAUDE.md) | Agent-facing project rules. |
 
 ## Current Technical Baseline
@@ -89,7 +96,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 - Tailwind CSS 4 through the SCSS/PostCSS bridge.
 - Pest 4 for tests.
 
-The repository currently contains mobile-client surfaces and local-mobile infrastructure. The admin/API system is documented here as the product control plane and must be implemented only after a dedicated implementation prompt. This documentation pass does not create database fields, migrations, controllers, or application logic.
+The repository currently contains mobile-client surfaces and local-mobile infrastructure in the root Laravel app. The target monorepo boundary now exists under `apps/api-admin` and `apps/mobile-client`, with `contracts/api` reserved for versioned mobile API contracts. The admin/API system remains the next implementation priority.
 
 ## Operating Rules
 
@@ -102,6 +109,7 @@ The repository currently contains mobile-client surfaces and local-mobile infras
 - Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.
 - Apply [Admin/API responsibilities](docs/admin-api-responsibilities.md) before planning control-plane behavior, API contracts, admin panels, reports, support, billing, notifications, audit, conflict, or security work.
 - Apply [mobile-client responsibilities](docs/mobile-client-responsibilities.md) before planning mobile UX, secure local session, local cache, offline actions, NativePHP capability use, navigation, mobile permissions UX, sync status, drafts, local feedback, or feature visibility.
+- Apply [Admin Control Center logic](docs/admin-control-center-logic.md) before planning admin controls, remote config, app-version policy, maintenance, force update, sync policy, notifications, reports, billing, or support workflows.
 - Keep admin business rules on the server. Mobile UI state is never an authorization boundary.
 - Let admin settings control mobile behavior because mobile state may be stale, offline, copied between devices, or running an old app version.
 - Position the product as both admin control center and mobile workforce/client platform; avoid web-only or mobile-only thinking.

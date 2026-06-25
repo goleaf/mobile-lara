@@ -21,6 +21,8 @@ The audit standard is [Core Product Principles](product-principles.md). Current 
 
 The documentation-first standard is [Documentation-First Architecture](documentation-first-architecture.md). Audits should verify that every feature, admin control, mobile screen, sync behavior, permission, and risk is documented before implementation.
 
+The Admin Control Center standard is [Admin Control Center Logic](admin-control-center-logic.md). Audits should verify that tenant, user, role, permission, mobile feature, remote config, app-version, maintenance, force-update, sync, notification, report, billing, and support controls are scoped, authorized, auditable, supportable, API-driven, and tenant-safe.
+
 The role standard is [Target User Roles](user-roles.md). Audits should verify platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user visibility separately.
 
 The value standard is [SaaS Value Map](saas-value-map.md). Audits should verify that platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive clear value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags without receiving inappropriate visibility or authority.
@@ -68,6 +70,25 @@ The mobile responsibility standard is [Mobile Client Responsibilities](mobile-cl
 | Tenant-based product | Is every action tenant-scoped and safe for multi-tenant support/reporting? |
 
 If a future feature only satisfies the web/admin side or only the mobile side, it is incomplete for this product.
+
+## Admin Control Center Logic Audit
+
+| Control area | Audit lens |
+| --- | --- |
+| Tenants | Does tenant status, plan, settings, support tier, feature availability, maintenance, reports, and sync scope stay server-controlled and tenant-safe? |
+| Users | Do invitations, activation, suspension, recovery, profile state, device association, session effects, cache effects, and sync effects have API outcomes? |
+| Roles | Are responsibility bundles least-privilege, tenant-scoped where needed, support/billing-limited, and auditable when sensitive? |
+| Permissions | Are grants, denials, approval requirements, offline rechecks, and mobile capability states enforced server-side? |
+| Mobile features | Can features be enabled, disabled, blocked, deprecated, rolled out, emergency-disabled, supported, audited, and rolled back? |
+| Remote config | Is config scoped, versioned, compatible, defaulted, reversible, support-visible, and prevented from becoming hidden business logic? |
+| App versions | Are supported, recommended update, deprecated, blocked, and internal-only states clear to mobile and support? |
+| Maintenance mode | Are platform, tenant, feature, API, sync, and notification maintenance states documented with user-facing and support messages? |
+| Force update | Are hard, soft, phased, tenant, platform, feature, and version-specific update rules coordinated with API contracts and NativePHP capabilities? |
+| Sync behavior | Are offline eligibility, replay windows, retry limits, stale thresholds, conflict modes, and maintenance blocks controlled by Admin/API? |
+| Notifications | Are templates, channels, targeting, quiet hours, priority, escalation, suppression, and delivery visibility tenant-safe and role-safe? |
+| Reports | Are report definitions, aggregation, exports, dashboards, and visibility scoped by tenant, role, support, billing, and purpose? |
+| Billing | Do plans, quotas, entitlements, trials, renewals, restrictions, failed-payment outcomes, and replay checks map to mobile product states? |
+| Support | Are cases, diagnostics, escalation, recovery actions, support visibility, and config-refresh guidance case-scoped and diagnostic-safe? |
 
 ## SaaS Value Map Audit
 
@@ -194,6 +215,7 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Product vision governance | Every future feature must prove the full loop from admin setting to API enforcement to mobile UX to support/audit visibility. |
 | Product positioning governance | Future slices must preserve the combined SaaS control center plus mobile platform positioning rather than drifting into web-only or mobile-only work. |
 | Documentation-first governance | Every future slice must document feature behavior, admin mobile effect, mobile API dependency, sync behavior, permission owner, risks, and acceptance criteria before implementation. |
+| Admin Control Center governance | Every future admin slice must define control area, authorized role, scope, mobile effect, API context, audit expectation, support meaning, offline behavior, risk, and non-goals before implementation. |
 | SaaS value governance | Every future slice must prove stakeholder value and connect that value to admin control, mobile access, offline sync, notifications, reports, security, or feature flags. |
 | API-first governance | Every future slice must define API purpose, operating context, predictable responses, mobile-friendly errors, sync/conflict behavior, and tenant-boundary protection before endpoint design. |
 | Admin/API responsibility governance | Every future slice must identify which control-plane responsibility owns tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |

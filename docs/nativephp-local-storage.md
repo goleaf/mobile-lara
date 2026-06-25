@@ -12,6 +12,8 @@ The storage rules follow [Core Product Principles](product-principles.md): mobil
 
 Local storage planning must follow [Documentation-First Architecture](documentation-first-architecture.md). Every cache, draft, offline action, sync state, permission effect, and storage risk should be documented before implementation.
 
+Local storage planning must follow [Admin Control Center Logic](admin-control-center-logic.md). Admin-controlled sync, offline eligibility, maintenance blocks, force-update effects, tenant status, user suspension, feature availability, billing entitlement, and support visibility define when local cache, drafts, and queues are allowed.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.
