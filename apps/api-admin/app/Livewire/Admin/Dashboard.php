@@ -44,9 +44,10 @@ final class Dashboard extends Component
             ],
             [
                 'label' => 'App versions',
-                'status' => 'Planned',
-                'detail' => 'Supported, recommended, deprecated, blocked, and internal-only builds.',
-                'tone' => 'neutral',
+                'status' => 'Live',
+                'detail' => 'Supported, recommended, force update, maintenance, and audited rollback controls.',
+                'tone' => 'success',
+                'route' => 'admin.mobile.app-versions',
             ],
             [
                 'label' => 'Offline sync',

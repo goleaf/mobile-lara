@@ -121,10 +121,10 @@ Status values:
 | Mobile routes | The root transition app still exposes 52 `mobile.*` Livewire routes; `apps/mobile-client/routes/web.php` now exposes 53 `mobile.*` routes including `mobile.settings.workspace`. |
 | Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, security audit events, tenants, tenant-user memberships, feature flag tables, remote config tables, and app-version policy tables. Broader control-plane domain schema remains pending. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
-| Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, audited global feature flag controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
+| Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, audited global feature flag controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 48 tests / 418 assertions covering admin routing, feature flag controls, remote config resolution, app version policy, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, and feature flag resolution. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 54 tests / 444 assertions covering admin routing, feature flag controls, app version controls, remote config resolution, app version policy, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, and feature flag resolution. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -287,7 +287,7 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Admin app version control | not started | Resolver and schema exist; admin screens, confirmation, impact preview, audit, and rollback remain pending. |
+| Admin app version control | tested | `/admin/mobile/app-versions` manages global/platform policies with confirmation, impact preview, audited create/update, and restore from prior audit snapshots. Tenant/cohort/version-range scoping remains pending. |
 | Minimum supported version | tested | `MobileAppVersionPolicyResolver` returns `force_update` when the reported version is below the active minimum. |
 | Optional update rules | tested | Resolver returns `optional_update` when the reported version is below the active recommended version but still supported. |
 | Force update rules | tested | Resolver returns blocking update actions and store links for unsupported versions. |
@@ -488,14 +488,14 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Central mobile control dashboard | partial | The dashboard shell exists and links to the live feature flag controls; broader module controls remain pending. |
+| Central mobile control dashboard | partial | The dashboard shell exists and links to the live feature flag and app version controls; broader module controls remain pending. |
 | Module controls | not started | Needs feature flag/remote config foundation. |
 | Feature flags and tenant overrides | partial | Global feature defaults are implemented in the admin UI; tenant-specific overrides, user-specific overrides, and mobile effect previews remain pending. |
 | Remote config | not started | Needs config implementation. |
-| App versions, force update, maintenance | not started | Needs version policy implementation. |
+| App versions, force update, maintenance | tested | Admin/API has policy schema, resolver, API endpoint, bootstrap integration, and audited admin controls. Tenant/cohort scoping and mobile blocked-state screens remain pending. |
 | Sync/offline/upload limits | not started | Needs sync/config implementation. |
 | Push/support/legal links | not started | Needs notification/support/config implementation. |
-| Mobile effect preview | not started | Required by design docs. |
+| Mobile effect preview | partial | Implemented for app-version policy controls; still required for other dangerous control-plane settings. |
 
 ## Phase 28 - Mobile Diagnostics
 
@@ -533,7 +533,7 @@ Status values:
 | Check | Status | Notes |
 | --- | --- | --- |
 | API/admin formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/api-admin`. |
-| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 48 tests / 418 assertions. |
+| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 54 tests / 444 assertions. |
 | API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
 | API routes verification | tested | `php artisan route:list --except-vendor` shows 20 app routes including app-version, auth, bootstrap, config, contracts, features, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
@@ -549,7 +549,7 @@ Status values:
 ## Highest-Priority Implementation Order
 
 1. Complete resource policies, feature flag scoped override controls, remote
-   config admin controls, version/maintenance admin controls, and audit before broad
+   config admin controls, tenant/cohort version controls, and audit before broad
    records/support/billing/reporting expansion.
 2. Replace bootstrap foundation defaults with real subscription, notification,
    and sync policy modules.

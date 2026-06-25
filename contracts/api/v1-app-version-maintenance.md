@@ -4,8 +4,9 @@ Updated: 2026-06-26
 
 Status: partially implemented. `GET /api/v1/mobile/app-version` returns
 resolved app-version and maintenance policy for reported platform/version
-context, and bootstrap uses the same resolver. Admin management UI, scoped
-tenant/cohort rules, audit workflows, rollback, support reports, and mobile
+context, bootstrap uses the same resolver, and platform-admin users can manage
+global/platform policies with confirmation, impact preview, audit, and
+audit-history restore. Scoped tenant/cohort rules, support reports, and mobile
 force-update/maintenance screens remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
@@ -147,16 +148,18 @@ stale-client denial, and support-visible impact.
 
 Automated coverage:
 
+- `apps/api-admin/tests/Feature/AdminAppVersionPoliciesTest.php`
 - `apps/api-admin/tests/Feature/MobileAppVersionPolicyTest.php`
 - `apps/api-admin/tests/Feature/MobileBootstrapApiTest.php`
 
 Fresh checks:
 
 ```bash
+cd apps/api-admin && php artisan test --compact --filter=AdminAppVersionPoliciesTest
 cd apps/api-admin && php artisan test --compact --filter=MobileAppVersionPolicyTest
 cd apps/api-admin && php artisan test --compact --filter=MobileBootstrapApiTest
 ```
 
-Future Phase 11 coverage should add admin/audit/rollback workflows,
-tenant/cohort/version-range scoping, support-visible impact reporting, and
-mobile force-update or maintenance UI behavior.
+Future Phase 11 coverage should add tenant/cohort/version-range scoping,
+support-visible impact reporting, and mobile force-update or maintenance UI
+behavior.

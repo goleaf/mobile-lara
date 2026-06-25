@@ -181,8 +181,13 @@ Implemented foundation:
 - `/admin/dashboard` is protected by session auth and platform-admin access.
 - `/admin/mobile/features` is protected by session auth and platform-admin
   access, and manages audited global mobile feature defaults.
+- `/admin/mobile/app-versions` is protected by session auth and platform-admin
+  access, and manages audited global/platform mobile version policies with
+  confirmation, impact preview, and audit-history restore.
 - `App\Actions\Admin\SaveMobileFeatureFlagAction` persists feature defaults and
   writes before/after audit metadata to `security_audit_events`.
+- `App\Actions\Admin\SaveMobileAppVersionPolicyAction` persists version
+  policies and writes before/after audit metadata to `security_audit_events`.
 - `App\Support\Api\MobileApiResponse` centralizes success and error envelopes.
 - `App\Support\Api\MobileContractRegistry` centralizes documented contract
   groups and planned routes.
@@ -191,16 +196,17 @@ Implemented foundation:
 - Blade layouts exist for admin, auth, and dashboard surfaces.
 - Reusable admin Blade components exist for section headings and status badges.
 - Pest tests cover the dashboard route, root redirect, feature flag admin
-  controls, remote config resolution, app version policy, success envelope,
-  error envelope, contract catalogue, and contract Markdown file coverage.
+  controls, app version admin controls, remote config resolution, app version
+  policy, success envelope, error envelope, contract catalogue, and contract
+  Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   resource policies, and broader control-plane audit.
 - Tenant/user feature override UI, feature impact previews, remote config admin
-  UI/audit/rollback, app version admin UI/audit/rollback, sync, notifications,
-  records/content, support, billing, and reports.
+  UI/audit/rollback, app version tenant/cohort/version-range scoping, sync,
+  notifications, records/content, support, billing, and reports.
 - Protected domain routes for records/content, sync, notifications, support,
   billing, reports, diagnostics, and feature/config/version policies.
 

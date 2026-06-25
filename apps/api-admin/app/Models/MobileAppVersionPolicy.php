@@ -79,4 +79,48 @@ final class MobileAppVersionPolicy extends Model
             ->whereIn('platform', [$platform, 'all'])
             ->orderByDesc('updated_at');
     }
+
+    /**
+     * @param  Builder<MobileAppVersionPolicy>  $query
+     * @return Builder<MobileAppVersionPolicy>
+     */
+    public function scopeForAdminIndex(Builder $query): Builder
+    {
+        return $query
+            ->select([
+                'id',
+                'platform',
+                'minimum_supported_version',
+                'minimum_recommended_version',
+                'latest_version',
+                'blocked_versions',
+                'store_urls',
+                'message',
+                'support_url',
+                'force_update',
+                'maintenance_enabled',
+                'maintenance_message',
+                'retry_after_seconds',
+                'allowed_actions',
+                'logout_allowed',
+                'is_active',
+                'metadata',
+                'updated_at',
+            ])
+            ->orderBy('platform')
+            ->orderByDesc('updated_at');
+    }
+
+    /**
+     * @param  Builder<MobileAppVersionPolicy>  $query
+     * @return Builder<MobileAppVersionPolicy>
+     */
+    public function scopeForAdminPlatform(Builder $query, string $platform): Builder
+    {
+        if ($platform === 'any') {
+            return $query;
+        }
+
+        return $query->where('platform', $platform);
+    }
 }
