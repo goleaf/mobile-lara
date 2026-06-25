@@ -8,6 +8,12 @@ Use this document with [Product Vision](product-vision.md), [Product Positioning
 
 Mobile Permission Logic is defined in [Mobile Permission Logic](mobile-permission-logic.md): native permission requests for camera, microphone, location, notifications, files, scanner, biometrics, and secure storage must explain purpose before prompting, respect feature flags and API authority, avoid disabled-feature prompts, support denied-permission recovery, and show status in settings before implementation.
 
+Authentication Principles are defined in `authentication-principles.md`:
+mobile login must happen through the API only; access and refresh tokens must
+use secure storage; refresh, logout, logout-all-devices, tenant selection,
+session expiry, offline already-authenticated behavior, and server revocation
+must preserve Admin/API authority before implementation.
+
 ## Settings Statement
 
 Mobile settings should help the user understand and adjust the app without exposing admin complexity.

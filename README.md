@@ -26,6 +26,8 @@ The mobile settings model is explicit: the NativePHP client groups account, tena
 
 The mobile permission model is explicit: camera, microphone, location, notifications, files, scanner, biometrics, and secure storage requests must be explained before prompting, controlled by feature flags and API authority, skipped for disabled features, recoverable after denial, and visible in settings.
 
+The authentication model is explicit: mobile login happens through the API only, tokens live in secure storage, refresh/logout/logout-all-devices/tenant selection/session expiry/offline authenticated behavior/server revocation stay under Admin/API authority, and mobile presents only safe local session state.
+
 The API-first model is explicit: mobile communicates only with API, API responses are predictable, every mobile feature has a clear API purpose, operating context is returned through API, errors are mobile-friendly, sync/conflict behavior is first-class, and tenant boundaries are protected server-side.
 
 The documentation-first architecture model is explicit: every feature, admin control, mobile screen, sync behavior, permission, and risk must be documented before implementation.
@@ -95,6 +97,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/mobile-dashboard-logic.md](docs/mobile-dashboard-logic.md) | Mobile dashboard logic for user/tenant context, feature shortcuts, sync/offline state, notifications, activity, announcements, and quick actions. |
 | [docs/mobile-settings-logic.md](docs/mobile-settings-logic.md) | Mobile settings logic for account, tenant, security, notifications, sync, appearance, permissions, storage, support, legal, diagnostics, local control, admin/API control, and offline-disabled behavior. |
 | [docs/mobile-permission-logic.md](docs/mobile-permission-logic.md) | Mobile permission logic for pre-prompt education, camera, microphone, location, notifications, files, scanner, biometrics, secure storage, denied-permission recovery, feature flag effects, and settings status. |
+| [docs/authentication-principles.md](docs/authentication-principles.md) | Authentication principles for API-only mobile login, secure token handling, refresh sessions, logout, logout-all-devices, tenant selection, session expiry, offline authenticated behavior, and server revocation. |
 | [docs/admin-control-center-logic.md](docs/admin-control-center-logic.md) | Admin Control Center logic for tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, and support controls. |
 | [docs/feature-flag-logic.md](docs/feature-flag-logic.md) | Feature flag logic for important mobile features, global/tenant/user priority, disabled mobile states, admin impact, safe rollout, and plan limits. |
 | [docs/remote-configuration-logic.md](docs/remote-configuration-logic.md) | Remote configuration logic for configurable behavior, mobile receive/cache rules, offline behavior, tenant overrides, safe admin changes, and missing/invalid config. |
@@ -145,6 +148,7 @@ contracts.
 - Apply [mobile dashboard logic](docs/mobile-dashboard-logic.md) before planning current user context, current tenant, feature shortcuts, sync/offline state, unread notifications, recent activity, announcements, or quick actions.
 - Apply [mobile settings logic](docs/mobile-settings-logic.md) before planning account, tenant, security, notifications, sync, appearance, permissions, storage, support, legal, diagnostics, local controls, admin/API controls, or offline-disabled settings behavior.
 - Apply [mobile permission logic](docs/mobile-permission-logic.md) before planning native permission prompts, camera, microphone, location, notifications, files, scanner, biometrics, secure storage, denied-permission recovery, feature flag effects, or settings permission status.
+- Apply [authentication principles](docs/authentication-principles.md) before planning mobile login, token handling, refresh sessions, logout, logout-all-devices, tenant selection after login, session expiry, offline authenticated behavior, or server revocation.
 - Apply [Admin Control Center logic](docs/admin-control-center-logic.md) before planning admin controls, remote config, app-version policy, maintenance, force update, sync policy, notifications, reports, billing, or support workflows.
 - Apply [feature flag logic](docs/feature-flag-logic.md) before planning important mobile features, flag priority, disabled mobile states, rollout, rollback, or plan-limited access.
 - Apply [remote configuration logic](docs/remote-configuration-logic.md) before planning runtime-configurable mobile behavior, config caching, offline config use, tenant-specific overrides, safe admin config changes, or missing/invalid config handling.

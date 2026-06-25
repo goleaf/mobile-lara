@@ -30,6 +30,12 @@ prompting, respect feature flags and API authority, avoid disabled-feature
 prompts, support denied-permission recovery, and show status in settings before
 implementation.
 
+Authentication Principles are defined in `authentication-principles.md`:
+mobile login must happen through the API only; access and refresh tokens must
+use secure storage; refresh, logout, logout-all-devices, tenant selection,
+session expiry, offline already-authenticated behavior, and server revocation
+must preserve Admin/API authority before implementation.
+
 ## Architecture Statement
 
 Mobile Lara is documentation-first because the product has two systems, tenant boundaries, offline behavior, feature control, mobile-local state, NativePHP capabilities, billing effects, support expectations, reports, audit needs, and security concerns.

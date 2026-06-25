@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Authentication Principles documentation for API-only mobile login,
+  secure token handling, refresh sessions, logout, logout-all-devices, tenant
+  selection after login, session expiry, offline authenticated behavior, and
+  server revocation.
 - Added Mobile Permission Logic documentation for pre-permission education,
   camera, microphone, location, notifications, files, scanner, biometrics,
   secure storage, disabled-feature prompts, denied-permission recovery,

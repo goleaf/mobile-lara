@@ -48,6 +48,12 @@ prompting, respect feature flags and API authority, avoid disabled-feature
 prompts, support denied-permission recovery, and show status in settings before
 implementation.
 
+Authentication Principles are defined in `authentication-principles.md`:
+mobile login must happen through the API only; access and refresh tokens must
+use secure storage; refresh, logout, logout-all-devices, tenant selection,
+session expiry, offline already-authenticated behavior, and server revocation
+must preserve Admin/API authority before implementation.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.

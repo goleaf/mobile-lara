@@ -30,6 +30,12 @@ prompting, respect feature flags and API authority, avoid disabled-feature
 prompts, support denied-permission recovery, and show status in settings before
 implementation.
 
+Authentication Principles are defined in `authentication-principles.md`:
+mobile login must happen through the API only; access and refresh tokens must
+use secure storage; refresh, logout, logout-all-devices, tenant selection,
+session expiry, offline already-authenticated behavior, and server revocation
+must preserve Admin/API authority before implementation.
+
 ## Feature Flag Statement
 
 Every important mobile feature should be controlled by feature flags because mobile clients can be stale, offline, version-fragmented, tenant-specific, plan-limited, or in phased rollout.

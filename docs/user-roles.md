@@ -56,6 +56,12 @@ prompting, respect feature flags and API authority, avoid disabled-feature
 prompts, support denied-permission recovery, and show status in settings before
 implementation.
 
+Authentication Principles are defined in `authentication-principles.md`:
+mobile login must happen through the API only; access and refresh tokens must
+use secure storage; refresh, logout, logout-all-devices, tenant selection,
+session expiry, offline already-authenticated behavior, and server revocation
+must preserve Admin/API authority before implementation.
+
 Roles define authority and visibility. The [SaaS Value Map](saas-value-map.md) defines product value. A stakeholder may receive value from a feature without receiving direct control over it; for example, a tenant business benefits from reports and offline sync, while the tenant admin or support team may be the role that actually sees the management surface.
 
 Roles also depend on [Two-System Boundary Logic](two-system-boundary.md). Admin/API enforces role authority, while mobile only renders API-derived capability state and account-state restrictions.

@@ -75,6 +75,12 @@ prompting, respect feature flags and API authority, avoid disabled-feature
 prompts, support denied-permission recovery, and show status in settings before
 implementation.
 
+Authentication Principles are defined in `../../docs/authentication-principles.md`:
+mobile login must happen through the API only; access and refresh tokens must
+use secure storage; refresh, logout, logout-all-devices, tenant selection,
+session expiry, offline already-authenticated behavior, and server revocation
+must preserve Admin/API authority before implementation.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

@@ -79,6 +79,12 @@ prompting, respect feature flags and API authority, avoid disabled-feature
 prompts, support denied-permission recovery, and show status in settings before
 implementation.
 
+Authentication Principles are defined in `../docs/authentication-principles.md`:
+mobile login must happen through the API only; access and refresh tokens must
+use secure storage; refresh, logout, logout-all-devices, tenant selection,
+session expiry, offline already-authenticated behavior, and server revocation
+must preserve Admin/API authority before implementation.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force
