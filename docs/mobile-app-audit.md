@@ -17,6 +17,8 @@ The product vision is remote control with local resilience. Current mobile asset
 
 The product positioning is a tenant-based SaaS control center plus an API-first, feature-controlled, offline-capable mobile workforce/client platform. See [Product Positioning](product-positioning.md).
 
+The audit standard is [Core Product Principles](product-principles.md). Current and future features should be judged by whether admin controls them, mobile uses the API, feature state is controllable, tenant isolation is explicit, offline behavior is useful and bounded, security is default, mobile UX is simple, documentation exists, and expansion is modular.
+
 ## Product Vision Audit
 
 | Vision question | Product answer |
@@ -110,6 +112,21 @@ Future feature work must not start from a screen. Each feature must be documente
 
 If one of those perspectives is missing, the feature is not yet product-ready.
 
+## Core Principles Audit
+
+| Principle | Audit question |
+| --- | --- |
+| Admin controls everything | Is there an admin/API authority story for this behavior? |
+| Mobile never bypasses API | Does every server-trusted read/write/sync action go through the API? |
+| Every feature can be enabled or disabled | Is disabled/blocked behavior defined? |
+| Tenant isolation | Is tenant scope enforced server-side and visible in support/reporting? |
+| Offline-first where useful | Is offline behavior helpful, explicit, and non-authoritative? |
+| Secure by default | Are authorization, secrets, least privilege, and audit considered before code? |
+| API-first communication | Is the API contract known before the mobile workflow becomes durable? |
+| Simple mobile UX | Can a mobile user understand the next action without admin knowledge? |
+| Documentation-first development | Are docs/ADRs updated before implementation? |
+| Modular feature expansion | Does the feature expand as a complete admin/API/mobile/support/audit slice? |
+
 ## API Audit Principles
 
 Boost documentation confirms Laravel's API routes are stateless and Laravel supports API backends for mobile apps. Future API work should use:
@@ -180,6 +197,7 @@ php artisan native:plugin:validate
 - [SaaS Mobile Admin Platform Concept](saas-mobile-admin-platform.md)
 - [Product Vision](product-vision.md)
 - [Product Positioning](product-positioning.md)
+- [Core Product Principles](product-principles.md)
 - [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md)
 - Laravel Boost application info and documentation search.
 - Laravel API routing, authentication, resources, and JSON testing documentation.

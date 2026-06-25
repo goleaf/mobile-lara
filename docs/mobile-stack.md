@@ -13,6 +13,8 @@ The stack supports the product vision from [Product Vision](product-vision.md): 
 
 It also supports the [Product Positioning](product-positioning.md): SaaS control center, mobile workforce/client platform, API-first system, offline-capable mobile system, feature-controlled platform, and tenant-based product.
 
+Stack decisions must preserve [Core Product Principles](product-principles.md): admin authority, API-first mobile communication, tenant isolation, secure defaults, simple mobile UX, documentation-first changes, and modular feature expansion.
+
 ## Current Package Baseline
 
 | Package / tool | Version | Product role |
@@ -63,6 +65,7 @@ The Mobile client system should be implemented as the managed edge client:
 - Keep mobile local data as cache/draft/queue unless the API confirms it.
 - Keep `resources/css/app.scss` as the canonical frontend stylesheet entrypoint.
 - Process Tailwind through `@tailwindcss/postcss` after Sass. Do not reintroduce `@tailwindcss/vite` without verifying Tailwind output.
+- Keep stack expansion modular: new packages or surfaces should map to a clear feature slice and principle.
 
 ## Why NativePHP + Livewire
 

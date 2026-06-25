@@ -10,6 +10,8 @@ Mobile Lara is a SaaS control center for tenant-based mobile operations. It give
 
 The product is stronger than a normal web app because it reaches mobile workers where work happens. It is stronger than a standalone mobile app because mobile behavior is centrally governed, auditable, version-aware, and tenant-safe.
 
+The positioning depends on [Core Product Principles](product-principles.md): admin authority, API-first mobile behavior, feature control, tenant isolation, useful offline behavior, secure defaults, simple mobile UX, documentation-first decisions, and modular expansion.
+
 ## Six Product Angles
 
 ### SaaS Control Center
@@ -156,9 +158,10 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 4. Offline work is local intent until the server accepts it.
 5. Features are controlled by policy before they appear as screens.
 6. Tenants are the primary commercial and security boundary.
-7. Web-only is insufficient for mobile work.
-8. Mobile-only is insufficient for SaaS governance.
-9. Product positioning should guide every future feature slice.
+7. Secure-by-default is part of the product position, not a separate hardening phase.
+8. Web-only is insufficient for mobile work.
+9. Mobile-only is insufficient for SaaS governance.
+10. Product positioning should guide every future modular feature slice.
 
 ## Risks
 

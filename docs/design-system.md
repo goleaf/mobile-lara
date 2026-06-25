@@ -13,12 +13,15 @@ The design system supports the [Product Vision](product-vision.md): admin users 
 
 It also supports the [Product Positioning](product-positioning.md): the admin UI should feel like a SaaS control center, and the mobile UI should feel like a workforce/client platform. The interfaces are related, but they should not collapse into a web-only dashboard or a mobile-only app.
 
+UI decisions must follow [Core Product Principles](product-principles.md): admin controls policy, mobile never presents local state as server authority, disabled features are clear, tenant scope is visible where relevant, secure defaults are not hidden behind UI-only affordances, and mobile UX stays simple.
+
 ## Shared Principles
 
 - Keep UI in Livewire + Blade.
 - Do not add React, Vue, Inertia, Ionic, Capacitor, or component CSS frameworks for app screens.
 - Use Tailwind utility classes and project Blade components.
 - Let product positioning decide UI purpose: admin controls policy and operations; mobile performs allowed work.
+- Let product principles decide UI state: every disabled, offline, pending, conflict, blocked, or tenant-scoped state should be honest.
 - Keep visible state honest: pending, offline, conflict, disabled, blocked, and deprecated states must be clear.
 - Never rely on UI hiding as authorization.
 - Show server-controlled capability state when a feature is disabled by plan, role, version, tenant, or app policy.

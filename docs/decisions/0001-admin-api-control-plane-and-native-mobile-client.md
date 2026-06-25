@@ -18,6 +18,8 @@ The product vision is remote control with local resilience: admin users manage p
 
 The product positioning is deliberately combined: SaaS control center, mobile workforce/client platform, API-first system, offline-capable mobile system, feature-controlled platform, and tenant-based product. See [Product Positioning](../product-positioning.md).
 
+The architecture must also satisfy [Core Product Principles](../product-principles.md): admin authority, API-first mobile communication, feature control, tenant isolation, useful offline behavior, secure defaults, simple mobile UX, documentation-first decisions, and modular expansion.
+
 ## Decision
 
 Use a two-system architecture:
@@ -79,6 +81,7 @@ The mobile client would be implemented as a fully native iOS/Android application
 - Feature work must include admin logic, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior.
 - Documentation and future implementation should treat local mobile data as cache, draft, queue, or confirmed server copy depending on sync state.
 - NativePHP + Livewire remains the chosen mobile approach until a future ADR demonstrates that native-only or another mobile stack is worth the extra operational cost.
+- Future architecture changes should preserve the core principles unless a newer ADR explicitly supersedes them.
 
 ## Implementation Boundary
 

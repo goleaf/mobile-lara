@@ -33,6 +33,21 @@ This combined positioning is stronger than web-only because mobile work needs na
 
 See [Product Positioning](product-positioning.md) for the full positioning rationale.
 
+## Core Product Principles
+
+All product and system design should follow [Core Product Principles](product-principles.md):
+
+1. Admin controls every business-sensitive capability.
+2. Mobile never bypasses the API.
+3. Every feature can be enabled or disabled.
+4. Tenant isolation is non-negotiable.
+5. Offline-first is used where it helps, not everywhere.
+6. Security is default.
+7. Communication is API-first.
+8. Mobile UX stays simple.
+9. Documentation comes before implementation.
+10. Feature expansion is modular.
+
 ## System Split
 
 ### Admin/API System

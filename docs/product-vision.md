@@ -23,6 +23,10 @@ This positioning matters because a web-only product would not be enough for nati
 
 See [Product Positioning](product-positioning.md) for the full positioning model.
 
+## Core Principles
+
+The vision is governed by [Core Product Principles](product-principles.md). In short: Admin/API controls business authority; mobile never bypasses the API; every feature is controllable; tenant isolation is mandatory; offline-first is used where it helps; security is default; communication is API-first; mobile UX stays simple; documentation precedes implementation; and new capabilities expand as modular feature slices.
+
 ## Problem The System Solves
 
 Organizations that rely on mobile work usually face the same problem: the people doing the work need a simple app, but the business needs centralized control.
@@ -141,16 +145,18 @@ Scalability here is not only traffic volume. It is the ability to serve many ten
 
 ## Product Principles
 
+The full principle set lives in [Core Product Principles](product-principles.md). The vision-level summary is:
+
 1. Admin/API is the source of business authority.
 2. Mobile is a managed local executor, not a policy engine.
-3. Every mobile feature needs admin behavior, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior.
-4. Local data is cache, draft, pending intent, or confirmed server copy depending on sync state.
-5. App behavior should be configurable where safe and versioned where clients depend on contracts.
-6. Support and operations are first-class product surfaces, not afterthoughts.
-7. Billing and permissions are enforced by the API and only presented by mobile.
-8. Native permissions are requested just in time and tied to a clear business purpose.
-9. Rollout and rollback must be easier than publishing a new app build.
-10. Documentation stays ahead of implementation for product-critical decisions.
+3. Every feature can be enabled, disabled, rolled out, or blocked.
+4. Tenant isolation is the SaaS trust boundary.
+5. Offline behavior is useful only when it stays under API authority.
+6. Security is a default product behavior.
+7. API-first communication is the product contract.
+8. Mobile UX stays simple and honest.
+9. Documentation comes before product-critical implementation.
+10. Feature expansion is modular and complete across admin, API, mobile, support, audit, and sync.
 
 ## Boundaries
 

@@ -8,6 +8,8 @@ The storage vision follows [Product Vision](product-vision.md): the mobile app c
 
 It also supports the [Product Positioning](product-positioning.md): Mobile Lara is an offline-capable mobile system, but offline data is still governed by the SaaS control center and reconciled through the API-first boundary.
 
+The storage rules follow [Core Product Principles](product-principles.md): mobile never bypasses the API, offline-first is used only where useful, tenant isolation remains server-enforced, and secure defaults keep secrets out of local SQLite.
+
 ## Product Role
 
 The mobile client may use local SQLite for:
@@ -41,6 +43,7 @@ The product boundary is:
 - Mobile users can draft, cache, and queue work only inside those allowed boundaries.
 - The API accepts, rejects, transforms, or marks queued work as conflicted.
 - Support users can inspect safe sync context when local and server state diverge.
+- Documentation defines offline behavior before local storage expands into a new module.
 
 This keeps offline-first behavior scalable: more tenants and devices can work locally without multiplying trusted client-side rules.
 

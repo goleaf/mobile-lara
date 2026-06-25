@@ -8,6 +8,8 @@ The runbook supports the [Product Vision](product-vision.md): native builds shou
 
 It also supports the [Product Positioning](product-positioning.md): NativePHP turns the product into a mobile workforce/client platform while the Admin/API system remains the SaaS control center.
 
+Native build and release work must follow [Core Product Principles](product-principles.md): admin controls version and feature policy, the mobile client never bypasses the API, app behavior is feature-controlled, security is default, and mobile UX stays simple.
+
 ## Current Placeholders
 
 | Setting | Value |
@@ -178,6 +180,7 @@ Also verify product policy before a real mobile release:
 - Remote config and feature flags are compatible with the build.
 - Blocked/deprecated version policy is tested.
 - Native permission copy matches enabled features.
+- Core product principles are still satisfied for every enabled mobile feature.
 - Support runbook knows the release version.
 - Sync policy is compatible with the app's offline queue format.
 
@@ -199,6 +202,7 @@ Before production distribution, the project needs:
 
 - Product vision: [Product Vision](product-vision.md)
 - Product positioning: [Product Positioning](product-positioning.md)
+- Core product principles: [Core Product Principles](product-principles.md)
 - NativePHP installation: https://nativephp.com/docs/mobile/3/getting-started/installation
 - NativePHP command reference: https://nativephp.com/docs/mobile/3/getting-started/commands
 - NativePHP app icons: https://nativephp.com/docs/mobile/3/the-basics/app-icon
