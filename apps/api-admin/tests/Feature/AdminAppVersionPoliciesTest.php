@@ -98,6 +98,44 @@ test('platform admins can create audited tenant scoped app version policies', fu
             ->exists())->toBeTrue();
 });
 
+test('platform admins can create version ranged app version policies', function (): void {
+    $admin = User::factory()->platformAdmin()->create();
+
+    Livewire::actingAs($admin)
+        ->test(AppVersionPolicies::class)
+        ->set('form.platform', 'android')
+        ->set('form.applies_from_version', '2.0.0')
+        ->set('form.applies_until_version', '2.9.9')
+        ->set('form.minimum_supported_version', '2.5.0')
+        ->set('form.message', 'Android 2.x must update.')
+        ->call('save')
+        ->assertHasNoErrors()
+        ->assertSee('android');
+
+    $policy = MobileAppVersionPolicy::query()->firstWhere('platform', 'android');
+
+    expect($policy)->not->toBeNull()
+        ->and($policy?->applies_from_version)->toBe('2.0.0')
+        ->and($policy?->applies_until_version)->toBe('2.9.9')
+        ->and($policy?->minimum_supported_version)->toBe('2.5.0')
+        ->and(SecurityAuditEvent::query()
+            ->where('event', 'admin_mobile_app_version_policy_created')
+            ->where('user_id', $admin->id)
+            ->where('metadata->applies_from_version', '2.0.0')
+            ->exists())->toBeTrue();
+});
+
+test('version ranged app version policies reject inverted ranges', function (): void {
+    $admin = User::factory()->platformAdmin()->create();
+
+    Livewire::actingAs($admin)
+        ->test(AppVersionPolicies::class)
+        ->set('form.applies_from_version', '3.0.0')
+        ->set('form.applies_until_version', '2.0.0')
+        ->call('save')
+        ->assertHasErrors(['form.applies_until_version']);
+});
+
 test('blocking app version policies require explicit confirmation', function (): void {
     $admin = User::factory()->platformAdmin()->create();
 

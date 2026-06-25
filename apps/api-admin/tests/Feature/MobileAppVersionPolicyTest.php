@@ -201,6 +201,47 @@ test('cohort app version policy can target public version checks', function (): 
         ->assertJsonPath('data.policy_scope.cohort_key', 'pilot_team');
 });
 
+test('version range policies only apply to matching reported app versions', function (): void {
+    MobileAppVersionPolicy::factory()->create([
+        'platform' => 'android',
+        'minimum_supported_version' => '1.0.0',
+        'latest_version' => null,
+        'message' => 'Global fallback policy.',
+    ]);
+
+    MobileAppVersionPolicy::factory()->create([
+        'platform' => 'android',
+        'applies_from_version' => '2.0.0',
+        'applies_until_version' => '2.9.9',
+        'minimum_supported_version' => '2.5.0',
+        'message' => 'Version range requires an update.',
+    ]);
+
+    $this
+        ->withHeaders([
+            'X-Mobile-Platform' => 'android',
+            'X-Mobile-App-Version' => '2.4.0',
+        ])
+        ->getJson('/api/v1/mobile/app-version')
+        ->assertOk()
+        ->assertJsonPath('data.state', 'force_update')
+        ->assertJsonPath('data.minimum_supported_version', '2.5.0')
+        ->assertJsonPath('data.policy_scope.applies_from_version', '2.0.0')
+        ->assertJsonPath('data.policy_scope.applies_until_version', '2.9.9');
+
+    $this
+        ->withHeaders([
+            'X-Mobile-Platform' => 'android',
+            'X-Mobile-App-Version' => '3.0.0',
+        ])
+        ->getJson('/api/v1/mobile/app-version')
+        ->assertOk()
+        ->assertJsonPath('data.state', 'supported')
+        ->assertJsonPath('data.minimum_supported_version', '1.0.0')
+        ->assertJsonPath('data.policy_scope.applies_from_version', null)
+        ->assertJsonPath('data.policy_scope.applies_until_version', null);
+});
+
 test('contract catalogue marks app version route as implemented', function (): void {
     $this->getJson('/api/v1/mobile/contracts')
         ->assertOk()

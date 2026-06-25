@@ -20,7 +20,7 @@ final class MobileAppVersionPolicyResolver
         $reportedVersion = $this->reportedVersion($request);
         $tenant = $this->tenantFromContext($tenantContext);
         $cohortKey = $this->cohortKey($request);
-        $policy = $this->policy($platform, $tenant, $cohortKey);
+        $policy = $this->policy($platform, $tenant, $cohortKey, $reportedVersion);
         $state = $this->state($policy, $reportedVersion);
         $storeUrls = $this->arrayValue($policy?->store_urls) ?: ['ios' => null, 'android' => null];
         $allowedActions = $this->allowedActions($state, $policy);
@@ -126,11 +126,13 @@ final class MobileAppVersionPolicyResolver
             ->first();
     }
 
-    private function policy(string $platform, ?Tenant $tenant, ?string $cohortKey): ?MobileAppVersionPolicy
+    private function policy(string $platform, ?Tenant $tenant, ?string $cohortKey, ?string $reportedVersion): ?MobileAppVersionPolicy
     {
         $policies = MobileAppVersionPolicy::query()
             ->activeForPlatform($platform)
-            ->get();
+            ->get()
+            ->filter(fn (MobileAppVersionPolicy $policy): bool => $this->policyAppliesToReportedVersion($policy, $reportedVersion))
+            ->values();
 
         if ($tenant instanceof Tenant) {
             $tenantPolicy = $this->firstPolicy($policies, $platform, $tenant->id, null)
@@ -164,6 +166,27 @@ final class MobileAppVersionPolicyResolver
                 && $policy->tenant_id === $tenantId
                 && $policy->cohort_key === $cohortKey,
         );
+    }
+
+    private function policyAppliesToReportedVersion(MobileAppVersionPolicy $policy, ?string $reportedVersion): bool
+    {
+        if ($policy->applies_from_version === null && $policy->applies_until_version === null) {
+            return true;
+        }
+
+        if ($reportedVersion === null) {
+            return false;
+        }
+
+        if ($policy->applies_from_version !== null && version_compare($reportedVersion, $policy->applies_from_version, '<')) {
+            return false;
+        }
+
+        if ($policy->applies_until_version !== null && version_compare($reportedVersion, $policy->applies_until_version, '>')) {
+            return false;
+        }
+
+        return true;
     }
 
     private function state(?MobileAppVersionPolicy $policy, ?string $reportedVersion): MobileAppVersionState
@@ -267,7 +290,7 @@ final class MobileAppVersionPolicyResolver
     }
 
     /**
-     * @return array{type: string, platform: string|null, tenant_id: string|null, cohort_key: string|null}
+     * @return array{type: string, platform: string|null, tenant_id: string|null, cohort_key: string|null, applies_from_version: string|null, applies_until_version: string|null}
      */
     private function policyScope(?MobileAppVersionPolicy $policy, ?Tenant $tenant, ?string $cohortKey): array
     {
@@ -277,6 +300,8 @@ final class MobileAppVersionPolicyResolver
                 'platform' => null,
                 'tenant_id' => null,
                 'cohort_key' => $cohortKey,
+                'applies_from_version' => null,
+                'applies_until_version' => null,
             ];
         }
 
@@ -285,6 +310,8 @@ final class MobileAppVersionPolicyResolver
             'platform' => $policy->platform,
             'tenant_id' => $policy->tenant_id !== null && $tenant instanceof Tenant ? $tenant->public_id : null,
             'cohort_key' => $policy->cohort_key,
+            'applies_from_version' => $policy->applies_from_version,
+            'applies_until_version' => $policy->applies_until_version,
         ];
     }
 
@@ -295,6 +322,8 @@ final class MobileAppVersionPolicyResolver
             'policy_scope' => $policy?->scopeType(),
             'tenant_id' => $policy?->tenant_id,
             'cohort_key' => $policy?->cohort_key,
+            'applies_from_version' => $policy?->applies_from_version,
+            'applies_until_version' => $policy?->applies_until_version,
             'reported_cohort_key' => $cohortKey,
             'updated_at' => $policy?->updated_at?->toIso8601String(),
             'state' => $state->value,

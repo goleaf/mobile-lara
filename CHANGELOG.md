@@ -207,3 +207,6 @@ All notable changes to Mobile Lara will be documented in this file.
 - Extended app-version policy control with tenant and rollout-cohort scopes,
   trusted bootstrap precedence for tenant policies, public cohort checks through
   `X-Mobile-Cohort`, scoped audit snapshots, and focused resolver coverage.
+- Added app-version range controls so admins can target scoped policies to
+  specific reported build ranges, with deterministic resolver precedence,
+  audited range snapshots, Livewire validation, and focused coverage.

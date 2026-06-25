@@ -52,7 +52,7 @@ The feature flag model is explicit: important mobile features are controlled by 
 
 The remote configuration model is explicit: Admin/API controls safe runtime mobile behavior through versioned, scoped, validated config that mobile receives through API, caches carefully, and treats as non-authoritative when stale or invalid.
 
-The mobile version control model is explicit: Admin/API controls minimum supported versions, optional updates, forced updates, maintenance mode, store links, update messages, and old-version protection through mobile-safe API outcomes.
+The mobile version control model is explicit: Admin/API controls minimum supported versions, optional updates, forced updates, maintenance mode, version-range targeting, store links, update messages, and old-version protection through mobile-safe API outcomes.
 
 The admin safety model is explicit: dangerous admin actions require confirmation, audit history, impact preview, mobile impact preview, rollback thinking, and tenant-isolated scope before they affect users.
 

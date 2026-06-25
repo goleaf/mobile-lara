@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable([
     'tenant_id',
     'cohort_key',
+    'applies_from_version',
+    'applies_until_version',
     'platform',
     'minimum_supported_version',
     'minimum_recommended_version',
@@ -69,6 +71,8 @@ final class MobileAppVersionPolicy extends Model
                 'id',
                 'tenant_id',
                 'cohort_key',
+                'applies_from_version',
+                'applies_until_version',
                 'platform',
                 'minimum_supported_version',
                 'minimum_recommended_version',
@@ -88,7 +92,8 @@ final class MobileAppVersionPolicy extends Model
             ])
             ->where('is_active', true)
             ->whereIn('platform', [$platform, 'all'])
-            ->orderByDesc('updated_at');
+            ->orderByDesc('updated_at')
+            ->orderByDesc('id');
     }
 
     /**
@@ -102,6 +107,8 @@ final class MobileAppVersionPolicy extends Model
                 'id',
                 'tenant_id',
                 'cohort_key',
+                'applies_from_version',
+                'applies_until_version',
                 'platform',
                 'minimum_supported_version',
                 'minimum_recommended_version',

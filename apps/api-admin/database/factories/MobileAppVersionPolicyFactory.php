@@ -20,6 +20,8 @@ class MobileAppVersionPolicyFactory extends Factory
         return [
             'tenant_id' => null,
             'cohort_key' => null,
+            'applies_from_version' => null,
+            'applies_until_version' => null,
             'platform' => 'all',
             'minimum_supported_version' => '1.0.0',
             'minimum_recommended_version' => null,

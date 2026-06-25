@@ -5,9 +5,9 @@ Updated: 2026-06-26
 Status: partially implemented. `GET /api/v1/mobile/app-version` returns
 resolved app-version and maintenance policy for reported platform/version
 context, bootstrap uses the same resolver, and platform-admin users can manage
-global/platform, tenant, and cohort policies with confirmation, impact preview,
-audit, and audit-history restore. Version-range rules, support reports, and
-mobile force-update/maintenance screens remain pending.
+global/platform, tenant, cohort, and version-range policies with confirmation,
+impact preview, audit, and audit-history restore. Support reports and mobile
+force-update/maintenance screens remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 protects the product promise by keeping stale or unsafe mobile builds under
@@ -178,7 +178,9 @@ tenant/user context when authenticated. Rollout cohorts may be reported with
 
 The response returns `state`, `minimum_supported_version`,
 `latest_version`, `store_url`, `message`, `support_url`, `retry_after`,
-`allowed_actions`, `logout_allowed`, and `policy_scope`.
+`allowed_actions`, `logout_allowed`, and `policy_scope`. `policy_scope`
+includes platform, tenant, cohort, and `applies_from_version` /
+`applies_until_version` context when a database policy is selected.
 
 Allowed states include `current`, `supported`, `optional_update`,
 `recommended_update`, `deprecated`, `force_update`, `blocked`,
@@ -189,8 +191,10 @@ global active policies, tenant-specific bootstrap policies, cohort-specific
 public checks, minimum-supported force-update decisions, optional update
 decisions from minimum recommended versions, explicit blocked versions, store
 links, maintenance state, retry timing, support links, and safe allowed
-actions. Resolution prefers tenant policy, then cohort policy, then platform
-policy, then global fallback.
+actions. Active policies can target an inclusive reported app-version range;
+out-of-range policies are skipped before precedence is applied. Resolution
+prefers tenant policy, then cohort policy, then platform policy, then global
+fallback.
 
 ## Gates
 
@@ -224,5 +228,5 @@ cd apps/api-admin && php artisan test --compact --filter=MobileAppVersionPolicyT
 cd apps/api-admin && php artisan test --compact --filter=MobileBootstrapApiTest
 ```
 
-Future Phase 11 coverage should add version-range scoping, support-visible
-impact reporting, and mobile force-update or maintenance UI behavior.
+Future Phase 11 coverage should add support-visible impact reporting and mobile
+force-update or maintenance UI behavior.

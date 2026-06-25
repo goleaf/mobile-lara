@@ -185,7 +185,7 @@ Status values:
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, registered policies for current mobile control-plane resources, audited global feature flag controls, audited global remote config controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 81 tests / 667 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, and feature flag resolution with app-version gates. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 84 tests / 687 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, and feature flag resolution with app-version gates. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -253,7 +253,7 @@ Status values:
 | Tenancy contract | tested | `v1-tenancy.md` defines tenant list/switch behavior; foundation tenant context and switch endpoints are implemented and tested while invitations/admin management remain pending. |
 | Features contract | tested | `v1-features.md` defines resolved feature states and gates; `GET /features` is implemented for global default, tenant override, user override, and permission-gated mobile-safe outcomes. |
 | Remote config contract | tested | `v1-remote-config.md` defines receive/cache/offline/fallback rules; `GET /config` returns resolved foundation/global/tenant config with freshness and version metadata. |
-| App version/maintenance contract | tested | `v1-app-version-maintenance.md` defines version, force update, and maintenance states; `GET /app-version` returns resolved policy outcomes, public cohort checks are supported, and bootstrap consumes tenant-aware resolver output. |
+| App version/maintenance contract | tested | `v1-app-version-maintenance.md` defines version, force update, and maintenance states; `GET /app-version` returns resolved policy outcomes, public cohort checks and version-range policy targeting are supported, and bootstrap consumes tenant-aware resolver output. |
 | Notifications contract | documented | `v1-notifications.md` defines inbox, push token, and read-state routes; API is not implemented. |
 | Records/content contract | documented | `v1-records.md` defines server record routes and offline/idempotency behavior; endpoints are not implemented. |
 | Sync contract | documented | `v1-sync.md` defines sync bootstrap, push, pull, acknowledgement, and conflict behavior; endpoints are not implemented. |
@@ -348,7 +348,7 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Admin app version control | tested | `/admin/mobile/app-versions` manages global/platform, tenant, and cohort policies with confirmation, impact preview, audited create/update, and restore from prior audit snapshots. Version-range scoping remains pending. |
+| Admin app version control | tested | `/admin/mobile/app-versions` manages global/platform, tenant, cohort, and version-range policies with confirmation, impact preview, audited create/update, and restore from prior audit snapshots. |
 | Minimum supported version | tested | `MobileAppVersionPolicyResolver` returns `force_update` when the reported version is below the active minimum. |
 | Optional update rules | tested | Resolver returns `optional_update` when the reported version is below the active recommended version but still supported. |
 | Force update rules | tested | Resolver returns blocking update actions and store links for unsupported versions. |
@@ -550,10 +550,10 @@ Status values:
 | Feature | Status | Notes |
 | --- | --- | --- |
 | Central mobile control dashboard | partial | The dashboard shell exists and links to the live feature flag, remote config, and app version controls; broader module controls remain pending. |
-| Module controls | partial | Foundation controls exist for global/tenant/user feature states, global/tenant remote config, and scoped app versions; version-range controls and broader modules remain pending. |
+| Module controls | partial | Foundation controls exist for global/tenant/user feature states, global/tenant remote config, and scoped version-ranged app versions; broader modules remain pending. |
 | Feature flags and tenant overrides | tested | Global feature defaults, tenant-specific overrides, user-specific overrides, permission gates, and minimum-app-version gates are implemented with mobile-safe API outcomes. Advanced plan/device/cohort rollout gates remain pending. |
 | Remote config | tested | Admin/API has global and tenant config schema, resolver, API endpoint, bootstrap integration, and audited admin controls. Publish workflows remain pending. |
-| App versions, force update, maintenance | tested | Admin/API has scoped policy schema, resolver, API endpoint, bootstrap integration, tenant/cohort precedence, and audited admin controls. Version-range scoping and mobile blocked-state screens remain pending. |
+| App versions, force update, maintenance | tested | Admin/API has scoped version-range policy schema, resolver, API endpoint, bootstrap integration, tenant/cohort precedence, and audited admin controls. Mobile blocked-state screens remain pending. |
 | Sync/offline/upload limits | not started | Needs sync/config implementation. |
 | Push/support/legal links | not started | Needs notification/support/config implementation. |
 | Mobile effect preview | partial | Implemented for tenant/user feature overrides, global/tenant remote config, and app-version policy controls; still required for other dangerous control-plane settings. |
@@ -594,7 +594,7 @@ Status values:
 | Check | Status | Notes |
 | --- | --- | --- |
 | API/admin formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/api-admin`. |
-| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 81 tests / 667 assertions. |
+| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 84 tests / 687 assertions. |
 | API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
 | API routes verification | tested | `php artisan route:list --except-vendor` shows 20 app routes including app-version, auth, bootstrap, config, contracts, features, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
@@ -609,8 +609,8 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Complete version-range controls, plan/device feature gates, and audit before
-   broad records/support/billing/reporting expansion.
+1. Complete plan/device feature gates and audit before broad
+   records/support/billing/reporting expansion.
 2. Replace bootstrap foundation defaults with real subscription, notification,
    and sync policy modules.
 3. Migrate existing mobile-local features behind API-derived policy instead of

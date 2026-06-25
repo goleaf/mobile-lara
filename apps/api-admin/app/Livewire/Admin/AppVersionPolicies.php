@@ -31,12 +31,14 @@ final class AppVersionPolicies extends Component
     public ?int $editingPolicyId = null;
 
     /**
-     * @var array{scope_type: string, tenant_id: string, cohort_key: string, platform: string, minimum_supported_version: string, minimum_recommended_version: string, latest_version: string, blocked_versions: string, ios_store_url: string, android_store_url: string, message: string, support_url: string, force_update: bool, maintenance_enabled: bool, maintenance_message: string, retry_after_seconds: string, allowed_actions: string, logout_allowed: bool, is_active: bool, confirmed: bool}
+     * @var array{scope_type: string, tenant_id: string, cohort_key: string, applies_from_version: string, applies_until_version: string, platform: string, minimum_supported_version: string, minimum_recommended_version: string, latest_version: string, blocked_versions: string, ios_store_url: string, android_store_url: string, message: string, support_url: string, force_update: bool, maintenance_enabled: bool, maintenance_message: string, retry_after_seconds: string, allowed_actions: string, logout_allowed: bool, is_active: bool, confirmed: bool}
      */
     public array $form = [
         'scope_type' => 'global',
         'tenant_id' => '',
         'cohort_key' => '',
+        'applies_from_version' => '',
+        'applies_until_version' => '',
         'platform' => 'all',
         'minimum_supported_version' => '1.0.0',
         'minimum_recommended_version' => '',
@@ -68,6 +70,8 @@ final class AppVersionPolicies extends Component
                 'id',
                 'tenant_id',
                 'cohort_key',
+                'applies_from_version',
+                'applies_until_version',
                 'platform',
                 'minimum_supported_version',
                 'minimum_recommended_version',
@@ -96,6 +100,8 @@ final class AppVersionPolicies extends Component
             'scope_type' => $policy->scopeType(),
             'tenant_id' => (string) ($policy->tenant_id ?? ''),
             'cohort_key' => $policy->cohort_key ?? '',
+            'applies_from_version' => $policy->applies_from_version ?? '',
+            'applies_until_version' => $policy->applies_until_version ?? '',
             'platform' => $policy->platform,
             'minimum_supported_version' => $policy->minimum_supported_version,
             'minimum_recommended_version' => $policy->minimum_recommended_version ?? '',
@@ -140,6 +146,8 @@ final class AppVersionPolicies extends Component
                     'id',
                     'tenant_id',
                     'cohort_key',
+                    'applies_from_version',
+                    'applies_until_version',
                     'platform',
                     'minimum_supported_version',
                     'minimum_recommended_version',
@@ -252,6 +260,20 @@ final class AppVersionPolicies extends Component
                 'regex:/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/',
             ],
             'form.platform' => ['required', Rule::in(array_keys($this->editablePlatformOptions()))],
+            'form.applies_from_version' => ['nullable', 'string', 'max:40'],
+            'form.applies_until_version' => [
+                'nullable',
+                'string',
+                'max:40',
+                function (string $attribute, mixed $value, Closure $fail): void {
+                    $fromVersion = trim($this->form['applies_from_version']);
+                    $untilVersion = is_string($value) ? trim($value) : '';
+
+                    if ($fromVersion !== '' && $untilVersion !== '' && version_compare($fromVersion, $untilVersion, '>')) {
+                        $fail('The policy range must start at or before the through version.');
+                    }
+                },
+            ],
             'form.minimum_supported_version' => ['required', 'string', 'max:40'],
             'form.minimum_recommended_version' => ['nullable', 'string', 'max:40'],
             'form.latest_version' => ['nullable', 'string', 'max:40'],
@@ -291,6 +313,8 @@ final class AppVersionPolicies extends Component
             'form.scope_type' => 'scope',
             'form.tenant_id' => 'tenant',
             'form.cohort_key' => 'cohort key',
+            'form.applies_from_version' => 'applies from version',
+            'form.applies_until_version' => 'applies through version',
             'form.platform' => 'platform',
             'form.minimum_supported_version' => 'minimum supported version',
             'form.minimum_recommended_version' => 'minimum recommended version',
@@ -318,6 +342,8 @@ final class AppVersionPolicies extends Component
             'scope_type' => 'global',
             'tenant_id' => '',
             'cohort_key' => '',
+            'applies_from_version' => '',
+            'applies_until_version' => '',
             'platform' => 'all',
             'minimum_supported_version' => '1.0.0',
             'minimum_recommended_version' => '',
@@ -473,7 +499,27 @@ final class AppVersionPolicies extends Component
 
     private function scopeDescription(string $effect): string
     {
-        return $this->scopeLabel().' clients matching '.$this->form['platform'].' '.$effect;
+        return $this->scopeLabel().' clients matching '.$this->form['platform'].' '.$this->versionRangeLabel().' '.$effect;
+    }
+
+    private function versionRangeLabel(): string
+    {
+        $fromVersion = trim($this->form['applies_from_version']);
+        $untilVersion = trim($this->form['applies_until_version']);
+
+        if ($fromVersion !== '' && $untilVersion !== '') {
+            return 'from '.$fromVersion.' through '.$untilVersion;
+        }
+
+        if ($fromVersion !== '') {
+            return 'from '.$fromVersion.' and newer';
+        }
+
+        if ($untilVersion !== '') {
+            return 'through '.$untilVersion;
+        }
+
+        return 'on any app version';
     }
 
     private function scopeLabel(): string
