@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\MobileFeatureState;
 use Database\Factories\MobileFeatureFlagFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,5 +33,46 @@ final class MobileFeatureFlag extends Model
             'default_state' => MobileFeatureState::class,
             'metadata' => 'array',
         ];
+    }
+
+    /**
+     * @param  Builder<MobileFeatureFlag>  $query
+     * @return Builder<MobileFeatureFlag>
+     */
+    public function scopeForAdminIndex(Builder $query): Builder
+    {
+        return $query
+            ->select([
+                'id',
+                'key',
+                'name',
+                'default_state',
+                'reason',
+                'message',
+                'minimum_app_version',
+                'offline_behavior',
+                'metadata',
+                'updated_at',
+            ])
+            ->orderBy('key');
+    }
+
+    /**
+     * @param  Builder<MobileFeatureFlag>  $query
+     * @return Builder<MobileFeatureFlag>
+     */
+    public function scopeMatchingAdminSearch(Builder $query, string $search): Builder
+    {
+        $search = trim($search);
+
+        if ($search === '') {
+            return $query;
+        }
+
+        return $query->where(function (Builder $query) use ($search): void {
+            $query
+                ->where('key', 'like', '%'.$search.'%')
+                ->orWhere('name', 'like', '%'.$search.'%');
+        });
     }
 }

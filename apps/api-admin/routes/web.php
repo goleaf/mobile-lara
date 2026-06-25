@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\LogoutController;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\FeatureFlags;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])
@@ -20,6 +21,7 @@ Route::middleware(['web'])
 
                 Route::middleware(['auth', 'admin.platform'])->group(function (): void {
                     Route::livewire('/dashboard', Dashboard::class)->name('dashboard');
+                    Route::livewire('/mobile/features', FeatureFlags::class)->name('mobile.features');
                     Route::post('/logout', LogoutController::class)->name('logout');
                 });
             });

@@ -12,7 +12,7 @@ use Livewire\Component;
 final class Dashboard extends Component
 {
     /**
-     * @return array<int, array{label: string, status: string, detail: string, tone: string}>
+     * @return array<int, array{label: string, status: string, detail: string, tone: string, route?: string}>
      */
     public function controlAreas(): array
     {
@@ -31,9 +31,10 @@ final class Dashboard extends Component
             ],
             [
                 'label' => 'Feature flags',
-                'status' => 'Planned',
-                'detail' => 'User, tenant, and global resolution order.',
-                'tone' => 'neutral',
+                'status' => 'Live',
+                'detail' => 'Global defaults with audit-backed changes and mobile-safe resolution.',
+                'tone' => 'success',
+                'route' => 'admin.mobile.features',
             ],
             [
                 'label' => 'Remote config',

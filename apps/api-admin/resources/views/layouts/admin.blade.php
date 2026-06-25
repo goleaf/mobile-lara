@@ -23,6 +23,10 @@
                             Control
                         </a>
 
+                        <a href="{{ route('admin.mobile.features') }}" class="rounded-lg px-3 py-2 font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">
+                            Features
+                        </a>
+
                         <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
 

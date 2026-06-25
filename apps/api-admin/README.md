@@ -149,6 +149,10 @@ Implemented foundation:
 - `POST /admin/login` authenticates platform-admin users.
 - `POST /admin/logout` invalidates the admin session.
 - `/admin/dashboard` is protected by session auth and platform-admin access.
+- `/admin/mobile/features` is protected by session auth and platform-admin
+  access, and manages audited global mobile feature defaults.
+- `App\Actions\Admin\SaveMobileFeatureFlagAction` persists feature defaults and
+  writes before/after audit metadata to `security_audit_events`.
 - `App\Support\Api\MobileApiResponse` centralizes success and error envelopes.
 - `App\Support\Api\MobileContractRegistry` centralizes documented contract
   groups and planned routes.
@@ -156,16 +160,16 @@ Implemented foundation:
 - `security_audit_events` records mobile auth/security actions.
 - Blade layouts exist for admin, auth, and dashboard surfaces.
 - Reusable admin Blade components exist for section headings and status badges.
-- Pest tests cover the dashboard route, root redirect, success envelope, error
-  envelope, contract catalogue, and contract Markdown file coverage.
+- Pest tests cover the dashboard route, root redirect, feature flag admin
+  controls, success envelope, error envelope, contract catalogue, and contract
+  Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   resource policies, and broader control-plane audit.
-- Admin feature-flag management UI, feature audit workflows, remote config,
-  app versions, sync, notifications, records/content, support, billing, and
-  reports.
+- Tenant/user feature override UI, feature impact previews, remote config, app
+  versions, sync, notifications, records/content, support, billing, and reports.
 - Protected domain routes for records/content, sync, notifications, support,
   billing, reports, diagnostics, and feature/config/version policies.
 
