@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Mobile Settings Logic documentation for account, tenant, security,
+  notifications, sync, appearance, permissions, storage, support, legal, and
+  diagnostics sections, including local control, Admin/API authority, and
+  offline-disabled behavior.
 - Added Mobile Dashboard Logic documentation for current user context, current
   tenant, enabled feature shortcuts, sync/offline status, unread notifications,
   recent activity, announcements, quick actions, and state-based dashboard

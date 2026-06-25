@@ -66,6 +66,12 @@ feature shortcuts, sync/offline status, unread notifications, recent
 activity, announcements, and quick actions through API-safe rules before
 implementation.
 
+Mobile Settings Logic is defined in `../docs/mobile-settings-logic.md`:
+settings sections for account, tenant, security, notifications, sync,
+appearance, permissions, storage, support, legal, and diagnostics must
+separate local device control from Admin/API authority and define
+offline-disabled behavior before implementation.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force

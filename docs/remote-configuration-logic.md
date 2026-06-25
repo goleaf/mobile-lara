@@ -17,6 +17,12 @@ feature shortcuts, sync/offline status, unread notifications, recent
 activity, announcements, and quick actions through API-safe rules before
 implementation.
 
+Mobile Settings Logic is defined in `mobile-settings-logic.md`:
+settings sections for account, tenant, security, notifications, sync,
+appearance, permissions, storage, support, legal, and diagnostics must
+separate local device control from Admin/API authority and define
+offline-disabled behavior before implementation.
+
 ## Remote Configuration Statement
 
 Remote configuration lets Admin/API adjust mobile behavior without publishing a new mobile build.

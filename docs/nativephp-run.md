@@ -35,6 +35,12 @@ feature shortcuts, sync/offline status, unread notifications, recent
 activity, announcements, and quick actions through API-safe rules before
 implementation.
 
+Mobile Settings Logic is defined in `mobile-settings-logic.md`:
+settings sections for account, tenant, security, notifications, sync,
+appearance, permissions, storage, support, legal, and diagnostics must
+separate local device control from Admin/API authority and define
+offline-disabled behavior before implementation.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.

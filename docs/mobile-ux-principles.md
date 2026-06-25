@@ -11,6 +11,12 @@ feature shortcuts, sync/offline status, unread notifications, recent
 activity, announcements, and quick actions through API-safe rules before
 implementation.
 
+Mobile Settings Logic is defined in `mobile-settings-logic.md`:
+settings sections for account, tenant, security, notifications, sync,
+appearance, permissions, storage, support, legal, and diagnostics must
+separate local device control from Admin/API authority and define
+offline-disabled behavior before implementation.
+
 Updated: 2026-06-26
 
 This document defines mobile UX principles for the Mobile Lara NativePHP client. It explains mobile-first navigation, simple screens, clear loading states, clear offline states, thumb-friendly controls, minimum typing, fast actions, feature visibility based on admin rules, secure session behavior, and permission education before native permission prompts. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, or application logic.

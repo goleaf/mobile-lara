@@ -65,6 +65,12 @@ feature shortcuts, sync/offline status, unread notifications, recent
 activity, announcements, and quick actions through API-safe rules before
 implementation.
 
+Mobile Settings Logic is defined in `mobile-settings-logic.md`:
+settings sections for account, tenant, security, notifications, sync,
+appearance, permissions, storage, support, legal, and diagnostics must
+separate local device control from Admin/API authority and define
+offline-disabled behavior before implementation.
+
 The mobile client should be calm, direct, and explicit about sync state.
 
 Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.
