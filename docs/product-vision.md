@@ -29,6 +29,11 @@ The strongest product promise is remote control with local resilience: administr
 | How does admin safety protect the vision? | [Admin Safety Principles](admin-safety-principles.md) require dangerous admin actions to be confirmed, audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated before they affect users. |
 | How should mobile feel? | [Mobile UX Principles](mobile-ux-principles.md) require mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure session behavior, admin-rule-based feature visibility, and native permission education. |
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 This contract is the product north star. Future documentation may add detail, but it should not reverse these answers without a new decision record.
 
 ## Product Positioning

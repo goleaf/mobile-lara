@@ -6,6 +6,11 @@ This document defines the logical responsibilities of the Admin/API system in Mo
 
 Use this document with [Product Vision](product-vision.md), [Product Positioning](product-positioning.md), [Core Product Principles](product-principles.md), [Target User Roles](user-roles.md), [SaaS Value Map](saas-value-map.md), [Two-System Boundary Logic](two-system-boundary.md), [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX Principles](mobile-ux-principles.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), [Mobile Version Control Logic](mobile-version-control-logic.md), and [Admin Safety Principles](admin-safety-principles.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution, stakeholder value is made operable through server-side responsibility, mobile UX receives clear API-safe outcomes, admin controls are scoped, auditable, previewable, rollback-aware, and tenant-isolated, feature flags, remote config, and mobile version policy are resolved server-side, and every feature/control/risk is documented before implementation.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Responsibility Statement
 
 The Admin/API system is the authoritative SaaS control plane.

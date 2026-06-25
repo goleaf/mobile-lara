@@ -75,6 +75,11 @@ The detailed mobile-client responsibility model is defined in [Mobile Client Res
 
 The detailed mobile UX model is defined in [Mobile UX Principles](mobile-ux-principles.md). Use it with this boundary document whenever NativePHP navigation, simple screens, loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure sessions, admin-rule-based feature visibility, or native permission prompts need local execution without local authority.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## System Ownership Summary
 
 | Area | Admin/API owns | Mobile client owns |

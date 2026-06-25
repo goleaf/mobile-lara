@@ -24,6 +24,11 @@ Local storage planning must follow [Admin Safety Principles](admin-safety-princi
 
 Local storage planning must follow [Mobile UX Principles](mobile-ux-principles.md). Local cache, drafts, queued actions, sync state, stale data, secure session recovery, and native permission flows should appear as clear mobile-first loading/offline states instead of hidden storage mechanics.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.

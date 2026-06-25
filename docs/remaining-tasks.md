@@ -55,6 +55,11 @@ loading/offline states, thumb-friendly controls, minimum typing, fast actions,
 feature visibility, secure sessions, and native permission prompts before
 implementation scope is added.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Remaining implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

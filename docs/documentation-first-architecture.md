@@ -6,6 +6,11 @@ This document defines documentation-first architecture principles for Mobile Lar
 
 Use this document with [Product Vision](product-vision.md), [Product Positioning](product-positioning.md), [Core Product Principles](product-principles.md), [Target User Roles](user-roles.md), [SaaS Value Map](saas-value-map.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX Principles](mobile-ux-principles.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), and [Mobile Version Control Logic](mobile-version-control-logic.md): documentation is the agreement that prevents stakeholder value, authority, API behavior, admin controls, feature flags, remote config, mobile-version policy, mobile UX, offline behavior, permissions, and risk handling from drifting during implementation.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Architecture Statement
 
 Mobile Lara is documentation-first because the product has two systems, tenant boundaries, offline behavior, feature control, mobile-local state, NativePHP capabilities, billing effects, support expectations, reports, audit needs, and security concerns.

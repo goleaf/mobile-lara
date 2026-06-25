@@ -43,6 +43,11 @@ The mobile responsibility standard is [Mobile Client Responsibilities](mobile-cl
 
 The mobile UX standard is [Mobile UX Principles](mobile-ux-principles.md). Audits should verify mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, admin-rule-based feature visibility, secure session behavior, and native permission education.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Product Vision Audit
 
 | Vision question | Product answer |

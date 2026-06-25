@@ -29,6 +29,11 @@ Stack decisions must preserve [Admin Safety Principles](admin-safety-principles.
 
 Stack decisions must preserve [Mobile UX Principles](mobile-ux-principles.md). Packages, NativePHP plugins, local stores, UI helpers, and Livewire patterns should support mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure sessions, feature visibility, and native permission education.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.

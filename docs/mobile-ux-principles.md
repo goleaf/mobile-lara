@@ -1,5 +1,10 @@
 # Mobile UX Principles
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 Updated: 2026-06-26
 
 This document defines mobile UX principles for the Mobile Lara NativePHP client. It explains mobile-first navigation, simple screens, clear loading states, clear offline states, thumb-friendly controls, minimum typing, fast actions, feature visibility based on admin rules, secure session behavior, and permission education before native permission prompts. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, or application logic.

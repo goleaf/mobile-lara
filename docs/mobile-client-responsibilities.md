@@ -6,6 +6,11 @@ This document defines the logical responsibilities of the Mobile Lara mobile cli
 
 Use this document with [Product Vision](product-vision.md), [Product Positioning](product-positioning.md), [Core Product Principles](product-principles.md), [Target User Roles](user-roles.md), [SaaS Value Map](saas-value-map.md), [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Two-System Boundary Logic](two-system-boundary.md), [Mobile UX Principles](mobile-ux-principles.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), [Mobile Version Control Logic](mobile-version-control-logic.md), and [Admin Safety Principles](admin-safety-principles.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution and presentation, stakeholder value is shown as simple mobile UX, admin controls define API-derived outcomes, dangerous changes are previewed before mobile receives them, feature flags resolve to mobile-safe states, remote config resolves to mobile-safe values, mobile version policy resolves to update/maintenance states, and every mobile screen documents its API dependency before implementation.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Responsibility Statement
 
 The mobile client is the managed local execution surface.

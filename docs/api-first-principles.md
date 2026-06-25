@@ -6,6 +6,11 @@ This document defines API-first principles for Mobile Lara. It explains how the 
 
 Use this document with [Product Vision](product-vision.md), [Product Positioning](product-positioning.md), [Core Product Principles](product-principles.md), [Target User Roles](user-roles.md), [SaaS Value Map](saas-value-map.md), [Documentation-First Architecture](documentation-first-architecture.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX Principles](mobile-ux-principles.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), [Mobile Version Control Logic](mobile-version-control-logic.md), and [Admin Safety Principles](admin-safety-principles.md): Admin/API owns authority, mobile owns local execution, API is the only trusted contract between them, stakeholder value reaches mobile through safe API outcomes, mobile UX presents those outcomes as clear navigation/states/actions, admin controls are scoped, auditable, previewable, and rollback-aware, feature flags resolve to mobile-safe states, remote config resolves to validated mobile-safe values, mobile version policy resolves to safe update/maintenance states, and API behavior is documented before implementation.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## API-First Statement
 
 Mobile Lara is API-first because the mobile client must communicate with the SaaS control plane only through the API.

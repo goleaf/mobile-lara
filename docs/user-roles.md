@@ -32,6 +32,11 @@ Roles are product boundaries, not only labels.
 - Support and billing roles can see operational context only for their job.
 - UI visibility is never authorization; server-side policy remains final.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 Roles define authority and visibility. The [SaaS Value Map](saas-value-map.md) defines product value. A stakeholder may receive value from a feature without receiving direct control over it; for example, a tenant business benefits from reports and offline sync, while the tenant admin or support team may be the role that actually sees the management surface.
 
 Roles also depend on [Two-System Boundary Logic](two-system-boundary.md). Admin/API enforces role authority, while mobile only renders API-derived capability state and account-state restrictions.

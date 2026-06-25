@@ -55,6 +55,11 @@ may verify mobile navigation, loading/offline states, thumb-friendly controls,
 minimum typing, fast actions, secure sessions, feature visibility, and native
 permission education coverage without creating application logic.
 
+Mobile App Shell Logic is defined in `../docs/mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force

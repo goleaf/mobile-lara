@@ -26,6 +26,11 @@ mobile UX means mobile-first navigation, simple screens, clear loading/offline
 states, thumb-friendly controls, minimum typing, fast actions, secure sessions,
 feature visibility based on admin rules, and native permission education.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Principles Contract
 
 | Principle | Product rule | Feature behavior |

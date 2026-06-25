@@ -44,6 +44,11 @@ The mobile-client responsibility model is defined in [Mobile Client Responsibili
 
 The mobile UX model is defined in [Mobile UX Principles](../mobile-ux-principles.md). The architecture must keep NativePHP navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure session behavior, feature visibility, and native permission education aligned with API-derived authority.
 
+Mobile App Shell Logic is defined in `../mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Decision
 
 Use a two-system architecture:

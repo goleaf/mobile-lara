@@ -24,6 +24,11 @@ Native build and release work must follow [Admin Safety Principles](admin-safety
 
 Native build and release work must follow [Mobile UX Principles](mobile-ux-principles.md): NativePHP navigation, simple screens, loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure sessions, feature visibility, and native permission education must stay clear across releases.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.

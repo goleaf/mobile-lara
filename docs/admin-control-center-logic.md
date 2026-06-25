@@ -16,6 +16,11 @@ Use [Admin Safety Principles](admin-safety-principles.md) whenever a control is 
 
 Use [Mobile UX Principles](mobile-ux-principles.md) whenever an admin control changes NativePHP navigation, simple screens, loading/offline states, thumb-friendly actions, secure session states, feature visibility, or native permission education.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Control Center Statement
 
 The Admin Control Center is the operational control surface for the SaaS.

@@ -51,6 +51,11 @@ contract should return mobile-safe states that support simple NativePHP
 navigation, loading/offline clarity, thumb-friendly actions, secure sessions,
 feature visibility, and native permission education.
 
+Mobile App Shell Logic is defined in `../../docs/mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

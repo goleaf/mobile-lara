@@ -59,6 +59,11 @@ The mobile-client responsibility rules are defined in [Mobile Client Responsibil
 
 The mobile UX rules are defined in [Mobile UX Principles](mobile-ux-principles.md). Value reaches mobile users when navigation is mobile-first, screens are simple, loading/offline states are clear, controls are thumb-friendly, typing is minimized, actions are fast, sessions are secure, features follow admin rules, and native permission prompts are explained first.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Stakeholder Value Summary
 
 | Stakeholder | Primary value | Product proof |

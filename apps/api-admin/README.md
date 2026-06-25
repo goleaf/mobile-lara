@@ -57,6 +57,11 @@ app must return API outcomes that the NativePHP client can present as simple
 navigation, loading/offline states, thumb-friendly actions, secure session
 states, feature visibility, and native permission education.
 
+Mobile App Shell Logic is defined in `../../docs/mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Product Role
 
 This system owns SaaS authority:

@@ -51,6 +51,11 @@ apps must keep NativePHP navigation, simple screens, loading/offline states,
 thumb-friendly controls, minimum typing, fast actions, secure sessions, and
 native permission prompts aligned with API-derived authority.
 
+Mobile App Shell Logic is defined in `../docs/mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Systems
 
 | Path | Responsibility | Current state |

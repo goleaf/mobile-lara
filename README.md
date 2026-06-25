@@ -18,6 +18,8 @@ The mobile-client responsibility model is explicit: mobile user experience, secu
 
 The mobile UX model is explicit: the NativePHP client uses mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, admin-rule-based feature visibility, secure session behavior, and native permission education.
 
+The mobile app shell model is explicit: the NativePHP client coordinates welcome, authenticated, locked, offline, maintenance, forced update, tenant switching, sync-in-progress, permission-blocked, and feature-disabled states without taking authority from the API.
+
 The API-first model is explicit: mobile communicates only with API, API responses are predictable, every mobile feature has a clear API purpose, operating context is returned through API, errors are mobile-friendly, sync/conflict behavior is first-class, and tenant boundaries are protected server-side.
 
 The documentation-first architecture model is explicit: every feature, admin control, mobile screen, sync behavior, permission, and risk must be documented before implementation.
@@ -83,6 +85,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/admin-api-responsibilities.md](docs/admin-api-responsibilities.md) | Admin/API responsibility map for tenant management, users and permissions, API contracts, feature/config/version control, notifications, billing, support, reports, audit, conflicts, and security. |
 | [docs/mobile-client-responsibilities.md](docs/mobile-client-responsibilities.md) | Mobile-client responsibility map for UX, secure local session, cache, offline actions, NativePHP capabilities, navigation, permissions UX, sync display, drafts, feedback, and feature visibility. |
 | [docs/mobile-ux-principles.md](docs/mobile-ux-principles.md) | Mobile UX principles for NativePHP navigation, simple screens, loading/offline states, thumb-friendly controls, minimum typing, fast actions, feature visibility, secure sessions, and native permission education. |
+| [docs/mobile-app-shell-logic.md](docs/mobile-app-shell-logic.md) | Mobile app shell logic for welcome, authenticated, locked, offline, maintenance, forced update, tenant switching, sync-in-progress, permission-blocked, and feature-disabled states. |
 | [docs/admin-control-center-logic.md](docs/admin-control-center-logic.md) | Admin Control Center logic for tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, and support controls. |
 | [docs/feature-flag-logic.md](docs/feature-flag-logic.md) | Feature flag logic for important mobile features, global/tenant/user priority, disabled mobile states, admin impact, safe rollout, and plan limits. |
 | [docs/remote-configuration-logic.md](docs/remote-configuration-logic.md) | Remote configuration logic for configurable behavior, mobile receive/cache rules, offline behavior, tenant overrides, safe admin changes, and missing/invalid config. |
@@ -129,6 +132,7 @@ contracts.
 - Apply [Admin/API responsibilities](docs/admin-api-responsibilities.md) before planning control-plane behavior, API contracts, admin panels, reports, support, billing, notifications, audit, conflict, or security work.
 - Apply [mobile-client responsibilities](docs/mobile-client-responsibilities.md) before planning mobile UX, secure local session, local cache, offline actions, NativePHP capability use, navigation, mobile permissions UX, sync status, drafts, local feedback, or feature visibility.
 - Apply [mobile UX principles](docs/mobile-ux-principles.md) before planning NativePHP navigation, loading/offline states, thumb-friendly controls, data entry, fast actions, secure session behavior, or native permission prompts.
+- Apply [mobile app shell logic](docs/mobile-app-shell-logic.md) before planning welcome, authenticated, locked, offline, maintenance, forced update, tenant switching, sync-in-progress, permission-blocked, or feature-disabled app-shell behavior.
 - Apply [Admin Control Center logic](docs/admin-control-center-logic.md) before planning admin controls, remote config, app-version policy, maintenance, force update, sync policy, notifications, reports, billing, or support workflows.
 - Apply [feature flag logic](docs/feature-flag-logic.md) before planning important mobile features, flag priority, disabled mobile states, rollout, rollback, or plan-limited access.
 - Apply [remote configuration logic](docs/remote-configuration-logic.md) before planning runtime-configurable mobile behavior, config caching, offline config use, tenant-specific overrides, safe admin config changes, or missing/invalid config handling.

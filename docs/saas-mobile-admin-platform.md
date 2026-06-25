@@ -60,6 +60,11 @@ Mobile version control logic is detailed in [Mobile Version Control Logic](mobil
 
 Mobile UX principles are detailed in [Mobile UX Principles](mobile-ux-principles.md). Every NativePHP mobile workflow must define mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, admin-rule-based feature visibility, secure session behavior, and native permission education before coding.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Target User Roles
 
 The logical role model lives in [Target User Roles](user-roles.md). The main roles are:

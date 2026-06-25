@@ -54,6 +54,11 @@ UI decisions must also express [Mobile Client Responsibilities](mobile-client-re
 
 ## Mobile UX Principles
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 The mobile client should be calm, direct, and explicit about sync state.
 
 Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.

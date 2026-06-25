@@ -6,6 +6,11 @@ This document defines the remote configuration logic for Mobile Lara. It explain
 
 Use this document with [Product Vision](product-vision.md), [Product Positioning](product-positioning.md), [Target User Roles](user-roles.md), [SaaS Value Map](saas-value-map.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Mobile Version Control Logic](mobile-version-control-logic.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX Principles](mobile-ux-principles.md), [Core Product Principles](product-principles.md), [Documentation-First Architecture](documentation-first-architecture.md), and [Admin Safety Principles](admin-safety-principles.md): remote config is a server-controlled product decision that mobile consumes through API to create stakeholder value without granting authority, supports safe UX copy and limits, and dangerous config changes require confirmation, audit history, impact preview, rollback, and tenant-isolated scope.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Remote Configuration Statement
 
 Remote configuration lets Admin/API adjust mobile behavior without publishing a new mobile build.

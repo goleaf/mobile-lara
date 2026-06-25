@@ -6,6 +6,11 @@ This document defines the feature flag logic for Mobile Lara. It explains why im
 
 Use this document with [Product Vision](product-vision.md), [Product Positioning](product-positioning.md), [Target User Roles](user-roles.md), [Admin Control Center Logic](admin-control-center-logic.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX Principles](mobile-ux-principles.md), [Core Product Principles](product-principles.md), [SaaS Value Map](saas-value-map.md), [Documentation-First Architecture](documentation-first-architecture.md), [Remote Configuration Logic](remote-configuration-logic.md), [Mobile Version Control Logic](mobile-version-control-logic.md), and [Admin Safety Principles](admin-safety-principles.md): feature flags are admin-controlled product decisions that reach mobile through API outcomes, mobile UX turns resolved feature states into clear navigation/screens/actions, remote config tunes safe runtime behavior for enabled features, mobile version control decides whether the build can safely use those outcomes, and flag purpose, mobile effect, permissions, rollout risk, support meaning, impact preview, audit, and rollback must be documented before implementation.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Feature Flag Statement
 
 Every important mobile feature should be controlled by feature flags because mobile clients can be stale, offline, version-fragmented, tenant-specific, plan-limited, or in phased rollout.

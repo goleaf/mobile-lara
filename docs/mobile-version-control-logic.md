@@ -53,6 +53,11 @@ outdated, optional-update, forced-update, maintenance, deprecated, blocked,
 store-link, stale-client, and local-draft states should stay clear, simple,
 thumb-friendly, and supportive of secure session behavior.
 
+Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 ## Version Control Statement
 
 Mobile app version control is a control-plane responsibility.

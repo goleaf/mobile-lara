@@ -61,6 +61,11 @@ contract should support mobile-first navigation, simple screens, clear
 loading/offline states, thumb-friendly controls, minimum typing, fast actions,
 secure sessions, feature visibility, and native permission education.
 
+Mobile App Shell Logic is defined in `../../docs/mobile-app-shell-logic.md`:
+shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
+switching, sync-in-progress, permission-blocked, and feature-disabled behavior
+before implementation.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep app
 version, maintenance mode, force update, store-link, update-message, and

@@ -20,6 +20,8 @@ Admin/API responsibilities are defined in `docs/admin-api-responsibilities.md`: 
 
 Mobile client responsibilities are defined in `docs/mobile-client-responsibilities.md`: mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync status display, local drafts, local user feedback, and feature visibility based on admin rules belong to the mobile client.
 
+Mobile app shell logic is defined in `docs/mobile-app-shell-logic.md`: welcome, authenticated, locked, offline, maintenance, forced update, tenant switching, sync-in-progress, permission-blocked, and feature-disabled states must be coordinated by the NativePHP client without bypassing API authority.
+
 API-first principles are defined in `docs/api-first-principles.md`: mobile communicates only with API, API responses are predictable, every mobile feature has a clear API purpose, API returns operating context, errors are mobile-friendly, sync and conflict behavior are first-class, and tenant boundaries are protected server-side.
 
 Documentation-first architecture is defined in `docs/documentation-first-architecture.md`: every feature must be documented before implementation, every admin control must document its mobile effect, every mobile screen must document its API dependency, every sync behavior must document offline and online behavior, every permission must document who controls it, and every risk must be recorded before coding.
@@ -67,6 +69,7 @@ Use these docs before changing the product direction:
 - `docs/api-first-principles.md`
 - `docs/admin-api-responsibilities.md`
 - `docs/mobile-client-responsibilities.md`
+- `docs/mobile-app-shell-logic.md`
 - `docs/admin-control-center-logic.md`
 - `docs/feature-flag-logic.md`
 - `docs/remote-configuration-logic.md`
@@ -87,6 +90,7 @@ Use these docs before changing the product direction:
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
 - Mobile-client responsibility decisions must follow `docs/mobile-client-responsibilities.md`.
 - Mobile UX decisions must follow `docs/mobile-ux-principles.md`.
+- Mobile app shell decisions must follow `docs/mobile-app-shell-logic.md`.
 - Admin Control Center decisions must follow `docs/admin-control-center-logic.md`.
 - Feature flag decisions must follow `docs/feature-flag-logic.md`.
 - Remote configuration decisions must follow `docs/remote-configuration-logic.md`.
@@ -107,6 +111,7 @@ Use these docs before changing the product direction:
 - Any tenant, user, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security concern must map to the Admin/API responsibility rules in `docs/admin-api-responsibilities.md`.
 - Any mobile UX, secure local session, cache, offline action, NativePHP capability, navigation, permissions UX, sync display, draft, local feedback, or feature-visibility concern must map to `docs/mobile-client-responsibilities.md`.
 - Any NativePHP mobile UX, navigation, simple screen, loading/offline state, thumb-friendly control, minimum-typing flow, fast action, secure session, or native permission prompt must map to `docs/mobile-ux-principles.md`.
+- Any welcome, authenticated, locked, offline, maintenance, forced update, tenant switching, sync-in-progress, permission-blocked, or feature-disabled shell behavior must map to `docs/mobile-app-shell-logic.md`.
 - Any admin control for tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, or support must map to `docs/admin-control-center-logic.md`.
 - Any important mobile feature flag must map to `docs/feature-flag-logic.md`, including priority, disabled mobile state, rollout, impact, plan limit, support, audit, and offline behavior.
 - Any remote-configurable behavior must map to `docs/remote-configuration-logic.md`, including allowed config type, scope, default, override behavior, mobile caching, offline behavior, validation, fallback, support, audit, and rollback.
