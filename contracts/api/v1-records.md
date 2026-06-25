@@ -57,6 +57,12 @@ feature availability, permissions, sync policy, conflict outcomes, report
 visibility, support context, and tenant boundaries scoped, authorized,
 auditable, and exposed to mobile only as resolved API outcomes.
 
+Mobile Version Control Logic is defined in
+`../../docs/mobile-version-control-logic.md`: record viewing, editing,
+attachments, drafts, offline intents, and sync replay must respect app-version
+compatibility, forced updates, deprecated clients, blocked builds, maintenance,
+and stale-client protection before API accepts protected record work.
+
 ## Purpose
 
 Records endpoints provide tenant-scoped content authority for list, detail,

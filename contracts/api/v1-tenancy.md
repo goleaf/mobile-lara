@@ -64,6 +64,12 @@ workflow wording, support guidance, cache freshness messages, and safe tenant
 presentation may vary by resolved tenant config, but tenant membership,
 switching authority, and isolation remain Admin/API authority.
 
+Mobile Version Control Logic is defined in
+`../../docs/mobile-version-control-logic.md`: tenant listing, tenant switching,
+tenant-scoped bootstrap context, and tenant-specific maintenance or rollout
+states must respect supported, deprecated, force-update, blocked, internal-only,
+and maintenance-limited app-version policy.
+
 ## Purpose
 
 Tenancy endpoints keep tenant authority on the Admin/API system. Mobile may

@@ -56,6 +56,12 @@ eligibility, queueable actions, replay windows, retry limits, conflict modes,
 stale thresholds, maintenance blocks, and policy decisions scoped, authorized,
 auditable, and exposed to mobile only as resolved API outcomes.
 
+Mobile Version Control Logic is defined in
+`../../docs/mobile-version-control-logic.md`: sync replay, offline queues,
+conflict handling, stale cursors, and maintenance-limited sync behavior must
+respect minimum supported versions, forced updates, blocked builds, deprecated
+clients, and update-required states before API accepts protected work.
+
 ## Purpose
 
 Sync endpoints let the mobile client replay queued local intents and pull

@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Mobile Version Control Logic with a decision contract for minimum
+  supported versions, optional updates, forced updates, maintenance mode,
+  outdated API responses, store links, update messages, and broken old-version
+  protection.
 - Clarified Remote Configuration Logic with a decision contract for
   configurable behavior, mobile receive/cache rules, offline handling,
   tenant overrides, safe admin changes, and missing or invalid config.

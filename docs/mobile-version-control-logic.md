@@ -58,6 +58,22 @@ Mobile may present update prompts, store links, release notes, maintenance banne
 
 Product rule: app-version policy protects users and tenants from stale mobile assumptions, broken API contracts, missing NativePHP capability support, known security issues, unsafe sync behavior, and unsupported release channels.
 
+## Mobile Version Control Decision Contract
+
+Every app-version policy should be documented before implementation because stale mobile clients can keep running long after Admin/API behavior changes. Admin/API owns version safety; mobile reports build context and presents only the resolved update, maintenance, blocked, or supported outcome.
+
+| Decision area | Principle | Required outcome |
+| --- | --- | --- |
+| Minimum supported version | Admins define the oldest app version, build, platform, channel, or tenant-scoped version range that may operate safely. | Old clients that cannot satisfy API, security, NativePHP, sync, feature, permission, billing, or tenant assumptions receive deprecated, force-update, blocked, or maintenance-limited outcomes instead of normal access. |
+| Optional update | Optional updates are non-blocking prompts for useful improvements while the current app remains safe. | Mobile continues normal operation, shows honest update guidance, allows dismissal or postponement when policy permits, and avoids interrupting active work. |
+| Forced update | Forced updates are blocking controls for unsafe versions, stale API contracts, known security issues, revoked builds, invalid channels, unsafe sync behavior, or missing NativePHP capability support. | Mobile blocks normal workflows, preserves safe local state where possible, exposes update/support/logout/diagnostic actions only where allowed, and rechecks API policy after update. |
+| Maintenance mode | Maintenance is a temporary service, tenant, feature, API, sync, notification, billing, support, platform, or version-range limitation. | Mobile shows maintenance, retry-later, limited-mode, draft-only, queueable, read-only, or blocked behavior based on API policy without treating maintenance as version safety. |
+| Outdated API response | When API says the app is outdated, mobile treats that response as authoritative. | Mobile stops relying on cached feature, config, permission, billing, tenant, and sync state for protected actions, shows the resolved state, and revalidates after update before resuming normal work. |
+| Store links and messages | Store links, distribution links, update copy, release notes, support copy, and retry guidance are controlled by Admin/API and scoped by platform, channel, tenant, locale, or release model. | Users receive safe, actionable messages and correct update destinations without exposing internal incident details, store credentials, or tenant-private reasoning. |
+| Broken old-version protection | Version policy protects users from clients that can corrupt data, lose offline work, bypass changed enforcement, misunderstand API responses, or trigger broken NativePHP flows. | Old versions fail explicitly with next action, support path, local draft preservation where safe, and no broader access than a supported version would receive. |
+
+This contract is intentionally principle-level. It does not create version storage, schemas, migrations, endpoints, validation classes, policies, Filament resources, Livewire components, jobs, services, provider integrations, store integrations, or application logic.
+
 ## What Admins Control
 
 Admins should control mobile version policy through scoped, authorized, auditable settings.
