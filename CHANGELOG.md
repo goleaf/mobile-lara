@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Sync Lifecycle Logic documentation for bootstrap sync, pull changes,
+  push local changes, retries, conflict detection, conflict resolution,
+  acknowledgement, sync status communication, manual sync, background sync,
+  and admin monitoring of sync health.
 - Added Offline-First Principles documentation for offline mobile capability,
   online-only API authority, cache rules, never-cache rules, offline state
   messaging, queued action logic, pending-change UX, and admin-controlled

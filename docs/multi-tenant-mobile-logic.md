@@ -21,12 +21,15 @@ Local Storage](nativephp-local-storage.md), [Mobile App Shell Logic](mobile-app-
 [Role And Permission Logic](role-permission-logic.md), [Feature Flag Logic](feature-flag-logic.md),
 [Remote Configuration Logic](remote-configuration-logic.md), [Tenant Lifecycle
 Logic](tenant-lifecycle-logic.md), [Tenant Admin Logic](tenant-admin-logic.md),
-[Offline-First Principles](offline-first-principles.md), [Audit Logic](audit-logic.md),
-[Data Privacy Principles](data-privacy-principles.md), [Admin Safety
-Principles](admin-safety-principles.md), and [API v1 Tenancy Contract](../contracts/api/v1-tenancy.md):
-multi-tenant mobile behavior is the local user experience for choosing and
-remembering tenant context while offline-first behavior defines which tenant
-data may be cached, queued, shown, or blocked without online confirmation.
+[Offline-First Principles](offline-first-principles.md), [Sync Lifecycle
+Logic](sync-lifecycle-logic.md), [Audit Logic](audit-logic.md), [Data Privacy
+Principles](data-privacy-principles.md), [Admin Safety Principles](admin-safety-principles.md),
+and [API v1 Tenancy Contract](../contracts/api/v1-tenancy.md): multi-tenant
+mobile behavior is the local user experience for choosing and remembering
+tenant context while offline-first behavior defines which tenant data may be
+cached, queued, shown, or blocked without online confirmation. Sync lifecycle
+behavior defines how tenant-scoped bootstrap, pull, push, retry, conflicts,
+acknowledgement, and sync health behave after tenant choice or tenant switch.
 Admin/API remains authoritative for tenant access, tenant state, permissions,
 features, config, sync acceptance, and logout/session revocation.
 

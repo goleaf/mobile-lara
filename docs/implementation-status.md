@@ -138,6 +138,12 @@ offline messaging to keep users productive, but protected reads, writes,
 conflicts, billing, permissions, feature access, audit, and tenant authority
 must wait for API confirmation before becoming trusted.
 
+Sync Lifecycle Logic is defined in `sync-lifecycle-logic.md`:
+sync moves from bootstrap readiness to pull, push, retry, conflict
+resolution, acknowledgement, status communication, manual sync,
+background sync, and admin health monitoring while API authority remains
+responsible for acceptance, rejection, conflict decisions, and audit.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

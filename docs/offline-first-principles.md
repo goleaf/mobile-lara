@@ -16,17 +16,20 @@ or application logic.
 Use this document with [Product Principles](product-principles.md), [Two-System
 Boundary Logic](two-system-boundary.md), [API-First Principles](api-first-principles.md),
 [Mobile Client Responsibilities](mobile-client-responsibilities.md), [NativePHP
-Local Storage](nativephp-local-storage.md), [Multi-Tenant Mobile Logic](multi-tenant-mobile-logic.md),
-[Authentication Principles](authentication-principles.md), [Mobile App Lock
-Principles](mobile-app-lock-principles.md), [Mobile App Shell Logic](mobile-app-shell-logic.md),
-[Mobile Dashboard Logic](mobile-dashboard-logic.md), [Mobile Settings Logic](mobile-settings-logic.md),
+Local Storage](nativephp-local-storage.md), [Sync Lifecycle Logic](sync-lifecycle-logic.md),
+[Multi-Tenant Mobile Logic](multi-tenant-mobile-logic.md), [Authentication
+Principles](authentication-principles.md), [Mobile App Lock Principles](mobile-app-lock-principles.md),
+[Mobile App Shell Logic](mobile-app-shell-logic.md), [Mobile Dashboard
+Logic](mobile-dashboard-logic.md), [Mobile Settings Logic](mobile-settings-logic.md),
 [Role And Permission Logic](role-permission-logic.md), [Feature Flag Logic](feature-flag-logic.md),
 [Remote Configuration Logic](remote-configuration-logic.md), [Mobile Version
 Control Logic](mobile-version-control-logic.md), [Admin Control Center
 Logic](admin-control-center-logic.md), [Admin Safety Principles](admin-safety-principles.md),
 [Audit Logic](audit-logic.md), [Data Privacy Principles](data-privacy-principles.md),
 and [API v1 Sync Contract](../contracts/api/v1-sync.md): offline-first behavior
-keeps mobile users productive with cache, drafts, and queued intents while
+keeps mobile users productive with cache, drafts, and queued intents while sync
+lifecycle behavior defines bootstrap, pull, push, retry, conflict,
+acknowledgement, status, manual sync, background sync, and health monitoring.
 Admin/API remains authoritative for access, validation, permission, billing,
 feature, tenant, sync, conflict, audit, and security decisions.
 

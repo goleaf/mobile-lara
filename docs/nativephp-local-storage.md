@@ -108,6 +108,12 @@ offline messaging to keep users productive, but protected reads, writes,
 conflicts, billing, permissions, feature access, audit, and tenant authority
 must wait for API confirmation before becoming trusted.
 
+Sync Lifecycle Logic is defined in `sync-lifecycle-logic.md`:
+sync moves from bootstrap readiness to pull, push, retry, conflict
+resolution, acknowledgement, status communication, manual sync,
+background sync, and admin health monitoring while API authority remains
+responsible for acceptance, rejection, conflict decisions, and audit.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.
