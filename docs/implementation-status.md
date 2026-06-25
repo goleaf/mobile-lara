@@ -17,6 +17,10 @@ tracked against admin authority, API-only mobile behavior, feature control,
 tenant isolation, useful offline behavior, secure defaults, simple mobile UX,
 documentation-first planning, and modular expansion.
 
+Target User Roles are defined in `docs/user-roles.md`. Status is tracked
+against role responsibilities, limitations, visibility, and control boundaries
+before implementation grows.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,
@@ -62,7 +66,7 @@ Status values:
 | Mobile routes | 52 `mobile.*` Livewire routes exist in both the root transition app and `apps/mobile-client/routes/web.php`. |
 | Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, and security audit events. Tenant/control-plane domain schema remains pending. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
-| Admin/API system | `apps/api-admin` contains a Laravel 13 app, Livewire dashboard shell, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, and mobile auth/token/session endpoints. Admin auth, tenancy, and SaaS modules remain pending. |
+| Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, and mobile auth/token/session endpoints. Tenancy and SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
 | Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, contract catalogue, and mobile auth. |
@@ -146,7 +150,7 @@ Status values:
 
 | Feature | Admin/API Status | Mobile Status | Notes |
 | --- | --- | --- | --- |
-| Admin authentication | not started | n/a | Admin web/session login surface is still pending. |
+| Admin authentication | tested | n/a | Admin login/logout exists for `is_platform_admin` users and dashboard access is protected. |
 | API authentication | tested | partial | API/admin mobile auth endpoints exist; mobile client still needs API-client integration. |
 | Access tokens | tested | partial | API/admin stores only hashed access tokens and protects routes through `mobile.auth`; mobile secure-storage integration remains local-only. |
 | Refresh tokens | tested | partial | API/admin refresh endpoint rotates refresh/access tokens; mobile API service integration remains pending. |

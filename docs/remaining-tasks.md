@@ -18,6 +18,11 @@ work must preserve admin authority, API-only mobile behavior, feature control,
 tenant isolation, useful offline behavior, secure defaults, simple mobile UX,
 documentation-first planning, and modular expansion.
 
+Target User Roles are defined in `docs/user-roles.md`. Remaining work must map
+platform owner, super admin, tenant admin, tenant manager, support agent,
+billing manager, mobile user, invited user, suspended user, and guest/pre-login
+behavior before adding implementation scope.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Remaining implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

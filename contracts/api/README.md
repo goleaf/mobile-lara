@@ -16,6 +16,10 @@ every contract must preserve admin authority, tenant isolation, API-only mobile
 behavior, feature control, useful offline behavior, secure defaults, simple
 mobile UX, documentation-first planning, and modular expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: every contract must
+describe role and account-state effects as mobile-safe outcomes, not raw role
+authority.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

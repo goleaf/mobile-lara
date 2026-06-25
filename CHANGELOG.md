@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Target User Roles documentation so platform owner, super admin,
+  tenant admin, tenant manager, support agent, billing manager, mobile user,
+  invited user, suspended user, and guest/pre-login user responsibilities,
+  limits, visibility, and control boundaries stay explicit.
 - Clarified Core Product Principles documentation so admin authority, API-only
   mobile behavior, feature control, tenant isolation, useful offline behavior,
   secure defaults, API-first communication, simple mobile UX, documentation-first
@@ -51,3 +55,6 @@ All notable changes to Mobile Lara will be documented in this file.
   login, refresh-token rotation, logout, logout-all-devices, current-user, and
   profile endpoints, hashed token persistence, device sessions, validation
   envelopes, and security audit events.
+- Added API/admin session authentication for platform-admin users, protected the
+  admin dashboard, added admin login/logout routes and Blade view, and audited
+  admin login/logout attempts.

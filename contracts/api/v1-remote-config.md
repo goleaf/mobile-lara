@@ -16,6 +16,9 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: config outcomes
+may vary presentation by role or account state, but must not grant authority.
+
 ## Purpose
 
 Remote config endpoints expose validated, resolved, mobile-safe runtime values.

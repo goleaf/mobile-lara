@@ -14,6 +14,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 app must keep authority server-side, tenant-scoped, feature-controlled,
 secure-by-default, API-first, documented, and modular.
 
+Target User Roles are defined in `../../docs/user-roles.md`: this app must map
+each admin, support, billing, tenant, mobile, invited, suspended, and
+guest/pre-login responsibility to server-side authority and visibility.
+
 ## Product Role
 
 This system owns SaaS authority:
@@ -55,7 +59,8 @@ into mobile-safe API outcomes.
 
 This directory is now a Laravel 13 application with a Livewire admin dashboard
 shell, the first versioned mobile API route, and a public mobile contract
-catalogue. It also has the first mobile API authentication foundation.
+catalogue. It also has admin session authentication and the first mobile API
+authentication foundation.
 
 Implemented foundation:
 
@@ -72,6 +77,10 @@ Implemented foundation:
   the current user.
 - `GET /api/v1/mobile/auth/user` returns current user/session context.
 - `PATCH /api/v1/mobile/auth/profile` updates allowed profile fields.
+- `GET /admin/login` renders the admin login form.
+- `POST /admin/login` authenticates platform-admin users.
+- `POST /admin/logout` invalidates the admin session.
+- `/admin/dashboard` is protected by session auth and platform-admin access.
 - `App\Support\Api\MobileApiResponse` centralizes success and error envelopes.
 - `App\Support\Api\MobileContractRegistry` centralizes documented contract
   groups and planned routes.
@@ -84,7 +93,7 @@ Implemented foundation:
 
 Still pending:
 
-- Admin authentication, tenant scoping, roles, permissions, policies, and audit.
+- Tenant scoping, roles, permissions, policies, and broader control-plane audit.
 - Domain modules for feature flags, remote config, app versions, sync,
   notifications, records/content, support, billing, and reports.
 - Implemented mobile bootstrap endpoint and protected domain routes.

@@ -16,6 +16,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: diagnostics must
+separate support-agent visibility from tenant, billing, mobile, invited,
+suspended, and guest/pre-login visibility.
+
 ## Purpose
 
 Diagnostics endpoints let mobile share privacy-safe troubleshooting context

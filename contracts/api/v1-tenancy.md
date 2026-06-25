@@ -16,6 +16,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: tenant access and
+tenant switching must resolve platform, tenant, invited, suspended, and
+guest/pre-login boundaries server-side.
+
 ## Purpose
 
 Tenancy endpoints keep tenant authority on the Admin/API system. Mobile may

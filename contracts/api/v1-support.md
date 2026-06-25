@@ -16,6 +16,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: support flows must
+separate support-agent controls from tenant, billing, mobile, invited,
+suspended, and guest/pre-login experiences.
+
 ## Purpose
 
 Support endpoints let mobile users create tickets, view tickets, add messages,

@@ -16,6 +16,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: billing outcomes
+must distinguish billing manager authority, tenant admin visibility, support
+context, and mobile entitlement messages.
+
 ## Purpose
 
 Billing endpoints expose mobile-safe plan and subscription state. Admin/API

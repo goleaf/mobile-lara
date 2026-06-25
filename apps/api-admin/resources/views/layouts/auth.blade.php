@@ -12,7 +12,8 @@
     </head>
     <body class="min-h-dvh bg-zinc-50 text-zinc-950 antialiased dark:bg-zinc-950 dark:text-zinc-100">
         <main class="mx-auto flex min-h-dvh w-full max-w-md items-center px-4 py-8">
-            {{ $slot }}
+            {{ $slot ?? '' }}
+            @yield('content')
         </main>
 
         @livewireScripts

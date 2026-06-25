@@ -15,6 +15,10 @@ may verify admin authority, API-first behavior, tenant isolation, security,
 offline state, and documentation coverage, but must not create application
 logic.
 
+Target User Roles are defined in `../docs/user-roles.md`: scripts may verify
+role documentation coverage and role-scoped outcomes, but must not create role,
+permission, guard, or policy logic.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force

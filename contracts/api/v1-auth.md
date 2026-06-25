@@ -16,6 +16,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: auth outcomes must
+distinguish admin, tenant, support, billing, mobile, invited, suspended, and
+guest/pre-login states without exposing raw authority.
+
 ## Purpose
 
 Auth endpoints make the Admin/API system authoritative for mobile identity,

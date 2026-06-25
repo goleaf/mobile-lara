@@ -15,6 +15,11 @@ apps must preserve admin authority, API-only mobile behavior, feature control,
 tenant isolation, useful offline behavior, secure defaults, simple mobile UX,
 documentation-first planning, and modular expansion.
 
+Target User Roles are defined in `../docs/user-roles.md`: both apps must keep
+platform owner, super admin, tenant admin, tenant manager, support agent,
+billing manager, mobile user, invited user, suspended user, and guest/pre-login
+boundaries explicit.
+
 ## Systems
 
 | Path | Responsibility | Current state |

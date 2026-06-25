@@ -16,6 +16,10 @@ Use this document with [Core Product Principles](product-principles.md): mobile
 version rules are admin-controlled, API-first, secure-by-default, tenant-aware,
 documented, and modular.
 
+Use this document with [Target User Roles](user-roles.md): version prompts,
+maintenance access, internal-only access, support visibility, and suspended or
+guest behavior must follow role and account-state boundaries.
+
 ## Version Control Statement
 
 Mobile app version control is a control-plane responsibility.

@@ -16,6 +16,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: bootstrap context
+must return role-derived capability state and account-state limits as
+mobile-safe outcomes.
+
 ## Purpose
 
 Bootstrap gives the mobile client one resolved operating context after login,

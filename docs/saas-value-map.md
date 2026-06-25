@@ -20,6 +20,10 @@ stakeholder value should reinforce admin authority, API-only mobile behavior,
 feature control, tenant isolation, useful offline behavior, secure defaults,
 simple mobile UX, documentation-first planning, and modular expansion.
 
+Use this document with [Target User Roles](user-roles.md): stakeholder value
+should be delivered through the correct role surface without confusing value
+received with authority granted.
+
 The Admin/API system gives the business control over tenants, users, permissions, billing, reports, support, feature flags, notifications, app versions, security, and sync behavior. The mobile client turns those decisions into usable field or client workflows with native capability access, offline resilience where useful, and clear status for allowed, blocked, pending, synced, conflicted, and offline states.
 
 The product is valuable only when both sides stay connected:

@@ -14,6 +14,9 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: feature outcomes
+must resolve role and account-state access into mobile-safe states.
+
 ## Purpose
 
 Feature endpoints expose resolved mobile-safe feature outcomes. Mobile never

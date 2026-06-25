@@ -16,6 +16,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: sync replay,
+conflict visibility, and offline state must follow role and account-state
+boundaries.
+
 ## Purpose
 
 Sync endpoints let the mobile client replay queued local intents and pull

@@ -22,6 +22,14 @@
                         <a href="{{ route('admin.dashboard') }}" class="rounded-lg px-3 py-2 font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">
                             Control
                         </a>
+
+                        <form method="POST" action="{{ route('admin.logout') }}">
+                            @csrf
+
+                            <button type="submit" class="rounded-lg px-3 py-2 font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">
+                                Logout
+                            </button>
+                        </form>
                     </nav>
                 </div>
             </header>

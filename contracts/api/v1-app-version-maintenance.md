@@ -16,6 +16,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: version and
+maintenance outcomes must respect platform, tenant, support, mobile, invited,
+suspended, and guest/pre-login boundaries.
+
 ## Purpose
 
 App-version and maintenance endpoints tell mobile whether the current build can

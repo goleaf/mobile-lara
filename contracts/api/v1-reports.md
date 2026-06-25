@@ -16,6 +16,10 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+Target User Roles are defined in `../../docs/user-roles.md`: report summaries
+must respect platform, tenant, manager, support, billing, mobile, and blocked
+account-state visibility.
+
 ## Purpose
 
 Reports endpoints expose only permission-safe tenant and user report summaries

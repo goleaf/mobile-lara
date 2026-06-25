@@ -1,15 +1,26 @@
 <?php
 
+use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\Auth\LogoutController;
 use App\Livewire\Admin\Dashboard;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])
     ->group(function (): void {
         Route::redirect('/', '/admin/dashboard')->name('home');
+        Route::redirect('/login', '/admin/login')->name('login');
 
         Route::prefix('admin')
             ->name('admin.')
             ->group(function (): void {
-                Route::livewire('/dashboard', Dashboard::class)->name('dashboard');
+                Route::middleware('guest')->group(function (): void {
+                    Route::get('/login', [LoginController::class, 'show'])->name('login');
+                    Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+                });
+
+                Route::middleware(['auth', 'admin.platform'])->group(function (): void {
+                    Route::livewire('/dashboard', Dashboard::class)->name('dashboard');
+                    Route::post('/logout', LogoutController::class)->name('logout');
+                });
             });
     });

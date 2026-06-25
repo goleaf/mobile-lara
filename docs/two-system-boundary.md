@@ -26,6 +26,10 @@ boundary enforces admin control, API-only mobile behavior, tenant isolation,
 secure defaults, useful offline behavior, simple mobile UX, documentation-first
 planning, and modular expansion.
 
+Use this document with [Target User Roles](user-roles.md): role authority belongs
+to Admin/API, while mobile renders only API-derived capability and account-state
+outcomes.
+
 The simplest rule is:
 
 - **Admin/API decides** what is allowed, configured, billable, reportable, auditable, supported, secure, and synced.

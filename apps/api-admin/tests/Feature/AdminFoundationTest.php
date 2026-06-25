@@ -1,11 +1,17 @@
 <?php
 
 use App\Livewire\Admin\Dashboard;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
 
 test('admin dashboard renders the control plane shell', function (): void {
     $this->withoutVite();
+    $admin = User::factory()->platformAdmin()->create();
 
-    $this->get('/admin/dashboard')
+    $this->actingAs($admin)
+        ->get('/admin/dashboard')
         ->assertOk()
         ->assertSeeLivewire(Dashboard::class)
         ->assertSee('Mobile Control Dashboard')

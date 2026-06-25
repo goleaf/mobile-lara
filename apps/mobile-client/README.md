@@ -16,6 +16,10 @@ app must never bypass API authority, must keep mobile UX simple, and must treat
 offline state as cache, draft, queue, pending, synced, conflict, or failed
 state rather than server truth.
 
+Target User Roles are defined in `../../docs/user-roles.md`: this app must show
+mobile, invited, suspended, and guest/pre-login states as API-derived UX, not
+local permission authority.
+
 ## Product Role
 
 This system owns local execution:
