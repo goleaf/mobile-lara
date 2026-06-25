@@ -2,9 +2,9 @@
 
 namespace App\Services\Native;
 
-use App\Models\MobileLocalMediaItem;
-use App\Services\MobileLocal\MediaItemRepository;
+use App\Models\MobileLocalVoiceNote;
 use App\Services\MobileLocal\OfflineActionRepository;
+use App\Services\MobileLocal\VoiceNoteRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
@@ -20,7 +20,7 @@ final class AudioRecordingService
     public function __construct(
         private readonly Microphone $microphone,
         private readonly Filesystem $files,
-        private readonly MediaItemRepository $mediaItems,
+        private readonly VoiceNoteRepository $voiceNotes,
         private readonly OfflineActionRepository $offlineActions,
     ) {}
 
@@ -79,14 +79,14 @@ final class AudioRecordingService
             [
                 'key' => 'save',
                 'label' => 'Save locally',
-                'description' => 'Persist voice-note metadata in the local media_items table.',
+                'description' => 'Persist voice-note metadata in the local voice_notes table.',
                 'supported' => true,
-                'driver' => 'mobile_local.media_items',
+                'driver' => 'mobile_local.voice_notes',
             ],
             [
                 'key' => 'delete',
                 'label' => 'Delete locally',
-                'description' => 'Remove the local media record and the recorded file when present.',
+                'description' => 'Remove the local voice note record and the recorded file when present.',
                 'supported' => true,
                 'driver' => 'local filesystem',
             ],
@@ -235,13 +235,14 @@ final class AudioRecordingService
     }
 
     /**
-     * @return array{success: bool, operation: string, message: string, media_item_id?: int, path?: string}
+     * @return array{success: bool, operation: string, message: string, voice_note_id?: int, path?: string}
      */
     public function save(
         string $path,
         string $mimeType = 'audio/m4a',
-        ?string $caption = null,
+        ?string $transcript = null,
         ?string $recordingId = null,
+        ?int $duration = null,
     ): array {
         $path = trim($path);
 
@@ -253,14 +254,12 @@ final class AudioRecordingService
             ];
         }
 
-        $mediaItem = $this->mediaItems->record(
-            path: $path,
-            type: MobileLocalMediaItem::TYPE_AUDIO,
-            mime: $this->normalizeMimeType($mimeType),
-            size: $this->files->size($path),
-            caption: $this->normalizeCaption($caption),
-            syncStatus: MobileLocalMediaItem::SYNC_PENDING,
-            relatedEntityType: 'voice_note',
+        $voiceNote = $this->voiceNotes->record(
+            localFilePath: $path,
+            duration: $duration,
+            transcript: $this->normalizeTranscript($transcript),
+            syncStatus: MobileLocalVoiceNote::SYNC_PENDING,
+            relatedEntityType: $recordingId === null ? null : 'native_recording',
             relatedEntityId: $recordingId,
         );
 
@@ -268,31 +267,31 @@ final class AudioRecordingService
             'success' => true,
             'operation' => 'save',
             'message' => 'Voice note saved locally.',
-            'media_item_id' => (int) $mediaItem->getKey(),
-            'path' => $mediaItem->path,
+            'voice_note_id' => (int) $voiceNote->getKey(),
+            'path' => $voiceNote->local_file_path,
         ];
     }
 
     /**
-     * @return array{success: bool, operation: string, message: string, file_deleted?: bool, media_item_deleted?: bool}
+     * @return array{success: bool, operation: string, message: string, file_deleted?: bool, voice_note_deleted?: bool}
      */
-    public function delete(int|string|null $mediaItemId = null, ?string $path = null): array
+    public function delete(int|string|null $voiceNoteId = null, ?string $path = null): array
     {
-        if ($mediaItemId === null && (! is_string($path) || trim($path) === '')) {
+        if ($voiceNoteId === null && (! is_string($path) || trim($path) === '')) {
             return [
                 'success' => false,
                 'operation' => 'delete',
-                'message' => 'A voice note media item or file path is required before deleting.',
+                'message' => 'A voice note record or file path is required before deleting.',
             ];
         }
 
-        $mediaItem = $mediaItemId === null ? null : $this->findVoiceNote($mediaItemId);
-        $path = $path ?: $mediaItem?->path;
-        $mediaItemDeleted = false;
+        $voiceNote = $voiceNoteId === null ? null : $this->findVoiceNote($voiceNoteId);
+        $path = $path ?: $voiceNote?->local_file_path;
+        $voiceNoteDeleted = false;
 
-        if ($mediaItem instanceof MobileLocalMediaItem) {
-            $mediaItem->delete();
-            $mediaItemDeleted = true;
+        if ($voiceNote instanceof MobileLocalVoiceNote) {
+            $voiceNote->delete();
+            $voiceNoteDeleted = true;
         }
 
         $fileDeleted = false;
@@ -302,29 +301,29 @@ final class AudioRecordingService
         }
 
         return [
-            'success' => $mediaItemDeleted || $fileDeleted,
+            'success' => $voiceNoteDeleted || $fileDeleted,
             'operation' => 'delete',
-            'message' => $mediaItemDeleted || $fileDeleted
+            'message' => $voiceNoteDeleted || $fileDeleted
                 ? 'Voice note deleted locally.'
                 : 'Voice note was already missing locally.',
             'file_deleted' => $fileDeleted,
-            'media_item_deleted' => $mediaItemDeleted,
+            'voice_note_deleted' => $voiceNoteDeleted,
         ];
     }
 
     /**
      * @return array{success: bool, operation: string, message: string, offline_action_id?: int}
      */
-    public function queueUploadPlaceholder(int|string|null $mediaItemId = null, ?string $path = null): array
+    public function queueUploadPlaceholder(int|string|null $voiceNoteId = null, ?string $path = null): array
     {
-        $mediaItem = $mediaItemId === null ? null : $this->findVoiceNote($mediaItemId);
-        $path = $path ?: $mediaItem?->path;
+        $voiceNote = $voiceNoteId === null ? null : $this->findVoiceNote($voiceNoteId);
+        $path = $path ?: $voiceNote?->local_file_path;
 
-        if ((! $mediaItem instanceof MobileLocalMediaItem) && (! is_string($path) || trim($path) === '')) {
+        if ((! $voiceNote instanceof MobileLocalVoiceNote) && (! is_string($path) || trim($path) === '')) {
             return [
                 'success' => false,
                 'operation' => 'queue_upload',
-                'message' => 'A saved voice note or audio file path is required before queueing upload.',
+                'message' => 'A saved voice note record or audio file path is required before queueing upload.',
             ];
         }
 
@@ -333,10 +332,12 @@ final class AudioRecordingService
             endpoint: self::UPLOAD_ENDPOINT,
             method: 'POST',
             payload: [
-                'media_item_id' => $mediaItem?->getKey(),
+                'voice_note_id' => $voiceNote?->getKey(),
                 'path' => $path,
-                'mime' => $mediaItem?->mime ?: 'audio/m4a',
-                'caption' => $mediaItem?->caption,
+                'duration' => $voiceNote?->duration,
+                'transcript' => $voiceNote?->transcript,
+                'related_entity_type' => $voiceNote?->related_entity_type,
+                'related_entity_id' => $voiceNote?->related_entity_id,
                 'placeholder' => true,
             ],
         );
@@ -350,14 +351,16 @@ final class AudioRecordingService
     }
 
     /**
-     * @return Collection<int, MobileLocalMediaItem>
+     * @return Collection<int, MobileLocalVoiceNote>
      */
     public function recentVoiceNotes(int $limit = 12): Collection
     {
-        return $this->mediaItems->recent(
-            limit: max(1, min($limit, 50)),
-            type: MobileLocalMediaItem::TYPE_AUDIO,
-        );
+        return $this->voiceNotes->recent(limit: max(1, min($limit, 50)));
+    }
+
+    public function voiceNote(int|string $voiceNoteId): ?MobileLocalVoiceNote
+    {
+        return $this->findVoiceNote($voiceNoteId);
     }
 
     /**
@@ -393,13 +396,13 @@ final class AudioRecordingService
         ];
     }
 
-    private function findVoiceNote(int|string $mediaItemId): ?MobileLocalMediaItem
+    private function findVoiceNote(int|string $voiceNoteId): ?MobileLocalVoiceNote
     {
-        return MobileLocalMediaItem::query()
-            ->select(MobileLocalMediaItem::SELECT_COLUMNS)
-            ->whereKey($mediaItemId)
-            ->where('type', MobileLocalMediaItem::TYPE_AUDIO)
-            ->first();
+        try {
+            return $this->voiceNotes->find($voiceNoteId);
+        } catch (Throwable) {
+            return null;
+        }
     }
 
     private function normalizeStatus(string $status): string
@@ -407,17 +410,10 @@ final class AudioRecordingService
         return in_array($status, ['idle', 'recording', 'paused'], true) ? $status : 'idle';
     }
 
-    private function normalizeMimeType(?string $mimeType): string
+    private function normalizeTranscript(?string $transcript): ?string
     {
-        $mimeType = Str::of((string) $mimeType)->lower()->trim()->toString();
+        $transcript = trim((string) $transcript);
 
-        return $mimeType !== '' && str_contains($mimeType, '/') ? $mimeType : 'audio/m4a';
-    }
-
-    private function normalizeCaption(?string $caption): ?string
-    {
-        $caption = trim((string) $caption);
-
-        return $caption === '' ? null : Str::limit($caption, 160, '');
+        return $transcript === '' ? null : Str::limit($transcript, 10_000, '');
     }
 }

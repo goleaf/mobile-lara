@@ -3,7 +3,7 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
-use App\Models\MobileLocalMediaItem;
+use App\Models\MobileLocalVoiceNote;
 use App\Services\Native\AudioRecordingService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,6 +23,8 @@ class VoiceNotes extends Component
 
     public ?string $pendingRecordingId = null;
 
+    public ?string $recordingReferenceId = null;
+
     public string $recordingState = 'idle';
 
     public ?string $recordingStatus = null;
@@ -33,12 +35,18 @@ class VoiceNotes extends Component
 
     public string $recordedMimeType = 'audio/m4a';
 
-    public ?int $savedMediaItemId = null;
+    public ?int $savedVoiceNoteId = null;
+
+    public ?int $selectedVoiceNoteId = null;
+
+    public ?int $playbackVoiceNoteId = null;
+
+    public ?string $playbackPath = null;
 
     public ?string $uploadQueueStatus = null;
 
-    #[Validate('nullable|string|max:160')]
-    public string $caption = '';
+    #[Validate('nullable|string|max:5000')]
+    public string $transcript = '';
 
     private AudioRecordingService $audioRecordings;
 
@@ -55,6 +63,7 @@ class VoiceNotes extends Component
 
         $id = 'voice-note-'.Str::uuid()->toString();
         $this->pendingRecordingId = $id;
+        $this->recordingReferenceId = $id;
 
         $result = $this->audioRecordings->start($id);
 
@@ -67,6 +76,7 @@ class VoiceNotes extends Component
         }
 
         $this->pendingRecordingId = null;
+        $this->recordingReferenceId = null;
         $this->recordingState = 'idle';
         $this->recordingError = $result['message'];
         $this->toastWarning($this->recordingError, 'Native audio unavailable');
@@ -118,7 +128,7 @@ class VoiceNotes extends Component
 
     public function saveRecording(): void
     {
-        $this->validateOnly('caption');
+        $this->validateOnly('transcript');
 
         if (! is_string($this->recordedPath) || $this->recordedPath === '') {
             $this->recordingError = 'Record a voice note before saving.';
@@ -130,12 +140,13 @@ class VoiceNotes extends Component
         $result = $this->audioRecordings->save(
             path: $this->recordedPath,
             mimeType: $this->recordedMimeType,
-            caption: $this->caption,
-            recordingId: $this->savedMediaItemId === null ? $this->pendingRecordingId : (string) $this->savedMediaItemId,
+            transcript: $this->transcript,
+            recordingId: $this->recordingReferenceId,
         );
 
         if ($result['success']) {
-            $this->savedMediaItemId = $result['media_item_id'] ?? null;
+            $this->savedVoiceNoteId = $result['voice_note_id'] ?? null;
+            $this->selectedVoiceNoteId = $this->savedVoiceNoteId;
             $this->recordingStatus = $result['message'];
             $this->recordingError = null;
             $this->toastSuccess($this->recordingStatus, 'Voice note saved');
@@ -147,17 +158,72 @@ class VoiceNotes extends Component
         $this->toastError($this->recordingError, 'Save failed');
     }
 
-    public function deleteRecording(?int $mediaItemId = null): void
+    public function showDetail(int $voiceNoteId): void
     {
-        $isCurrentRecording = $mediaItemId === null || $mediaItemId === $this->savedMediaItemId;
+        $voiceNote = $this->audioRecordings->voiceNote($voiceNoteId);
+
+        if (! $voiceNote instanceof MobileLocalVoiceNote) {
+            $this->recordingError = 'Voice note is no longer available on this device.';
+            $this->toastWarning($this->recordingError, 'Detail unavailable');
+
+            return;
+        }
+
+        $this->selectedVoiceNoteId = (int) $voiceNote->getKey();
+        $this->recordingError = null;
+    }
+
+    public function closeDetail(): void
+    {
+        $this->selectedVoiceNoteId = null;
+        $this->playbackVoiceNoteId = null;
+        $this->playbackPath = null;
+    }
+
+    public function playVoiceNote(?int $voiceNoteId = null): void
+    {
+        if ($voiceNoteId === null && is_string($this->recordedPath) && $this->recordedPath !== '') {
+            $this->playbackVoiceNoteId = null;
+            $this->playbackPath = $this->recordedPath;
+            $this->recordingStatus = 'Current recording is ready for playback.';
+            $this->toastInfo($this->recordingStatus, 'Playback ready');
+
+            return;
+        }
+
+        $voiceNoteId ??= $this->selectedVoiceNoteId;
+        $voiceNote = $voiceNoteId === null ? null : $this->audioRecordings->voiceNote($voiceNoteId);
+
+        if (! $voiceNote instanceof MobileLocalVoiceNote) {
+            $this->recordingError = 'Voice note is no longer available for playback.';
+            $this->toastWarning($this->recordingError, 'Playback unavailable');
+
+            return;
+        }
+
+        $this->selectedVoiceNoteId = (int) $voiceNote->getKey();
+        $this->playbackVoiceNoteId = (int) $voiceNote->getKey();
+        $this->playbackPath = $voiceNote->local_file_path;
+        $this->recordingStatus = 'Voice note is ready for playback.';
+        $this->recordingError = null;
+        $this->toastInfo($this->recordingStatus, 'Playback ready');
+    }
+
+    public function deleteRecording(?int $voiceNoteId = null): void
+    {
+        $isCurrentRecording = $voiceNoteId === null || $voiceNoteId === $this->savedVoiceNoteId;
         $result = $this->audioRecordings->delete(
-            mediaItemId: $mediaItemId ?: $this->savedMediaItemId,
-            path: $mediaItemId === null ? $this->recordedPath : null,
+            voiceNoteId: $voiceNoteId ?: $this->savedVoiceNoteId,
+            path: $voiceNoteId === null ? $this->recordedPath : null,
         );
 
         if ($result['success']) {
             if ($isCurrentRecording) {
                 $this->clearCurrentRecording();
+            }
+
+            if ($voiceNoteId !== null && $this->selectedVoiceNoteId === $voiceNoteId) {
+                $this->closeDetail();
             }
 
             $this->recordingStatus = $result['message'];
@@ -171,11 +237,11 @@ class VoiceNotes extends Component
         $this->toastWarning($this->recordingError, 'Delete skipped');
     }
 
-    public function queueUploadPlaceholder(?int $mediaItemId = null): void
+    public function queueUploadPlaceholder(?int $voiceNoteId = null): void
     {
         $result = $this->audioRecordings->queueUploadPlaceholder(
-            mediaItemId: $mediaItemId ?: $this->savedMediaItemId,
-            path: $mediaItemId === null ? $this->recordedPath : null,
+            voiceNoteId: $voiceNoteId ?: $this->savedVoiceNoteId,
+            path: $voiceNoteId === null ? $this->recordedPath : null,
         );
 
         if ($result['success']) {
@@ -199,11 +265,15 @@ class VoiceNotes extends Component
 
         $this->recordedPath = $path;
         $this->recordedMimeType = $mimeType;
+        $this->recordingReferenceId = $id;
         $this->pendingRecordingId = null;
         $this->recordingState = 'idle';
         $this->recordingStatus = 'Voice note captured. Save it locally or delete it.';
         $this->recordingError = null;
-        $this->savedMediaItemId = null;
+        $this->savedVoiceNoteId = null;
+        $this->selectedVoiceNoteId = null;
+        $this->playbackVoiceNoteId = null;
+        $this->playbackPath = null;
         $this->uploadQueueStatus = null;
         $this->toastSuccess($this->recordingStatus, 'Voice note ready');
     }
@@ -216,6 +286,7 @@ class VoiceNotes extends Component
         }
 
         $this->pendingRecordingId = null;
+        $this->recordingReferenceId = null;
         $this->recordingState = 'idle';
         $this->recordingStatus = 'Voice note recording cancelled.';
         $this->recordingError = null;
@@ -228,6 +299,7 @@ class VoiceNotes extends Component
             'audioCapabilities' => $this->audioRecordings->capabilities(),
             'nativeAudioAvailable' => $this->audioRecordings->isAvailable(),
             'voiceNotes' => $this->voiceNotes(),
+            'selectedVoiceNote' => $this->selectedVoiceNote(),
             'storageAvailable' => $this->storageAvailable(),
             'recordingActions' => $this->recordingActions(),
         ]);
@@ -255,11 +327,13 @@ class VoiceNotes extends Component
     {
         $this->recordedPath = null;
         $this->recordedMimeType = 'audio/m4a';
-        $this->savedMediaItemId = null;
-        $this->caption = '';
+        $this->savedVoiceNoteId = null;
+        $this->transcript = '';
         $this->uploadQueueStatus = null;
         $this->pendingRecordingId = null;
+        $this->recordingReferenceId = null;
         $this->recordingState = 'idle';
+        $this->playbackPath = null;
     }
 
     private function matchesPendingRecording(?string $id): bool
@@ -270,7 +344,7 @@ class VoiceNotes extends Component
     }
 
     /**
-     * @return Collection<int, MobileLocalMediaItem>
+     * @return Collection<int, MobileLocalVoiceNote>
      */
     private function voiceNotes(): Collection
     {
@@ -279,6 +353,15 @@ class VoiceNotes extends Component
         } catch (Throwable) {
             return new Collection;
         }
+    }
+
+    private function selectedVoiceNote(): ?MobileLocalVoiceNote
+    {
+        if ($this->selectedVoiceNoteId === null) {
+            return null;
+        }
+
+        return $this->audioRecordings->voiceNote($this->selectedVoiceNoteId);
     }
 
     private function storageAvailable(): bool
