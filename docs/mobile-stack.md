@@ -11,6 +11,8 @@ The stack is intentionally Laravel-first so API rules, admin rules, tests, and m
 
 The stack supports the product vision from [Product Vision](product-vision.md): remote admin control with local mobile resilience.
 
+It also supports the [Product Positioning](product-positioning.md): SaaS control center, mobile workforce/client platform, API-first system, offline-capable mobile system, feature-controlled platform, and tenant-based product.
+
 ## Current Package Baseline
 
 | Package / tool | Version | Product role |
@@ -27,6 +29,8 @@ The stack supports the product vision from [Product Vision](product-vision.md): 
 | SQLite | current local engine | Development and mobile-local storage baseline. |
 
 ## System Responsibilities
+
+The stack is intentionally split because web-only would under-serve mobile workers, while mobile-only would under-serve SaaS governance.
 
 ### Admin/API System
 
@@ -77,6 +81,7 @@ Use Laravel's API routing and resource conventions for mobile endpoints:
 - API routes belong in the stateless API surface.
 - Authentication should use token-based first-party mobile auth.
 - The API is the boundary where admin settings become enforceable mobile behavior.
+- API-first positioning means every mobile feature should have a server contract before it becomes a local screen.
 - Responses should be shaped resources, not raw models.
 - Request validation and authorization must happen server-side.
 - High-volume endpoints need rate limits.

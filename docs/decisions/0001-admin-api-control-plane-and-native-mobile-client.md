@@ -16,6 +16,8 @@ The key tension is authority. Mobile apps need local resilience and offline beha
 
 The product vision is remote control with local resilience: admin users manage policy and operations centrally, while mobile users get a simple controlled app for day-to-day work. See [Product Vision](../product-vision.md).
 
+The product positioning is deliberately combined: SaaS control center, mobile workforce/client platform, API-first system, offline-capable mobile system, feature-controlled platform, and tenant-based product. See [Product Positioning](../product-positioning.md).
+
 ## Decision
 
 Use a two-system architecture:
@@ -42,8 +44,16 @@ The mobile app would own more rules locally and sync when possible.
 The admin web app would be the main product and NativePHP would wrap a mostly online web UI.
 
 - Pros: Simpler backend and fewer offline concerns.
-- Cons: Weak mobile UX, weak native capability story, poor offline behavior.
-- Rejected because the mobile client is expected to use NativePHP capabilities and work offline where appropriate.
+- Cons: Weak mobile UX, weak native capability story, poor offline behavior, and poor fit for mobile workers.
+- Rejected because the product is positioned as both a SaaS control center and a mobile workforce/client platform.
+
+### Mobile-only product
+
+The product would focus almost entirely on the mobile app, with minimal admin or API control.
+
+- Pros: Faster visible mobile surface.
+- Cons: Weak tenant governance, billing enforcement, support visibility, reporting, app-version policy, auditability, and feature rollout.
+- Rejected because a tenant-based SaaS product needs central authority and operations.
 
 ### Separate technology stacks for admin and mobile
 

@@ -6,6 +6,8 @@ This Laravel app is initialized for NativePHP Mobile. In the optimized SaaS prod
 
 The runbook supports the [Product Vision](product-vision.md): native builds should be stable clients of admin-controlled SaaS behavior, not independent policy engines.
 
+It also supports the [Product Positioning](product-positioning.md): NativePHP turns the product into a mobile workforce/client platform while the Admin/API system remains the SaaS control center.
+
 ## Current Placeholders
 
 | Setting | Value |
@@ -26,6 +28,8 @@ Replace `com.example.mobilelara` with a real reverse-domain identifier before si
 Native builds should be treated as managed clients of the Admin/API system.
 
 The reason is product scalability. A SaaS operator must be able to support many tenants, app versions, devices, feature states, and rollout cohorts without publishing a new mobile build for every operational decision.
+
+This is why the product should not be mobile-only. Native builds are important, but they are managed clients of the tenant-based SaaS platform.
 
 Each release should have:
 
@@ -194,6 +198,7 @@ Before production distribution, the project needs:
 ## References
 
 - Product vision: [Product Vision](product-vision.md)
+- Product positioning: [Product Positioning](product-positioning.md)
 - NativePHP installation: https://nativephp.com/docs/mobile/3/getting-started/installation
 - NativePHP command reference: https://nativephp.com/docs/mobile/3/getting-started/commands
 - NativePHP app icons: https://nativephp.com/docs/mobile/3/the-basics/app-icon

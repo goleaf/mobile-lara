@@ -11,11 +11,14 @@ The two interfaces should feel related but serve different jobs. Admin is an ope
 
 The design system supports the [Product Vision](product-vision.md): admin users need control, visibility, and audit context; mobile users need clear permitted workflows, native-feeling interaction, and honest offline/sync states.
 
+It also supports the [Product Positioning](product-positioning.md): the admin UI should feel like a SaaS control center, and the mobile UI should feel like a workforce/client platform. The interfaces are related, but they should not collapse into a web-only dashboard or a mobile-only app.
+
 ## Shared Principles
 
 - Keep UI in Livewire + Blade.
 - Do not add React, Vue, Inertia, Ionic, Capacitor, or component CSS frameworks for app screens.
 - Use Tailwind utility classes and project Blade components.
+- Let product positioning decide UI purpose: admin controls policy and operations; mobile performs allowed work.
 - Keep visible state honest: pending, offline, conflict, disabled, blocked, and deprecated states must be clear.
 - Never rely on UI hiding as authorization.
 - Show server-controlled capability state when a feature is disabled by plan, role, version, tenant, or app policy.

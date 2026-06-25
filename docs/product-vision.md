@@ -15,6 +15,14 @@ The product is a SaaS control plane plus a managed NativePHP mobile client:
 
 The strongest product promise is remote control with local resilience: administrators can govern mobile behavior centrally, while mobile users can keep working in real-world conditions where connectivity, device state, and app versions vary.
 
+## Product Positioning
+
+Mobile Lara is positioned as a tenant-based SaaS control center with an API-first, feature-controlled, offline-capable mobile workforce/client platform.
+
+This positioning matters because a web-only product would not be enough for native mobile work, and a mobile-only product would not be enough for SaaS governance. The product needs both the administrative control surface and the mobile working surface.
+
+See [Product Positioning](product-positioning.md) for the full positioning model.
+
 ## Problem The System Solves
 
 Organizations that rely on mobile work usually face the same problem: the people doing the work need a simple app, but the business needs centralized control.

@@ -6,6 +6,8 @@ This repository is the planning and implementation home for a two-system SaaS mo
 
 The system solves the problem of mobile workflows that need centralized tenant, permission, billing, version, support, notification, report, and sync control without requiring a new mobile release for every product or policy change.
 
+Position the product as a tenant-based SaaS control center with an API-first, feature-controlled, offline-capable mobile workforce/client platform. It is intentionally stronger than web-only because it supports native mobile and offline work, and stronger than mobile-only because SaaS authority, tenant governance, billing, support, reports, and audit live centrally.
+
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
 2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
 
@@ -32,6 +34,7 @@ Use these docs before changing the product direction:
 
 - `docs/saas-mobile-admin-platform.md`
 - `docs/product-vision.md`
+- `docs/product-positioning.md`
 - `docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md`
 - `docs/mobile-stack.md`
 - `docs/nativephp-local-storage.md`
@@ -43,6 +46,7 @@ Use these docs before changing the product direction:
 - Admin/API is authoritative for SaaS rules.
 - Mobile is authoritative only for local presentation, local drafts, local queues, and native device interaction.
 - Admin settings control mobile feature availability because mobile state can be stale, offline, copied between devices, or running an old app version.
+- API-first means admin decisions become enforceable mobile behavior through versioned server contracts.
 - Local SQLite stores cache, drafts, and queued intents, not trusted server facts.
 - Secure tokens belong in secure storage, not SQLite.
 - Every replayable mobile write must be idempotent at the API boundary.

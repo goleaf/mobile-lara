@@ -16,6 +16,23 @@ Mobile Lara solves the problem of mobile teams needing simple, native-feeling wo
 
 See [Product Vision](product-vision.md) for the plain-language vision, user definitions, technology rationale, and SaaS scale principles.
 
+## Product Positioning
+
+Mobile Lara should be understood through six product positions:
+
+| Position | Meaning |
+| --- | --- |
+| SaaS control center | Admin/API centrally controls tenants, users, permissions, billing, features, versions, reports, support, notifications, and sync policy. |
+| Mobile workforce/client platform | NativePHP mobile users get focused workflows, native capabilities, clear status, and offline-capable work. |
+| API-first system | The API is the contract between central authority and mobile execution. |
+| Offline-capable mobile system | Local cache, drafts, queues, and sync state keep mobile work useful without making the device authoritative. |
+| Feature-controlled platform | Features are enabled, limited, rolled out, blocked, or reverted through policy. |
+| Tenant-based product | Tenant scope is the commercial, security, reporting, billing, and configuration boundary. |
+
+This combined positioning is stronger than web-only because mobile work needs native capability access, local state, and offline resilience. It is stronger than mobile-only because SaaS operations need central tenant governance, billing enforcement, support visibility, reporting, audit, and rollback.
+
+See [Product Positioning](product-positioning.md) for the full positioning rationale.
+
 ## System Split
 
 ### Admin/API System

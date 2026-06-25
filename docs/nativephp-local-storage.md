@@ -6,6 +6,8 @@ This document defines how local SQLite should fit into the SaaS mobile + admin p
 
 The storage vision follows [Product Vision](product-vision.md): the mobile app can keep users productive locally, but admin/API policy remains final.
 
+It also supports the [Product Positioning](product-positioning.md): Mobile Lara is an offline-capable mobile system, but offline data is still governed by the SaaS control center and reconciled through the API-first boundary.
+
 ## Product Role
 
 The mobile client may use local SQLite for:
@@ -41,6 +43,8 @@ The product boundary is:
 - Support users can inspect safe sync context when local and server state diverge.
 
 This keeps offline-first behavior scalable: more tenants and devices can work locally without multiplying trusted client-side rules.
+
+This is one reason the product is stronger than web-only and mobile-only alternatives. Web-only systems usually cannot provide reliable local mobile work. Mobile-only systems can store local work, but without a control center they struggle to enforce tenant policy, billing, permissions, rollout, and support context after reconnecting.
 
 ## Current Configuration
 

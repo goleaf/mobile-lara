@@ -2,6 +2,8 @@
 
 Mobile Lara is a planned SaaS platform for centrally managed NativePHP mobile applications. Its product vision is remote control with local resilience: administrators govern mobile behavior centrally, while mobile users keep working through a focused NativePHP client.
 
+The product is positioned as a tenant-based SaaS control center with an API-first, feature-controlled, offline-capable mobile workforce/client platform.
+
 The product solves a common business problem: mobile teams need a simple app, but the organization needs tenant-safe control over permissions, billing, feature availability, app versions, support, notifications, reports, and sync behavior without publishing a new mobile build for every policy change.
 
 The product is split into two cooperating systems:
@@ -16,6 +18,8 @@ The core idea is simple: admin users operate the control plane, while mobile use
 Mobile Lara is not just a mobile app starter. It is a control-plane product for businesses that need mobile workflows they can govern remotely.
 
 Admin users include SaaS owners, platform operators, tenant owners, tenant admins, support users, billing operators, product/release managers, and security or compliance reviewers. Mobile users are the frontline or tenant-side people who perform work in the app and should not need to understand feature flags, billing rules, rollout cohorts, or sync policy internals.
+
+Mobile Lara is better than building only a web app because mobile workers need native capability access, offline-capable workflows, local sync state, and mobile-first ergonomics. It is better than building only a mobile app because a SaaS business needs tenant administration, billing enforcement, feature rollout, app-version policy, support visibility, reports, and audit trails.
 
 The admin/API system owns:
 
@@ -41,6 +45,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | Document | Purpose |
 | --- | --- |
 | [docs/product-vision.md](docs/product-vision.md) | Plain-language product vision, users, problem, technology choice, and SaaS scale logic. |
+| [docs/product-positioning.md](docs/product-positioning.md) | Product positioning as SaaS control center, mobile client platform, API-first system, offline-capable system, feature-controlled platform, and tenant-based product. |
 | [docs/saas-mobile-admin-platform.md](docs/saas-mobile-admin-platform.md) | Canonical product and system concept. |
 | [docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md](docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md) | ADR for the two-system architecture. |
 | [docs/mobile-stack.md](docs/mobile-stack.md) | Stack, package, and boundary notes. |
@@ -67,6 +72,7 @@ The repository currently contains mobile-client surfaces and local-mobile infras
 - Use Eloquent and Laravel resources for API-facing data. Do not use raw SQL strings.
 - Keep admin business rules on the server. Mobile UI state is never an authorization boundary.
 - Let admin settings control mobile behavior because mobile state may be stale, offline, copied between devices, or running an old app version.
+- Position the product as both admin control center and mobile workforce/client platform; avoid web-only or mobile-only thinking.
 - Treat NativePHP secure storage as the home for secrets and tokens. Do not store secrets in local SQLite.
 - Treat local SQLite as a cache, queue, draft, and offline-working database.
 - Make every mobile action idempotent at the API boundary.
