@@ -16,6 +16,8 @@ Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline
 
 Local storage must also obey [Two-System Boundary Logic](two-system-boundary.md). Mobile-local data may improve speed, drafts, offline work, and sync visibility, but it must not own tenant, permission, billing, feature, app-version, support, report, audit, or final sync authority.
 
+Local storage must also follow [API-First Principles](api-first-principles.md). Cached data, local drafts, queued intents, sync metadata, conflicts, and retry states are useful only when API purpose, response states, mobile-friendly errors, sync/conflict behavior, and tenant-boundary checks are clear.
+
 Local storage must also obey [Admin/API Responsibilities](admin-api-responsibilities.md). Mobile-local data may cache or queue outcomes, but tenant management, users and permissions, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, and security enforcement stay in Admin/API.
 
 Local storage must also follow [Mobile Client Responsibilities](mobile-client-responsibilities.md). Cache, drafts, offline actions, sync status display, local feedback, and feature visibility are mobile responsibilities only while they remain non-authoritative and API-reconciled.

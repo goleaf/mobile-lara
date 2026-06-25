@@ -18,6 +18,8 @@ It is made measurable by the [SaaS Value Map](saas-value-map.md): each positioni
 
 It is made operational by [Two-System Boundary Logic](two-system-boundary.md): each positioning angle must respect the split between Admin/API authority and mobile-client execution.
 
+It is made contract-driven by [API-First Principles](api-first-principles.md): mobile communicates only with API, API responses are predictable, every mobile feature has an API purpose, API returns operating context, errors are mobile-friendly, sync/conflict behavior is first-class, and tenant boundaries are protected server-side.
+
 It is made accountable by [Admin/API Responsibilities](admin-api-responsibilities.md): the control center must own tenant management, users and permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing/subscription logic, support operations, reporting, audit history, conflict decisions, and security enforcement.
 
 It is made usable by [Mobile Client Responsibilities](mobile-client-responsibilities.md): the managed client must own mobile UX, secure local session, cache, offline actions, NativePHP features, navigation, permissions UX, sync display, drafts, local feedback, and feature visibility without owning SaaS authority.
@@ -70,6 +72,8 @@ The API-first position means:
 API-first does not mean mobile-only. It means every mobile capability has a server-enforced contract.
 
 The detailed API boundary is defined in [Two-System Boundary Logic](two-system-boundary.md): server-trusted reads, writes, sync replay, billing checks, feature decisions, support actions, and audit events must happen through the API.
+
+The detailed API behavior model is defined in [API-First Principles](api-first-principles.md).
 
 ### Offline-Capable Mobile System
 
@@ -183,8 +187,9 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 11. Mobile-only is insufficient for SaaS governance.
 12. Product positioning should guide every future modular feature slice.
 13. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
-14. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
-15. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
+14. API-first principles decide the purpose, predictability, context, error, sync/conflict, and tenant-scope expectations for mobile/API behavior.
+15. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
+16. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
 
 ## Risks
 

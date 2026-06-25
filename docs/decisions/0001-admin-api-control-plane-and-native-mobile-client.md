@@ -26,6 +26,8 @@ The SaaS value map is defined in [SaaS Value Map](../saas-value-map.md). The arc
 
 The system boundary is defined in [Two-System Boundary Logic](../two-system-boundary.md). The architecture must keep Admin/API authority separate from mobile execution, cache, drafts, queues, native capabilities, and offline presentation.
 
+The API-first model is defined in [API-First Principles](../api-first-principles.md). The architecture must keep mobile communication API-only, API responses predictable, mobile feature API purpose explicit, operating context complete enough for mobile behavior, errors mobile-friendly, sync/conflict behavior first-class, and tenant boundaries protected server-side.
+
 The Admin/API responsibility model is defined in [Admin/API Responsibilities](../admin-api-responsibilities.md). The architecture must keep tenant management, users and permissions, admin panel operations, API contracts, feature control, remote configuration, mobile version rules, notification orchestration, billing/subscription logic, support operations, reporting, audit history, conflict decisions, and security enforcement in the control plane.
 
 The mobile-client responsibility model is defined in [Mobile Client Responsibilities](../mobile-client-responsibilities.md). The architecture must keep mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync status display, local drafts, local user feedback, and feature visibility in the managed client without making them authority.
@@ -38,6 +40,8 @@ Use a two-system architecture:
 2. **Mobile client system** - Laravel plus Livewire running through NativePHP Mobile. This system is the managed edge client and local executor.
 
 The mobile client must consume server-provided boot config, remote config, feature flags, permissions, app-version policy, and sync policy. Local mobile state can improve resilience and UX, but it cannot grant business authority.
+
+The API must remain the mobile client's only trusted communication path to Admin/API. Future endpoint design should follow the principles in [API-First Principles](../api-first-principles.md), but this ADR does not define endpoint details.
 
 The Admin/API system must remain the owner of the responsibility areas documented in [Admin/API Responsibilities](../admin-api-responsibilities.md). The mobile client receives outcomes from those responsibilities; it does not duplicate or override them.
 
@@ -95,6 +99,7 @@ The mobile client would be implemented as a fully native iOS/Android application
 - Feature work must include admin logic, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior.
 - Feature work must identify stakeholder value and connect it to admin control, mobile access, offline sync, notifications, reports, security, feature flags, or an explicit combination.
 - Feature work must identify system ownership: what Admin/API owns, what mobile owns, what is API-only, what can be cached locally, what admin controls remotely, and how offline reconciliation works.
+- Feature work must identify API-first behavior: why mobile talks to API, which context is returned, which response states/errors exist, how sync/conflict works, and how tenant scope is protected.
 - Feature work must identify responsibility ownership: which Admin/API responsibility owns tenant, user, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
 - Feature work must identify mobile responsibility ownership: which mobile-client responsibility owns UX, local session, cache, offline action, NativePHP capability, navigation, permission prompt, sync display, draft, feedback, or feature visibility behavior.
 - Documentation and future implementation should treat local mobile data as cache, draft, queue, or confirmed server copy depending on sync state.

@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the logical responsibilities of the Admin/API system in Mobile Lara. It explains what the SaaS control plane owns, why it owns it, how that authority relates to the mobile client, and which risks the responsibility model prevents. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, or application logic.
 
-Use this document with [Mobile Client Responsibilities](mobile-client-responsibilities.md): Admin/API owns authority and mobile owns local execution, presentation, cache, drafts, queues, NativePHP capability UX, sync display, feedback, and feature visibility.
+Use this document with [API-First Principles](api-first-principles.md) and [Mobile Client Responsibilities](mobile-client-responsibilities.md): Admin/API owns authority, API is the trusted contract, and mobile owns local execution, presentation, cache, drafts, queues, NativePHP capability UX, sync display, feedback, and feature visibility.
 
 ## Responsibility Statement
 
@@ -243,6 +243,8 @@ Mobile can help users understand secure state, but it does not enforce SaaS secu
 ## Relationship To Mobile Client
 
 The mobile client is a consumer and executor of Admin/API decisions.
+
+The API contract model is defined in [API-First Principles](api-first-principles.md).
 
 The companion local-execution model is defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md).
 

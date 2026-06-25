@@ -25,6 +25,8 @@ The value standard is [SaaS Value Map](saas-value-map.md). Audits should verify 
 
 The boundary standard is [Two-System Boundary Logic](two-system-boundary.md). Audits should verify that Admin/API owns authority, mobile owns local execution, API confirms server-trusted behavior, local cache stays non-authoritative, admin controls mobile behavior remotely, and offline behavior reconciles through the API.
 
+The API-first standard is [API-First Principles](api-first-principles.md). Audits should verify that mobile communicates only with API, API responses are predictable, every mobile feature has an API purpose, API returns operating context, errors are mobile-friendly, sync/conflict behavior is first-class, and tenant boundaries are protected.
+
 The responsibility standard is [Admin/API Responsibilities](admin-api-responsibilities.md). Audits should verify that tenant management, users and permissions, admin panel operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing/subscription logic, support operations, reporting, audit history, conflict decisions, and security enforcement stay in the control plane.
 
 The mobile responsibility standard is [Mobile Client Responsibilities](mobile-client-responsibilities.md). Audits should verify that mobile UX, secure local session, cache, offline actions, NativePHP device features, navigation, permissions UX, sync display, drafts, local feedback, and feature visibility stay local without owning SaaS authority.
@@ -78,6 +80,18 @@ If a feature cannot name stakeholder value, it should not move from idea to impl
 | What can be cached locally? | Safe boot snapshots, config copies, server-confirmed resources, drafts, queued intents, sync metadata, and safe local activity with freshness state. |
 | What is remotely controlled? | Feature flags, remote config, app-version policy, offline eligibility, sync policy, notification policy, support diagnostics, and entitlements. |
 | What happens offline? | Mobile can read cache, create drafts, or queue allowed intents, but API must confirm or reject when online. |
+
+## API-First Principles Audit
+
+| Principle | Audit lens |
+| --- | --- |
+| Mobile communicates only with API | Does every server-trusted mobile read, write, support action, notification registration, and replay go through API? |
+| Predictable responses | Are response states, metadata, errors, and mobile next actions consistent enough for the app to render safely? |
+| Clear API purpose | Can each mobile feature name its API purpose before implementation? |
+| Operating context | Does API return user, tenant, permissions, feature flags, config, version rules, sync policy, support state, and entitlement outcomes where needed? |
+| Mobile-friendly errors | Can validation, auth, permission, tenant, billing, version, maintenance, retry, conflict, and server errors become safe mobile states? |
+| Sync and conflict logic | Are offline intents, idempotency, replay acceptance, conflicts, stale data, and retry outcomes treated as API behavior? |
+| Tenant boundary protection | Is tenant scope resolved server-side and preserved across responses, support, reports, billing, notifications, and offline replay? |
 
 ## Admin/API Responsibilities Audit
 
@@ -167,6 +181,7 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Product vision governance | Every future feature must prove the full loop from admin setting to API enforcement to mobile UX to support/audit visibility. |
 | Product positioning governance | Future slices must preserve the combined SaaS control center plus mobile platform positioning rather than drifting into web-only or mobile-only work. |
 | SaaS value governance | Every future slice must prove stakeholder value and connect that value to admin control, mobile access, offline sync, notifications, reports, security, or feature flags. |
+| API-first governance | Every future slice must define API purpose, operating context, predictable responses, mobile-friendly errors, sync/conflict behavior, and tenant-boundary protection before endpoint design. |
 | Admin/API responsibility governance | Every future slice must identify which control-plane responsibility owns tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |
 | Mobile responsibility governance | Every future slice must identify which mobile-client responsibility owns UX, local session, cache, offline queue, NativePHP capability, navigation, permission prompt, sync display, draft, feedback, or feature visibility. |
 
@@ -289,6 +304,7 @@ php artisan native:plugin:validate
 - [Target User Roles](user-roles.md)
 - [SaaS Value Map](saas-value-map.md)
 - [Two-System Boundary Logic](two-system-boundary.md)
+- [API-First Principles](api-first-principles.md)
 - [Admin/API Responsibilities](admin-api-responsibilities.md)
 - [Mobile Client Responsibilities](mobile-client-responsibilities.md)
 - [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md)

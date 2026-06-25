@@ -16,6 +16,8 @@ The Admin/API responsibility model is explicit: tenant management, users and per
 
 The mobile-client responsibility model is explicit: mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync status display, local drafts, local user feedback, and feature visibility based on admin rules belong to the mobile client.
 
+The API-first model is explicit: mobile communicates only with API, API responses are predictable, every mobile feature has a clear API purpose, operating context is returned through API, errors are mobile-friendly, sync/conflict behavior is first-class, and tenant boundaries are protected server-side.
+
 The product solves a common business problem: mobile teams need a simple app, but the organization needs tenant-safe control over permissions, billing, feature availability, app versions, support, notifications, reports, and sync behavior without publishing a new mobile build for every policy change.
 
 The product is split into two cooperating systems:
@@ -62,6 +64,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/user-roles.md](docs/user-roles.md) | Main logical user roles, responsibilities, limitations, visibility, and control boundaries. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
+| [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
 | [docs/admin-api-responsibilities.md](docs/admin-api-responsibilities.md) | Admin/API responsibility map for tenant management, users and permissions, API contracts, feature/config/version control, notifications, billing, support, reports, audit, conflicts, and security. |
 | [docs/mobile-client-responsibilities.md](docs/mobile-client-responsibilities.md) | Mobile-client responsibility map for UX, secure local session, cache, offline actions, NativePHP capabilities, navigation, permissions UX, sync display, drafts, feedback, and feature visibility. |
 | [docs/saas-mobile-admin-platform.md](docs/saas-mobile-admin-platform.md) | Canonical product and system concept. |
@@ -92,6 +95,7 @@ The repository currently contains mobile-client surfaces and local-mobile infras
 - Apply [target user roles](docs/user-roles.md) before designing permissions, visibility, support, billing, or mobile access.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
+- Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.
 - Apply [Admin/API responsibilities](docs/admin-api-responsibilities.md) before planning control-plane behavior, API contracts, admin panels, reports, support, billing, notifications, audit, conflict, or security work.
 - Apply [mobile-client responsibilities](docs/mobile-client-responsibilities.md) before planning mobile UX, secure local session, local cache, offline actions, NativePHP capability use, navigation, mobile permissions UX, sync status, drafts, local feedback, or feature visibility.
 - Keep admin business rules on the server. Mobile UI state is never an authorization boundary.

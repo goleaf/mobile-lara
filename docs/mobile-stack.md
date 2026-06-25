@@ -21,6 +21,8 @@ Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New 
 
 Stack decisions must also preserve [Two-System Boundary Logic](two-system-boundary.md). A dependency, package, NativePHP plugin, queue, notification channel, cache, or local store should not move Admin/API authority into the mobile client.
 
+Stack decisions must also preserve [API-First Principles](api-first-principles.md). A dependency, package, NativePHP plugin, local store, notification channel, or mobile UI helper should keep mobile communication API-only, response behavior predictable, errors mobile-friendly, sync/conflict behavior explicit, and tenant boundaries server-protected.
+
 Stack decisions must also preserve [Admin/API Responsibilities](admin-api-responsibilities.md). A dependency or package should not blur tenant management, users and permissions, admin panel operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit, conflict decisions, or security enforcement.
 
 Stack decisions must also preserve [Mobile Client Responsibilities](mobile-client-responsibilities.md). A dependency, NativePHP plugin, local store, UI component, or session mechanism should support mobile UX, secure local session, cache, offline actions, device features, navigation, permissions UX, sync display, drafts, feedback, or feature visibility without taking server authority.
@@ -82,6 +84,7 @@ The Mobile client system should be implemented as the managed edge client:
 - Keep stack expansion modular: new packages or surfaces should map to a clear feature slice and principle.
 - Keep stack expansion value-mapped: new infrastructure should prove stakeholder value instead of adding technical surface area for its own sake.
 - Keep stack expansion boundary-safe: new mobile-local infrastructure must remain cache, draft, queue, local metadata, or presentation unless API confirms otherwise.
+- Keep stack expansion API-safe: new infrastructure must preserve API-only mobile communication, predictable responses, clear API purpose, mobile-friendly errors, sync/conflict support, and tenant boundary protection.
 - Keep stack expansion responsibility-safe: tenant, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, and security concerns must remain Admin/API-owned.
 - Keep stack expansion mobile-safe: UX, local session, cache, queues, NativePHP plugins, navigation, permissions UX, sync display, drafts, feedback, and feature visibility must remain local execution concerns.
 
@@ -99,6 +102,7 @@ NativePHP + Livewire is chosen because this product is a Laravel SaaS first and 
 
 Use Laravel's API routing and resource conventions for mobile endpoints:
 
+- Follow [API-First Principles](api-first-principles.md) before designing any mobile/API behavior.
 - API routes belong in the stateless API surface.
 - Authentication should use token-based first-party mobile auth.
 - The API is the boundary where admin settings become enforceable mobile behavior.

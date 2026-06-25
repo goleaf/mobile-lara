@@ -16,6 +16,8 @@ Native releases must also honor the [SaaS Value Map](saas-value-map.md): each bu
 
 Native releases must also honor [Two-System Boundary Logic](two-system-boundary.md): a build may improve mobile execution and native capability access, but it must not move SaaS authority out of Admin/API.
 
+Native releases must also honor [API-First Principles](api-first-principles.md): every build must remain an API-only mobile client with predictable response handling, clear API feature purpose, mobile-friendly errors, sync/conflict expectations, and tenant-safe context.
+
 Native releases must also honor [Admin/API Responsibilities](admin-api-responsibilities.md): version rules, feature gates, notification behavior, billing outcomes, support diagnostics, reports, audit expectations, conflict handling, and security enforcement are controlled by Admin/API.
 
 Native releases must also honor [Mobile Client Responsibilities](mobile-client-responsibilities.md): builds own mobile UX, secure local session behavior, local cache, offline actions, NativePHP capability UX, navigation, permissions UX, sync display, drafts, feedback, and feature visibility without owning SaaS authority.
@@ -187,6 +189,7 @@ php artisan native:plugin:validate
 Also verify product policy before a real mobile release:
 
 - API boot config exists for the target app version.
+- API-first purpose, response, context, error, sync/conflict, and tenant-boundary expectations are documented for every enabled mobile capability.
 - Remote config and feature flags are compatible with the build.
 - Two-system boundary ownership is documented for every mobile capability in the release.
 - Admin/API responsibility ownership is documented for every mobile capability in the release.
@@ -221,6 +224,7 @@ Before production distribution, the project needs:
 - Target user roles: [Target User Roles](user-roles.md)
 - SaaS value map: [SaaS Value Map](saas-value-map.md)
 - Two-system boundary: [Two-System Boundary Logic](two-system-boundary.md)
+- API-first principles: [API-First Principles](api-first-principles.md)
 - Admin/API responsibilities: [Admin/API Responsibilities](admin-api-responsibilities.md)
 - Mobile client responsibilities: [Mobile Client Responsibilities](mobile-client-responsibilities.md)
 - NativePHP installation: https://nativephp.com/docs/mobile/3/getting-started/installation

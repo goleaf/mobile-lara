@@ -20,6 +20,8 @@ Roles define authority and visibility. The [SaaS Value Map](saas-value-map.md) d
 
 Roles also depend on [Two-System Boundary Logic](two-system-boundary.md). Admin/API enforces role authority, while mobile only renders API-derived capability state and account-state restrictions.
 
+Roles also depend on [API-First Principles](api-first-principles.md). Role and account-state behavior must reach mobile through predictable API context, permissions, feature state, errors, and tenant-scoped responses.
+
 Roles also depend on [Admin/API Responsibilities](admin-api-responsibilities.md). Responsibility ownership explains which control-plane areas each role may operate, observe, or consume as API-derived mobile state.
 
 Roles also depend on [Mobile Client Responsibilities](mobile-client-responsibilities.md). Mobile responsibilities explain how mobile users, invited users, suspended users, and guest/pre-login users experience local UX, session, cache, drafts, sync state, device permissions, and feature visibility without gaining authority.
@@ -337,6 +339,7 @@ Should not see/control:
 | Reports | Global/aggregate | Global/tenant | Own tenant | Assigned scope | Case-related | Billing reports | Personal/task state only | No | No | No |
 | Mobile workflows | No direct use by default | No direct use by default | Configure | Monitor/manage | Support context | Entitlement context | Use allowed workflows | No | No | No |
 | Offline queue/sync | Oversight | Oversight/control policy | Own tenant view | Assigned scope | Case diagnostics | Entitlement impact | Own visible state | No | No trusted replay | No |
+| API context | Policy context | Operate context | Tenant context | Assigned context | Case context | Billing context | User/mobile context | Activation context | Recovery context | Public/pre-login context |
 | Admin/API responsibilities | Own/control by policy | Operate by grant | Tenant-scoped control | Assigned scope | Case/support view | Billing scope | API outcome only | Activation outcome only | Recovery outcome only | Public/pre-login outcome only |
 | Mobile client responsibilities | No direct use by default | No direct use by default | Configure/observe outcomes | Observe assigned outcomes | Support-safe diagnostics | Entitlement outcome | Use local UX | Activation UX only | Recovery UX only | Public/pre-login UX only |
 
@@ -390,6 +393,7 @@ Those belong in future implementation prompts with tests, migrations, policies, 
 | Support sees too much private data | Support gets safe diagnostics and case-scoped context, not broad tenant access. |
 | Billing manager changes operational access | Billing controls entitlements and invoices, not day-to-day workflows. |
 | Stakeholder value is confused with role authority | Use the SaaS value map to identify who benefits and this role model to decide who can see or control. |
+| API context leaks role or tenant data | Use API-first principles so user, permission, feature, config, version, and tenant context are predictable and scoped. |
 | Mobile infers role authority locally | Use the two-system boundary: mobile may cache role-derived capability state, but Admin/API must enforce final access. |
 | Role grants do not map to responsibility ownership | Use Admin/API responsibilities to decide which control-plane area a role may operate, observe, or consume. |
 | Mobile states become role authority | Use mobile-client responsibilities to keep UX, cache, drafts, sync, permissions prompts, and feature visibility as API-derived presentation. |

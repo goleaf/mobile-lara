@@ -33,6 +33,8 @@ The SaaS value map is defined in [SaaS Value Map](saas-value-map.md). Value boun
 
 The logical system boundary is defined in [Two-System Boundary Logic](two-system-boundary.md). Boundary rules explain what Admin/API owns, what mobile owns, what mobile must never own, what must happen through the API, what can be cached locally, what admin must control remotely, and what happens offline.
 
+The API contract model is defined in [API-First Principles](api-first-principles.md). API-first rules explain why mobile communicates only with API, why responses should be predictable, why every mobile feature needs an API purpose, and how API returns context, errors, sync/conflict outcomes, and tenant-safe responses.
+
 The Admin/API responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Responsibility rules explain how tenant management, users and permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, and security enforcement stay in the control plane.
 
 The mobile-client responsibility model is defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Responsibility rules explain how mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, permissions UX, sync status display, drafts, local feedback, and feature visibility stay in the mobile client without becoming SaaS authority.
@@ -150,6 +152,7 @@ Scalable SaaS principles:
 - **Tenant isolation** - every admin action, API request, report, support view, notification, and sync decision is scoped.
 - **Config-driven behavior** - feature flags, remote config, app-version policy, notification policy, and sync policy can change without a mobile release.
 - **API contracts** - mobile clients consume versioned, shaped API responses instead of raw internal models.
+- **API-first purpose** - every mobile feature has a clear API purpose, predictable response shape, mobile-friendly errors, and tenant-safe context.
 - **Entitlement enforcement** - billing and plan rules are enforced server-side and surfaced to mobile as allowed or denied capability.
 - **Idempotent sync** - offline writes replay safely with idempotency keys and explicit conflict handling.
 - **Operational visibility** - admins can observe app adoption, device trust, sync health, notification health, support load, and feature rollout state.

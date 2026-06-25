@@ -16,6 +16,8 @@ The [SaaS Value Map](saas-value-map.md) defines why each product surface matters
 
 The [Two-System Boundary Logic](two-system-boundary.md) defines where each responsibility belongs. Boundary ownership is part of every principle below: Admin/API owns authority, mobile owns local execution, API confirms server-trusted behavior, and offline work remains constrained.
 
+The [API-First Principles](api-first-principles.md) define how the two systems communicate. API purpose is part of every principle below: mobile communicates only with API, responses are predictable, operating context is explicit, errors are mobile-friendly, sync/conflict behavior is first-class, and tenant boundaries are protected server-side.
+
 The [Admin/API Responsibilities](admin-api-responsibilities.md) define what the control plane must own. Responsibility ownership is part of every principle below: tenant management, users and permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit, conflict decisions, and security enforcement stay server-side.
 
 The [Mobile Client Responsibilities](mobile-client-responsibilities.md) define what the managed client must own. Responsibility ownership is part of every principle below: mobile UX, secure local session, cache, offline actions, NativePHP features, navigation, permissions UX, sync status, drafts, feedback, and feature visibility stay local while authority stays server-side.
@@ -108,6 +110,8 @@ API-first means mobile behavior comes from versioned, explicit server responses.
 
 Product rule: every mobile capability needs a server contract before it becomes a durable mobile workflow.
 
+Use [API-First Principles](api-first-principles.md) to define the API purpose, predictable response, context, mobile-friendly error, sync/conflict, and tenant-boundary expectations.
+
 ## 8. Simple Mobile UX
 
 The mobile client should be simple because mobile users are there to do work, not administer the SaaS.
@@ -163,6 +167,7 @@ Before a future feature is implemented, answer:
 | Which roles see it? | Visibility and control map to `docs/user-roles.md`. |
 | Who receives value? | Stakeholder value maps to `docs/saas-value-map.md`. |
 | Which system owns it? | Boundary ownership maps to `docs/two-system-boundary.md`. |
+| What is the API purpose? | API-first purpose maps to `docs/api-first-principles.md`. |
 | Which Admin/API responsibility owns it? | Responsibility ownership maps to `docs/admin-api-responsibilities.md`. |
 | Which mobile-client responsibility owns it? | Local execution ownership maps to `docs/mobile-client-responsibilities.md`. |
 | Can mobile bypass it? | No; mobile uses the API contract. |
@@ -203,6 +208,7 @@ Those belong in future implementation prompts with tests and acceptance criteria
 | Feature flags become unmanaged sprawl | Every feature needs owner, scope, disable behavior, support visibility, and audit trail. |
 | Feature value becomes unclear | Use the SaaS value map to name the stakeholder, outcome, and proof metric before implementation. |
 | Ownership boundary becomes blurry | Use the two-system boundary before deciding where state, authority, cache, queue, or offline behavior belongs. |
+| API behavior becomes accidental | Use the API-first principles before deciding response shape, operating context, mobile errors, sync/conflict, or tenant-scoped responses. |
 | Responsibility ownership becomes blurry | Use the Admin/API responsibility map before deciding who owns tenant, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |
 | Mobile local ownership becomes blurry | Use the mobile-client responsibility map before deciding who owns UX, session, cache, queue, NativePHP, navigation, permissions, sync display, drafts, feedback, or feature visibility. |
 | Tenant boundaries blur in support/reporting | Tenant scope applies to operations as strongly as core data. |

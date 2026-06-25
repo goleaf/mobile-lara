@@ -21,6 +21,8 @@ UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform
 
 UI decisions must also express [Two-System Boundary Logic](two-system-boundary.md): admin surfaces show authority and scope, while mobile surfaces show API-derived capability state, local freshness, pending work, conflicts, and offline limits without pretending to own server truth.
 
+UI decisions must also express [API-First Principles](api-first-principles.md): mobile UI should present predictable API states, operating context, mobile-friendly errors, sync/conflict outcomes, and tenant-safe feature visibility without exposing internals.
+
 UI decisions must also express [Admin/API Responsibilities](admin-api-responsibilities.md): admin UI exposes scoped control-plane responsibilities, while mobile UI presents only the resulting capability, version, notification, billing, support, report, audit, conflict, and security states.
 
 UI decisions must also express [Mobile Client Responsibilities](mobile-client-responsibilities.md): mobile UI owns experience, local session presentation, cache/freshness signals, offline queues, NativePHP permission UX, navigation, sync display, drafts, local feedback, and feature visibility.
@@ -43,6 +45,8 @@ UI decisions must also express [Mobile Client Responsibilities](mobile-client-re
 The mobile client should be calm, direct, and explicit about sync state.
 
 Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.
+
+Mobile API states should have UI homes: boot/context changes affect navigation, validation errors affect forms, version errors affect update prompts, sync/conflict errors affect status surfaces, and tenant/billing/permission denials affect clear next-action messaging.
 
 Mobile UI should also distinguish local responsibility from authority: local draft, local cache, local permission prompt, and local feedback are useful only when the user can tell what still needs API confirmation.
 

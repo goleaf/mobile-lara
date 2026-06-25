@@ -22,6 +22,8 @@ The mobile client may remember server decisions for usability, but it must never
 
 The detailed control-plane responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Use it with this boundary document whenever a feature touches tenants, users, permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, or security enforcement.
 
+The detailed API contract model is defined in [API-First Principles](api-first-principles.md). Use it with this boundary document whenever a feature touches mobile/API communication, operating context, predictable responses, mobile-friendly errors, sync replay, conflict logic, version rules, or tenant-scoped responses.
+
 The detailed mobile-client responsibility model is defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Use it with this boundary document whenever a feature touches mobile UX, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync display, drafts, local feedback, or feature visibility.
 
 ## System Ownership Summary
@@ -112,6 +114,8 @@ Mobile UI hiding, disabled buttons, cached flags, local role names, local tenant
 ## What Must Only Happen Through API
 
 Any server-trusted behavior must happen through the API.
+
+See [API-First Principles](api-first-principles.md) for the detailed principles behind API purpose, response predictability, operating context, mobile-friendly errors, sync/conflict behavior, and tenant boundary protection.
 
 API-only actions include:
 
@@ -286,3 +290,5 @@ If these answers are unclear, the feature is not ready for implementation planni
 If the Admin/API responsibility owner is also unclear, the feature is not ready for product planning.
 
 If the mobile-client responsibility owner is also unclear, the feature is not ready for product planning.
+
+If the API purpose, response, context, error, sync/conflict, or tenant-boundary behavior is unclear, the feature is not ready for product planning.

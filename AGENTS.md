@@ -20,6 +20,8 @@ Admin/API responsibilities are defined in `docs/admin-api-responsibilities.md`: 
 
 Mobile client responsibilities are defined in `docs/mobile-client-responsibilities.md`: mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync status display, local drafts, local user feedback, and feature visibility based on admin rules belong to the mobile client.
 
+API-first principles are defined in `docs/api-first-principles.md`: mobile communicates only with API, API responses are predictable, every mobile feature has a clear API purpose, API returns operating context, errors are mobile-friendly, sync and conflict behavior are first-class, and tenant boundaries are protected server-side.
+
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
 2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
 
@@ -51,6 +53,7 @@ Use these docs before changing the product direction:
 - `docs/user-roles.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
+- `docs/api-first-principles.md`
 - `docs/admin-api-responsibilities.md`
 - `docs/mobile-client-responsibilities.md`
 - `docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md`
@@ -64,6 +67,7 @@ Use these docs before changing the product direction:
 - Admin/API is authoritative for SaaS rules.
 - Mobile is authoritative only for local presentation, local drafts, local queues, and native device interaction.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
+- API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
 - Mobile-client responsibility decisions must follow `docs/mobile-client-responsibilities.md`.
 - Admin settings control mobile feature availability because mobile state can be stale, offline, copied between devices, or running an old app version.
@@ -76,6 +80,7 @@ Use these docs before changing the product direction:
 - Any feature that changes visibility or control must map behavior to the role model in `docs/user-roles.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
+- Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.
 - Any tenant, user, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security concern must map to the Admin/API responsibility rules in `docs/admin-api-responsibilities.md`.
 - Any mobile UX, secure local session, cache, offline action, NativePHP capability, navigation, permissions UX, sync display, draft, local feedback, or feature-visibility concern must map to `docs/mobile-client-responsibilities.md`.
 
