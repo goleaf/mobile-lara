@@ -27,6 +27,8 @@ The boundary standard is [Two-System Boundary Logic](two-system-boundary.md). Au
 
 The responsibility standard is [Admin/API Responsibilities](admin-api-responsibilities.md). Audits should verify that tenant management, users and permissions, admin panel operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing/subscription logic, support operations, reporting, audit history, conflict decisions, and security enforcement stay in the control plane.
 
+The mobile responsibility standard is [Mobile Client Responsibilities](mobile-client-responsibilities.md). Audits should verify that mobile UX, secure local session, cache, offline actions, NativePHP device features, navigation, permissions UX, sync display, drafts, local feedback, and feature visibility stay local without owning SaaS authority.
+
 ## Product Vision Audit
 
 | Vision question | Product answer |
@@ -96,6 +98,22 @@ If a feature cannot name stakeholder value, it should not move from idea to impl
 | Conflict decisions | Does API decide accepted, transformed, rejected, duplicated, stale, unauthorized, out-of-policy, or conflicted outcomes? |
 | Security enforcement | Are authentication, authorization, tenant scope, token revocation, device trust, rate limits, and secrets policy server-owned? |
 
+## Mobile Client Responsibilities Audit
+
+| Responsibility | Audit lens |
+| --- | --- |
+| Mobile user experience | Are mobile screens task-focused and clear about allowed, offline, blocked, pending, synced, conflict, and failed states? |
+| Secure local session | Are secure storage, local unlock, timeout, logout, and forced-logout UX local without becoming auth authority? |
+| Local cache | Are cached boot, capability, config, and resource copies safe, fresh-labeled, and non-authoritative? |
+| Offline actions | Are queued actions treated as intents and replayed through API before becoming server truth? |
+| NativePHP device features | Are native capabilities feature-scoped, permission-aware, and still subject to Admin/API eligibility? |
+| Mobile navigation | Does navigation reflect API-provided account, tenant, feature, version, and offline state? |
+| Mobile permissions UX | Are native permission prompts and denial states distinct from SaaS role/permission outcomes? |
+| Sync status display | Are last sync, pending, retry, conflict, failed, stale, and offline states visible near affected workflows? |
+| Local drafts | Are drafts separate from pending, synced, failed, and conflicted work until API submission succeeds? |
+| Local user feedback | Does feedback distinguish local save, queued intent, API acceptance, validation failure, denial, and support need? |
+| Feature visibility from admin rules | Does mobile show, hide, disable, block, deprecate, or require update based on API/admin policy only? |
+
 ## Current Product Assets
 
 ### Mobile Client Assets
@@ -150,6 +168,7 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Product positioning governance | Future slices must preserve the combined SaaS control center plus mobile platform positioning rather than drifting into web-only or mobile-only work. |
 | SaaS value governance | Every future slice must prove stakeholder value and connect that value to admin control, mobile access, offline sync, notifications, reports, security, or feature flags. |
 | Admin/API responsibility governance | Every future slice must identify which control-plane responsibility owns tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |
+| Mobile responsibility governance | Every future slice must identify which mobile-client responsibility owns UX, local session, cache, offline queue, NativePHP capability, navigation, permission prompt, sync display, draft, feedback, or feature visibility. |
 
 ## Business Logic Audit
 
@@ -271,6 +290,7 @@ php artisan native:plugin:validate
 - [SaaS Value Map](saas-value-map.md)
 - [Two-System Boundary Logic](two-system-boundary.md)
 - [Admin/API Responsibilities](admin-api-responsibilities.md)
+- [Mobile Client Responsibilities](mobile-client-responsibilities.md)
 - [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md)
 - Laravel Boost application info and documentation search.
 - Laravel API routing, authentication, resources, and JSON testing documentation.

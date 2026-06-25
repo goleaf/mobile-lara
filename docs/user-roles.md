@@ -22,6 +22,8 @@ Roles also depend on [Two-System Boundary Logic](two-system-boundary.md). Admin/
 
 Roles also depend on [Admin/API Responsibilities](admin-api-responsibilities.md). Responsibility ownership explains which control-plane areas each role may operate, observe, or consume as API-derived mobile state.
 
+Roles also depend on [Mobile Client Responsibilities](mobile-client-responsibilities.md). Mobile responsibilities explain how mobile users, invited users, suspended users, and guest/pre-login users experience local UX, session, cache, drafts, sync state, device permissions, and feature visibility without gaining authority.
+
 ## Role Summary
 
 | Role | Scope | Primary purpose |
@@ -336,6 +338,7 @@ Should not see/control:
 | Mobile workflows | No direct use by default | No direct use by default | Configure | Monitor/manage | Support context | Entitlement context | Use allowed workflows | No | No | No |
 | Offline queue/sync | Oversight | Oversight/control policy | Own tenant view | Assigned scope | Case diagnostics | Entitlement impact | Own visible state | No | No trusted replay | No |
 | Admin/API responsibilities | Own/control by policy | Operate by grant | Tenant-scoped control | Assigned scope | Case/support view | Billing scope | API outcome only | Activation outcome only | Recovery outcome only | Public/pre-login outcome only |
+| Mobile client responsibilities | No direct use by default | No direct use by default | Configure/observe outcomes | Observe assigned outcomes | Support-safe diagnostics | Entitlement outcome | Use local UX | Activation UX only | Recovery UX only | Public/pre-login UX only |
 
 ## Role Value Alignment
 
@@ -389,6 +392,7 @@ Those belong in future implementation prompts with tests, migrations, policies, 
 | Stakeholder value is confused with role authority | Use the SaaS value map to identify who benefits and this role model to decide who can see or control. |
 | Mobile infers role authority locally | Use the two-system boundary: mobile may cache role-derived capability state, but Admin/API must enforce final access. |
 | Role grants do not map to responsibility ownership | Use Admin/API responsibilities to decide which control-plane area a role may operate, observe, or consume. |
+| Mobile states become role authority | Use mobile-client responsibilities to keep UX, cache, drafts, sync, permissions prompts, and feature visibility as API-derived presentation. |
 | Mobile user gains authority offline | Offline actions remain intents until API acceptance. |
 | Invited or suspended states leak access | State restrictions override role permissions. |
 | UI hiding becomes authorization | API and policies remain final authority. |

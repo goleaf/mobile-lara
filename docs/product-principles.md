@@ -18,6 +18,8 @@ The [Two-System Boundary Logic](two-system-boundary.md) defines where each respo
 
 The [Admin/API Responsibilities](admin-api-responsibilities.md) define what the control plane must own. Responsibility ownership is part of every principle below: tenant management, users and permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit, conflict decisions, and security enforcement stay server-side.
 
+The [Mobile Client Responsibilities](mobile-client-responsibilities.md) define what the managed client must own. Responsibility ownership is part of every principle below: mobile UX, secure local session, cache, offline actions, NativePHP features, navigation, permissions UX, sync status, drafts, feedback, and feature visibility stay local while authority stays server-side.
+
 ## 1. Admin Controls Everything
 
 Admin controls every business-sensitive mobile capability.
@@ -39,6 +41,8 @@ The mobile client may use local storage for cache, drafts, local metadata, and q
 All remote reads, writes, sync replay, support actions, notification registration, version checks, and feature decisions must go through the API contract.
 
 Product rule: mobile can prepare work locally, but the API confirms whether that work becomes server truth.
+
+Use [Mobile Client Responsibilities](mobile-client-responsibilities.md) to name the exact local responsibility before planning mobile behavior.
 
 ## 3. Every Feature Can Be Enabled Or Disabled
 
@@ -160,6 +164,7 @@ Before a future feature is implemented, answer:
 | Who receives value? | Stakeholder value maps to `docs/saas-value-map.md`. |
 | Which system owns it? | Boundary ownership maps to `docs/two-system-boundary.md`. |
 | Which Admin/API responsibility owns it? | Responsibility ownership maps to `docs/admin-api-responsibilities.md`. |
+| Which mobile-client responsibility owns it? | Local execution ownership maps to `docs/mobile-client-responsibilities.md`. |
 | Can mobile bypass it? | No; mobile uses the API contract. |
 | Can it be disabled? | Yes; behavior is defined for disabled state. |
 | Is tenant scope clear? | Yes; scope is server-enforced. |
@@ -199,6 +204,7 @@ Those belong in future implementation prompts with tests and acceptance criteria
 | Feature value becomes unclear | Use the SaaS value map to name the stakeholder, outcome, and proof metric before implementation. |
 | Ownership boundary becomes blurry | Use the two-system boundary before deciding where state, authority, cache, queue, or offline behavior belongs. |
 | Responsibility ownership becomes blurry | Use the Admin/API responsibility map before deciding who owns tenant, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |
+| Mobile local ownership becomes blurry | Use the mobile-client responsibility map before deciding who owns UX, session, cache, queue, NativePHP, navigation, permissions, sync display, drafts, feedback, or feature visibility. |
 | Tenant boundaries blur in support/reporting | Tenant scope applies to operations as strongly as core data. |
 | Offline behavior creates false confidence | Local state is labeled cache, draft, pending, synced, conflict, or failed. |
 | Security is delayed | Secure-by-default is part of every feature checklist. |

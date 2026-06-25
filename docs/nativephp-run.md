@@ -18,6 +18,8 @@ Native releases must also honor [Two-System Boundary Logic](two-system-boundary.
 
 Native releases must also honor [Admin/API Responsibilities](admin-api-responsibilities.md): version rules, feature gates, notification behavior, billing outcomes, support diagnostics, reports, audit expectations, conflict handling, and security enforcement are controlled by Admin/API.
 
+Native releases must also honor [Mobile Client Responsibilities](mobile-client-responsibilities.md): builds own mobile UX, secure local session behavior, local cache, offline actions, NativePHP capability UX, navigation, permissions UX, sync display, drafts, feedback, and feature visibility without owning SaaS authority.
+
 ## Current Placeholders
 
 | Setting | Value |
@@ -188,6 +190,7 @@ Also verify product policy before a real mobile release:
 - Remote config and feature flags are compatible with the build.
 - Two-system boundary ownership is documented for every mobile capability in the release.
 - Admin/API responsibility ownership is documented for every mobile capability in the release.
+- Mobile-client responsibility ownership is documented for every mobile capability in the release.
 - Blocked/deprecated version policy is tested.
 - Guest, invited, suspended, and mobile user states are covered in release expectations.
 - Native permission copy matches enabled features.
@@ -219,6 +222,7 @@ Before production distribution, the project needs:
 - SaaS value map: [SaaS Value Map](saas-value-map.md)
 - Two-system boundary: [Two-System Boundary Logic](two-system-boundary.md)
 - Admin/API responsibilities: [Admin/API Responsibilities](admin-api-responsibilities.md)
+- Mobile client responsibilities: [Mobile Client Responsibilities](mobile-client-responsibilities.md)
 - NativePHP installation: https://nativephp.com/docs/mobile/3/getting-started/installation
 - NativePHP command reference: https://nativephp.com/docs/mobile/3/getting-started/commands
 - NativePHP app icons: https://nativephp.com/docs/mobile/3/the-basics/app-icon

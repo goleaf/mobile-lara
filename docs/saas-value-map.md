@@ -22,6 +22,8 @@ The ownership rules for that connection are defined in [Two-System Boundary Logi
 
 The control-plane responsibility rules are defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Value is operationally safe when each promised outcome maps to a clear Admin/API owner such as tenant management, permissions, API contracts, feature control, remote config, app-version policy, notifications, billing, support, reporting, audit, conflict decisions, or security enforcement.
 
+The mobile-client responsibility rules are defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Value reaches users safely when mobile UX, secure local session, cache, offline actions, NativePHP features, navigation, permissions UX, sync display, drafts, feedback, and feature visibility are local execution responsibilities rather than authority.
+
 ## Stakeholder Value Summary
 
 | Stakeholder | Primary value | Product proof |
@@ -203,6 +205,7 @@ Use this value map before approving a future product slice.
 8. **Measure the promised value** - Reports should prove adoption, health, usage, support load, billing impact, or security posture.
 9. **Respect the system boundary** - A feature can create mobile value without moving tenant, permission, billing, report, sync, or support authority into the mobile client.
 10. **Map value to responsibility** - A feature can create stakeholder value only when its Admin/API responsibility owner is clear.
+11. **Map mobile value to local responsibility** - A feature can create mobile value only when its UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility owner is clear.
 
 ## Risks
 
@@ -215,6 +218,7 @@ Use this value map before approving a future product slice.
 | Offline value becomes false authority | Treat local work as cache, draft, pending intent, conflict, or failed state until API confirmation. |
 | Feature flags become invisible complexity | Require owner, audit, support visibility, rollout state, and rollback path. |
 | Responsibility ownership is unclear | Map each value claim to Admin/API responsibilities before feature planning. |
+| Mobile value becomes local authority | Map each mobile value claim to mobile-client responsibilities and keep API confirmation final. |
 | Mobile UX shows platform complexity | Translate policy into clear next actions and status labels. |
 
 ## Boundaries

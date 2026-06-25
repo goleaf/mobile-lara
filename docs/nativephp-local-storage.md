@@ -18,6 +18,8 @@ Local storage must also obey [Two-System Boundary Logic](two-system-boundary.md)
 
 Local storage must also obey [Admin/API Responsibilities](admin-api-responsibilities.md). Mobile-local data may cache or queue outcomes, but tenant management, users and permissions, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, and security enforcement stay in Admin/API.
 
+Local storage must also follow [Mobile Client Responsibilities](mobile-client-responsibilities.md). Cache, drafts, offline actions, sync status display, local feedback, and feature visibility are mobile responsibilities only while they remain non-authoritative and API-reconciled.
+
 ## Product Role
 
 The mobile client may use local SQLite for:

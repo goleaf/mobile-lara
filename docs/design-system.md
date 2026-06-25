@@ -23,6 +23,8 @@ UI decisions must also express [Two-System Boundary Logic](two-system-boundary.m
 
 UI decisions must also express [Admin/API Responsibilities](admin-api-responsibilities.md): admin UI exposes scoped control-plane responsibilities, while mobile UI presents only the resulting capability, version, notification, billing, support, report, audit, conflict, and security states.
 
+UI decisions must also express [Mobile Client Responsibilities](mobile-client-responsibilities.md): mobile UI owns experience, local session presentation, cache/freshness signals, offline queues, NativePHP permission UX, navigation, sync display, drafts, local feedback, and feature visibility.
+
 ## Shared Principles
 
 - Keep UI in Livewire + Blade.
@@ -41,6 +43,8 @@ UI decisions must also express [Admin/API Responsibilities](admin-api-responsibi
 The mobile client should be calm, direct, and explicit about sync state.
 
 Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.
+
+Mobile UI should also distinguish local responsibility from authority: local draft, local cache, local permission prompt, and local feedback are useful only when the user can tell what still needs API confirmation.
 
 Guest/pre-login, invited, and suspended states should have minimal, clear screens that never expose tenant data or normal mobile workflows.
 

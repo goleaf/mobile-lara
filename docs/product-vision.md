@@ -35,6 +35,8 @@ The logical system boundary is defined in [Two-System Boundary Logic](two-system
 
 The Admin/API responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Responsibility rules explain how tenant management, users and permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, and security enforcement stay in the control plane.
 
+The mobile-client responsibility model is defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Responsibility rules explain how mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, permissions UX, sync status display, drafts, local feedback, and feature visibility stay in the mobile client without becoming SaaS authority.
+
 ## Problem The System Solves
 
 Organizations that rely on mobile work usually face the same problem: the people doing the work need a simple app, but the business needs centralized control.
@@ -154,6 +156,7 @@ Scalable SaaS principles:
 - **Role separation** - SaaS owners, tenant admins, support, billing, and mobile users each see only the controls or workflows they need.
 - **Value separation** - platform, tenant, mobile, support, and billing stakeholders receive different value from the same control plane without receiving the same visibility or authority.
 - **Responsibility separation** - Admin/API responsibilities remain explicit so tenant, permission, API, feature, version, billing, support, reporting, audit, conflict, and security decisions do not drift into mobile-local logic.
+- **Local execution separation** - Mobile-client responsibilities remain explicit so UX, cache, drafts, offline queues, NativePHP features, sync display, and feedback can improve resilience without claiming authority.
 - **Progressive rollout** - features can move from internal tenant to limited tenant to general availability with rollback.
 - **Documentation discipline** - product decisions, risks, boundaries, and architecture decisions stay written before implementation.
 

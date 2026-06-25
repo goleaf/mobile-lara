@@ -97,6 +97,14 @@ Admin/API logically owns tenant management, users and permissions, admin panel o
 
 Mobile may consume, cache, display, and act on those decisions, but it must not become the place where those decisions are created or trusted.
 
+## Mobile Client Responsibilities
+
+The detailed managed-client responsibility model lives in [Mobile Client Responsibilities](mobile-client-responsibilities.md).
+
+The mobile client logically owns mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync status display, local drafts, local user feedback, and feature visibility based on admin rules.
+
+It must not own tenant authority, billing authority, permission authority, global configuration authority, feature authority, API contract authority, app-version policy, notification targeting, support authority, reporting authority, audit truth, conflict decisions, or security enforcement.
+
 ## System Split
 
 ### Admin/API System
@@ -201,6 +209,8 @@ No feature should exist only as a mobile screen. Each feature needs an admin sto
 Each feature also needs a boundary story: what Admin/API owns, what mobile owns, what must happen through API, what can be cached, what remote admin controls, and what happens offline.
 
 Each feature also needs a responsibility story: which Admin/API responsibility owns tenant, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
+
+Each feature also needs a mobile responsibility story: which mobile-client responsibility owns UX, local session, cache, offline queue, NativePHP capability, navigation, permission prompt, sync display, draft, feedback, or feature visibility.
 
 ## Admin Control Logic
 

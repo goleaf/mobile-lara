@@ -18,6 +18,8 @@ The two-system boundary is defined in `docs/two-system-boundary.md`: Admin/API o
 
 Admin/API responsibilities are defined in `docs/admin-api-responsibilities.md`: tenant management, users and permissions, admin panel operations, API contracts, feature control, remote configuration, mobile version rules, notification orchestration, billing/subscription logic, support operations, reporting, audit history, conflict decisions, and security enforcement belong to the control plane.
 
+Mobile client responsibilities are defined in `docs/mobile-client-responsibilities.md`: mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync status display, local drafts, local user feedback, and feature visibility based on admin rules belong to the mobile client.
+
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
 2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
 
@@ -50,6 +52,7 @@ Use these docs before changing the product direction:
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/admin-api-responsibilities.md`
+- `docs/mobile-client-responsibilities.md`
 - `docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md`
 - `docs/mobile-stack.md`
 - `docs/nativephp-local-storage.md`
@@ -62,6 +65,7 @@ Use these docs before changing the product direction:
 - Mobile is authoritative only for local presentation, local drafts, local queues, and native device interaction.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
+- Mobile-client responsibility decisions must follow `docs/mobile-client-responsibilities.md`.
 - Admin settings control mobile feature availability because mobile state can be stale, offline, copied between devices, or running an old app version.
 - API-first means admin decisions become enforceable mobile behavior through versioned server contracts.
 - Local SQLite stores cache, drafts, and queued intents, not trusted server facts.
@@ -73,6 +77,7 @@ Use these docs before changing the product direction:
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any tenant, user, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security concern must map to the Admin/API responsibility rules in `docs/admin-api-responsibilities.md`.
+- Any mobile UX, secure local session, cache, offline action, NativePHP capability, navigation, permissions UX, sync display, draft, local feedback, or feature-visibility concern must map to `docs/mobile-client-responsibilities.md`.
 
 </project-product-contract>
 

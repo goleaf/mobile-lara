@@ -20,6 +20,8 @@ It is made operational by [Two-System Boundary Logic](two-system-boundary.md): e
 
 It is made accountable by [Admin/API Responsibilities](admin-api-responsibilities.md): the control center must own tenant management, users and permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing/subscription logic, support operations, reporting, audit history, conflict decisions, and security enforcement.
 
+It is made usable by [Mobile Client Responsibilities](mobile-client-responsibilities.md): the managed client must own mobile UX, secure local session, cache, offline actions, NativePHP features, navigation, permissions UX, sync display, drafts, local feedback, and feature visibility without owning SaaS authority.
+
 ## Six Product Angles
 
 ### SaaS Control Center
@@ -51,6 +53,8 @@ The mobile platform gives users:
 - Tenant-safe access to the work they are allowed to perform.
 
 The mobile client exists to serve workers and client-side users without exposing admin machinery.
+
+The detailed mobile responsibility map lives in [Mobile Client Responsibilities](mobile-client-responsibilities.md).
 
 ### API-First System
 
@@ -180,6 +184,7 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 12. Product positioning should guide every future modular feature slice.
 13. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
 14. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
+15. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
 
 ## Risks
 

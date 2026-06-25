@@ -22,6 +22,8 @@ The mobile client may remember server decisions for usability, but it must never
 
 The detailed control-plane responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Use it with this boundary document whenever a feature touches tenants, users, permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, or security enforcement.
 
+The detailed mobile-client responsibility model is defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Use it with this boundary document whenever a feature touches mobile UX, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync display, drafts, local feedback, or feature visibility.
+
 ## System Ownership Summary
 
 | Area | Admin/API owns | Mobile client owns |
@@ -66,6 +68,8 @@ The Admin/API system may expose controls through Livewire admin screens, API res
 ## What The Mobile Client Owns
 
 The mobile client owns the local user experience and local execution mechanics.
+
+See [Mobile Client Responsibilities](mobile-client-responsibilities.md) for the detailed principles behind each mobile responsibility area.
 
 It owns:
 
@@ -280,3 +284,5 @@ The boundary is healthy when every feature can answer:
 If these answers are unclear, the feature is not ready for implementation planning.
 
 If the Admin/API responsibility owner is also unclear, the feature is not ready for product planning.
+
+If the mobile-client responsibility owner is also unclear, the feature is not ready for product planning.
