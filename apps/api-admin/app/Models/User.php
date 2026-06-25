@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(MobileRefreshToken::class);
     }
+
+    public function tenantMemberships(): HasMany
+    {
+        return $this->hasMany(TenantUser::class);
+    }
 }

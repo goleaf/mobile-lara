@@ -89,14 +89,14 @@ Status values:
 | --- | --- |
 | Root application | A Laravel 13 + Livewire 4 + NativePHP Mobile app remains at the repository root as a transition mirror. |
 | Requested monorepo paths | `apps/api-admin` and `apps/mobile-client` are now separate Laravel applications. |
-| API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status`, `GET /api/v1/mobile/contracts`, auth endpoints, and authenticated `GET /api/v1/mobile/bootstrap`. |
+| API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status`, `GET /api/v1/mobile/contracts`, auth endpoints, authenticated `GET /api/v1/mobile/bootstrap`, `GET /api/v1/mobile/tenants`, and `POST /api/v1/mobile/tenants/current`. |
 | Mobile routes | 52 `mobile.*` Livewire routes exist in both the root transition app and `apps/mobile-client/routes/web.php`. |
-| Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, and security audit events. Tenant/control-plane domain schema remains pending. |
+| Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, security audit events, tenants, and tenant-user memberships. Broader control-plane domain schema remains pending. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
-| Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, and mobile auth/token/session endpoints. Tenancy and SaaS modules remain pending. |
+| Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/mobile-client` now also has focused API auth and bootstrap service coverage. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, contract catalogue, mobile auth, and bootstrap. |
+| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/mobile-client` now also has focused API auth and bootstrap service coverage. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, contract catalogue, mobile auth, bootstrap, and tenant context switching. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -161,7 +161,7 @@ Status values:
 | Contract catalogue endpoint | tested | `GET /api/v1/mobile/contracts` returns the public v1 contract catalogue through the standard success envelope. |
 | Auth contract | tested | `v1-auth.md` defines implemented auth/session/profile routes and the contract catalogue marks auth implemented. |
 | Bootstrap contract | tested | `v1-bootstrap.md` defines required payload and cache behavior; API/admin serves the foundation endpoint and mobile client caches it locally. |
-| Tenancy contract | documented | `v1-tenancy.md` defines tenant list/switch behavior; endpoints are not implemented. |
+| Tenancy contract | tested | `v1-tenancy.md` defines tenant list/switch behavior; foundation tenant context and switch endpoints are implemented and tested while invitations/admin management remain pending. |
 | Features contract | documented | `v1-features.md` defines resolved feature states and gates; endpoint is not implemented. |
 | Remote config contract | documented | `v1-remote-config.md` defines receive/cache/offline/fallback rules; endpoint is not implemented. |
 | App version/maintenance contract | documented | `v1-app-version-maintenance.md` defines version, force update, and maintenance states; endpoint is not implemented. |
@@ -192,11 +192,11 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Tenant model and lifecycle | not started | No tenant schema/code exists. |
-| Tenant users/memberships | not started | Required for multi-tenant access. |
-| Tenant roles and invitations | not started | Role states are documented only. |
-| Tenant settings | not started | Required for feature/config/sync policy. |
-| Tenant-scoped API middleware | not started | Critical security boundary. |
+| Tenant model and lifecycle | partial | `Tenant` schema/model/factory exist with lifecycle status values and switchability checks; admin lifecycle screens and full lifecycle policy remain pending. |
+| Tenant users/memberships | tested | `TenantUser` schema/model/factory exist and mobile API tests verify membership listing, current tenant selection, switch persistence, and denial. |
+| Tenant roles and invitations | partial | Tenant role enum exists for membership payloads; invitation acceptance and admin invitation workflows are not implemented. |
+| Tenant settings | partial | `tenants.settings` exists for future config; no admin settings UI or config policy resolution exists yet. |
+| Tenant-scoped API middleware | partial | Tenant list/switch endpoints enforce membership server-side; generic tenant-scoped resource middleware remains pending. |
 | Admin tenant management screens | not started | Admin shell exists; tenant management screens are not implemented yet. |
 | Mobile tenant store/display/switcher | not started | Required after API bootstrap exists. |
 | Tenant-separated local cache | partial | Local models have mobile-local storage, but tenant partitioning is not fully proven. |
@@ -242,8 +242,8 @@ Status values:
 | Payload Item | Status | Notes |
 | --- | --- | --- |
 | Authenticated user | tested | Bootstrap returns the authenticated API user from the mobile token. |
-| Current tenant | partial | Bootstrap returns `null` until tenant schema and tenant switch logic exist. |
-| Available tenants | partial | Bootstrap returns an empty list until tenant memberships exist. |
+| Current tenant | tested | Bootstrap returns the resolved current tenant from active switchable tenant memberships when one exists. |
+| Available tenants | tested | Bootstrap returns available tenant memberships with public tenant IDs, role summaries, switchable state, current state, and disabled reasons. |
 | Permissions | partial | Bootstrap returns explicit `not_configured` roles/abilities until the permission system exists. |
 | Feature flags | partial | Bootstrap returns foundation feature states with disabled/offline-limited reasons for pending server modules and visible native capability hints. |
 | Remote config | partial | Bootstrap returns foundation config defaults for dashboard, sync, uploads, support, legal, and app lock behavior. |
@@ -520,10 +520,11 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Implement tenancy, roles, feature flags, remote config, version/maintenance,
-   and audit before broad records/support/billing/reporting expansion.
-2. Replace bootstrap foundation defaults with real tenant, permission, feature,
-   config, version, subscription, notification, and sync policy modules.
+1. Implement roles, permissions, feature flags, remote config,
+   version/maintenance, and audit before broad records/support/billing/reporting
+   expansion.
+2. Replace bootstrap foundation defaults with real permission, feature, config,
+   version, subscription, notification, and sync policy modules.
 3. Migrate existing mobile-local features behind API-derived policy instead of
    letting local screens remain standalone authority.
 

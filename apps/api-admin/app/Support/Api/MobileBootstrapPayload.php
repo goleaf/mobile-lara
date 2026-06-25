@@ -10,17 +10,18 @@ use Illuminate\Http\Request;
 final class MobileBootstrapPayload
 {
     /**
+     * @param  array{current_tenant?: array<string, mixed>|null, available_tenants?: array<int, array<string, mixed>>}  $tenantContext
      * @return array<string, mixed>
      */
-    public static function make(User $user, MobileDeviceSession $session, Request $request): array
+    public static function make(User $user, MobileDeviceSession $session, Request $request, array $tenantContext = []): array
     {
         $now = CarbonImmutable::now();
 
         return [
             'user' => MobileAuthPayload::user($user),
             'device_session' => MobileAuthPayload::session($session),
-            'current_tenant' => null,
-            'available_tenants' => [],
+            'current_tenant' => $tenantContext['current_tenant'] ?? null,
+            'available_tenants' => $tenantContext['available_tenants'] ?? [],
             'permissions' => [
                 'status' => 'not_configured',
                 'roles' => [],

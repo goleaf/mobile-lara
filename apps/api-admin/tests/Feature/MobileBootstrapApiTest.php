@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\TenantUserRole;
+use App\Models\Tenant;
+use App\Models\TenantUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -7,10 +10,18 @@ use Illuminate\Testing\Fluent\AssertableJson;
 uses(RefreshDatabase::class);
 
 test('mobile bootstrap returns the foundation operating context for an authenticated device', function (): void {
-    User::factory()->create([
+    $user = User::factory()->create([
         'email' => 'worker@example.com',
         'password' => 'password-secret',
     ]);
+    $tenant = Tenant::factory()->create(['name' => 'North Field Team']);
+
+    TenantUser::factory()
+        ->for($tenant)
+        ->for($user)
+        ->current()
+        ->role(TenantUserRole::TenantManager)
+        ->create();
 
     $accessToken = $this->postJson('/api/v1/mobile/auth/login', [
         'email' => 'worker@example.com',
@@ -30,8 +41,10 @@ test('mobile bootstrap returns the foundation operating context for an authentic
             ->where('success', true)
             ->where('data.user.email', 'worker@example.com')
             ->where('data.device_session.device_id', 'bootstrap-device-001')
-            ->where('data.current_tenant', null)
-            ->where('data.available_tenants', [])
+            ->where('data.current_tenant.id', $tenant->public_id)
+            ->where('data.current_tenant.name', 'North Field Team')
+            ->where('data.current_tenant.role_summary.role', 'tenant_manager')
+            ->where('data.available_tenants.0.id', $tenant->public_id)
             ->where('data.permissions.status', 'not_configured')
             ->where('data.features.version', 'foundation-1')
             ->where('data.features.items.records.state', 'disabled')

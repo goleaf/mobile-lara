@@ -90,10 +90,12 @@ The response must include:
 - `sync`
 - `unread_notification_count`
 
-The current foundation implementation returns real authenticated user and
-device-session context, then returns explicit empty, disabled, pending, or
-not-configured states for modules whose authoritative Admin/API data models are
-not implemented yet. Mobile must treat those states as fail-closed outcomes.
+The current foundation implementation returns real authenticated user,
+device-session, current tenant, and available tenant membership context. It
+still returns explicit disabled, pending, or not-configured states for
+permissions, feature flags, remote config, billing, notifications, sync, and
+version/maintenance modules whose authoritative Admin/API data models are not
+implemented yet. Mobile must treat those states as fail-closed outcomes.
 
 ## Metadata
 

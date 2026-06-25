@@ -111,6 +111,13 @@ Implemented foundation:
   the current user.
 - `GET /api/v1/mobile/auth/user` returns current user/session context.
 - `PATCH /api/v1/mobile/auth/profile` updates allowed profile fields.
+- `GET /api/v1/mobile/bootstrap` returns the first authenticated mobile
+  operating context with real user, device-session, current tenant, and
+  available tenant data plus explicit foundation defaults for pending
+  permission, feature, config, subscription, notification, and sync modules.
+- `GET /api/v1/mobile/tenants` returns the authenticated user's tenant context.
+- `POST /api/v1/mobile/tenants/current` switches the current tenant after
+  membership/lifecycle checks and records a security audit event.
 - `GET /admin/login` renders the admin login form.
 - `POST /admin/login` authenticates platform-admin users.
 - `POST /admin/logout` invalidates the admin session.

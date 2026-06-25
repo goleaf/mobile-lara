@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Remote Configuration Logic with a decision contract for
+  configurable behavior, mobile receive/cache rules, offline handling,
+  tenant overrides, safe admin changes, and missing or invalid config.
 - Clarified Feature Flag Logic with a decision contract for controlled mobile
   feature availability, global/tenant/user priority, disabled mobile states,
   admin impact, safe rollout, and plan-limit behavior.
@@ -102,3 +105,6 @@ All notable changes to Mobile Lara will be documented in this file.
 - Implemented the first mobile bootstrap endpoint and mobile bootstrap service,
   returning authenticated user/device context plus explicit foundation defaults
   for pending SaaS modules and caching the envelope in mobile-local settings.
+- Added the API/admin tenancy foundation with tenant and tenant-membership
+  schema, public tenant IDs, mobile tenant list/switch endpoints, bootstrap
+  tenant context, switch denial handling, and tenant switch audit events.

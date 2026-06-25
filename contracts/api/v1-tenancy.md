@@ -2,7 +2,10 @@
 
 Updated: 2026-06-26
 
-Status: documented. Endpoints are planned for Phase 6.
+Status: partially implemented. Tenant schema, mobile tenant context listing,
+tenant switching, bootstrap tenant context, and switch audit events exist;
+admin tenant management, invitations, tenant settings UI, and mobile switcher
+integration remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps tenant isolation and tenant access controlled by Admin/API while mobile
@@ -55,13 +58,19 @@ lifecycle, status, isolation, membership, feature availability, billing,
 support, report, and sync controls scoped, authorized, auditable, and exposed
 to mobile only as resolved API outcomes.
 
+Remote Configuration Logic is defined in
+`../../docs/remote-configuration-logic.md`: tenant labels, onboarding copy,
+workflow wording, support guidance, cache freshness messages, and safe tenant
+presentation may vary by resolved tenant config, but tenant membership,
+switching authority, and isolation remain Admin/API authority.
+
 ## Purpose
 
 Tenancy endpoints keep tenant authority on the Admin/API system. Mobile may
 display and switch allowed tenants, but every server response remains
 tenant-scoped and validates membership server-side.
 
-## Planned Routes
+## Implemented Foundation Routes
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -70,11 +79,18 @@ tenant-scoped and validates membership server-side.
 
 ## Success Data
 
-Tenant list responses return `tenants`, each with `id`, `name`, `status`,
-`role_summary`, `subscription_state`, and `switchable`.
+Tenant list responses return `current_tenant` and `available_tenants`.
+Tenant API identifiers are `tenants.public_id`; numeric database IDs are not
+sent to mobile.
 
-Tenant switch responses return `current_tenant`, refreshed `permissions`,
-`features`, `remote_config`, `sync`, and `next_bootstrap_required`.
+Each tenant item includes `id`, `name`, `slug`, `status`,
+`subscription_state`, `role_summary`, `switchable`, `current`, and
+`disabled_reason`.
+
+Tenant switch responses return refreshed tenant context and
+`next_bootstrap_required: true`. Permissions, feature flags, remote config,
+sync, billing, notification, and version policy still come from the bootstrap
+foundation defaults until those modules are implemented.
 
 ## Gates
 
@@ -95,5 +111,14 @@ and cross-tenant denial are audit events.
 
 ## Tests
 
-Phase 6 should verify tenant isolation, route model binding or opaque IDs,
-membership denial, tenant state denial, and cache refresh triggers.
+Automated coverage:
+
+- `apps/api-admin/tests/Feature/MobileTenancyApiTest.php`
+- `apps/api-admin/tests/Feature/MobileBootstrapApiTest.php`
+
+Fresh checks:
+
+```bash
+cd apps/api-admin && php artisan test --compact --filter=MobileTenancyApiTest
+cd apps/api-admin && php artisan test --compact --filter=MobileBootstrapApiTest
+```
