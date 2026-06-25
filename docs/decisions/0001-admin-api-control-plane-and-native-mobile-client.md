@@ -1,0 +1,62 @@
+# ADR-0001: Admin/API Control Plane And Native Mobile Client
+
+## Status
+
+Accepted
+
+## Date
+
+2026-06-25
+
+## Context
+
+Mobile Lara needs to support a SaaS business where administrators control tenants, users, permissions, remote config, feature flags, app versions, notifications, billing, reports, support, and sync behavior. The mobile application must work through the API and use NativePHP for device capabilities.
+
+The key tension is authority. Mobile apps need local resilience and offline behavior, but SaaS business rules must stay server-controlled and tenant-safe.
+
+## Decision
+
+Use a two-system architecture:
+
+1. **Admin/API system** - Laravel API plus Livewire admin panel. This system is the SaaS control plane and source of authority.
+2. **Mobile client system** - Laravel plus Livewire running through NativePHP Mobile. This system is the managed edge client and local executor.
+
+The mobile client must consume server-provided boot config, remote config, feature flags, permissions, app-version policy, and sync policy. Local mobile state can improve resilience and UX, but it cannot grant business authority.
+
+## Alternatives Considered
+
+### Mobile-first authority
+
+The mobile app would own more rules locally and sync when possible.
+
+- Pros: Fast local UX and fewer API dependencies.
+- Cons: Hard to enforce billing, permissions, tenant isolation, feature rollout, and app-version policy.
+- Rejected because SaaS control and auditability are core product requirements.
+
+### Admin-only web product with thin mobile wrapper
+
+The admin web app would be the main product and NativePHP would wrap a mostly online web UI.
+
+- Pros: Simpler backend and fewer offline concerns.
+- Cons: Weak mobile UX, weak native capability story, poor offline behavior.
+- Rejected because the mobile client is expected to use NativePHP capabilities and work offline where appropriate.
+
+### Separate technology stacks for admin and mobile
+
+The admin/API and mobile client would use completely different frameworks.
+
+- Pros: Each app could optimize independently.
+- Cons: More operational cost, duplicated conventions, more agent/context drift.
+- Rejected for now because Laravel + Livewire can serve both admin and mobile surfaces while keeping server-side rules consistent.
+
+## Consequences
+
+- Admin/API is responsible for authorization, tenant scope, feature eligibility, billing entitlements, audit trails, API contracts, and sync decisions.
+- Mobile is responsible for NativePHP bridges, local SQLite, secure local auth state, offline queues, and mobile UX.
+- API design must be versioned, idempotent for replayable writes, and explicit about conflicts.
+- Feature work must include admin logic, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior.
+- Documentation and future implementation should treat local mobile data as cache, draft, queue, or confirmed server copy depending on sync state.
+
+## Implementation Boundary
+
+This ADR is documentation only. It does not create schema, migrations, controllers, Livewire components, policies, or application logic.

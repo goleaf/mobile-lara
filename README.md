@@ -1,58 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Mobile Lara
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Mobile Lara is a planned SaaS platform for centrally managed NativePHP mobile applications. The product is split into two cooperating systems:
 
-## About Laravel
+1. **Admin/API system** - Laravel API plus a Livewire admin panel. This is the SaaS control plane.
+2. **Mobile client system** - Laravel plus Livewire running inside NativePHP Mobile. This is the managed edge client.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The core idea is simple: tenants operate from the admin panel, while mobile users work in a controlled mobile client that receives all business rules, permissions, feature availability, app-version policy, notifications, sync behavior, support state, and billing entitlement through the API.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Product Position
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Mobile Lara is not just a mobile app starter. It is a control-plane product for businesses that need mobile workflows they can govern remotely.
 
-## Learning Laravel
+The admin/API system owns:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Tenants, teams, users, roles, permissions, and device trust.
+- Remote config, feature flags, app-version requirements, and rollout rules.
+- Notification policy, support workflow, reports, billing plans, and usage limits.
+- API contracts, audit trails, sync policy, conflict handling, and operational controls.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The mobile client owns:
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Local mobile UX, Livewire screens, NativePHP capability bridges, and device permissions.
+- Offline-first local state, queued actions, local records, local media metadata, and sync status.
+- Safe presentation of admin-controlled capabilities without inventing its own product rules.
 
-## Agentic Development
+## Product Principle
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+The admin system is the source of authority. The mobile client is a resilient local executor.
+
+If a capability is disabled, unlicensed, blocked by version policy, denied by permission, or outside tenant scope, the mobile client must treat that as final even if local UI state still contains stale cached data.
+
+## Documentation Map
+
+| Document | Purpose |
+| --- | --- |
+| [docs/saas-mobile-admin-platform.md](docs/saas-mobile-admin-platform.md) | Canonical product and system concept. |
+| [docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md](docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md) | ADR for the two-system architecture. |
+| [docs/mobile-stack.md](docs/mobile-stack.md) | Stack, package, and boundary notes. |
+| [docs/mobile-app-audit.md](docs/mobile-app-audit.md) | Current-state audit against the target concept. |
+| [docs/nativephp-local-storage.md](docs/nativephp-local-storage.md) | Offline-first local SQLite and sync principles. |
+| [docs/nativephp-run.md](docs/nativephp-run.md) | NativePHP run, release, and app-version operating notes. |
+| [docs/design-system.md](docs/design-system.md) | Mobile and admin UX principles. |
+| [AGENTS.md](AGENTS.md) / [CLAUDE.md](CLAUDE.md) | Agent-facing project rules. |
+
+## Current Technical Baseline
+
+- PHP 8.5.
+- Laravel 13.
+- Livewire 4.
+- NativePHP Mobile 3.
+- SQLite for current local development and mobile-local storage.
+- Tailwind CSS 4 through the SCSS/PostCSS bridge.
+- Pest 4 for tests.
+
+The repository currently contains mobile-client surfaces and local-mobile infrastructure. The admin/API system is documented here as the product control plane and must be implemented only after a dedicated implementation prompt. This documentation pass does not create database fields, migrations, controllers, or application logic.
+
+## Operating Rules
+
+- Use Eloquent and Laravel resources for API-facing data. Do not use raw SQL strings.
+- Keep admin business rules on the server. Mobile UI state is never an authorization boundary.
+- Treat NativePHP secure storage as the home for secrets and tokens. Do not store secrets in local SQLite.
+- Treat local SQLite as a cache, queue, draft, and offline-working database.
+- Make every mobile action idempotent at the API boundary.
+- Version every API behavior that the mobile app depends on.
+- Prefer feature flags and remote config for rollout control, not hardcoded app decisions.
+
+## Common Commands
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+npm install
+npm run build
+php artisan test --compact
+php artisan native:debug --no-interaction
+php artisan native:plugin:validate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Laravel Herd serves the local app at the project test domain. Use Laravel Boost's `get-absolute-url` MCP tool before sharing URLs.
 
-## Contributing
+## Non-Goals For This Documentation Commit
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- No application logic was implemented.
+- No schema, migrations, or database fields were created.
+- No admin resources, API controllers, policies, or Livewire components were added.
+- No billing provider, push provider, or external service was integrated.
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This repository should move from concept to implementation through explicit product slices, each with tests, migrations, authorization, API contracts, and admin/mobile acceptance criteria.

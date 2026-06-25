@@ -1,5 +1,32 @@
 # NativePHP Local SQLite Storage
 
+Updated: 2026-06-25
+
+This document defines how local SQLite should fit into the SaaS mobile + admin product. Local storage exists to make the NativePHP mobile client resilient. It does not replace the Admin/API system as the source of business authority.
+
+## Product Role
+
+The mobile client may use local SQLite for:
+
+- Cached server data that is safe to display while stale.
+- Local drafts and incomplete user work.
+- Offline action intents waiting for replay.
+- Local records and metadata that still need server confirmation.
+- Sync cursors, last sync timestamps, and conflict state.
+- Non-sensitive activity history that helps the user understand what happened.
+- Local notification history and schedule metadata when the feature allows it.
+
+The mobile client must not use local SQLite for:
+
+- Access tokens, refresh tokens, API secrets, private keys, or billing credentials.
+- Tenant authority, plan authority, or permission authority.
+- Server-trusted audit logs.
+- Final billing state.
+- Unencrypted sensitive documents.
+- Anything the API must be able to revoke immediately.
+
+Secrets belong in NativePHP secure storage or another approved secure-token store when available.
+
 ## Current Configuration
 
 The mobile app has a dedicated SQLite connection named `mobile_local`.
@@ -10,9 +37,68 @@ The mobile app has a dedicated SQLite connection named `mobile_local`.
 - Migration path: `database/migrations/mobile-local`
 - Health command: `php artisan mobile:local-health`
 
-The local database file is intentionally stored under `storage/app/mobile` so it is writable in a packaged NativePHP mobile runtime. Keep authentication tokens and other secrets in NativePHP secure storage, not in this SQLite database.
+The local database file is intentionally stored under `storage/app/mobile` so it is writable in a packaged NativePHP mobile runtime.
 
-Laravel prepares the configured SQLite directory and empty database file during application boot. Schema changes are still applied explicitly with the mobile-local migration command below.
+## Offline State Model
+
+Every locally stored item should fit one of these states:
+
+| State | Meaning | Server authority |
+| --- | --- | --- |
+| Cached | Server-confirmed data stored for fast or offline reads. | Server remains authoritative. |
+| Draft | User-created local work not submitted yet. | Server does not know it exists. |
+| Pending | Queued intent waiting for API replay. | Server has not accepted it. |
+| Synced | Server accepted the intent and returned confirmed state. | Server authoritative. |
+| Conflict | Server rejected or could not apply the intent as-is. | Server authoritative; user/admin may resolve. |
+| Failed | Retry limit or policy stopped replay. | Server authoritative; support/admin may inspect. |
+
+Mobile UI should expose pending, conflict, and failed states clearly. It should not silently present pending local work as confirmed server truth.
+
+## Offline Action Principles
+
+Queued actions should be designed as intents:
+
+- Include a stable local ID.
+- Include an idempotency key.
+- Include action type and safe payload.
+- Include tenant/user/device context only as claims to be verified by the API.
+- Include created-at and retry metadata.
+- Avoid storing secrets or oversized binary payloads in the queue.
+- Replay only through API endpoints.
+
+The API may accept, transform, reject, or mark an action conflicted. The mobile client must render the server decision.
+
+## Sync Policy
+
+Sync behavior is controlled by the Admin/API system. The mobile client should receive policy through boot config or remote config:
+
+- Which feature modules can queue offline writes.
+- Maximum queue age.
+- Maximum retry count.
+- Backoff strategy.
+- Conflict mode.
+- Stale-data warning threshold.
+- Whether sync can run on metered networks.
+- Whether a tenant or app version is temporarily sync-blocked.
+
+## Conflict Policy
+
+Conflicts should be explicit product objects, not vague errors.
+
+A conflict should explain:
+
+- Which local action failed.
+- Which server resource or policy blocked it.
+- Whether the user can retry, edit, discard, or request support.
+- Whether admin/support should see it in conflict reports.
+
+Examples:
+
+- User edited a record that the server no longer permits.
+- Tenant billing state disabled the feature before sync.
+- App version is too old for this action.
+- User permission changed while offline.
+- Server data changed and local action would overwrite newer data.
 
 ## Environment
 
@@ -35,23 +121,7 @@ Run only the mobile-local migration path against the mobile-local connection:
 php artisan migrate --database=mobile_local --path=database/migrations/mobile-local
 ```
 
-New local-only tables should use the same path:
-
-```bash
-php artisan make:migration create_mobile_notes_table --create=mobile_notes --path=database/migrations/mobile-local --no-interaction
-```
-
-Set the migration connection explicitly:
-
-```php
-protected $connection = 'mobile_local';
-```
-
-Models that read or write those tables should also set:
-
-```php
-protected $connection = 'mobile_local';
-```
+Future local-only migrations belong under the mobile-local path and must remain local-cache/offline-work infrastructure. They should not be used to smuggle SaaS authority into the mobile client.
 
 ## Health Check
 
@@ -83,3 +153,7 @@ php artisan mobile:local-health
 ```
 
 Then run the NativePHP mobile command documented in `docs/nativephp-run.md` for the target platform.
+
+## Documentation Boundary
+
+This document defines storage principles and sync expectations only. It does not create migrations, fields, models, repositories, sync workers, or API endpoints.

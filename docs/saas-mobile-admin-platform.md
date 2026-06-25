@@ -1,0 +1,291 @@
+# SaaS Mobile Admin Platform Concept
+
+Updated: 2026-06-25
+
+This document is the canonical product and system concept for Mobile Lara. It describes product intent, business logic, admin control logic, mobile-client behavior, API principles, offline-first principles, and SaaS operating boundaries. It is a planning document only. It does not define database fields or implementation details.
+
+## One-Line Product
+
+Mobile Lara is a SaaS control plane for managed NativePHP mobile apps: administrators configure what each tenant and user can do, and the mobile client executes those rules through API-driven, offline-capable workflows.
+
+## System Split
+
+### Admin/API System
+
+The Admin/API system is the authoritative backend.
+
+It owns:
+
+- Tenant lifecycle and tenant-level entitlements.
+- User lifecycle, roles, permissions, team membership, and device access.
+- Remote config, feature flags, rollout policy, app-version policy, and maintenance mode.
+- Notification policy, report definitions, support queues, billing state, usage limits, and audits.
+- API contracts, idempotency, rate limits, conflict policy, and sync orchestration.
+
+The admin panel is built with Livewire and should stay an operational tool, not a marketing surface. It must prioritize dense, searchable, audit-friendly controls.
+
+### Mobile Client System
+
+The mobile client is a Laravel + Livewire app running inside NativePHP Mobile.
+
+It owns:
+
+- Mobile UX and local state presentation.
+- Native capability access through NativePHP plugins.
+- Secure token storage, app lock, local SQLite storage, offline queues, local drafts, local records, media metadata, and sync status.
+- API consumption, conflict surfacing, retry behavior, and local notifications.
+
+The mobile client must not invent tenant rules, billing rules, permissions, or feature availability. It renders the current server policy and gracefully degrades when offline.
+
+## Product Architecture
+
+```text
+SaaS owner
+  |
+  v
+Admin/API control plane
+  - tenants
+  - users and roles
+  - remote config
+  - feature flags
+  - versions
+  - billing
+  - notifications
+  - reports
+  - support
+  - sync policy
+  |
+  v
+Versioned API
+  - auth
+  - config
+  - domain resources
+  - offline queue replay
+  - conflicts
+  - telemetry
+  |
+  v
+NativePHP mobile client
+  - Livewire screens
+  - native plugins
+  - local SQLite
+  - secure storage
+  - offline action queue
+```
+
+## Business Logic Model
+
+The business logic should be organized around a few stable concepts.
+
+| Concept | Meaning | Authority |
+| --- | --- | --- |
+| Tenant | Paying customer workspace or organization. | Admin/API |
+| User | Human account that may belong to one or more tenants. | Admin/API |
+| Role | Named permission bundle inside a tenant. | Admin/API |
+| Permission | Atomic ability checked by API and admin actions. | Admin/API |
+| Device | Mobile installation that can be trusted, blocked, expired, or required to update. | Admin/API |
+| Feature | Business capability that can be enabled, disabled, limited, or rolled out. | Admin/API |
+| Remote config | Runtime settings delivered to mobile clients. | Admin/API |
+| App version policy | Minimum supported, recommended, blocked, or phased rollout version. | Admin/API |
+| Offline action | Mobile-side queued intent to replay through the API. | Mobile creates, API accepts/rejects |
+| Conflict | Server decision that a queued local action cannot be applied as-is. | API decides, mobile resolves or displays |
+
+## Feature Logic
+
+Every mobile feature should be described by five decisions before implementation:
+
+1. **Eligibility** - Which tenants, plans, app versions, devices, roles, or users can access it?
+2. **Configuration** - Which remote settings change behavior without a mobile release?
+3. **Offline behavior** - Is the feature read-only offline, draftable offline, queueable offline, or online-only?
+4. **Sync behavior** - What is idempotent, conflict-prone, retryable, or discardable?
+5. **Audit behavior** - Which admin-visible events prove who did what, when, from which device?
+
+No feature should exist only as a mobile screen. Each feature needs an admin story, API story, mobile story, support story, and failure story.
+
+## Admin Control Logic
+
+Admin controls should follow a layered model:
+
+1. **Global SaaS controls** - Platform-wide defaults, supported app versions, incident banners, global maintenance, global feature kill switches.
+2. **Tenant controls** - Plan, quotas, enabled modules, data retention, notification defaults, support SLA, billing state.
+3. **Role controls** - Permissions and approval requirements for specific work.
+4. **User controls** - Invitations, suspension, MFA/app-lock requirements, notification preferences, support context.
+5. **Device controls** - Device trust, last seen, app version, push token state, blocked status, forced logout.
+6. **Feature controls** - Flags, staged rollout cohorts, limits, remote copy, risk gates, rollback policy.
+7. **Sync controls** - Allowed offline queue types, retry limits, conflict mode, stale-data limits, and server-side replay windows.
+
+Admin changes must be auditable and reversible where possible. Dangerous controls should require explicit confirmation and should produce an audit event that names the actor, scope, old value, new value, and reason.
+
+## Mobile User Flows
+
+### First Launch
+
+1. Mobile app opens inside NativePHP.
+2. App checks local secure storage for tokens and local SQLite for cached boot state.
+3. If no valid session exists, the app shows login/register/forgot-password flows.
+4. After authentication, the app requests boot config: tenant memberships, user permissions, app-version policy, feature flags, remote config, sync policy, and notification requirements.
+5. App initializes local state and renders only permitted screens.
+
+### Daily Use
+
+1. User opens app and sees the dashboard.
+2. Mobile loads cached state immediately when safe.
+3. App refreshes boot config and pending sync state when online.
+4. Actions either execute online immediately or enter the offline queue if the feature allows queuing.
+5. User sees sync status, offline banner, pending actions, and conflicts without needing admin knowledge.
+
+### Offline Work
+
+1. Network state changes to offline or fallback connectivity fails.
+2. App keeps permitted offline-capable screens usable.
+3. Local actions are stored as intent records, not as trusted server facts.
+4. App shows pending count and last sync state.
+5. When connectivity returns, queued actions replay through the API with idempotency keys.
+6. Server accepts, rejects, or returns conflicts. Mobile updates local state from server response.
+
+### Forced Update
+
+1. App requests boot config.
+2. API returns version policy.
+3. If app version is blocked, the mobile client prevents normal operation and shows update instructions.
+4. If app version is deprecated, the mobile client warns while allowing limited operation.
+5. Admin can target version policy by platform, tenant, risk level, or rollout cohort.
+
+### Support Flow
+
+1. User opens support inside mobile.
+2. App includes safe diagnostic context: tenant, user, app version, device class, sync status, and recent non-sensitive errors.
+3. API creates a support case.
+4. Admin/support user sees case timeline, device state, plan, recent config changes, and sync conflicts.
+5. Support actions can request logs, ask user to retry, force config refresh, or escalate.
+
+## API Principles
+
+The API must be boring, explicit, and versioned.
+
+- Use `routes/api.php` and stateless API middleware for mobile API routes.
+- Use token authentication appropriate for a first-party mobile client.
+- Return shaped resources, not raw models.
+- Version responses that mobile clients depend on.
+- Include server time, config version, and sync cursor metadata where relevant.
+- Use idempotency keys for replayable write actions.
+- Rate-limit auth, sync replay, support, notification registration, and high-volume telemetry endpoints.
+- Make authorization server-side on every read and write.
+- Never trust mobile-provided tenant IDs, role names, permission flags, price/plan data, or feature flags.
+- Prefer additive API changes; deprecate with app-version policy before removing behavior.
+- Return explicit error categories: validation, unauthorized, forbidden, conflict, stale client, maintenance, rate limited, and retry later.
+
+## Offline-First Principles
+
+Offline-first does not mean serverless. It means useful local work with server authority.
+
+- Local SQLite stores cache, drafts, pending actions, local-only history, and safe metadata.
+- Secure tokens and secrets belong in secure storage, not SQLite.
+- Every queued write is an intent that the API may accept, transform, reject, or mark conflicted.
+- Queued actions need stable client IDs and idempotency keys.
+- Sync should be incremental, resumable, and visible to the user.
+- Conflicts should be explicit admin/support objects when they affect business data.
+- Offline screens should show freshness and limitations.
+- The app should never hide that a server decision is pending.
+
+## SaaS Operating Principles
+
+### Multi-Tenancy
+
+Tenant isolation is a product guarantee, not just a query filter. Every admin action, API request, mobile boot payload, report, support view, and notification must be scoped to the correct tenant.
+
+### Billing And Entitlements
+
+Billing controls feature access, usage limits, support level, data retention, and rollout eligibility. Mobile clients should receive entitlement results, not billing internals.
+
+### Observability
+
+The admin system should expose:
+
+- App version adoption.
+- Active devices and blocked devices.
+- Sync health and conflict rate.
+- Notification delivery health.
+- Feature flag rollout status.
+- API error rate by tenant and app version.
+- Support case load and response status.
+
+### Security
+
+Security is layered:
+
+- API authentication and token rotation.
+- Device trust and forced logout.
+- Server-side policies and tenant scope.
+- Role and permission checks.
+- Audit logs for admin and sensitive mobile actions.
+- App-lock or PIN/biometric controls for local access.
+- No secrets in code, docs, local SQLite, or public logs.
+
+### Rollout Discipline
+
+Every major feature should be introduced as:
+
+1. Backend/API capability hidden behind admin-only control.
+2. Admin control and audit trail.
+3. Mobile UI behind a feature flag.
+4. Internal tenant rollout.
+5. Limited tenant rollout.
+6. General availability.
+7. Report/support readiness.
+
+## Optimized Product Slices
+
+The product should be built in slices that each prove the full control loop.
+
+### Slice 1: Managed Mobile Boot
+
+Admin defines tenant, user, feature flags, remote config, and minimum app version. Mobile authenticates, fetches boot config, renders permitted navigation, and blocks if version policy requires it.
+
+### Slice 2: Offline Records
+
+Admin enables a records module for selected tenants. Mobile creates local records offline, queues sync intents, replays through the API, and exposes conflicts. Admin sees sync status and conflict reports.
+
+### Slice 3: Notifications
+
+Admin defines notification templates, channels, quiet hours, and tenant defaults. Mobile registers device tokens, receives remote/local notification behavior, and stores safe local notification history.
+
+### Slice 4: Support And Diagnostics
+
+Mobile sends support tickets with safe diagnostics. Admin sees user, tenant, device, app version, recent sync status, and recent config changes.
+
+### Slice 5: Billing And Plan Controls
+
+Admin maps plan state to entitlements and quotas. Mobile only sees allowed/denied capability state and user-friendly upgrade/contact-support messaging.
+
+## Boundaries
+
+Do not implement these during documentation/planning work:
+
+- Database fields.
+- Migrations.
+- API controllers.
+- Livewire admin screens.
+- Policies.
+- Billing provider integrations.
+- Push provider integrations.
+- Native plugin integrations.
+- Application logic.
+
+Those belong in future implementation prompts with tests and acceptance criteria.
+
+## Risks
+
+| Risk | Mitigation |
+| --- | --- |
+| Mobile duplicates server business rules | Keep mobile as renderer/executor of API config and permissions. |
+| Offline data becomes trusted fact | Treat queued actions as intents until API confirms. |
+| Feature flags become untraceable | Require admin audit events for flag changes. |
+| Tenants leak data through reports/support | Scope every report and support surface to tenant and role. |
+| App versions fragment API behavior | Version boot payloads and deprecate through app-version policy. |
+| Billing controls become UI-only | Enforce entitlements in API policies and admin actions. |
+| Native permissions feel invasive | Request permissions just-in-time with admin-configured purpose copy. |
+
+## Success Criteria
+
+The concept is successful when a tenant admin can change a mobile capability without shipping a mobile build, the mobile app respects that change after config refresh, the API enforces it even if the mobile app is stale, and support can explain what happened from audit and sync records.

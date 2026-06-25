@@ -2,188 +2,150 @@
 
 Audit date: 2026-06-25
 
-Scope: inspection only. This document records the current Laravel, frontend, NativePHP, and MCP status without changing application logic.
+Scope: documentation and planning only. This audit compares the current repository direction with the optimized SaaS mobile + admin concept. It does not request or create application logic, schema, migrations, or API endpoints.
 
 ## Executive Summary
 
-- The project is a minimal Laravel application with one public web route, SQLite-backed app services, Blade rendering, Vite, and Tailwind CSS.
-- NativePHP Mobile is installed and configured for both platforms, with a generated native wrapper tracked through NativePHP files and the generated `nativephp/` directory ignored.
-- NativePHP has 18 registered installed plugins covering browser, camera, device, dialog, file, microphone, network, share, system, permissions, fullscreen, loaders, splash screen, in-app update, in-app reviews, screenshot blocking, double-back-close, and locales.
-- Livewire is not installed. The current UI is plain Blade.
-- Tailwind CSS is installed through the Vite plugin.
-- Premium/private NativePHP packages such as biometrics, geolocation, scanner, secure storage, background tasks, and local notifications are not installed because marketplace repository credentials are not configured in this checkout.
-- Native build tooling is incomplete on this machine: Java and CocoaPods are present, but Xcode, Android Studio, and Gradle were not detected by `php artisan native:debug`.
+Mobile Lara should be treated as a two-system SaaS platform:
 
-## Project Structure Snapshot
+1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the control plane.
+2. **Mobile client system** - Laravel plus Livewire running inside NativePHP Mobile. This is the managed mobile edge client.
 
-- Laravel app code: `app/Models/User.php`, `app/Providers/AppServiceProvider.php`, and `app/Providers/NativeServiceProvider.php`.
-- Routing: `routes/web.php` currently exposes only `GET /`.
-- Blade UI: `resources/views/welcome.blade.php`.
-- NativePHP config: `config/nativephp.php`, `nativephp.lock`, `native`, `database/nativephp.sqlite`, and the generated ignored `nativephp/` directory.
-- Frontend tooling: `resources/css/app.scss`, `resources/js/app.js`, `vite.config.js`, `package.json`, and `package-lock.json`.
-- Database: SQLite app database, default Laravel migrations for users/cache/jobs, factories, and seeders.
-- Tests: default Pest feature/unit tests plus `tests/Feature/NativePhpConfigurationTest.php`.
-- MCP/tooling: `.mcp.json`, `.codex/config.toml`, `.cursor/mcp.json`, `opencode.json`, `.codebase-memory.json`, `.cbmignore`, and `boost.json`.
+The repository already contains substantial mobile-client concepts: Livewire mobile screens, NativePHP services, mobile-local models, local SQLite migrations, offline action infrastructure, permission center ideas, records, media, check-ins, scan history, notifications, and sync status. The admin/API control plane is documented as the source of authority and should be implemented in future slices, not during documentation work.
 
-## Installed Versions
+## Current Product Assets
 
-| Package / Runtime | Current status | Source checked |
+### Mobile Client Assets
+
+The repository contains mobile-oriented classes and views for:
+
+- Authentication, registration, password reset, email verification, sessions, app unlock, PIN, and account deletion.
+- Dashboard, create flow, search, profile, settings, developer/debug screens, permissions, storage, and legal pages.
+- Offline banner, sync status, network status, toast center, and conflict screens.
+- Records, record details, categories, tags, notes, attachments, and activity timeline.
+- Media capture/gallery, file manager, voice notes, scanner demo, scan history, location check-in, and check-in history.
+- Local notifications and schedules.
+
+These assets should be understood as the mobile-client surface. They must receive business authority through the API and admin-controlled config.
+
+### Local-Mobile Assets
+
+The repository contains local mobile infrastructure for:
+
+- A dedicated `mobile_local` SQLite connection.
+- Local settings and health checks.
+- Offline actions and conflict fields.
+- Local records, media, voice notes, check-ins, scan history, notifications, schedules, categories, tags, notes, attachments, and activity logs.
+- Repository/service classes for local storage operations and sync work.
+
+Local storage is useful for offline resilience, but it is not the source of tenant, billing, permission, or feature truth.
+
+### NativePHP Assets
+
+NativePHP Mobile is configured with plugins and services around:
+
+- Browser, camera, device, dialog, file, microphone, network, share, system, permissions, fullscreen, loader, splash screen, in-app update, in-app reviews, screenshot blocking, double-back-close, and locales.
+
+Native capabilities should be exposed through product slices only when admin policy, API behavior, permission copy, and mobile UX are all defined.
+
+## Target Product Gaps
+
+The optimized SaaS product still needs these concepts to be implemented in future work:
+
+| Area | Target behavior |
+| --- | --- |
+| Admin/API control plane | Tenant, user, role, permission, device, config, feature flag, billing, support, report, audit, and sync policy management. |
+| API boot payload | Mobile receives tenant memberships, permissions, feature flags, remote config, app-version policy, and sync policy. |
+| App-version control | Admin can block, warn, or require update by platform/version/tenant/cohort. |
+| Feature flag rollout | Features can be enabled globally, per tenant, per role, per app version, or per cohort. |
+| Billing entitlements | API enforces plan access and mobile only displays allowed/denied states. |
+| Support operations | Mobile can create cases with safe diagnostics; admin/support can inspect context and sync health. |
+| Reports | Admin can report app adoption, device health, sync health, notification health, usage, support, and billing state. |
+| Notification policy | Admin controls templates, channels, quiet hours, device targeting, and delivery health. |
+| Conflict governance | API decides conflict state; mobile displays and resolves according to policy; admin can monitor conflict rate. |
+
+## Business Logic Audit
+
+Future feature work must not start from a screen. Each feature must be documented and implemented across:
+
+- Admin control behavior.
+- API request/response behavior.
+- Mobile display behavior.
+- Offline behavior.
+- Sync/conflict behavior.
+- Support behavior.
+- Billing/entitlement behavior if applicable.
+- Audit behavior.
+
+If one of those perspectives is missing, the feature is not yet product-ready.
+
+## API Audit Principles
+
+Boost documentation confirms Laravel's API routes are stateless and Laravel supports API backends for mobile apps. Future API work should use:
+
+- Token authentication for mobile.
+- Server-side policies for authorization.
+- Shaped resources for responses.
+- Versioned payloads for mobile-dependent behavior.
+- Rate limits for auth, sync, support, notifications, and telemetry.
+- Idempotency keys for queued offline writes.
+- Explicit error categories for validation, forbidden, conflict, stale version, maintenance, and retry-later states.
+
+## Offline-First Audit Principles
+
+Offline-first behavior should be constrained:
+
+- Local SQLite can store cache, drafts, local records, sync metadata, and queued intents.
+- Secure tokens must not be stored in SQLite.
+- Queued writes are not trusted facts until the API confirms them.
+- Mobile should show last sync, pending count, offline reason, and conflict state.
+- API must be able to reject stale, unauthorized, duplicate, or out-of-policy queued actions.
+
+## Admin Control Audit Principles
+
+Admin controls should be:
+
+- Tenant-scoped.
+- Permission-protected.
+- Auditable.
+- Reversible where possible.
+- Safe by default.
+- Designed for support and operations, not just configuration.
+
+Every admin action that can change mobile behavior should include the scope, actor, old value, new value, and reason in the audit model when implemented.
+
+## Risk Register
+
+| Risk | Why it matters | Documentation decision |
 | --- | --- | --- |
-| PHP | 8.5 / host PHP 8.5.7 in NativePHP debug | Laravel Boost, `native:debug` |
-| Laravel Framework | 13.17.0 | Laravel Boost, `php artisan --version`, Composer |
-| Livewire | Not installed | Composer installed package list |
-| Tailwind CSS | 4.3.1 | Laravel Boost, `npm ls tailwindcss` |
-| `@tailwindcss/postcss` | 4.3.1 | `npm ls @tailwindcss/postcss` |
-| `sass-embedded` | 1.100.0 | `npm ls sass-embedded` |
-| Vite | 8.1.0 | `npm ls vite` |
-| NativePHP Mobile | 3.3.6 | Composer, `php artisan native:debug` |
-| Embedded NativePHP PHP | 8.5.7 | `php artisan native:debug` |
-| Laravel Boost | 2.4.10 | Laravel Boost application info |
-| Laravel MCP | 0.8.1 | Laravel Boost application info |
-| Pest | 4.7.3 | Laravel Boost application info |
-| PHPUnit | 12.5.29 | Laravel Boost application info |
+| Mobile screens drift ahead of server authority | Users may see actions they cannot perform. | API boot config and feature flags must drive mobile navigation and capability display. |
+| Offline queue becomes business truth | Server-side authorization and billing can be bypassed conceptually. | Offline actions are intents until API confirmation. |
+| Admin flags become untraceable | Support cannot explain changed behavior. | Feature/config changes require audit trails. |
+| App-version policy is ignored | Old clients keep calling stale API behavior. | App-version policy is part of mobile boot and API enforcement. |
+| Tenant data leaks through support/reporting | SaaS trust is broken. | Tenant scoping applies to support and reports as strongly as to core data. |
 
-## NativePHP Status
+## Next Planning Slices
 
-NativePHP Mobile is installed through Composer and the project has already been initialized for mobile. NativePHP's generated native application directory is present as an ignored/generated artifact, which matches the NativePHP documentation guidance that the generated `nativephp/` folder is ephemeral and should not be committed as application source.
+1. Managed mobile boot: authentication, tenant selection, remote config, feature flags, app-version policy.
+2. Offline records: admin-enabled module, local queue, replay, conflict reporting.
+3. Notifications: device registration, templates, delivery policy, local history.
+4. Support and diagnostics: safe mobile diagnostics, support case timeline, admin triage.
+5. Billing and entitlements: plan-driven capability limits enforced by API.
 
-Current `config/nativephp.php` highlights:
-
-- App ID: `dev.andrejprus.mobilelara` by default.
-- Deep link scheme: `mobilelara` by default.
-- Deep link host: `mobile-lara.test` by default.
-- Start URL: `/`.
-- Runtime mode: `persistent`.
-- iOS permission strings are configured for camera, microphone, photo library, and adding to photo library.
-- Android theme primary color is configured as `#04ABA6`.
-
-`App\Providers\NativeServiceProvider::plugins()` registers all currently installed NativePHP plugins.
-
-## Installed NativePHP Plugins
-
-| Plugin | Version | Current role |
-| --- | --- | --- |
-| `nativephp/mobile` | 3.3.6 | NativePHP Mobile runtime |
-| `nativephp/mobile-browser` | 1.0.1 | In-app browser bridge |
-| `nativephp/mobile-camera` | 1.0.3 | Camera bridge |
-| `nativephp/mobile-device` | 1.0.2 | Device info, battery, flashlight, and basic vibration bridge |
-| `nativephp/mobile-dialog` | 1.0.1 | Native dialog bridge |
-| `nativephp/mobile-file` | 1.0.1 | File picker / file bridge |
-| `nativephp/mobile-microphone` | 1.0.1 | Microphone recording bridge |
-| `nativephp/mobile-network` | 1.0.1 | Network status bridge |
-| `nativephp/mobile-share` | 1.0.1 | Native share bridge |
-| `nativephp/mobile-system` | 1.0.2 | System bridge |
-| `bhargavdetroja/nativephp-all-permission-handle` | 1.0.2 | Permission request/status bridge |
-| `codingwithrk/double-back-to-close` | 1.0.0 | Android-style double-back close behavior |
-| `codingwithrk/no-screenshot` | 1.0.0 | Screenshot prevention/detection bridge |
-| `developernauts/nativephp-mobile-locales` | 1.0.1 | Locale integration |
-| `kevinbatdorf/nativephp-fullscreen` | 0.1.0 | Fullscreen bridge |
-| `mobikul/mobikul_loader` | 1.0.2 | Native loader bridge |
-| `s2br/nativephp-mobile-splashscreen` | 1.3.0 | Splash screen integration |
-| `wilsonatb/in-app-update` | 1.0.1 | Android in-app update bridge |
-| `wilsonatb/nativephp-in-app-reviews` | 1.0.4 | Native in-app review bridge |
-
-`php artisan native:plugin:validate` passed for the installed plugins, with non-fatal warnings for `developernauts/nativephp-mobile-locales` and `s2br/nativephp-mobile-splashscreen` because they do not expose bridge functions or native code directories. That looks consistent with hook/config-style plugins, but should be checked again when their features are actively used.
-
-## Missing Packages And Access Blocks
-
-The packages below are not installed in this checkout.
-
-### First-Party NativePHP Premium / Private Packages
-
-| Package | Status | Next action |
-| --- | --- | --- |
-| `nativephp/mobile-biometrics` | Not installed | Requires NativePHP marketplace/private Composer access. |
-| `nativephp/mobile-geolocation` | Not installed | Requires NativePHP marketplace/private Composer access. |
-| `nativephp/mobile-scanner` | Not installed | Requires NativePHP marketplace/private Composer access. |
-| `nativephp/mobile-secure-storage` | Not installed | Requires NativePHP marketplace/private Composer access. |
-| `nativephp/mobile-background-tasks` | Not installed | Requires NativePHP marketplace/private Composer access. |
-| `nativephp/mobile-local-notifications` | Not installed | Requires NativePHP marketplace/private Composer access. |
-
-Optional first-party marketplace packages to evaluate later:
-
-- `nativephp/mobile-firebase` for push notifications and Firebase-backed capabilities.
-
-### Community Marketplace Packages
-
-| Capability | Package seen in marketplace | Current status |
-| --- | --- | --- |
-| Pro vibration / haptics | `jvdluk/pro-vibration` | Not installed. Basic `Device.Vibrate` is already available through `nativephp/mobile-device`. |
-| Contacts | `srwiez/nativephp-mobile-contacts` | Not installed. |
-| NFC | `weswecan/nfc` | Not installed. |
-| Calendar | `srwiez/nativephp-mobile-calendar` | Not installed. |
-| Screenshot capture | `srwiez/nativephp-mobile-screenshots` | Not installed. Screenshot prevention/control is already installed through `codingwithrk/no-screenshot`. |
-
-### App Stack Packages
-
-| Package | Status | Recommendation |
-| --- | --- | --- |
-| `livewire/livewire` | Not installed | Decide whether the first mobile UX needs Livewire 4 interactivity or should remain Blade-only for the first slice. |
-
-## Current Risks And Gaps
-
-- The application does not yet have a real mobile product workflow. It only exposes the default root route and Blade welcome view.
-- Native permissions are configured broadly, but no app screens currently explain or exercise the related capabilities.
-- Premium NativePHP repository credentials are not configured. Do not commit marketplace tokens, license keys, API keys, or Composer auth secrets.
-- Xcode, Android Studio, and Gradle were not detected. iOS and Android builds should be treated as blocked until local tooling is installed.
-- Native plugin registration exists, but feature-level verification still needs simulator/device runs after each capability is wired into the UI.
-- Livewire is absent, so there are no Livewire components, tests, or hydration concerns yet.
-- Any future query/data work must continue to follow the project rule of Eloquent-only queries, no raw SQL, no queries in Blade, and eager-loaded data flow from controller/action to view.
-
-## Next Implementation Steps
-
-1. Define the first real mobile app slice: for example authentication, dashboard, camera capture, scanner flow, secure settings, offline location flow, or notifications.
-2. Decide whether to install Livewire 4 for the mobile UI or keep the initial version Blade-only.
-3. Install missing native build tools: Xcode, Android Studio/SDK, and Gradle. Then rerun `php artisan native:debug`.
-4. Configure NativePHP marketplace credentials outside git only if premium packages are required:
-
-   ```bash
-   composer config repositories.nativephp-plugins composer https://plugins.nativephp.com
-   composer config --auth http-basic.plugins.nativephp.com <email> <license-key>
-   ```
-
-5. Install only the premium/community plugin packages that are needed by the chosen first slice.
-6. Rebuild native artifacts after any plugin or NativePHP config change:
-
-   ```bash
-   php artisan native:install both --no-interaction
-   php artisan native:plugin:list
-   php artisan native:plugin:validate
-   ```
-
-7. Build the first mobile route/view using named routes, Blade SSR, controller/action-driven data loading, and tests.
-8. Tighten permission copy in `config/nativephp.php` once the exact user-facing purpose of each permission is known.
-9. Add focused tests for NativePHP configuration, plugin registration, and the first mobile workflow.
-10. Run verification before release work:
-
-    ```bash
-    php artisan test --compact
-    npm run build
-    php artisan native:debug
-    ```
-
-11. Prepare release assets later: icons, splash assets, Android signing, iOS team/app identifiers, store metadata, and environment-specific config.
-
-## Verification Commands Used
+## Verification Commands For Future Implementation
 
 ```bash
-php artisan --version
-php artisan about --only=environment,cache,database,drivers,queues,mail
 php artisan route:list --except-vendor
+php artisan test --compact
+npm run build
 php artisan native:debug --no-interaction
-php artisan native:plugin:list
 php artisan native:plugin:validate
-composer show --format=json
-composer show livewire/livewire --all
-npm ls tailwindcss @tailwindcss/postcss sass-embedded vite --depth=0
-git status --short --branch
 ```
 
-## Sources
+## Sources And References
 
-- NativePHP Mobile installation documentation: https://nativephp.com/docs/mobile/3/getting-started/installation
-- NativePHP plugin usage documentation: https://nativephp.com/docs/mobile/3/plugins/using-plugins
-- NativePHP marketplace catalogue: https://nativephp.com/plugins/marketplace
-- NativePHP first-party marketplace catalogue: https://nativephp.com/plugins/marketplace?author=974
-- Laravel package discovery documentation: https://github.com/laravel/docs/blob/13.x/packages.md#package-discovery
-- Laravel configuration and environment documentation: https://github.com/laravel/docs/blob/13.x/configuration.md
+- [SaaS Mobile Admin Platform Concept](saas-mobile-admin-platform.md)
+- [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md)
+- Laravel Boost application info and documentation search.
+- Laravel API routing, authentication, resources, and JSON testing documentation.
+- Livewire 4 project skill guidance.

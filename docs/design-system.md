@@ -1,18 +1,47 @@
-# Mobile Design System
+# Mobile And Admin Design System
 
 Updated: 2026-06-25
 
-This app uses Blade components and Tailwind utility classes as the mobile design system. Keep UI in Livewire + Blade. Do not add React, Vue, Inertia, Ionic, Capacitor, or component CSS frameworks for app screens.
+This document defines UI principles for the two-system product:
 
-## Principles
+1. **Admin/API system** - Livewire admin panel for SaaS operations.
+2. **Mobile client system** - Livewire mobile app inside NativePHP.
+
+The two interfaces should feel related but serve different jobs. Admin is an operational control plane. Mobile is a resilient task-focused client.
+
+## Shared Principles
+
+- Keep UI in Livewire + Blade.
+- Do not add React, Vue, Inertia, Ionic, Capacitor, or component CSS frameworks for app screens.
+- Use Tailwind utility classes and project Blade components.
+- Keep visible state honest: pending, offline, conflict, disabled, blocked, and deprecated states must be clear.
+- Never rely on UI hiding as authorization.
+- Show server-controlled capability state when a feature is disabled by plan, role, version, tenant, or app policy.
+
+## Mobile UX Principles
+
+The mobile client should be calm, direct, and explicit about sync state.
 
 - Prefer `<x-mobile.*>` Blade components over repeated markup.
-- Style with Tailwind utility classes in Blade components.
 - Keep mobile tap targets at `min-h-12` or larger.
 - Use `gap-*` for sibling spacing instead of stacked margins.
 - Use `rounded-lg` as the default radius for controls, cards, and panels.
 - Use `dark:` classes in every reusable component that owns color.
 - Forward attributes so Livewire directives like `wire:model`, `wire:click`, `wire:submit`, and `wire:navigate` continue to work.
+- Show last sync, pending count, network status, and conflict state near affected workflows.
+- Request NativePHP permissions just in time and explain the business purpose.
+
+## Admin UX Principles
+
+The admin panel should be dense, searchable, and audit-friendly.
+
+- Optimize for repeated operations, not landing-page presentation.
+- Use tables, filters, tabs, segmented controls, and clear state badges.
+- Keep destructive or broad controls behind confirmation.
+- Show scope before action: global, tenant, role, user, device, feature, version, or sync policy.
+- Show audit context for sensitive settings: actor, time, old value, new value, reason.
+- Prefer compact forms with grouped sections for remote config, feature flags, app versions, billing, support, and notification policy.
+- Do not hide operational errors behind generic success messages.
 
 ## Design Tokens
 
@@ -75,7 +104,7 @@ Avoid larger radii unless the element is circular or a bottom sheet edge.
 
 Do not scale font sizes with viewport width. Keep `tracking-normal` for display text.
 
-## Components
+## Mobile Components
 
 All reusable mobile components live in `resources/views/components/mobile`.
 
@@ -103,6 +132,23 @@ All reusable mobile components live in `resources/views/components/mobile`.
 | `<x-mobile.network-error-state>` | Connection error state with optional Livewire retry action. |
 | `<x-mobile.bottom-navigation>` | Primary mobile navigation. |
 
+## Product State Badges
+
+The SaaS product needs consistent state language.
+
+| State | Meaning |
+| --- | --- |
+| Enabled | Feature or permission is available now. |
+| Disabled | Admin/API policy denies the feature. |
+| Pending | Local action is queued or waiting for server confirmation. |
+| Synced | Server accepted local action. |
+| Conflict | Server could not apply local action as-is. |
+| Blocked | App version, device, tenant, billing, or permission policy prevents use. |
+| Deprecated | Current app version or feature path still works but should be upgraded. |
+| Offline | Network is unavailable or fallback connectivity failed. |
+
+Mobile and admin should use the same state names in copy, badges, filters, support tickets, and reports.
+
 ## Buttons
 
 Button variants:
@@ -123,43 +169,19 @@ Button sizes:
 | `md` | `min-h-12 px-4 text-sm` |
 | `lg` | `min-h-14 px-5 text-base` |
 
-Example:
-
-```blade
-<x-mobile.button type="submit" variant="accent" size="lg" full wire:click="save">
-    Save changes
-</x-mobile.button>
-```
-
 Livewire loading is handled with `data-loading:pointer-events-none data-loading:opacity-70`.
 
-## Loading And Error States
+## Loading, Error, And Offline States
 
-Use Livewire-aware loading components for every page action that can wait on the server:
+Use Livewire-aware loading components for every page action that can wait on the server. Mobile pages should distinguish:
 
-```blade
-<x-mobile.loading-state target="saveSettings" message="Saving settings..." />
-<x-mobile.page-skeleton wire:loading.delay wire:target="saveSettings" />
-<x-mobile.submit-button target="saveSettings" loading-label="Saving settings...">
-    Save settings
-</x-mobile.submit-button>
-```
-
-Use network and empty states as explicit branches in page components:
-
-```blade
-@if ($hasNetworkError)
-    <x-mobile.network-error-state retry-action="retrySettings" />
-@elseif (count($settings) === 0)
-    <x-mobile.empty-state title="No settings available" description="Try reloading settings.">
-        <x-slot:action>
-            <x-mobile.retry-button wire:click="retrySettings" target="retrySettings">
-                Reload settings
-            </x-mobile.retry-button>
-        </x-slot:action>
-    </x-mobile.empty-state>
-@endif
-```
+- Loading from local cache.
+- Loading from API.
+- Offline but usable.
+- Offline and blocked.
+- Pending sync.
+- Conflict requiring user action.
+- Policy blocked by admin/API.
 
 ## Forms
 
@@ -171,29 +193,11 @@ Inputs, textareas, and selects share the same form pattern:
 - hint: `text-sm text-app-muted dark:text-zinc-400`
 - error: `text-sm font-medium text-red-600 dark:text-red-400`
 
-Example:
-
-```blade
-<x-mobile.input
-    name="email"
-    label="Email"
-    type="email"
-    autocomplete="email"
-    wire:model.live="email"
-/>
-```
+Admin forms should also show scope and audit reason for sensitive changes.
 
 ## Cards And Panels
 
 Use cards for individual repeated items, forms, and framed tools. Do not nest cards inside cards.
-
-```blade
-<x-mobile.card title="Profile" description="Local account details">
-    <p class="text-sm leading-6 text-app-muted dark:text-zinc-400">
-        Account settings live here.
-    </p>
-</x-mobile.card>
-```
 
 Default card styling:
 
@@ -203,26 +207,11 @@ rounded-lg border border-app-line bg-app-surface p-5 shadow-sm dark:border-zinc-
 
 ## Dark Mode
 
-Tailwind's `dark:` variant is used directly in Blade components. The layout declares:
-
-```text
-bg-app-bg text-app-ink dark:bg-zinc-950 dark:text-zinc-100
-```
-
-Reusable components should include dark-mode classes anywhere they own color. Prefer:
-
-- `dark:bg-zinc-950` for the app canvas.
-- `dark:bg-zinc-900` for surfaces.
-- `dark:border-zinc-800` or `dark:border-zinc-700` for borders.
-- `dark:text-zinc-100` for primary text.
-- `dark:text-zinc-400` for muted text.
-- `dark:bg-emerald-400 dark:text-zinc-950` for accent actions.
-
-The app does not yet include a theme toggle. Tailwind's default dark mode behavior follows the user's system preference unless a future toggle changes the strategy.
+Tailwind's `dark:` variant is used directly in Blade components. Reusable components should include dark-mode classes anywhere they own color. The app does not yet include a theme toggle. Tailwind's default dark mode behavior follows the user's system preference unless a future toggle changes the strategy.
 
 ## Page Layout
 
-Full-page Livewire screens render inside the shared mobile app shell:
+Full-page Livewire mobile screens render inside the shared mobile app shell:
 
 ```blade
 <section class="safe-x safe-pb flex min-h-full flex-col gap-5 py-6">
@@ -234,4 +223,6 @@ Full-page Livewire screens render inside the shared mobile app shell:
 
 The shared layout renders `<x-mobile.app-header>` and `<x-mobile.bottom-navigation>` automatically for Livewire pages. Page components should own the scrollable content only unless a route needs a special-purpose layout.
 
-Keep visible UI strings inside Blade/Livewire for now. Move them to translation files only when localization is introduced for this app.
+## Documentation Boundary
+
+This document defines UI/product principles only. It does not create components, screens, styles, translations, or application logic.

@@ -1,3 +1,49 @@
+<project-product-contract>
+
+# Mobile Lara Product Contract
+
+This repository is the planning and implementation home for a two-system SaaS mobile platform:
+
+1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
+2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
+
+The Admin/API system owns tenant authority, user authority, permissions, feature flags, remote config, app-version policy, notifications, billing, reports, support, audit, and sync decisions. The mobile client consumes those decisions through the API and may cache or queue local work, but it must never become the source of business authority.
+
+## Documentation-Only Planning Rule
+
+When the user asks for planning, product concept, documentation, system design, or architecture docs:
+
+- Write Markdown only.
+- Do not create database fields.
+- Do not create migrations.
+- Do not create API controllers.
+- Do not create Livewire components.
+- Do not create policies, jobs, services, or other application logic.
+- Do not add billing, push, storage, or NativePHP plugin integrations.
+- Record decisions, boundaries, risks, flows, and acceptance criteria instead.
+
+## Product Documentation Source
+
+Use these docs before changing the product direction:
+
+- `docs/saas-mobile-admin-platform.md`
+- `docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md`
+- `docs/mobile-stack.md`
+- `docs/nativephp-local-storage.md`
+- `docs/nativephp-run.md`
+- `docs/design-system.md`
+
+## Authority Boundary
+
+- Admin/API is authoritative for SaaS rules.
+- Mobile is authoritative only for local presentation, local drafts, local queues, and native device interaction.
+- Local SQLite stores cache, drafts, and queued intents, not trusted server facts.
+- Secure tokens belong in secure storage, not SQLite.
+- Every replayable mobile write must be idempotent at the API boundary.
+- Any feature must define admin behavior, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior before implementation.
+
+</project-product-contract>
+
 <laravel-boost-guidelines>
 === foundation rules ===
 

@@ -2,7 +2,7 @@
 
 Updated: 2026-06-25
 
-This Laravel app is initialized for NativePHP Mobile. NativePHP v3 uses the unified `NATIVEPHP_APP_ID` value for both the iOS bundle identifier and Android application ID, so the iOS and Android placeholder keys below should stay in sync unless NativePHP adds separate platform identifiers later.
+This Laravel app is initialized for NativePHP Mobile. In the optimized SaaS product, NativePHP is the mobile shell and native capability bridge. The Admin/API system remains the source of tenant, permission, feature, billing, notification, app-version, and sync policy.
 
 ## Current Placeholders
 
@@ -17,17 +17,53 @@ This Laravel app is initialized for NativePHP Mobile. NativePHP v3 uses the unif
 | Deep link host | `mobile-lara.test` |
 | Start URL | `/` |
 
-Replace `com.example.mobilelara` with a real reverse-domain identifier before signing or publishing the app.
+Replace `com.example.mobilelara` with a real reverse-domain identifier before signing or publishing.
 
-## Icon Placeholder
+## Product Release Model
 
-NativePHP expects one source icon at:
+Native builds should be treated as managed clients of the Admin/API system.
 
-```text
-public/icon.png
-```
+Each release should have:
 
-The placeholder in this repo is a generated 1024x1024 PNG with no transparency. Replace it with a production icon before release. NativePHP will resize it for iOS and Android during installation/build steps.
+- Platform: iOS, Android, or both.
+- App version and build number.
+- Minimum supported API contract.
+- Remote config schema version.
+- Feature flag compatibility.
+- Required NativePHP plugin list.
+- Permission purpose copy.
+- Rollout cohort.
+- Support and rollback notes.
+
+The admin control plane should eventually be able to mark versions as:
+
+| State | Mobile behavior |
+| --- | --- |
+| Supported | Normal operation. |
+| Recommended update | App works but shows update prompt. |
+| Deprecated | App works with warnings and possibly reduced feature access. |
+| Blocked | App blocks normal operation and directs user to update. |
+| Internal only | App is usable only for internal tenants, testers, or cohorts. |
+
+## Native Capability Policy
+
+Native permissions should be requested just in time, not all at first launch.
+
+Every NativePHP capability needs:
+
+- Admin/API feature flag.
+- Tenant and role eligibility.
+- Permission purpose copy.
+- Offline behavior.
+- Support diagnostics.
+- Audit or activity behavior if business-sensitive.
+
+Examples:
+
+- Camera capture should be enabled per tenant/feature and explain why camera access is needed.
+- File access should be scoped to the feature that needs files.
+- Microphone access should be tied to voice-note behavior.
+- Network status should drive sync/offline UX but not hide server-side errors.
 
 ## Initialize NativePHP
 
@@ -44,7 +80,7 @@ php artisan native:install ios --no-interaction
 php artisan native:install android --no-interaction
 ```
 
-The generated `nativephp/` directory is an ephemeral build artifact. NativePHP may delete and rebuild it during install/upgrade commands.
+The generated `nativephp/` directory is an ephemeral build artifact. NativePHP may delete and rebuild it during install or upgrade commands.
 
 ## Verify Local Tooling
 
@@ -53,7 +89,7 @@ php artisan native:debug --no-interaction
 php artisan native:plugin:validate
 ```
 
-Current local status at the time of this runbook:
+Known local tooling status from previous checks:
 
 - Java: present.
 - CocoaPods: present.
@@ -116,7 +152,7 @@ NativePHP Jump can serve the app for device testing without compiling a native b
 php artisan native:jump
 ```
 
-Use this when you want a quick device smoke test before setting up full simulator/emulator build tooling.
+Use this for quick device smoke tests before full simulator/emulator build tooling is available.
 
 ## Pre-Run Checklist
 
@@ -126,10 +162,32 @@ php artisan test --compact
 php artisan native:plugin:validate
 ```
 
+Also verify product policy before a real mobile release:
+
+- API boot config exists for the target app version.
+- Remote config and feature flags are compatible with the build.
+- Blocked/deprecated version policy is tested.
+- Native permission copy matches enabled features.
+- Support runbook knows the release version.
+- Sync policy is compatible with the app's offline queue format.
+
 Run `php artisan native:install both --no-interaction` again after replacing `public/icon.png`, changing app identifiers, changing NativePHP permissions, or adding/removing NativePHP plugins.
+
+## Store And Distribution Boundary
+
+Before production distribution, the project needs:
+
+- Real iOS bundle identifier and Android package name.
+- Production icon and splash assets.
+- Apple team, signing, provisioning, and bundle capabilities.
+- Android signing key and release build configuration.
+- Store metadata, privacy disclosures, and permission disclosures.
+- Version policy entered in the admin control plane.
+- Support and rollback plan for the release.
 
 ## References
 
 - NativePHP installation: https://nativephp.com/docs/mobile/3/getting-started/installation
 - NativePHP command reference: https://nativephp.com/docs/mobile/3/getting-started/commands
 - NativePHP app icons: https://nativephp.com/docs/mobile/3/the-basics/app-icon
+- Product concept: [SaaS Mobile Admin Platform Concept](saas-mobile-admin-platform.md)
