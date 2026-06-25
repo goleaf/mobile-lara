@@ -27,6 +27,8 @@ The Feature Flag Logic standard is [Feature Flag Logic](feature-flag-logic.md). 
 
 The Remote Configuration Logic standard is [Remote Configuration Logic](remote-configuration-logic.md). Audits should verify that runtime-configurable mobile behavior has allowed config type, defaults, scope, tenant overrides, mobile receive/cache rules, offline behavior, invalid-config fallback, admin safety, support visibility, audit expectations, and rollback.
 
+The Mobile Version Control Logic standard is [Mobile Version Control Logic](mobile-version-control-logic.md). Audits should verify that minimum supported versions, optional updates, forced updates, maintenance mode, outdated-client behavior, store links, update messages, support context, audit expectations, rollback, and old-version protection are documented.
+
 The role standard is [Target User Roles](user-roles.md). Audits should verify platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user visibility separately.
 
 The value standard is [SaaS Value Map](saas-value-map.md). Audits should verify that platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive clear value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags without receiving inappropriate visibility or authority.
@@ -118,6 +120,19 @@ If a future feature only satisfies the web/admin side or only the mobile side, i
 | How do tenant overrides work? | Do tenant-specific values override global defaults only inside platform, plan, permission, feature, version, and safety limits? |
 | How do admins change it? | Are owner, validation, preview/staging, reason, audit, support visibility, rollback, and affected scope documented? |
 | What if config is missing or invalid? | Does mobile use safe defaults or fail closed without exposing internals? |
+
+## Mobile Version Control Logic Audit
+
+| Version-control question | Audit lens |
+| --- | --- |
+| What minimum version applies? | Is the minimum supported version scoped by platform, channel, tenant, feature risk, API contract, or emergency state? |
+| What update state appears? | Does API resolve current, supported, optional update, recommended update, deprecated, force update, blocked, maintenance, internal-only, or unknown state? |
+| What does mobile do when outdated? | Does mobile stop protected actions, preserve safe drafts, show update guidance, and revalidate after update? |
+| How does maintenance work? | Are scope, expected end, affected operations, retry guidance, support message, and offline behavior documented? |
+| How are store links controlled? | Are platform/channel links, update messages, support messages, and message revisions Admin/API-controlled and safe? |
+| How are old versions protected? | Are stale API calls, unsafe offline replay, broken NativePHP capability paths, and known security issues blocked or limited? |
+| What can happen offline? | Does cached version policy allow only safe offline behavior and require online revalidation before replay? |
+| How do admins change policy? | Are affected scope, reason, grace period, audit, support visibility, rollback, and confirmation expectations documented? |
 
 ## SaaS Value Map Audit
 

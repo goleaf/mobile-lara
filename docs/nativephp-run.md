@@ -18,6 +18,8 @@ Native build and release work must follow [Feature Flag Logic](feature-flag-logi
 
 Native build and release work must follow [Remote Configuration Logic](remote-configuration-logic.md): bundled defaults, remote config compatibility, config freshness, tenant overrides, and invalid-config fallback must be documented before release.
 
+Native build and release work must follow [Mobile Version Control Logic](mobile-version-control-logic.md): minimum supported versions, optional updates, forced updates, maintenance mode, store links, update messages, support context, and old-version protection must be documented before release.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.
@@ -70,9 +72,12 @@ The admin control plane should eventually be able to mark versions as:
 | State | Mobile behavior |
 | --- | --- |
 | Supported | Normal operation. |
+| Optional update | App works and shows a non-blocking update prompt. |
 | Recommended update | App works but shows update prompt. |
 | Deprecated | App works with warnings and possibly reduced feature access. |
-| Blocked | App blocks normal operation and directs user to update. |
+| Force update | App blocks normal operation and directs user to update. |
+| Blocked | App blocks normal operation and directs user to update or contact support. |
+| Maintenance | App shows scoped maintenance, retry-later, or limited-mode behavior. |
 | Internal only | App is usable only for internal tenants, testers, or cohorts. |
 
 ## Native Capability Policy
@@ -202,6 +207,7 @@ Also verify product policy before a real mobile release:
 - Admin Control Center checks are complete for app-version, maintenance, force-update, feature, sync, notification, support, report, and billing behavior affected by the release.
 - Feature Flag Logic checks are complete for every enabled, beta, disabled, blocked, update-required, offline-limited, and emergency-disabled mobile capability in the release.
 - Remote Configuration Logic checks are complete for every runtime-configurable copy, limit, workflow option, offline/sync behavior, native permission wording, support prompt, notification presentation, version message, and tenant presentation value in the release.
+- Mobile Version Control Logic checks are complete for minimum supported version, optional update prompt, forced update behavior, maintenance state, store links, update messages, support context, and old-version protection.
 - Remote config and feature flags are compatible with the build.
 - Two-system boundary ownership is documented for every mobile capability in the release.
 - Admin/API responsibility ownership is documented for every mobile capability in the release.
@@ -237,6 +243,7 @@ Before production distribution, the project needs:
 - Admin Control Center logic: [Admin Control Center Logic](admin-control-center-logic.md)
 - Feature flag logic: [Feature Flag Logic](feature-flag-logic.md)
 - Remote configuration logic: [Remote Configuration Logic](remote-configuration-logic.md)
+- Mobile version control logic: [Mobile Version Control Logic](mobile-version-control-logic.md)
 - Target user roles: [Target User Roles](user-roles.md)
 - SaaS value map: [SaaS Value Map](saas-value-map.md)
 - Two-system boundary: [Two-System Boundary Logic](two-system-boundary.md)

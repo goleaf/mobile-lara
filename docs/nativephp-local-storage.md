@@ -18,6 +18,8 @@ Local storage planning must follow [Feature Flag Logic](feature-flag-logic.md). 
 
 Local storage planning must follow [Remote Configuration Logic](remote-configuration-logic.md). Mobile may cache resolved config with version and freshness state, but stale or invalid config cannot authorize protected work.
 
+Local storage planning must follow [Mobile Version Control Logic](mobile-version-control-logic.md). Mobile may preserve safe drafts and cached state during optional or forced update flows, but blocked, outdated, or unknown version policy cannot authorize protected local work or replay.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.

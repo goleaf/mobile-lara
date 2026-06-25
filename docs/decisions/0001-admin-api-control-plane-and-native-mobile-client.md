@@ -28,6 +28,8 @@ The feature flag model is defined in [Feature Flag Logic](../feature-flag-logic.
 
 The remote configuration model is defined in [Remote Configuration Logic](../remote-configuration-logic.md). The architecture must require runtime-configurable behavior to define safe config types, defaults, scope, tenant overrides, mobile receive/cache behavior, offline behavior, invalid-config fallback, admin safety, support meaning, audit expectations, and rollback before implementation.
 
+The mobile version control model is defined in [Mobile Version Control Logic](../mobile-version-control-logic.md). The architecture must require app-version-sensitive behavior to define minimum supported versions, optional updates, forced updates, maintenance mode, outdated-client responses, store links, update messages, support context, audit expectations, rollback, and old-version protection before implementation.
+
 The target role model is defined in [Target User Roles](../user-roles.md). The architecture must keep platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user boundaries distinct.
 
 The SaaS value map is defined in [SaaS Value Map](../saas-value-map.md). The architecture must preserve value for platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team without giving each stakeholder the same visibility or control.
@@ -58,6 +60,8 @@ Future Admin Control Center implementation must follow [Admin Control Center Log
 Future feature flag implementation must follow [Feature Flag Logic](../feature-flag-logic.md) before coding mobile feature availability, global/tenant/user priority, disabled states, rollout, plan limits, support, audit, or offline behavior.
 
 Future remote configuration implementation must follow [Remote Configuration Logic](../remote-configuration-logic.md) before coding configurable mobile copy, limits, thresholds, workflow options, offline behavior, sync behavior, NativePHP permission text, support prompts, notification behavior, version messaging, tenant presentation, cache behavior, validation, fallback, audit, or rollback.
+
+Future mobile version control implementation must follow [Mobile Version Control Logic](../mobile-version-control-logic.md) before coding minimum supported versions, optional updates, forced updates, maintenance mode, outdated app behavior, store links, update messages, support context, audit, rollback, or old-version protection.
 
 The Admin/API system must remain the owner of the responsibility areas documented in [Admin/API Responsibilities](../admin-api-responsibilities.md). The mobile client receives outcomes from those responsibilities; it does not duplicate or override them.
 
@@ -118,6 +122,7 @@ The mobile client would be implemented as a fully native iOS/Android application
 - Feature work must document Admin Control Center scope, authorized role, mobile effect, API context, audit expectation, support meaning, offline behavior, and risk before implementation.
 - Feature work must document feature flag priority, disabled mobile state, admin impact, rollout path, plan-limit behavior, support meaning, audit expectation, offline behavior, and risk before implementation.
 - Feature work must document remote configuration type, default, scope, tenant override, mobile cache freshness, offline behavior, invalid-config fallback, support meaning, audit expectation, and rollback before implementation.
+- Feature work must document mobile version policy, optional update behavior, forced update behavior, maintenance behavior, store links, update messages, support meaning, audit expectation, and old-version protection before implementation.
 - Feature work must identify system ownership: what Admin/API owns, what mobile owns, what is API-only, what can be cached locally, what admin controls remotely, and how offline reconciliation works.
 - Feature work must identify API-first behavior: why mobile talks to API, which context is returned, which response states/errors exist, how sync/conflict works, and how tenant scope is protected.
 - Feature work must identify responsibility ownership: which Admin/API responsibility owns tenant, user, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
