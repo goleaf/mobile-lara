@@ -10,6 +10,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this foundation
 keeps mobile clients dependent on Admin/API authority instead of local
 assumptions.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+foundation proves the API-first bridge between the SaaS control center and the
+mobile workforce/client platform.
+
 Remote Configuration Logic is defined in
 `../../docs/remote-configuration-logic.md`. Future bootstrap and config
 contracts should return resolved mobile-safe config values, config version,

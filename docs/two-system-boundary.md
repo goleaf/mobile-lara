@@ -17,6 +17,10 @@ Use this document with [Product Vision](product-vision.md): the boundary exists
 because the product needs both central SaaS authority and resilient mobile
 execution.
 
+Use this document with [Product Positioning](product-positioning.md): the
+boundary is what keeps the SaaS control center and mobile workforce/client
+platform coordinated without collapsing into web-only or mobile-only design.
+
 The simplest rule is:
 
 - **Admin/API decides** what is allowed, configured, billable, reportable, auditable, supported, secure, and synced.

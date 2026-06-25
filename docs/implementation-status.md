@@ -9,6 +9,9 @@ state before new implementation work continues.
 Product Vision is defined in `docs/product-vision.md`. Status is tracked
 against the vision before implementation grows.
 
+Product Positioning is defined in `docs/product-positioning.md`. Status is also
+tracked against the six positioning angles before implementation grows.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

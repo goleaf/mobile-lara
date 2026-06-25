@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Product Positioning documentation so the SaaS control center,
+  mobile workforce/client platform, API-first system, offline-capable mobile
+  system, feature-controlled platform, tenant-based product, and web-only vs
+  mobile-only tradeoffs stay explicit across the Markdown corpus.
 - Clarified Product Vision documentation so the SaaS problem, admin users,
   mobile users, two-system need, admin-controlled mobile behavior,
   NativePHP + Livewire rationale, and SaaS scalability logic stay explicit.

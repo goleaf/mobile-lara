@@ -7,6 +7,10 @@ plane and the NativePHP mobile client.
 Product Vision is defined in `../../docs/product-vision.md`: API contracts exist
 to turn central SaaS authority into predictable mobile behavior.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: these
+contracts are what make the product API-first instead of web-only or
+mobile-only.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

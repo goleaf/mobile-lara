@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps notification orchestration centralized while mobile handles device
 registration and user-facing delivery state.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the combined platform by keeping notification policy
+centralized while mobile presents safe user-facing delivery behavior.
+
 ## Purpose
 
 Notification endpoints manage notification preferences, push token

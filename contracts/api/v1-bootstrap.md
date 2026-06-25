@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract is
 the main API path for turning central SaaS control into mobile operating
 context.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the combined product by giving the mobile workforce/client
+platform one API-first operating context from the SaaS control center.
+
 ## Purpose
 
 Bootstrap gives the mobile client one resolved operating context after login,

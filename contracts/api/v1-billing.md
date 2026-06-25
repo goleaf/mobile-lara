@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps billing and entitlement authority centralized while mobile receives only
 safe plan outcomes.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the SaaS control center by keeping billing and plan state
+server-controlled while mobile receives clear entitlement outcomes.
+
 ## Purpose
 
 Billing endpoints expose mobile-safe plan and subscription state. Admin/API

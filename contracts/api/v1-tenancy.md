@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps tenant isolation and tenant access controlled by Admin/API while mobile
 shows only allowed tenant context.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the tenant-based product by keeping workspace access and
+tenant switching server-controlled.
+
 ## Purpose
 
 Tenancy endpoints keep tenant authority on the Admin/API system. Mobile may

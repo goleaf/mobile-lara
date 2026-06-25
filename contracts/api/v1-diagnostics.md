@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 supports scalable SaaS operations by giving support safe mobile context without
 moving authority to the device.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the SaaS control center and mobile platform by making support
+diagnostics operational without weakening tenant or device boundaries.
+
 ## Purpose
 
 Diagnostics endpoints let mobile share privacy-safe troubleshooting context

@@ -12,6 +12,27 @@ The positioning starts from [Product Vision](product-vision.md): the product
 exists to provide remote control with local resilience for managed mobile
 workflows.
 
+## Positioning Contract
+
+| Position | Product meaning | Boundary |
+| --- | --- | --- |
+| SaaS control center | The Admin/API system is where tenants, users, roles, permissions, features, versions, billing, support, notifications, reports, sync policy, and security are governed. | The control center creates authority; mobile only receives outcomes through API. |
+| Mobile workforce/client platform | The NativePHP + Livewire client is the working surface for tenant-side users who need simple, task-focused mobile workflows. | The mobile client owns local UX, native capability use, cache, drafts, queues, sync display, and feedback, not SaaS authority. |
+| API-first system | The API is the trusted contract that turns Admin/API decisions into mobile behavior. | Mobile communicates only with API for server-trusted reads, writes, sync replay, support actions, notification registration, billing outcomes, feature state, config, and version policy. |
+| Offline-capable mobile system | The product supports real-world mobile conditions with cache, drafts, queued intents, freshness, retry, pending, and conflict states. | Offline work is local intent until API accepts it; local state never becomes final business truth. |
+| Feature-controlled platform | Important mobile capabilities are enabled, disabled, rolled out, blocked, deprecated, plan-limited, version-gated, or emergency-disabled from the control plane. | Feature flags and remote config resolve to mobile-safe states; mobile never resolves raw policy layers as authority. |
+| Tenant-based product | Each customer workspace is isolated, configurable, billable, supportable, reportable, and governed without app forks. | Tenant scope is resolved and enforced server-side for every protected API response and admin control. |
+
+The positioning answer is deliberately combined: Mobile Lara should be sold and
+planned as one SaaS platform with two coordinated surfaces, not as a dashboard
+with a mobile skin and not as a mobile app with a thin settings page.
+
+| Alternative | What it gives | What it misses | Why Mobile Lara is stronger |
+| --- | --- | --- | --- |
+| Web app only | Fast admin workflows, reporting, billing, and centralized governance. | Native capability access, offline-capable task execution, local sync state, mobile-first ergonomics, and device/version context. | Keeps the web/admin strengths while adding a real mobile execution surface. |
+| Mobile app only | A focused app experience and native capabilities. | Tenant administration, permission governance, billing enforcement, support visibility, reporting, audit, rollout, rollback, and app-version policy. | Keeps the mobile strengths while adding SaaS authority, operations, and tenant-safe control. |
+| Mobile Lara | Central SaaS authority plus resilient NativePHP mobile execution. | Requires discipline around API contracts, documentation, feature flags, version policy, and sync boundaries. | Solves both sides of the business problem: admins govern centrally, mobile users work locally within server-controlled rules. |
+
 The product is stronger than a normal web app because it reaches mobile workers where work happens. It is stronger than a standalone mobile app because mobile behavior is centrally governed, auditable, version-aware, and tenant-safe.
 
 The positioning depends on [Core Product Principles](product-principles.md): admin authority, API-first mobile behavior, feature control, tenant isolation, useful offline behavior, secure defaults, simple mobile UX, documentation-first decisions, and modular expansion.
@@ -211,15 +232,15 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 10. Feature Flag Logic records how important mobile features resolve scope, priority, disabled states, rollout, impact, plan limits, support, and offline behavior before coding.
 11. Remote Configuration Logic records what can be configured, how mobile receives and caches config, offline behavior, tenant overrides, safe admin changes, and fallback behavior before coding.
 12. Mobile Version Control Logic records minimum supported versions, optional updates, forced updates, maintenance mode, outdated-client behavior, store links, update messages, and old-version protection before coding.
-12. Role boundaries determine who can see or control each surface.
-13. Stakeholder value determines why a feature exists and which outcome it should prove.
-14. Web-only is insufficient for mobile work.
-15. Mobile-only is insufficient for SaaS governance.
-16. Product positioning should guide every future modular feature slice.
-17. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
-18. API-first principles decide the purpose, predictability, context, error, sync/conflict, and tenant-scope expectations for mobile/API behavior.
-19. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
-20. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
+13. Role boundaries determine who can see or control each surface.
+14. Stakeholder value determines why a feature exists and which outcome it should prove.
+15. Web-only is insufficient for mobile work.
+16. Mobile-only is insufficient for SaaS governance.
+17. Product positioning should guide every future modular feature slice.
+18. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
+19. API-first principles decide the purpose, predictability, context, error, sync/conflict, and tenant-scope expectations for mobile/API behavior.
+20. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
+21. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
 
 ## Risks
 

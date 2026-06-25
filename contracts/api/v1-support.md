@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps support operations centralized while mobile users receive clear help and
 case status.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the combined product by connecting mobile help flows to the
+SaaS support control surface.
+
 ## Purpose
 
 Support endpoints let mobile users create tickets, view tickets, add messages,

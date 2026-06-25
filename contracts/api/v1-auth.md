@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps identity and session authority in Admin/API while mobile presents a
 simple NativePHP + Livewire authentication experience.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the API-first tenant-based platform by keeping identity,
+sessions, and device trust out of mobile-local authority.
+
 ## Purpose
 
 Auth endpoints make the Admin/API system authoritative for mobile identity,

@@ -8,6 +8,10 @@ Use this document with [Product Vision](product-vision.md): version control
 protects the vision by keeping old mobile builds from breaking central
 authority or local resilience.
 
+Use this document with [Product Positioning](product-positioning.md): version
+policy is part of the feature-controlled, API-first mobile platform posture, not
+a device-local preference.
+
 ## Version Control Statement
 
 Mobile app version control is a control-plane responsibility.

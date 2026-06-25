@@ -6,6 +6,10 @@ Product Vision is defined in `../docs/product-vision.md`: scripts may support
 verification, but they must preserve the two-system product idea and must not
 create hidden authority outside Admin/API.
 
+Product Positioning is defined in `../docs/product-positioning.md`: scripts
+should verify the combined SaaS control center and mobile platform posture,
+not create side channels around it.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force

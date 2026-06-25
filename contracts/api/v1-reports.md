@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 supports scalable SaaS reporting while protecting tenant and role boundaries on
 mobile.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the SaaS control center by exposing only mobile-safe report
+summaries from tenant-scoped authority.
+
 ## Purpose
 
 Reports endpoints expose only permission-safe tenant and user report summaries

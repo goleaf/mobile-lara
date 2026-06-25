@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 protects the product promise by keeping stale or unsafe mobile builds under
 Admin/API control.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the feature-controlled, API-first, tenant-based mobile
+platform by making version and maintenance policy centrally governable.
+
 ## Purpose
 
 App-version and maintenance endpoints tell mobile whether the current build can

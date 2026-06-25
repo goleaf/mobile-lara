@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 lets admins adjust safe mobile behavior without turning the mobile app into a
 configuration authority.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports the feature-controlled and offline-capable mobile platform by
+keeping runtime behavior configurable from the control center.
+
 ## Purpose
 
 Remote config endpoints expose validated, resolved, mobile-safe runtime values.

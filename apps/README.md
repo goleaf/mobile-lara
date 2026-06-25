@@ -6,6 +6,10 @@ Product Vision is defined in `../docs/product-vision.md`: both apps exist to
 support remote control with local resilience, where Admin/API owns authority and
 mobile owns local execution.
 
+Product Positioning is defined in `../docs/product-positioning.md`: the two apps
+must remain one SaaS control center plus one managed mobile workforce/client
+platform.
+
 ## Systems
 
 | Path | Responsibility | Current state |

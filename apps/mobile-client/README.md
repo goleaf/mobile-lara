@@ -7,6 +7,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this app exists as
 the managed NativePHP + Livewire execution surface for mobile users, not as a
 source of SaaS authority.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this app
+is the mobile workforce/client platform side of the product, not an independent
+mobile authority.
+
 ## Product Role
 
 This system owns local execution:

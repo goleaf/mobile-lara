@@ -7,6 +7,9 @@ Product Vision is defined in `../../docs/product-vision.md`: this app exists
 because SaaS authority, tenant control, support, billing, version policy,
 reports, audit, and sync decisions must be centralized.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this app
+is the SaaS control center side of the product, not a generic admin dashboard.
+
 ## Product Role
 
 This system owns SaaS authority:

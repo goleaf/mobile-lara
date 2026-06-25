@@ -11,6 +11,9 @@ Roles are product boundaries, not only labels.
 - Roles must support [Product Vision](product-vision.md): admin users operate
   the SaaS control plane, while mobile users receive a simple governed app
   experience.
+- Roles must support [Product Positioning](product-positioning.md): each role
+  should reinforce the split between SaaS control center authority and mobile
+  workforce/client execution.
 - Role and permission decisions must follow [Documentation-First Architecture](documentation-first-architecture.md): every permission documents who controls it, who can use it, what it exposes, how mobile receives it, and which risk or audit expectation applies.
 - Role and permission decisions must follow [Admin Control Center Logic](admin-control-center-logic.md): every role-sensitive control has a named scope, mobile effect, API context, audit expectation, support meaning, and offline behavior.
 - Role and permission decisions must follow [Feature Flag Logic](feature-flag-logic.md): role and user-level feature access can refine availability only inside global, tenant, plan, version, permission, and safety boundaries.

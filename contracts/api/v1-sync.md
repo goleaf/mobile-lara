@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 supports offline-capable mobile work while Admin/API remains authoritative for
 replay, conflicts, and canonical state.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract is the API-first boundary that makes offline-capable mobile work safer
+than a standalone mobile app.
+
 ## Purpose
 
 Sync endpoints let the mobile client replay queued local intents and pull

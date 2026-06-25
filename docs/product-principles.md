@@ -13,6 +13,10 @@ Every future feature should satisfy these principles before implementation begin
 Use this document with [Product Vision](product-vision.md): the principles
 explain how the vision remains safe as features expand.
 
+Use this document with [Product Positioning](product-positioning.md): the
+principles protect the six positioning angles from drifting into web-only,
+mobile-only, or tenant-unsafe behavior.
+
 The documentation-first architecture standard in [Documentation-First Architecture](documentation-first-architecture.md) defines how those principles become planning requirements: every feature, admin control, mobile screen, sync behavior, permission, and risk is documented before coding.
 
 The [Admin Control Center Logic](admin-control-center-logic.md) defines how admin authority becomes operational control over tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, and support.

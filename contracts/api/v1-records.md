@@ -8,6 +8,10 @@ Product Vision is defined in `../../docs/product-vision.md`: this contract
 lets mobile users do tenant-scoped work while Admin/API remains the source of
 record authority.
 
+Product Positioning is defined in `../../docs/product-positioning.md`: this
+contract supports mobile workforce/client workflows while preserving the
+tenant-based SaaS control boundary.
+
 ## Purpose
 
 Records endpoints provide tenant-scoped content authority for list, detail,
