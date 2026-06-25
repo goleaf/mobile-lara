@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\MobileLocalMediaItem;
 use App\Models\MobileLocalOfflineAction;
-use App\Services\MobileLocal\MediaItemRepository;
+use App\Models\MobileLocalVoiceNote;
 use App\Services\MobileLocal\MobileLocalDatabase;
 use App\Services\MobileLocal\OfflineActionRepository;
+use App\Services\MobileLocal\VoiceNoteRepository;
 use App\Services\Native\AudioRecordingService;
 use Carbon\CarbonImmutable;
 use Illuminate\Filesystem\Filesystem;
@@ -67,7 +67,7 @@ test('native audio service reports browser fallback when native runtime is inact
         $service = new AudioRecordingService(
             microphone: new NativeAudioRecordingServiceFakeMicrophone,
             files: new Filesystem,
-            mediaItems: app(MediaItemRepository::class),
+            voiceNotes: app(VoiceNoteRepository::class),
             offlineActions: app(OfflineActionRepository::class),
         );
 
@@ -118,7 +118,7 @@ test('native audio service starts and controls microphone recording through nati
     $service = new AudioRecordingService(
         microphone: $microphone,
         files: new Filesystem,
-        mediaItems: app(MediaItemRepository::class),
+        voiceNotes: app(VoiceNoteRepository::class),
         offlineActions: app(OfflineActionRepository::class),
     );
 
@@ -164,15 +164,16 @@ test('native audio service saves queues and deletes local voice notes', function
     $service = new AudioRecordingService(
         microphone: new NativeAudioRecordingServiceFakeMicrophone,
         files: new Filesystem,
-        mediaItems: app(MediaItemRepository::class),
+        voiceNotes: app(VoiceNoteRepository::class),
         offlineActions: app(OfflineActionRepository::class),
     );
 
     $saveResult = $service->save(
         path: $this->audioPath,
         mimeType: 'audio/m4a',
-        caption: ' Daily note ',
+        transcript: ' Daily note transcript ',
         recordingId: 'voice-id',
+        duration: 65,
     );
 
     expect($saveResult)->toMatchArray([
@@ -182,16 +183,17 @@ test('native audio service saves queues and deletes local voice notes', function
         'path' => $this->audioPath,
     ]);
 
-    $mediaItem = MobileLocalMediaItem::query()->firstOrFail();
+    $voiceNote = MobileLocalVoiceNote::query()->firstOrFail();
 
-    expect($mediaItem->type)->toBe(MobileLocalMediaItem::TYPE_AUDIO)
-        ->and($mediaItem->mime)->toBe('audio/m4a')
-        ->and($mediaItem->caption)->toBe('Daily note')
-        ->and($mediaItem->sync_status)->toBe(MobileLocalMediaItem::SYNC_PENDING)
-        ->and($mediaItem->related_entity_type)->toBe('voice_note')
-        ->and($mediaItem->related_entity_id)->toBe('voice-id');
+    expect($voiceNote->local_file_path)->toBe($this->audioPath)
+        ->and($voiceNote->duration)->toBe(65)
+        ->and($voiceNote->formattedDuration())->toBe('1:05')
+        ->and($voiceNote->transcript)->toBe('Daily note transcript')
+        ->and($voiceNote->sync_status)->toBe(MobileLocalVoiceNote::SYNC_PENDING)
+        ->and($voiceNote->related_entity_type)->toBe('native_recording')
+        ->and($voiceNote->related_entity_id)->toBe('voice-id');
 
-    $queueResult = $service->queueUploadPlaceholder($mediaItem->getKey());
+    $queueResult = $service->queueUploadPlaceholder($voiceNote->getKey());
 
     expect($queueResult)->toMatchArray([
         'success' => true,
@@ -205,19 +207,21 @@ test('native audio service saves queues and deletes local voice notes', function
         ->and($offlineAction->endpoint)->toBe('/api/mobile/voice-notes')
         ->and($offlineAction->method)->toBe('POST')
         ->and($offlineAction->status)->toBe(MobileLocalOfflineAction::STATUS_PENDING)
-        ->and($offlineAction->payload['media_item_id'])->toBe($mediaItem->getKey())
+        ->and($offlineAction->payload['voice_note_id'])->toBe($voiceNote->getKey())
+        ->and($offlineAction->payload['duration'])->toBe(65)
+        ->and($offlineAction->payload['transcript'])->toBe('Daily note transcript')
         ->and($offlineAction->payload['placeholder'])->toBeTrue();
 
-    $deleteResult = $service->delete($mediaItem->getKey());
+    $deleteResult = $service->delete($voiceNote->getKey());
 
     expect($deleteResult)->toMatchArray([
         'success' => true,
         'operation' => 'delete',
         'message' => 'Voice note deleted locally.',
         'file_deleted' => true,
-        'media_item_deleted' => true,
+        'voice_note_deleted' => true,
     ])
-        ->and(MobileLocalMediaItem::query()->count())->toBe(0)
+        ->and(MobileLocalVoiceNote::query()->count())->toBe(0)
         ->and(File::exists($this->audioPath))->toBeFalse();
 });
 
@@ -225,7 +229,7 @@ test('native audio service rejects missing audio files before saving or queueing
     $service = new AudioRecordingService(
         microphone: new NativeAudioRecordingServiceFakeMicrophone,
         files: new Filesystem,
-        mediaItems: app(MediaItemRepository::class),
+        voiceNotes: app(VoiceNoteRepository::class),
         offlineActions: app(OfflineActionRepository::class),
     );
 
@@ -237,12 +241,12 @@ test('native audio service rejects missing audio files before saving or queueing
         ->and($service->queueUploadPlaceholder())->toMatchArray([
             'success' => false,
             'operation' => 'queue_upload',
-            'message' => 'A saved voice note or audio file path is required before queueing upload.',
+            'message' => 'A saved voice note record or audio file path is required before queueing upload.',
         ])
         ->and($service->delete())->toMatchArray([
             'success' => false,
             'operation' => 'delete',
-            'message' => 'A voice note media item or file path is required before deleting.',
+            'message' => 'A voice note record or file path is required before deleting.',
         ]);
 });
 

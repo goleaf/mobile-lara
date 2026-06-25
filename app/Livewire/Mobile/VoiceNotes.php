@@ -328,6 +328,8 @@ class VoiceNotes extends Component
         $this->recordedPath = null;
         $this->recordedMimeType = 'audio/m4a';
         $this->savedVoiceNoteId = null;
+        $this->selectedVoiceNoteId = null;
+        $this->playbackVoiceNoteId = null;
         $this->transcript = '';
         $this->uploadQueueStatus = null;
         $this->pendingRecordingId = null;

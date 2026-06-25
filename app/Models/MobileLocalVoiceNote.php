@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 #[Fillable([
     'local_file_path',
@@ -105,7 +106,7 @@ class MobileLocalVoiceNote extends Model
             return 'Transcript pending';
         }
 
-        return str($transcript)->limit($limit)->toString();
+        return Str::of($transcript)->limit($limit)->toString();
     }
 
     public function relatedEntityLabel(): ?string

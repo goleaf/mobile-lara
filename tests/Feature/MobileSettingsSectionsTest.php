@@ -51,6 +51,12 @@ test('settings section pages include connected and placeholder entries', functio
         ->assertSee(route('mobile.voice-notes'), false)
         ->assertSee('File manager')
         ->assertSee(route('mobile.files'), false)
+        ->assertSee('QR/barcode scanner')
+        ->assertSee(route('mobile.scanner'), false)
+        ->assertSee('Location check-in')
+        ->assertSee(route('mobile.location.check-in'), false)
+        ->assertSee('Check-in history')
+        ->assertSee(route('mobile.check-ins.index'), false)
         ->assertSee('Tailwind check')
         ->assertSee(route('dev.tailwind'), false);
 

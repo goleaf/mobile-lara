@@ -2,6 +2,8 @@
 
 use App\Livewire\Mobile\AccountDeletion;
 use App\Livewire\Mobile\AppUnlock;
+use App\Livewire\Mobile\CheckInCreate;
+use App\Livewire\Mobile\CheckInHistory;
 use App\Livewire\Mobile\Conflicts\ConflictList;
 use App\Livewire\Mobile\ConsentAcceptance;
 use App\Livewire\Mobile\ConsentHistory;
@@ -12,6 +14,7 @@ use App\Livewire\Mobile\EditProfile;
 use App\Livewire\Mobile\EmailVerification;
 use App\Livewire\Mobile\FileManager;
 use App\Livewire\Mobile\ForgotPassword;
+use App\Livewire\Mobile\LocationCheckIn;
 use App\Livewire\Mobile\Login;
 use App\Livewire\Mobile\MediaCapture;
 use App\Livewire\Mobile\MediaGallery;
@@ -25,6 +28,7 @@ use App\Livewire\Mobile\PrivacyPolicy;
 use App\Livewire\Mobile\Profile;
 use App\Livewire\Mobile\Register;
 use App\Livewire\Mobile\ResetPassword;
+use App\Livewire\Mobile\ScannerDemo;
 use App\Livewire\Mobile\Search;
 use App\Livewire\Mobile\Sessions;
 use App\Livewire\Mobile\Settings;
@@ -110,6 +114,10 @@ test('protected mobile routes redirect guests to login', function (string $route
     'media gallery' => 'mobile.media.gallery',
     'voice notes' => 'mobile.voice-notes',
     'files' => 'mobile.files',
+    'scanner' => 'mobile.scanner',
+    'location check-in' => 'mobile.location.check-in',
+    'check-ins index' => 'mobile.check-ins.index',
+    'check-ins create' => 'mobile.check-ins.create',
     'debug' => 'mobile.debug',
 ]);
 
@@ -151,6 +159,10 @@ test('protected mobile routes render for authenticated users', function (string 
     'media gallery' => ['mobile.media.gallery', MediaGallery::class, 'Media gallery'],
     'voice notes' => ['mobile.voice-notes', VoiceNotes::class, 'Voice notes'],
     'files' => ['mobile.files', FileManager::class, 'File manager'],
+    'scanner' => ['mobile.scanner', ScannerDemo::class, 'QR/barcode scanner'],
+    'location check-in' => ['mobile.location.check-in', LocationCheckIn::class, 'Location check-in'],
+    'check-ins index' => ['mobile.check-ins.index', CheckInHistory::class, 'Check-in history'],
+    'check-ins create' => ['mobile.check-ins.create', CheckInCreate::class, 'Create check-in'],
     'debug' => ['mobile.debug', Debug::class, 'Debug'],
 ]);
 

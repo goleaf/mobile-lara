@@ -56,5 +56,23 @@ final class Developer extends SettingsSectionPage
             'route' => 'mobile.files',
             'badge' => 'Files',
         ],
+        [
+            'label' => 'QR/barcode scanner',
+            'description' => 'Open NativePHP single and continuous scan checks.',
+            'route' => 'mobile.scanner',
+            'badge' => 'Scan',
+        ],
+        [
+            'label' => 'Location check-in',
+            'description' => 'Check NativePHP geolocation permissions and capture a current location payload.',
+            'route' => 'mobile.location.check-in',
+            'badge' => 'Geo',
+        ],
+        [
+            'label' => 'Check-in history',
+            'description' => 'Review local check_ins rows and create pending sync check-ins.',
+            'route' => 'mobile.check-ins.index',
+            'badge' => 'Local',
+        ],
     ];
 }

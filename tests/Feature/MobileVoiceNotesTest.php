@@ -1,11 +1,11 @@
 <?php
 
 use App\Livewire\Mobile\VoiceNotes;
-use App\Models\MobileLocalMediaItem;
 use App\Models\MobileLocalOfflineAction;
-use App\Services\MobileLocal\MediaItemRepository;
+use App\Models\MobileLocalVoiceNote;
 use App\Services\MobileLocal\MobileLocalDatabase;
 use App\Services\MobileLocal\OfflineActionRepository;
+use App\Services\MobileLocal\VoiceNoteRepository;
 use App\Services\Native\AudioRecordingService;
 use Carbon\CarbonImmutable;
 use Illuminate\Filesystem\Filesystem;
@@ -103,7 +103,7 @@ test('voice notes screen starts native recording with service wrapper', function
         fn (): AudioRecordingService => new AudioRecordingService(
             microphone: $microphone,
             files: new Filesystem,
-            mediaItems: app(MediaItemRepository::class),
+            voiceNotes: app(VoiceNoteRepository::class),
             offlineActions: app(OfflineActionRepository::class),
         ),
     );
@@ -131,20 +131,53 @@ test('voice notes screen saves queues and deletes a recorded audio file', functi
         ->assertSet('recordedMimeType', 'audio/m4a')
         ->assertSet('recordingState', 'idle')
         ->assertSet('recordingStatus', 'Voice note captured. Save it locally or delete it.')
-        ->set('caption', 'Daily note')
+        ->set('transcript', 'Daily note transcript')
         ->call('saveRecording')
         ->assertSet('recordingStatus', 'Voice note saved locally.')
         ->assertSee('voice-note.m4a')
+        ->assertSee('Daily note transcript')
+        ->call('showDetail', 1)
+        ->assertSet('selectedVoiceNoteId', 1)
+        ->assertSee('Voice note detail')
+        ->call('playVoiceNote', 1)
+        ->assertSet('playbackVoiceNoteId', 1)
+        ->assertSet('playbackPath', $this->audioPath)
         ->call('queueUploadPlaceholder')
         ->assertSet('uploadQueueStatus', 'Voice note upload placeholder queued.')
         ->call('deleteRecording')
         ->assertSet('recordedPath', null)
-        ->assertSet('savedMediaItemId', null)
+        ->assertSet('savedVoiceNoteId', null)
         ->assertSet('recordingStatus', 'Voice note deleted locally.');
 
-    expect(MobileLocalMediaItem::query()->count())->toBe(0)
+    expect(MobileLocalVoiceNote::query()->count())->toBe(0)
         ->and(MobileLocalOfflineAction::query()->where('action_type', 'voice_note.upload')->count())->toBe(1)
         ->and(File::exists($this->audioPath))->toBeFalse();
+});
+
+test('voice notes screen renders existing saved notes with detail and playback actions', function (): void {
+    $voiceNote = MobileLocalVoiceNote::factory()->withTranscript()->create([
+        'local_file_path' => $this->audioPath,
+        'duration' => 125,
+        'sync_status' => MobileLocalVoiceNote::SYNC_PENDING,
+        'related_entity_type' => 'task',
+        'related_entity_id' => 'task-7',
+        'created_at' => CarbonImmutable::now(),
+    ]);
+
+    Livewire::test(VoiceNotes::class)
+        ->assertSee('voice-note.m4a')
+        ->assertSee('2:05')
+        ->assertSee('task #task-7')
+        ->call('showDetail', $voiceNote->getKey())
+        ->assertSet('selectedVoiceNoteId', $voiceNote->getKey())
+        ->assertSee('Voice note detail')
+        ->assertSee('Transcript placeholder')
+        ->call('playVoiceNote', $voiceNote->getKey())
+        ->assertSet('playbackVoiceNoteId', $voiceNote->getKey())
+        ->assertSet('playbackPath', $this->audioPath)
+        ->call('closeDetail')
+        ->assertSet('selectedVoiceNoteId', null)
+        ->assertSet('playbackPath', null);
 });
 
 final class MobileVoiceNotesFakeMicrophone extends Microphone

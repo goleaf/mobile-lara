@@ -156,6 +156,7 @@ return [
         'NSMicrophoneUsageDescription' => 'Mobile Lara uses the microphone when you choose to record audio or video.',
         'NSPhotoLibraryUsageDescription' => 'Mobile Lara uses the photo library when you choose to select media.',
         'NSPhotoLibraryAddUsageDescription' => 'Mobile Lara can save generated or captured media when you choose to export it.',
+        'NSLocationWhenInUseUsageDescription' => 'Mobile Lara uses your location only when you choose to create a location check-in.',
     ],
 
     /*
