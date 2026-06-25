@@ -93,6 +93,13 @@ Admin/API-owned lifecycle decisions that mobile presents as safe,
 tenant-scoped, billing-aware, supportable states without inventing local
 tenant authority.
 
+Tenant Admin Logic is defined in `tenant-admin-logic.md`:
+tenant admins may manage tenant-scoped users, invitations, delegated settings,
+delegated mobile-feature controls, tenant reports, and tenant support workflows
+only inside their tenant; platform-only controls, cross-tenant visibility,
+global policy, billing authority, lifecycle authority, app-version policy, and
+security posture remain Admin/API-owned boundaries.
+
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.

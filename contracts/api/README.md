@@ -115,6 +115,13 @@ Admin/API-owned lifecycle decisions that mobile presents as safe,
 tenant-scoped, billing-aware, supportable states without inventing local
 tenant authority.
 
+Tenant Admin Logic is defined in `../../docs/tenant-admin-logic.md`:
+tenant admins may manage tenant-scoped users, invitations, delegated settings,
+delegated mobile-feature controls, tenant reports, and tenant support workflows
+only inside their tenant; platform-only controls, cross-tenant visibility,
+global policy, billing authority, lifecycle authority, app-version policy, and
+security posture remain Admin/API-owned boundaries.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

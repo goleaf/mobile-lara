@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Tenant Admin Logic documentation for tenant-scoped controls,
+  platform-only boundaries, invitations, delegated mobile-feature management,
+  reports, support, admin safety, and cross-tenant isolation.
 - Added Tenant Lifecycle Logic documentation for tenant creation, onboarding,
   trial, active, suspended, archived, billing-blocked, deletion/requested
   deletion, restore, and mobile-visible tenant state behavior.

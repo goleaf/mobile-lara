@@ -118,6 +118,13 @@ Admin/API-owned lifecycle decisions that mobile presents as safe,
 tenant-scoped, billing-aware, supportable states without inventing local
 tenant authority.
 
+Tenant Admin Logic is defined in `tenant-admin-logic.md`:
+tenant admins may manage tenant-scoped users, invitations, delegated settings,
+delegated mobile-feature controls, tenant reports, and tenant support workflows
+only inside their tenant; platform-only controls, cross-tenant visibility,
+global policy, billing authority, lifecycle authority, app-version policy, and
+security posture remain Admin/API-owned boundaries.
+
 The mobile client should be calm, direct, and explicit about sync state.
 
 Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.

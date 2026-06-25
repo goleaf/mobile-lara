@@ -64,6 +64,13 @@ Admin/API-owned lifecycle decisions that mobile presents as safe,
 tenant-scoped, billing-aware, supportable states without inventing local
 tenant authority.
 
+Tenant Admin Logic is defined in `tenant-admin-logic.md`:
+tenant admins may manage tenant-scoped users, invitations, delegated settings,
+delegated mobile-feature controls, tenant reports, and tenant support workflows
+only inside their tenant; platform-only controls, cross-tenant visibility,
+global policy, billing authority, lifecycle authority, app-version policy, and
+security posture remain Admin/API-owned boundaries.
+
 Updated: 2026-06-26
 
 This document defines mobile UX principles for the Mobile Lara NativePHP client. It explains mobile-first navigation, simple screens, clear loading states, clear offline states, thumb-friendly controls, minimum typing, fast actions, feature visibility based on admin rules, secure session behavior, and permission education before native permission prompts. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, or application logic.

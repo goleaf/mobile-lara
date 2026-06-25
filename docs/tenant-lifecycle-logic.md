@@ -22,11 +22,19 @@ Principles](api-first-principles.md), [Authentication Principles](authentication
 [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md),
 [Mobile Version Control Logic](mobile-version-control-logic.md), [Audit
 Logic](audit-logic.md), [Data Privacy Principles](data-privacy-principles.md),
-[Admin Safety Principles](admin-safety-principles.md), and [API v1 Tenancy
+[Tenant Admin Logic](tenant-admin-logic.md), [Admin Safety
+Principles](admin-safety-principles.md), and [API v1 Tenancy
 Contract](../contracts/api/v1-tenancy.md): tenant lifecycle is the product
 state machine that decides whether a tenant can onboard, trial, operate,
 pause, recover, archive, delete, or return to service, while mobile receives
 only safe API outcomes for the current user and tenant.
+
+Tenant Admin Logic is defined in `tenant-admin-logic.md`:
+tenant admins may manage tenant-scoped users, invitations, delegated settings,
+delegated mobile-feature controls, tenant reports, and tenant support workflows
+only inside their tenant; platform-only controls, cross-tenant visibility,
+global policy, billing authority, lifecycle authority, app-version policy, and
+security posture remain Admin/API-owned boundaries.
 
 ## Lifecycle Statement
 

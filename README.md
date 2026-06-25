@@ -16,6 +16,8 @@ The data privacy model is explicit: tenant isolation, least privilege, secure lo
 
 The tenant lifecycle model is explicit: tenant creation, onboarding, trial, active, suspended, archived, billing-blocked, deletion/requested deletion, and restore states are Admin/API-owned decisions that mobile presents as safe, tenant-scoped, billing-aware, supportable states without inventing local tenant authority.
 
+The tenant admin model is explicit: tenant admins manage tenant-scoped users, invitations, delegated settings, delegated mobile-feature controls, reports, and support workflows only inside their tenant while platform-only authority remains with Admin/API.
+
 The value map is explicit too: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team each receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
 The two-system boundary is explicit: Admin/API owns SaaS authority, while mobile owns local execution, native capability use, cache, drafts, queues, and clear state presentation.
@@ -101,6 +103,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/audit-logic.md](docs/audit-logic.md) | Audit logic for admin actions, security events, support/compliance history, mobile activity representation, audit questions, and audit data protection. |
 | [docs/data-privacy-principles.md](docs/data-privacy-principles.md) | Data privacy principles for tenant isolation, least privilege, secure local mobile data, secure native storage, exports, deletion, support access, admin visibility, privacy defaults, and mobile diagnostics limits. |
 | [docs/tenant-lifecycle-logic.md](docs/tenant-lifecycle-logic.md) | Tenant lifecycle logic for creation, onboarding, trial, active, suspended, archived, billing-blocked, deletion/requested deletion, restore, and mobile-visible tenant states. |
+| [docs/tenant-admin-logic.md](docs/tenant-admin-logic.md) | Tenant admin logic for tenant-scoped controls, platform-only boundaries, invitations, delegated mobile-feature management, reports, support, and cross-tenant isolation. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
 | [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
@@ -157,6 +160,7 @@ contracts.
 - Apply [audit logic](docs/audit-logic.md) before planning admin actions, security events, support actions, mobile activity summaries, API decisions, sync outcomes, compliance-relevant changes, audit history views, or audit exports.
 - Apply [data privacy principles](docs/data-privacy-principles.md) before planning tenant isolation, least privilege, local mobile data, secure native storage, exports, deletion, support access, admin visibility, privacy defaults, diagnostics, or any private data movement.
 - Apply [tenant lifecycle logic](docs/tenant-lifecycle-logic.md) before planning tenant creation, onboarding, trial, active, suspended, archived, billing-blocked, deletion/requested deletion, restore, or mobile tenant-state behavior.
+- Apply [tenant admin logic](docs/tenant-admin-logic.md) before planning tenant-admin controls, invitations, delegated mobile-feature management, tenant reports, tenant support, tenant admin safety, or cross-tenant isolation behavior.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
 - Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.
