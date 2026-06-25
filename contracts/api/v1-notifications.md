@@ -1,6 +1,6 @@
 # API v1 Notifications Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoints are planned for Phase 21.
 
@@ -28,6 +28,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: notification targeting and delivery truth
 stay in Admin/API while mobile owns device registration UX, permission UX, and
 safe local display.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to
+notification orchestration, users and permissions, tenant management,
+feature/version/billing gates, support/reporting visibility, and audit history.
 
 ## Purpose
 

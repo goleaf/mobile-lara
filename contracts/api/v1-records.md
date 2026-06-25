@@ -1,6 +1,6 @@
 # API v1 Records Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoints are planned for Phase 12.
 
@@ -29,6 +29,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: record authority and validation stay in
 Admin/API while mobile may cache records, create drafts, and queue allowed
 intents for API replay.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to API
+contracts, users and permissions, tenant management, reporting, audit history,
+conflict decisions, and security enforcement.
 
 ## Purpose
 

@@ -1,6 +1,6 @@
 # Remaining Tasks
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This file tracks active work left after the current implementation pass. It is
 not a substitute for `docs/implementation-status.md`; the status checklist is
@@ -31,6 +31,12 @@ Two-System Boundary Logic is defined in `docs/two-system-boundary.md`.
 Remaining work must map what Admin/API owns, what mobile owns, what must go
 through API, what may be cached locally, what admin controls remotely, and what
 happens offline before adding implementation scope.
+
+Admin/API Responsibilities are defined in
+`docs/admin-api-responsibilities.md`. Remaining work must name the
+control-plane responsibility owner for tenant, user, permission, API, feature,
+config, version, notification, billing, support, report, audit, conflict, or
+security behavior before implementation scope is added.
 
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Remaining implementation work must map

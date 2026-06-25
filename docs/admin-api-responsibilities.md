@@ -1,6 +1,6 @@
 # Admin/API Responsibilities
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This document defines the logical responsibilities of the Admin/API system in Mobile Lara. It explains what the SaaS control plane owns, why it owns it, how that authority relates to the mobile client, and which risks the responsibility model prevents. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, or application logic.
 
@@ -22,6 +22,29 @@ The mobile client may consume, cache, display, and act on Admin/API decisions, b
 4. **Tenant isolation is the operating boundary** - Every responsibility below must respect tenant scope and role scope.
 5. **Mobile gets outcomes, not internals** - Mobile should receive allowed, denied, blocked, deprecated, pending, conflict, retry, or contact-support states, not raw admin machinery.
 6. **Operations close the loop** - Feature flags, version rules, notifications, billing, support, reports, audit, and conflict decisions must feed each other so the product can be operated as SaaS.
+
+## Responsibility Ownership Contract
+
+Every Admin/API planning decision should name the responsibility area that owns it before implementation planning.
+
+| Responsibility | Ownership principle | Mobile-safe outcome |
+| --- | --- | --- |
+| Tenant management | Admin/API owns tenant lifecycle, status, isolation, settings, plan posture, and tenant-scoped operating rules. | Current tenant, allowed tenant choices, tenant-blocked state, tenant labels, and tenant-safe messages. |
+| Users and permissions | Admin/API owns user lifecycle, invitations, suspension, roles, permission checks, least privilege, and account-state restrictions. | Capability state, profile/session state, invitation state, suspension state, and permission-denied outcomes. |
+| Admin panel | Admin/API owns scoped operational control surfaces for platform, tenant, support, billing, report, rollout, and security work. | No admin authority; mobile receives only API-derived product states. |
+| API contracts | Admin/API owns versioned request/response behavior, validation, authorization, error semantics, rate limits, idempotency, and deprecation. | Predictable shaped payloads, allowed actions, retry/conflict/version states, and mobile-friendly errors. |
+| Feature control | Admin/API owns global, tenant, plan, role, permission, user, device, app-version, cohort, and emergency feature decisions. | Enabled, disabled, hidden, blocked, beta, deprecated, update-required, or offline-limited feature states. |
+| Remote configuration | Admin/API owns config schema, scope, version, defaults, validation, tenant overrides, compatibility, audit, and rollback. | Resolved config values, config version, freshness state, safe fallback, and user-facing copy/limits. |
+| Mobile version rules | Admin/API owns minimum supported versions, optional updates, forced updates, maintenance, blocked builds, and compatibility policy. | Update prompts, maintenance screens, deprecated/blocked states, store links, and safe version messages. |
+| Notification orchestration | Admin/API owns templates, channels, targeting, quiet hours, priority, escalation, delivery policy, and delivery visibility. | Device registration results, notification inbox items, local display state, and safe delivery messages. |
+| Billing/subscription logic | Admin/API owns plans, quotas, entitlements, trials, renewals, invoices, failed-payment outcomes, and plan-driven restrictions. | Allowed, blocked, quota-warning, contact-admin/support, or upgrade/contact-sales outcomes. |
+| Support operations | Admin/API owns cases, diagnostics policy, assignment, escalation, support-safe visibility, case timeline, and support audit. | Support request forms, safe diagnostic submission, ticket status, retry/config-refresh instructions. |
+| Reporting | Admin/API owns report definitions, aggregation, tenant/role/support/billing scope, exports, and operational dashboards. | Personal, task, workflow, or tenant-safe summaries only when API grants them. |
+| Audit history | Admin/API owns server-trusted audit history for sensitive admin changes and accepted sensitive mobile-originated events. | Local activity hints only; mobile cannot create trusted audit truth. |
+| Conflict decisions | Admin/API owns sync acceptance, rejection, transformation, duplicate detection, conflict reasons, retry windows, and resolution options. | Pending, synced, conflict, failed, blocked, retry-later, or user-resolution states. |
+| Security enforcement | Admin/API owns authentication, authorization, tenant scope, token revocation, device trust, rate limits, secret policy, forced logout, and safe errors. | Secure access state, logout/block state, device warnings, permission-denied state, and non-leaking errors. |
+
+This contract is intentionally principle-level. It does not create models, tables, policies, jobs, controllers, Livewire components, API routes, Filament resources, provider integrations, or feature records.
 
 ## Responsibility Map
 

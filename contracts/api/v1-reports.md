@@ -1,6 +1,6 @@
 # API v1 Reports Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoint is planned for Phase 25.
 
@@ -28,6 +28,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: report definitions, scope, aggregation,
 and export authority stay in Admin/API while mobile receives only allowed
 summaries.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to reporting,
+tenant management, users and permissions, billing/support visibility, API
+contracts, audit history, and security enforcement.
 
 ## Purpose
 

@@ -6,6 +6,11 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Admin/API Responsibilities with a responsibility ownership contract
+  for tenant management, users and permissions, admin panel, API contracts,
+  feature control, remote configuration, mobile version rules, notifications,
+  billing/subscription logic, support operations, reporting, audit history,
+  conflict decisions, and security enforcement.
 - Clarified Two-System Boundary Logic with an explicit boundary contract for
   Admin/API ownership, mobile ownership, API-only behavior, local cache,
   remote admin control, and offline behavior.

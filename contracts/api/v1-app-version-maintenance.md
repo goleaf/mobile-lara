@@ -1,6 +1,6 @@
 # API v1 App Version And Maintenance Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoint is planned for Phase 11.
 
@@ -29,6 +29,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: version authority belongs to Admin/API,
 while mobile reports build context and presents update, maintenance, deprecated,
 or blocked outcomes.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to mobile
+version rules, feature control, maintenance/remote config coordination, support
+operations, audit history, and security enforcement.
 
 ## Purpose
 

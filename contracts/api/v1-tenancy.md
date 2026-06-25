@@ -1,6 +1,6 @@
 # API v1 Tenancy Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoints are planned for Phase 6.
 
@@ -28,6 +28,11 @@ feature flags.
 Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: tenant authority stays in Admin/API while
 mobile displays current tenant context and switch choices returned by API.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to tenant
+management, users and permissions, API contracts, reporting/support/billing
+boundaries, and security enforcement.
 
 ## Purpose
 

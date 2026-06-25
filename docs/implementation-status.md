@@ -1,6 +1,6 @@
 # Implementation Status
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This file is the required implementation gate for Mobile Lara. It translates the
 product Markdown corpus into an executable checklist and records the current
@@ -29,6 +29,12 @@ Two-System Boundary Logic is defined in `docs/two-system-boundary.md`. Status is
 tracked against Admin/API ownership, mobile ownership, API-only behavior, local
 cache boundaries, remote admin control, and offline reconciliation before
 implementation grows.
+
+Admin/API Responsibilities are defined in
+`docs/admin-api-responsibilities.md`. Status is tracked against tenant
+management, users and permissions, admin panel, API contracts, feature control,
+remote configuration, mobile version rules, notifications, billing, support,
+reports, audit, conflicts, and security before implementation grows.
 
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map

@@ -1,6 +1,6 @@
 # API v1 Remote Config Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoint is planned for Phase 9.
 
@@ -27,6 +27,11 @@ authority.
 Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: config authority and validation stay in
 Admin/API while mobile caches resolved config with freshness and fallback state.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to remote
+configuration, feature control, API contracts, support operations, audit
+history, and security enforcement.
 
 ## Purpose
 

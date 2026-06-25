@@ -1,6 +1,6 @@
 # API v1 Foundation Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This contract records the first implemented mobile-facing API foundation in
 `apps/api-admin`. It proves the route namespace and standard envelope before
@@ -29,6 +29,11 @@ support stakeholder value without implementing hidden product authority.
 Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: foundation contracts should prove the API
 is the boundary between Admin/API authority and mobile-local execution.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this foundation belongs to API
+contracts, security enforcement, audit history, and response-shape
+responsibility before domain contracts expand.
 
 Remote Configuration Logic is defined in
 `../../docs/remote-configuration-logic.md`. Future bootstrap and config

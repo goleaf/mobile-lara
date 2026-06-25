@@ -27,6 +27,12 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: this app owns the trusted side of the
 boundary and must expose mobile-safe outcomes only through API contracts.
 
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this app owns tenant management,
+users and permissions, admin operations, API contracts, feature/config/version
+control, notifications, billing, support, reporting, audit, conflicts, and
+security enforcement.
+
 ## Product Role
 
 This system owns SaaS authority:

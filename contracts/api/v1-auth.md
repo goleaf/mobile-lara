@@ -1,6 +1,6 @@
 # API v1 Auth Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: implemented for the API/admin mobile token foundation.
 
@@ -28,6 +28,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: identity, tenant access, session validity,
 device trust, and revocation remain Admin/API authority while mobile presents
 local session state.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to identity,
+users and permissions, security enforcement, audit history, and API-contract
+responsibility.
 
 ## Purpose
 

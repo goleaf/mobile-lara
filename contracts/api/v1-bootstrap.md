@@ -1,6 +1,6 @@
 # API v1 Bootstrap Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoint is planned for Phase 10.
 
@@ -29,6 +29,12 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: bootstrap returns Admin/API decisions as
 mobile-safe operating context, and cached bootstrap state is never final
 authority.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract resolves tenant
+management, users and permissions, feature control, remote configuration,
+mobile version rules, notification policy, billing/subscription, support,
+reporting, sync/conflict, and security into one mobile-safe context.
 
 ## Purpose
 

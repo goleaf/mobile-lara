@@ -30,6 +30,12 @@ Two-System Boundary Logic is defined in
 turn cache, drafts, queued intents, NativePHP state, or UI visibility into SaaS
 authority.
 
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this app consumes those
+responsibility outcomes through API and must not duplicate tenant, permission,
+billing, feature, config, version, notification, support, report, audit,
+conflict, or security authority locally.
+
 ## Product Role
 
 This system owns local execution:

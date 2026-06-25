@@ -1,6 +1,6 @@
 # API v1 Features Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoint is planned for Phase 8.
 
@@ -25,6 +25,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: feature authority and rollout decisions
 stay in Admin/API while mobile renders resolved enabled, disabled, blocked,
 deprecated, or update-required states.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to feature
+control, API contracts, billing/subscription logic, mobile version rules,
+support/report visibility, audit history, and security enforcement.
 
 ## Purpose
 

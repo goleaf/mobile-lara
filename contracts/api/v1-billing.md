@@ -1,6 +1,6 @@
 # API v1 Billing Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoint is planned for Phase 23.
 
@@ -28,6 +28,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: billing authority, quota checks, and
 entitlement decisions stay in Admin/API while mobile shows allowed, blocked,
 quota, or contact-admin outcomes.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to
+billing/subscription logic, feature control, tenant management, API contracts,
+reporting, audit history, and security enforcement.
 
 ## Purpose
 

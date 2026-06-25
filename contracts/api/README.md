@@ -30,6 +30,11 @@ Two-System Boundary Logic is defined in
 is API-only, which mobile state may be cached or queued, and which authority
 stays in Admin/API.
 
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: every contract must identify which
+control-plane responsibility owns the request, response, error, sync, support,
+billing, report, audit, or security outcome.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

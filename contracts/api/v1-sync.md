@@ -1,6 +1,6 @@
 # API v1 Sync Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoints are planned for Phase 14.
 
@@ -28,6 +28,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: mobile may queue intents and show pending
 state, but API replay decides acceptance, rejection, conflict, retry, and
 canonical server state.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to conflict
+decisions, API contracts, tenant management, users and permissions,
+billing/subscription checks, audit history, and security enforcement.
 
 ## Purpose
 

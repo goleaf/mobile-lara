@@ -1,6 +1,6 @@
 # API v1 Support Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoints are planned for Phase 24.
 
@@ -28,6 +28,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: support authority, assignment, visibility,
 and escalation stay in Admin/API while mobile owns help entry and safe
 diagnostic submission.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to support
+operations, diagnostics policy, users and permissions, tenant management, API
+contracts, audit history, reporting, and security enforcement.
 
 ## Purpose
 

@@ -28,6 +28,11 @@ Two-System Boundary Logic is defined in `../docs/two-system-boundary.md`: both
 apps must keep Admin/API authority separate from mobile local execution, cache,
 drafts, queues, NativePHP capability use, and offline state.
 
+Admin/API Responsibilities are defined in
+`../docs/admin-api-responsibilities.md`: both apps must map tenant, user,
+permission, API, feature, config, version, notification, billing, support,
+report, audit, conflict, and security decisions to the control plane.
+
 ## Systems
 
 | Path | Responsibility | Current state |

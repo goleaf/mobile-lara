@@ -1,6 +1,6 @@
 # API v1 Diagnostics Contract
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 Status: documented. Endpoint is planned for Phase 28.
 
@@ -28,6 +28,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: mobile may collect safe local diagnostics,
 but Admin/API controls acceptance, visibility, redaction, support scope, and
 audit.
+
+Admin/API Responsibilities are defined in
+`../../docs/admin-api-responsibilities.md`: this contract belongs to support
+operations, diagnostics policy, security enforcement, audit history, API
+contracts, and reporting.
 
 ## Purpose
 
