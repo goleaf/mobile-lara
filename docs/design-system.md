@@ -19,6 +19,8 @@ UI decisions must also follow [Target User Roles](user-roles.md): each role shou
 
 UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform owners need high-level control and risk visibility, tenant admins need scoped management, mobile workers need simple next actions, support needs safe diagnostics, and billing/operations needs entitlement clarity without tenant workflow overreach.
 
+UI decisions must also express [Two-System Boundary Logic](two-system-boundary.md): admin surfaces show authority and scope, while mobile surfaces show API-derived capability state, local freshness, pending work, conflicts, and offline limits without pretending to own server truth.
+
 ## Shared Principles
 
 - Keep UI in Livewire + Blade.
@@ -30,6 +32,7 @@ UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform
 - Never rely on UI hiding as authorization.
 - Show server-controlled capability state when a feature is disabled by plan, role, version, tenant, or app policy.
 - Design each admin, support, billing, report, notification, offline, or feature-flag surface around the stakeholder value it is meant to deliver.
+- Keep boundary language visible in state design: server-confirmed, cached, draft, pending, synced, conflict, failed, blocked, and offline states should not collapse into one generic status.
 
 ## Mobile UX Principles
 
@@ -171,6 +174,8 @@ The SaaS product needs consistent state language.
 Mobile and admin should use the same state names in copy, badges, filters, support tickets, and reports.
 
 These state names also carry value-map meaning: mobile users get clarity, tenant admins get manageability, support gets diagnostic language, billing/operations gets entitlement explanation, and platform owners get consistent reporting.
+
+They also carry boundary meaning: only server-confirmed and synced states can imply accepted API state; cached, draft, pending, conflict, failed, blocked, and offline states need honest local or policy context.
 
 ## Buttons
 

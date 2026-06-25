@@ -18,6 +18,8 @@ Roles are product boundaries, not only labels.
 
 Roles define authority and visibility. The [SaaS Value Map](saas-value-map.md) defines product value. A stakeholder may receive value from a feature without receiving direct control over it; for example, a tenant business benefits from reports and offline sync, while the tenant admin or support team may be the role that actually sees the management surface.
 
+Roles also depend on [Two-System Boundary Logic](two-system-boundary.md). Admin/API enforces role authority, while mobile only renders API-derived capability state and account-state restrictions.
+
 ## Role Summary
 
 | Role | Scope | Primary purpose |
@@ -382,6 +384,7 @@ Those belong in future implementation prompts with tests, migrations, policies, 
 | Support sees too much private data | Support gets safe diagnostics and case-scoped context, not broad tenant access. |
 | Billing manager changes operational access | Billing controls entitlements and invoices, not day-to-day workflows. |
 | Stakeholder value is confused with role authority | Use the SaaS value map to identify who benefits and this role model to decide who can see or control. |
+| Mobile infers role authority locally | Use the two-system boundary: mobile may cache role-derived capability state, but Admin/API must enforce final access. |
 | Mobile user gains authority offline | Offline actions remain intents until API acceptance. |
 | Invited or suspended states leak access | State restrictions override role permissions. |
 | UI hiding becomes authorization | API and policies remain final authority. |

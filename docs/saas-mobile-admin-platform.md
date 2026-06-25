@@ -78,6 +78,17 @@ The stakeholder value model lives in [SaaS Value Map](saas-value-map.md). The ma
 
 Every future product slice should name which stakeholder receives value and which system capability proves it: admin control, mobile access, offline sync, notifications, reports, security, feature flags, or a deliberate combination.
 
+## Two-System Boundary
+
+The detailed ownership model lives in [Two-System Boundary Logic](two-system-boundary.md). The summary is:
+
+- Admin/API owns SaaS authority: tenants, users, roles, permissions, billing, feature flags, remote config, app-version policy, notifications, reports, support, audit, API contracts, and sync decisions.
+- Mobile owns local execution: NativePHP capability use, mobile UX, local cache, drafts, queued intents, sync status, conflict presentation, and user-facing offline state.
+- Mobile must never own tenant authority, permission authority, billing authority, feature authority, app-version policy, report authority, support authority, audit truth, or final sync decisions.
+- Server-trusted reads, writes, replay, entitlement checks, support actions, notification registration, reports, and audit events must happen through API.
+- Local cache is allowed only as cache, draft, pending intent, safe local metadata, or server-confirmed copy with freshness state.
+- Offline mode can keep useful work moving only inside admin/API policy and must reconcile through API when connectivity returns.
+
 ## System Split
 
 ### Admin/API System
@@ -178,6 +189,8 @@ Every mobile feature should be described by six decisions before implementation:
 6. **Audit behavior** - Which admin-visible events prove who did what, when, from which device?
 
 No feature should exist only as a mobile screen. Each feature needs an admin story, API story, mobile story, support story, and failure story.
+
+Each feature also needs a boundary story: what Admin/API owns, what mobile owns, what must happen through API, what can be cached, what remote admin controls, and what happens offline.
 
 ## Admin Control Logic
 
@@ -378,4 +391,4 @@ Those belong in future implementation prompts with tests and acceptance criteria
 
 ## Success Criteria
 
-The concept is successful when a tenant admin can change a mobile capability without shipping a mobile build, the mobile app respects that change after config refresh, the API enforces it even if the mobile app is stale, support can explain what happened from audit and sync records, billing can explain entitlement outcomes, and the value map makes clear who benefited from the feature.
+The concept is successful when a tenant admin can change a mobile capability without shipping a mobile build, the mobile app respects that change after config refresh, the API enforces it even if the mobile app is stale, support can explain what happened from audit and sync records, billing can explain entitlement outcomes, the value map makes clear who benefited from the feature, and the boundary map makes clear which system owned every decision.

@@ -18,6 +18,8 @@ The product is valuable only when both sides stay connected:
 - Reports without tenant and role boundaries become a privacy risk.
 - Feature flags without support, audit, and billing context become hidden operational risk.
 
+The ownership rules for that connection are defined in [Two-System Boundary Logic](two-system-boundary.md). Value is created when Admin/API keeps authority and mobile keeps execution simple, resilient, and honest.
+
 ## Stakeholder Value Summary
 
 | Stakeholder | Primary value | Product proof |
@@ -197,6 +199,7 @@ Use this value map before approving a future product slice.
 6. **Treat offline value as conditional** - Offline work is valuable only when users understand freshness and the server remains final.
 7. **Connect feature flags to operations** - Every flag that changes behavior needs owner, scope, audit, support explanation, and rollback.
 8. **Measure the promised value** - Reports should prove adoption, health, usage, support load, billing impact, or security posture.
+9. **Respect the system boundary** - A feature can create mobile value without moving tenant, permission, billing, report, sync, or support authority into the mobile client.
 
 ## Risks
 

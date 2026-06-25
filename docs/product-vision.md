@@ -31,6 +31,8 @@ The target role model is defined in [Target User Roles](user-roles.md). Role bou
 
 The SaaS value map is defined in [SaaS Value Map](saas-value-map.md). Value boundaries explain why platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team need different outcomes from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
+The logical system boundary is defined in [Two-System Boundary Logic](two-system-boundary.md). Boundary rules explain what Admin/API owns, what mobile owns, what mobile must never own, what must happen through the API, what can be cached locally, what admin must control remotely, and what happens offline.
+
 ## Problem The System Solves
 
 Organizations that rely on mobile work usually face the same problem: the people doing the work need a simple app, but the business needs centralized control.
@@ -97,6 +99,8 @@ Putting both jobs in one place would create the wrong product:
 - If both systems use unrelated stacks, implementation cost, testing burden, and product drift increase.
 
 The split gives the product a clean rule: Admin/API decides; mobile executes and explains.
+
+See [Two-System Boundary Logic](two-system-boundary.md) for the detailed ownership model behind that rule.
 
 ## Why Mobile Must Be Controlled By Admin Settings
 
@@ -166,6 +170,14 @@ The full principle set lives in [Core Product Principles](product-principles.md)
 8. Mobile UX stays simple and honest.
 9. Documentation comes before product-critical implementation.
 10. Feature expansion is modular and complete across admin, API, mobile, support, audit, and sync.
+
+Boundary-level summary:
+
+1. Admin/API owns business authority.
+2. Mobile owns local execution and clear state presentation.
+3. API is the only path for server-trusted behavior.
+4. Local cache, drafts, and queues are useful but not authoritative.
+5. Offline mode is constrained by the latest server policy and must reconcile through API.
 
 ## SaaS Value Map
 

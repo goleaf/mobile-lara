@@ -14,6 +14,8 @@ The role model in [Target User Roles](user-roles.md) defines who can see and con
 
 The [SaaS Value Map](saas-value-map.md) defines why each product surface matters. Stakeholder value is part of every principle below: admin control, mobile access, offline sync, notifications, reports, security, and feature flags must create clear value for the right role without leaking authority to the wrong one.
 
+The [Two-System Boundary Logic](two-system-boundary.md) defines where each responsibility belongs. Boundary ownership is part of every principle below: Admin/API owns authority, mobile owns local execution, API confirms server-trusted behavior, and offline work remains constrained.
+
 ## 1. Admin Controls Everything
 
 Admin controls every business-sensitive mobile capability.
@@ -152,6 +154,7 @@ Before a future feature is implemented, answer:
 | Who controls it? | Admin/API owns the business decision. |
 | Which roles see it? | Visibility and control map to `docs/user-roles.md`. |
 | Who receives value? | Stakeholder value maps to `docs/saas-value-map.md`. |
+| Which system owns it? | Boundary ownership maps to `docs/two-system-boundary.md`. |
 | Can mobile bypass it? | No; mobile uses the API contract. |
 | Can it be disabled? | Yes; behavior is defined for disabled state. |
 | Is tenant scope clear? | Yes; scope is server-enforced. |
@@ -189,6 +192,7 @@ Those belong in future implementation prompts with tests and acceptance criteria
 | Mobile duplicates business logic | Mobile renders server policy and replays work through the API. |
 | Feature flags become unmanaged sprawl | Every feature needs owner, scope, disable behavior, support visibility, and audit trail. |
 | Feature value becomes unclear | Use the SaaS value map to name the stakeholder, outcome, and proof metric before implementation. |
+| Ownership boundary becomes blurry | Use the two-system boundary before deciding where state, authority, cache, queue, or offline behavior belongs. |
 | Tenant boundaries blur in support/reporting | Tenant scope applies to operations as strongly as core data. |
 | Offline behavior creates false confidence | Local state is labeled cache, draft, pending, synced, conflict, or failed. |
 | Security is delayed | Secure-by-default is part of every feature checklist. |

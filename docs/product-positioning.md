@@ -16,6 +16,8 @@ It also depends on [Target User Roles](user-roles.md): each role has a different
 
 It is made measurable by the [SaaS Value Map](saas-value-map.md): each positioning angle must create clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
 
+It is made operational by [Two-System Boundary Logic](two-system-boundary.md): each positioning angle must respect the split between Admin/API authority and mobile-client execution.
+
 ## Six Product Angles
 
 ### SaaS Control Center
@@ -58,6 +60,8 @@ The API-first position means:
 - Admin changes become enforceable mobile behavior through API contracts, not local assumptions.
 
 API-first does not mean mobile-only. It means every mobile capability has a server-enforced contract.
+
+The detailed API boundary is defined in [Two-System Boundary Logic](two-system-boundary.md): server-trusted reads, writes, sync replay, billing checks, feature decisions, support actions, and audit events must happen through the API.
 
 ### Offline-Capable Mobile System
 
@@ -170,6 +174,7 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 10. Web-only is insufficient for mobile work.
 11. Mobile-only is insufficient for SaaS governance.
 12. Product positioning should guide every future modular feature slice.
+13. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
 
 ## Risks
 

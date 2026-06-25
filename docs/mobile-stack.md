@@ -19,6 +19,8 @@ Stack decisions must also preserve the role boundaries in [Target User Roles](us
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
 
+Stack decisions must also preserve [Two-System Boundary Logic](two-system-boundary.md). A dependency, package, NativePHP plugin, queue, notification channel, cache, or local store should not move Admin/API authority into the mobile client.
+
 ## Current Package Baseline
 
 | Package / tool | Version | Product role |
@@ -73,6 +75,7 @@ The Mobile client system should be implemented as the managed edge client:
 - Process Tailwind through `@tailwindcss/postcss` after Sass. Do not reintroduce `@tailwindcss/vite` without verifying Tailwind output.
 - Keep stack expansion modular: new packages or surfaces should map to a clear feature slice and principle.
 - Keep stack expansion value-mapped: new infrastructure should prove stakeholder value instead of adding technical surface area for its own sake.
+- Keep stack expansion boundary-safe: new mobile-local infrastructure must remain cache, draft, queue, local metadata, or presentation unless API confirms otherwise.
 
 ## Why NativePHP + Livewire
 
@@ -114,6 +117,7 @@ The mobile client should remain small, predictable, and resilient:
 
 - Keep Livewire public state compact and non-sensitive.
 - Do not treat disabled buttons, `wire:confirm`, or local flags as authorization.
+- Do not store tenant, permission, billing, feature, app-version, support, report, audit, or sync authority in mobile-local state.
 - Use local SQLite for offline working state only.
 - Use NativePHP secure storage for tokens.
 - Use conservative polling and sync intervals.

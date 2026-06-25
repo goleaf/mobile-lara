@@ -23,6 +23,8 @@ The role standard is [Target User Roles](user-roles.md). Audits should verify pl
 
 The value standard is [SaaS Value Map](saas-value-map.md). Audits should verify that platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive clear value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags without receiving inappropriate visibility or authority.
 
+The boundary standard is [Two-System Boundary Logic](two-system-boundary.md). Audits should verify that Admin/API owns authority, mobile owns local execution, API confirms server-trusted behavior, local cache stays non-authoritative, admin controls mobile behavior remotely, and offline behavior reconciles through the API.
+
 ## Product Vision Audit
 
 | Vision question | Product answer |
@@ -60,6 +62,18 @@ If a future feature only satisfies the web/admin side or only the mobile side, i
 | Billing/operations team | Does the feature connect plan, quota, entitlement, usage, notification, or operations state to product access? |
 
 If a feature cannot name stakeholder value, it should not move from idea to implementation planning.
+
+## Two-System Boundary Audit
+
+| Boundary question | Audit lens |
+| --- | --- |
+| What does Admin/API own? | Tenant, permission, billing, feature, version, notification, report, support, audit, and sync authority remain server-side. |
+| What does mobile own? | Mobile UX, NativePHP capability use, local cache, drafts, queues, local metadata, and state presentation stay client-side. |
+| What must mobile never own? | Mobile never owns tenant authority, permission authority, billing authority, feature authority, report authority, audit truth, or final sync. |
+| What must happen through API? | Server-trusted reads, writes, support actions, notification registration, sync replay, entitlement checks, and audit events. |
+| What can be cached locally? | Safe boot snapshots, config copies, server-confirmed resources, drafts, queued intents, sync metadata, and safe local activity with freshness state. |
+| What is remotely controlled? | Feature flags, remote config, app-version policy, offline eligibility, sync policy, notification policy, support diagnostics, and entitlements. |
+| What happens offline? | Mobile can read cache, create drafts, or queue allowed intents, but API must confirm or reject when online. |
 
 ## Current Product Assets
 
@@ -127,6 +141,7 @@ Future feature work must not start from a screen. Each feature must be documente
 - Support behavior.
 - Billing/entitlement behavior if applicable.
 - Stakeholder value and value proof.
+- Two-system boundary ownership.
 - Audit behavior.
 
 If one of those perspectives is missing, the feature is not yet product-ready.
@@ -232,6 +247,7 @@ php artisan native:plugin:validate
 - [Core Product Principles](product-principles.md)
 - [Target User Roles](user-roles.md)
 - [SaaS Value Map](saas-value-map.md)
+- [Two-System Boundary Logic](two-system-boundary.md)
 - [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md)
 - Laravel Boost application info and documentation search.
 - Laravel API routing, authentication, resources, and JSON testing documentation.

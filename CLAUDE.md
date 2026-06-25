@@ -14,6 +14,8 @@ Target user roles are defined in `docs/user-roles.md`: platform owner, super adm
 
 The SaaS value map is defined in `docs/saas-value-map.md`: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
+The two-system boundary is defined in `docs/two-system-boundary.md`: Admin/API owns SaaS authority and mobile owns local execution, native capability use, cache, drafts, queues, and state presentation.
+
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
 2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
 
@@ -44,6 +46,7 @@ Use these docs before changing the product direction:
 - `docs/product-principles.md`
 - `docs/user-roles.md`
 - `docs/saas-value-map.md`
+- `docs/two-system-boundary.md`
 - `docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md`
 - `docs/mobile-stack.md`
 - `docs/nativephp-local-storage.md`
@@ -54,6 +57,7 @@ Use these docs before changing the product direction:
 
 - Admin/API is authoritative for SaaS rules.
 - Mobile is authoritative only for local presentation, local drafts, local queues, and native device interaction.
+- Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - Admin settings control mobile feature availability because mobile state can be stale, offline, copied between devices, or running an old app version.
 - API-first means admin decisions become enforceable mobile behavior through versioned server contracts.
 - Local SQLite stores cache, drafts, and queued intents, not trusted server facts.
@@ -63,6 +67,7 @@ Use these docs before changing the product direction:
 - Any feature must pass the core principles checklist in `docs/product-principles.md`.
 - Any feature that changes visibility or control must map behavior to the role model in `docs/user-roles.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
+- Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 
 </project-product-contract>
 

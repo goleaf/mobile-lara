@@ -14,6 +14,8 @@ Native builds must also honor [Target User Roles](user-roles.md): mobile screens
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.
 
+Native releases must also honor [Two-System Boundary Logic](two-system-boundary.md): a build may improve mobile execution and native capability access, but it must not move SaaS authority out of Admin/API.
+
 ## Current Placeholders
 
 | Setting | Value |
@@ -182,6 +184,7 @@ Also verify product policy before a real mobile release:
 
 - API boot config exists for the target app version.
 - Remote config and feature flags are compatible with the build.
+- Two-system boundary ownership is documented for every mobile capability in the release.
 - Blocked/deprecated version policy is tested.
 - Guest, invited, suspended, and mobile user states are covered in release expectations.
 - Native permission copy matches enabled features.
@@ -211,6 +214,7 @@ Before production distribution, the project needs:
 - Core product principles: [Core Product Principles](product-principles.md)
 - Target user roles: [Target User Roles](user-roles.md)
 - SaaS value map: [SaaS Value Map](saas-value-map.md)
+- Two-system boundary: [Two-System Boundary Logic](two-system-boundary.md)
 - NativePHP installation: https://nativephp.com/docs/mobile/3/getting-started/installation
 - NativePHP command reference: https://nativephp.com/docs/mobile/3/getting-started/commands
 - NativePHP app icons: https://nativephp.com/docs/mobile/3/the-basics/app-icon

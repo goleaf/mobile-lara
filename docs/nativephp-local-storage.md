@@ -14,6 +14,8 @@ Local storage must also respect [Target User Roles](user-roles.md). Mobile-local
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.
 
+Local storage must also obey [Two-System Boundary Logic](two-system-boundary.md). Mobile-local data may improve speed, drafts, offline work, and sync visibility, but it must not own tenant, permission, billing, feature, app-version, support, report, audit, or final sync authority.
+
 ## Product Role
 
 The mobile client may use local SQLite for:
@@ -95,6 +97,8 @@ Queued actions should be designed as intents:
 - Replay only through API endpoints.
 
 The API may accept, transform, reject, or mark an action conflicted. The mobile client must render the server decision.
+
+This is the storage boundary: local SQLite may hold the queue, but the API owns replay acceptance and final state.
 
 ## Sync Policy
 
