@@ -83,6 +83,44 @@
     </x-mobile.card>
 
     <x-mobile.card
+        title="Native browser"
+        description="Open external, in-app, OAuth, support, privacy, and billing placeholder links."
+    >
+        <div class="grid gap-4">
+            <div class="grid grid-cols-2 gap-3">
+                @forelse ($browserActions as $browserAction)
+                    <x-mobile.button
+                        wire:key="browser-action-{{ $browserAction['action'] }}"
+                        wire:click="{{ $browserAction['action'] }}"
+                        wire:loading.attr="disabled"
+                        wire:target="{{ $browserAction['action'] }}"
+                        :variant="$browserAction['variant']"
+                        class="min-w-0"
+                    >
+                        <span wire:loading.remove wire:target="{{ $browserAction['action'] }}">
+                            {{ $browserAction['label'] }}
+                        </span>
+                        <span wire:loading wire:target="{{ $browserAction['action'] }}">
+                            Opening
+                        </span>
+                    </x-mobile.button>
+                @empty
+                    <x-mobile.empty-state
+                        title="No browser actions"
+                        description="Native browser examples are not available."
+                    />
+                @endforelse
+            </div>
+
+            @if ($browserStatus)
+                <div class="rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/30 dark:bg-sky-400/10">
+                    <p class="text-sm font-semibold text-sky-950 dark:text-sky-100">{{ $browserStatus }}</p>
+                </div>
+            @endif
+        </div>
+    </x-mobile.card>
+
+    <x-mobile.card
         title="Native sharing"
         description="Share text, links, and report placeholders through the NativePHP share sheet."
     >

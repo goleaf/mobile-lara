@@ -4,6 +4,7 @@ namespace App\Livewire\Mobile;
 
 use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Services\Native\BrowserService;
 use App\Services\Native\DeviceService;
 use App\Services\Native\NativeDialogService;
 use App\Services\Native\ShareService;
@@ -49,6 +50,8 @@ class Debug extends Component
 
     public ?string $hapticStatus = null;
 
+    public ?string $browserStatus = null;
+
     public ?string $shareStatus = null;
 
     public ?string $pendingCameraTestId = null;
@@ -64,13 +67,16 @@ class Debug extends Component
 
     private DeviceService $devices;
 
+    private BrowserService $browsers;
+
     private ShareService $shares;
 
-    public function boot(NativeDialogService $dialogs, MobileNetworkState $networkState, DeviceService $devices, ShareService $shares): void
+    public function boot(NativeDialogService $dialogs, MobileNetworkState $networkState, DeviceService $devices, BrowserService $browsers, ShareService $shares): void
     {
         $this->dialogs = $dialogs;
         $this->networkState = $networkState;
         $this->devices = $devices;
+        $this->browsers = $browsers;
         $this->shares = $shares;
     }
 
@@ -327,6 +333,48 @@ class Debug extends Component
         $this->rememberShareResult($result, 'Report shared', 'Share unavailable');
     }
 
+    public function openExternalBrowserExample(): void
+    {
+        $result = $this->browsers->openExternalUrl((string) config('mobile_browser.links.external_url'));
+
+        $this->rememberBrowserResult($result, 'Browser opened', 'Browser unavailable');
+    }
+
+    public function openInAppBrowserExample(): void
+    {
+        $result = $this->browsers->openInAppUrl((string) config('mobile_browser.links.in_app_url'));
+
+        $this->rememberBrowserResult($result, 'Browser opened', 'Browser unavailable');
+    }
+
+    public function openOAuthBrowserExample(): void
+    {
+        $result = $this->browsers->openOAuthUrl((string) config('mobile_browser.links.oauth_url'));
+
+        $this->rememberBrowserResult($result, 'Browser opened', 'Browser unavailable');
+    }
+
+    public function openPrivacyPolicyBrowserExample(): void
+    {
+        $result = $this->browsers->openPrivacyPolicy();
+
+        $this->rememberBrowserResult($result, 'Privacy opened', 'Browser unavailable');
+    }
+
+    public function openSupportCenterBrowserExample(): void
+    {
+        $result = $this->browsers->openSupportCenter();
+
+        $this->rememberBrowserResult($result, 'Support opened', 'Browser unavailable');
+    }
+
+    public function openBillingPortalPlaceholderExample(): void
+    {
+        $result = $this->browsers->openBillingPortalPlaceholder();
+
+        $this->rememberBrowserResult($result, 'Billing opened', 'Browser unavailable');
+    }
+
     #[OnNative(PhotoTaken::class)]
     public function handleDebugPhotoTaken(string $path, string $mimeType = 'image/jpeg', ?string $id = null): void
     {
@@ -384,6 +432,7 @@ class Debug extends Component
     public function render(): View
     {
         return view('livewire.mobile.debug', [
+            'browserActions' => $this->browserActions(),
             'debugRows' => $this->debugRows(),
             'dialogActions' => $this->dialogActions(),
             'dialogResultRows' => $this->dialogResultRows(),
@@ -615,6 +664,45 @@ class Debug extends Component
     /**
      * @return list<array{label: string, action: string, variant: string}>
      */
+    private function browserActions(): array
+    {
+        return [
+            [
+                'label' => 'External URL',
+                'action' => 'openExternalBrowserExample',
+                'variant' => 'primary',
+            ],
+            [
+                'label' => 'In-app link',
+                'action' => 'openInAppBrowserExample',
+                'variant' => 'secondary',
+            ],
+            [
+                'label' => 'OAuth link',
+                'action' => 'openOAuthBrowserExample',
+                'variant' => 'accent',
+            ],
+            [
+                'label' => 'Privacy policy',
+                'action' => 'openPrivacyPolicyBrowserExample',
+                'variant' => 'secondary',
+            ],
+            [
+                'label' => 'Support center',
+                'action' => 'openSupportCenterBrowserExample',
+                'variant' => 'secondary',
+            ],
+            [
+                'label' => 'Billing portal',
+                'action' => 'openBillingPortalPlaceholderExample',
+                'variant' => 'ghost',
+            ],
+        ];
+    }
+
+    /**
+     * @return list<array{label: string, action: string, variant: string}>
+     */
     private function shareActions(): array
     {
         return [
@@ -684,6 +772,7 @@ class Debug extends Component
             'flashlight' => ['Flashlight', $this->flashlightStatus],
             'vibration' => ['Vibration', $this->vibrationStatus],
             'haptics' => ['Haptics', $this->hapticStatus],
+            'browser' => ['Browser', $this->browserStatus],
             'share' => ['Share', $this->shareStatus],
         ] as $key => [$label, $value]) {
             if (! is_string($value) || $value === '') {
@@ -698,6 +787,22 @@ class Debug extends Component
         }
 
         return $rows;
+    }
+
+    /**
+     * @param  array{success: bool, message: string}  $result
+     */
+    private function rememberBrowserResult(array $result, string $successTitle, string $failureTitle): void
+    {
+        $this->browserStatus = $result['message'];
+
+        if ($result['success']) {
+            $this->toastSuccess($result['message'], $successTitle);
+
+            return;
+        }
+
+        $this->toastWarning($result['message'], $failureTitle);
     }
 
     private function debugSnapshotText(): string

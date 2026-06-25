@@ -30,6 +30,13 @@ test('debug screen renders native dialog examples', function (): void {
         ->assertSee('Test flashlight')
         ->assertSee('Test vibration')
         ->assertSee('Test haptics')
+        ->assertSee('Native browser')
+        ->assertSee('External URL')
+        ->assertSee('In-app link')
+        ->assertSee('OAuth link')
+        ->assertSee('Privacy policy')
+        ->assertSee('Support center')
+        ->assertSee('Billing portal')
         ->assertSee('Native sharing')
         ->assertSee('Share debug snapshot')
         ->assertSee('Share report placeholder')
@@ -48,6 +55,44 @@ test('debug screen renders native dialog examples', function (): void {
         ->assertSee('Action')
         ->assertSee('Persistent');
 });
+
+test('debug browser actions report browser fallback state', function (string $action, string $status): void {
+    Livewire::test(Debug::class)
+        ->call($action)
+        ->assertSet('browserStatus', $status)
+        ->assertSee($status)
+        ->assertDispatched('mobile-toast', function (string $event, array $params) use ($status): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Browser unavailable'
+                && ($params['message'] ?? null) === $status;
+        });
+})->with([
+    'external url' => [
+        'openExternalBrowserExample',
+        'Native external browser is unavailable in this browser runtime.',
+    ],
+    'in-app url' => [
+        'openInAppBrowserExample',
+        'Native in-app browser is unavailable in this browser runtime.',
+    ],
+    'oauth url' => [
+        'openOAuthBrowserExample',
+        'Native OAuth browser is unavailable in this browser runtime.',
+    ],
+    'privacy policy' => [
+        'openPrivacyPolicyBrowserExample',
+        'Native in-app browser is unavailable in this browser runtime.',
+    ],
+    'support center' => [
+        'openSupportCenterBrowserExample',
+        'Native in-app browser is unavailable in this browser runtime.',
+    ],
+    'billing portal' => [
+        'openBillingPortalPlaceholderExample',
+        'Native external browser is unavailable in this browser runtime.',
+    ],
+]);
 
 test('debug share actions report browser fallback state', function (string $action, string $status): void {
     Livewire::test(Debug::class)
