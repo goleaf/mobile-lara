@@ -22,6 +22,8 @@ The architecture must also satisfy [Core Product Principles](../product-principl
 
 The target role model is defined in [Target User Roles](../user-roles.md). The architecture must keep platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user boundaries distinct.
 
+The SaaS value map is defined in [SaaS Value Map](../saas-value-map.md). The architecture must preserve value for platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team without giving each stakeholder the same visibility or control.
+
 ## Decision
 
 Use a two-system architecture:
@@ -81,6 +83,7 @@ The mobile client would be implemented as a fully native iOS/Android application
 - Mobile is responsible for NativePHP bridges, local SQLite, secure local auth state, offline queues, and mobile UX.
 - API design must be versioned, idempotent for replayable writes, and explicit about conflicts.
 - Feature work must include admin logic, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior.
+- Feature work must identify stakeholder value and connect it to admin control, mobile access, offline sync, notifications, reports, security, feature flags, or an explicit combination.
 - Documentation and future implementation should treat local mobile data as cache, draft, queue, or confirmed server copy depending on sync state.
 - NativePHP + Livewire remains the chosen mobile approach until a future ADR demonstrates that native-only or another mobile stack is worth the extra operational cost.
 - Future architecture changes should preserve the core principles unless a newer ADR explicitly supersedes them.

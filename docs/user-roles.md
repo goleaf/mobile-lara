@@ -16,6 +16,8 @@ Roles are product boundaries, not only labels.
 - Support and billing roles can see operational context only for their job.
 - UI visibility is never authorization; server-side policy remains final.
 
+Roles define authority and visibility. The [SaaS Value Map](saas-value-map.md) defines product value. A stakeholder may receive value from a feature without receiving direct control over it; for example, a tenant business benefits from reports and offline sync, while the tenant admin or support team may be the role that actually sees the management surface.
+
 ## Role Summary
 
 | Role | Scope | Primary purpose |
@@ -330,6 +332,19 @@ Should not see/control:
 | Mobile workflows | No direct use by default | No direct use by default | Configure | Monitor/manage | Support context | Entitlement context | Use allowed workflows | No | No | No |
 | Offline queue/sync | Oversight | Oversight/control policy | Own tenant view | Assigned scope | Case diagnostics | Entitlement impact | Own visible state | No | No trusted replay | No |
 
+## Role Value Alignment
+
+The value map should be used with this role model before feature planning:
+
+| Value stakeholder | Closest role surface | Value boundary |
+| --- | --- | --- |
+| Platform owner | Platform owner and super admin | Strategic value and operational value are related, but owner accountability should not bypass super-admin audit controls. |
+| Tenant business | Tenant admin and tenant manager | The business benefits from governed mobile operations, while tenant roles receive only the controls their job requires. |
+| Tenant admin | Tenant admin | Tenant value is tenant-scoped and cannot override platform, plan, app-version, or security policy. |
+| Mobile worker/client | Mobile user plus invited/suspended/pre-login states | Mobile value is simple allowed work, not access to admin machinery. |
+| Support team | Support agent | Support value is safe diagnostics and case resolution, not broad tenant administration. |
+| Billing/operations team | Billing manager | Billing value is entitlement and operational control, not tenant workflow ownership. |
+
 ## State Rules
 
 Some entries are account states rather than full roles:
@@ -366,10 +381,11 @@ Those belong in future implementation prompts with tests, migrations, policies, 
 | Tenant manager becomes hidden tenant admin | Limit manager scope to assigned teams/workflows and avoid tenant-wide settings by default. |
 | Support sees too much private data | Support gets safe diagnostics and case-scoped context, not broad tenant access. |
 | Billing manager changes operational access | Billing controls entitlements and invoices, not day-to-day workflows. |
+| Stakeholder value is confused with role authority | Use the SaaS value map to identify who benefits and this role model to decide who can see or control. |
 | Mobile user gains authority offline | Offline actions remain intents until API acceptance. |
 | Invited or suspended states leak access | State restrictions override role permissions. |
 | UI hiding becomes authorization | API and policies remain final authority. |
 
 ## Success Test
 
-The role model is successful when each person can see and control only what their job requires, every sensitive action is server-authorized and auditable, tenant boundaries remain clear, and mobile capability state is derived from API-controlled role and account state.
+The role model is successful when each person can see and control only what their job requires, every stakeholder value is delivered through the right role surface, every sensitive action is server-authorized and auditable, tenant boundaries remain clear, and mobile capability state is derived from API-controlled role and account state.

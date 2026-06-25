@@ -17,6 +17,8 @@ Stack decisions must preserve [Core Product Principles](product-principles.md): 
 
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
+Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
+
 ## Current Package Baseline
 
 | Package / tool | Version | Product role |
@@ -70,6 +72,7 @@ The Mobile client system should be implemented as the managed edge client:
 - Keep `resources/css/app.scss` as the canonical frontend stylesheet entrypoint.
 - Process Tailwind through `@tailwindcss/postcss` after Sass. Do not reintroduce `@tailwindcss/vite` without verifying Tailwind output.
 - Keep stack expansion modular: new packages or surfaces should map to a clear feature slice and principle.
+- Keep stack expansion value-mapped: new infrastructure should prove stakeholder value instead of adding technical surface area for its own sake.
 
 ## Why NativePHP + Livewire
 

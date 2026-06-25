@@ -21,6 +21,8 @@ The audit standard is [Core Product Principles](product-principles.md). Current 
 
 The role standard is [Target User Roles](user-roles.md). Audits should verify platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user visibility separately.
 
+The value standard is [SaaS Value Map](saas-value-map.md). Audits should verify that platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive clear value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags without receiving inappropriate visibility or authority.
+
 ## Product Vision Audit
 
 | Vision question | Product answer |
@@ -45,6 +47,19 @@ The role standard is [Target User Roles](user-roles.md). Audits should verify pl
 | Tenant-based product | Is every action tenant-scoped and safe for multi-tenant support/reporting? |
 
 If a future feature only satisfies the web/admin side or only the mobile side, it is incomplete for this product.
+
+## SaaS Value Map Audit
+
+| Stakeholder | Audit lens |
+| --- | --- |
+| Platform owner | Does the feature improve governance, rollout safety, commercial control, risk visibility, or platform health? |
+| Tenant business | Does the feature improve governed mobile operations without requiring a custom app fork? |
+| Tenant admin | Does the feature improve tenant-scoped control, visibility, supportability, or workflow management? |
+| Mobile worker/client | Does the feature make permitted mobile work simpler, clearer, more resilient, or better notified? |
+| Support team | Does the feature provide safe diagnostic context, feature/config explanation, or faster case resolution? |
+| Billing/operations team | Does the feature connect plan, quota, entitlement, usage, notification, or operations state to product access? |
+
+If a feature cannot name stakeholder value, it should not move from idea to implementation planning.
 
 ## Current Product Assets
 
@@ -98,6 +113,7 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Conflict governance | API decides conflict state; mobile displays and resolves according to policy; admin can monitor conflict rate. |
 | Product vision governance | Every future feature must prove the full loop from admin setting to API enforcement to mobile UX to support/audit visibility. |
 | Product positioning governance | Future slices must preserve the combined SaaS control center plus mobile platform positioning rather than drifting into web-only or mobile-only work. |
+| SaaS value governance | Every future slice must prove stakeholder value and connect that value to admin control, mobile access, offline sync, notifications, reports, security, or feature flags. |
 
 ## Business Logic Audit
 
@@ -110,6 +126,7 @@ Future feature work must not start from a screen. Each feature must be documente
 - Sync/conflict behavior.
 - Support behavior.
 - Billing/entitlement behavior if applicable.
+- Stakeholder value and value proof.
 - Audit behavior.
 
 If one of those perspectives is missing, the feature is not yet product-ready.
@@ -214,6 +231,7 @@ php artisan native:plugin:validate
 - [Product Positioning](product-positioning.md)
 - [Core Product Principles](product-principles.md)
 - [Target User Roles](user-roles.md)
+- [SaaS Value Map](saas-value-map.md)
 - [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md)
 - Laravel Boost application info and documentation search.
 - Laravel API routing, authentication, resources, and JSON testing documentation.

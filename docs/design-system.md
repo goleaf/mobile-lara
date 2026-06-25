@@ -17,6 +17,8 @@ UI decisions must follow [Core Product Principles](product-principles.md): admin
 
 UI decisions must also follow [Target User Roles](user-roles.md): each role should see the controls, diagnostics, billing context, support context, tenant scope, or pre-login state that matches its job.
 
+UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform owners need high-level control and risk visibility, tenant admins need scoped management, mobile workers need simple next actions, support needs safe diagnostics, and billing/operations needs entitlement clarity without tenant workflow overreach.
+
 ## Shared Principles
 
 - Keep UI in Livewire + Blade.
@@ -27,6 +29,7 @@ UI decisions must also follow [Target User Roles](user-roles.md): each role shou
 - Keep visible state honest: pending, offline, conflict, disabled, blocked, and deprecated states must be clear.
 - Never rely on UI hiding as authorization.
 - Show server-controlled capability state when a feature is disabled by plan, role, version, tenant, or app policy.
+- Design each admin, support, billing, report, notification, offline, or feature-flag surface around the stakeholder value it is meant to deliver.
 
 ## Mobile UX Principles
 
@@ -166,6 +169,8 @@ The SaaS product needs consistent state language.
 | Offline | Network is unavailable or fallback connectivity failed. |
 
 Mobile and admin should use the same state names in copy, badges, filters, support tickets, and reports.
+
+These state names also carry value-map meaning: mobile users get clarity, tenant admins get manageability, support gets diagnostic language, billing/operations gets entitlement explanation, and platform owners get consistent reporting.
 
 ## Buttons
 

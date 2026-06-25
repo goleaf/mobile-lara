@@ -14,6 +14,8 @@ The positioning depends on [Core Product Principles](product-principles.md): adm
 
 It also depends on [Target User Roles](user-roles.md): each role has a different responsibility, visibility boundary, and control surface.
 
+It is made measurable by the [SaaS Value Map](saas-value-map.md): each positioning angle must create clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
+
 ## Six Product Angles
 
 ### SaaS Control Center
@@ -138,6 +140,8 @@ Mobile without a control center becomes hard to operate as customers, teams, ver
 
 The combined product wins because it treats administration, API authority, mobile UX, offline resilience, feature control, and tenant isolation as one system.
 
+It also wins because the same platform capability creates different stakeholder value without collapsing permissions. For example, feature flags give platform owners rollout safety, tenant businesses controlled adoption, support teams explanation context, billing teams entitlement mapping, and mobile users clear enabled or blocked states.
+
 | Product need | Web-only | Mobile-only | Mobile Lara |
 | --- | --- | --- | --- |
 | Central tenant control | Strong | Weak | Strong |
@@ -162,9 +166,10 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 6. Tenants are the primary commercial and security boundary.
 7. Secure-by-default is part of the product position, not a separate hardening phase.
 8. Role boundaries determine who can see or control each surface.
-9. Web-only is insufficient for mobile work.
-10. Mobile-only is insufficient for SaaS governance.
-11. Product positioning should guide every future modular feature slice.
+9. Stakeholder value determines why a feature exists and which outcome it should prove.
+10. Web-only is insufficient for mobile work.
+11. Mobile-only is insufficient for SaaS governance.
+12. Product positioning should guide every future modular feature slice.
 
 ## Risks
 
@@ -179,3 +184,5 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 ## Positioning Success Test
 
 The product is positioned correctly when a buyer understands that Mobile Lara is neither just an admin dashboard nor just a mobile app. It is a tenant-based SaaS control center with an API-first, feature-controlled, offline-capable mobile client.
+
+The positioning should also make the value map obvious: platform leaders get control, tenant businesses get governed mobile operations, tenant admins get practical management, mobile workers get simple allowed workflows, support gets diagnosable context, and billing/operations gets entitlement control.

@@ -12,6 +12,8 @@ Every future feature should satisfy these principles before implementation begin
 
 The role model in [Target User Roles](user-roles.md) defines who can see and control product surfaces. Role boundaries are part of every principle below.
 
+The [SaaS Value Map](saas-value-map.md) defines why each product surface matters. Stakeholder value is part of every principle below: admin control, mobile access, offline sync, notifications, reports, security, and feature flags must create clear value for the right role without leaking authority to the wrong one.
+
 ## 1. Admin Controls Everything
 
 Admin controls every business-sensitive mobile capability.
@@ -149,6 +151,7 @@ Before a future feature is implemented, answer:
 | --- | --- |
 | Who controls it? | Admin/API owns the business decision. |
 | Which roles see it? | Visibility and control map to `docs/user-roles.md`. |
+| Who receives value? | Stakeholder value maps to `docs/saas-value-map.md`. |
 | Can mobile bypass it? | No; mobile uses the API contract. |
 | Can it be disabled? | Yes; behavior is defined for disabled state. |
 | Is tenant scope clear? | Yes; scope is server-enforced. |
@@ -185,6 +188,7 @@ Those belong in future implementation prompts with tests and acceptance criteria
 | Admin controls become UI-only | API remains the enforcement layer. |
 | Mobile duplicates business logic | Mobile renders server policy and replays work through the API. |
 | Feature flags become unmanaged sprawl | Every feature needs owner, scope, disable behavior, support visibility, and audit trail. |
+| Feature value becomes unclear | Use the SaaS value map to name the stakeholder, outcome, and proof metric before implementation. |
 | Tenant boundaries blur in support/reporting | Tenant scope applies to operations as strongly as core data. |
 | Offline behavior creates false confidence | Local state is labeled cache, draft, pending, synced, conflict, or failed. |
 | Security is delayed | Secure-by-default is part of every feature checklist. |
@@ -193,4 +197,4 @@ Those belong in future implementation prompts with tests and acceptance criteria
 
 ## Success Test
 
-The principles are working when every new product slice can explain who controls it, how the API enforces it, how mobile presents it, how tenants are isolated, how it behaves offline, how it stays secure, how it is documented, and how it can expand without becoming tangled.
+The principles are working when every new product slice can explain who benefits, who controls it, how the API enforces it, how mobile presents it, how tenants are isolated, how it behaves offline, how it stays secure, how it is documented, and how it can expand without becoming tangled.

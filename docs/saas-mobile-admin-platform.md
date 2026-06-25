@@ -65,6 +65,19 @@ The logical role model lives in [Target User Roles](user-roles.md). The main rol
 
 These roles define who can see and control platform policy, tenant settings, billing, support, mobile workflows, invitations, suspension recovery, and pre-login flows.
 
+## SaaS Value Map
+
+The stakeholder value model lives in [SaaS Value Map](saas-value-map.md). The main value recipients are:
+
+- Platform owner: scalable SaaS governance, rollout safety, commercial control, and risk visibility.
+- Tenant business: governed mobile operations without custom app forks.
+- Tenant admin: day-to-day tenant control over users, modules, notifications, reports, support, and sync health.
+- Mobile worker/client: simple permitted workflows with clear mobile, offline, notification, and sync states.
+- Support team: safe diagnostics, feature/config context, and faster issue resolution.
+- Billing/operations team: plan, quota, entitlement, usage, notification, and operational visibility.
+
+Every future product slice should name which stakeholder receives value and which system capability proves it: admin control, mobile access, offline sync, notifications, reports, security, feature flags, or a deliberate combination.
+
 ## System Split
 
 ### Admin/API System
@@ -155,13 +168,14 @@ The business logic should be organized around a few stable concepts.
 
 ## Feature Logic
 
-Every mobile feature should be described by five decisions before implementation:
+Every mobile feature should be described by six decisions before implementation:
 
-1. **Eligibility** - Which tenants, plans, app versions, devices, roles, or users can access it?
-2. **Configuration** - Which remote settings change behavior without a mobile release?
-3. **Offline behavior** - Is the feature read-only offline, draftable offline, queueable offline, or online-only?
-4. **Sync behavior** - What is idempotent, conflict-prone, retryable, or discardable?
-5. **Audit behavior** - Which admin-visible events prove who did what, when, from which device?
+1. **Stakeholder value** - Which stakeholder benefits, and what product outcome improves?
+2. **Eligibility** - Which tenants, plans, app versions, devices, roles, or users can access it?
+3. **Configuration** - Which remote settings change behavior without a mobile release?
+4. **Offline behavior** - Is the feature read-only offline, draftable offline, queueable offline, or online-only?
+5. **Sync behavior** - What is idempotent, conflict-prone, retryable, or discardable?
+6. **Audit behavior** - Which admin-visible events prove who did what, when, from which device?
 
 No feature should exist only as a mobile screen. Each feature needs an admin story, API story, mobile story, support story, and failure story.
 
@@ -303,6 +317,7 @@ Every major feature should be introduced as:
 The product scales as SaaS by moving variation into tenant-scoped configuration and versioned contracts instead of custom mobile builds:
 
 - Tenant isolation keeps customer data and controls separate.
+- The value map keeps platform owner, tenant business, tenant admin, mobile user, support, and billing outcomes explicit as modules expand.
 - Remote config and feature flags let operators change behavior without a store release.
 - App-version policy controls stale clients before they damage API contracts.
 - Idempotent sync makes offline work replayable.
@@ -363,4 +378,4 @@ Those belong in future implementation prompts with tests and acceptance criteria
 
 ## Success Criteria
 
-The concept is successful when a tenant admin can change a mobile capability without shipping a mobile build, the mobile app respects that change after config refresh, the API enforces it even if the mobile app is stale, and support can explain what happened from audit and sync records.
+The concept is successful when a tenant admin can change a mobile capability without shipping a mobile build, the mobile app respects that change after config refresh, the API enforces it even if the mobile app is stale, support can explain what happened from audit and sync records, billing can explain entitlement outcomes, and the value map makes clear who benefited from the feature.

@@ -12,6 +12,8 @@ Native build and release work must follow [Core Product Principles](product-prin
 
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
+Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.
+
 ## Current Placeholders
 
 | Setting | Value |
@@ -184,6 +186,7 @@ Also verify product policy before a real mobile release:
 - Guest, invited, suspended, and mobile user states are covered in release expectations.
 - Native permission copy matches enabled features.
 - Core product principles are still satisfied for every enabled mobile feature.
+- SaaS value map outcomes are known for every enabled mobile feature, report, notification, offline behavior, and feature flag.
 - Support runbook knows the release version.
 - Sync policy is compatible with the app's offline queue format.
 
@@ -207,6 +210,7 @@ Before production distribution, the project needs:
 - Product positioning: [Product Positioning](product-positioning.md)
 - Core product principles: [Core Product Principles](product-principles.md)
 - Target user roles: [Target User Roles](user-roles.md)
+- SaaS value map: [SaaS Value Map](saas-value-map.md)
 - NativePHP installation: https://nativephp.com/docs/mobile/3/getting-started/installation
 - NativePHP command reference: https://nativephp.com/docs/mobile/3/getting-started/commands
 - NativePHP app icons: https://nativephp.com/docs/mobile/3/the-basics/app-icon

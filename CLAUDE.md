@@ -12,6 +12,8 @@ Core product principles: Admin/API controls business authority, mobile never byp
 
 Target user roles are defined in `docs/user-roles.md`: platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user. Treat invited/suspended/pre-login as access states that override normal role permissions.
 
+The SaaS value map is defined in `docs/saas-value-map.md`: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
+
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
 2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
 
@@ -41,6 +43,7 @@ Use these docs before changing the product direction:
 - `docs/product-positioning.md`
 - `docs/product-principles.md`
 - `docs/user-roles.md`
+- `docs/saas-value-map.md`
 - `docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md`
 - `docs/mobile-stack.md`
 - `docs/nativephp-local-storage.md`
@@ -59,6 +62,7 @@ Use these docs before changing the product direction:
 - Any feature must define admin behavior, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior before implementation.
 - Any feature must pass the core principles checklist in `docs/product-principles.md`.
 - Any feature that changes visibility or control must map behavior to the role model in `docs/user-roles.md`.
+- Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 
 </project-product-contract>
 

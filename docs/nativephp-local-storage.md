@@ -12,6 +12,8 @@ The storage rules follow [Core Product Principles](product-principles.md): mobil
 
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
+Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.
+
 ## Product Role
 
 The mobile client may use local SQLite for:
@@ -47,6 +49,7 @@ The product boundary is:
 - Support users can inspect safe sync context when local and server state diverge.
 - Documentation defines offline behavior before local storage expands into a new module.
 - Suspended users cannot replay new local work as trusted actions until the API reauthorizes them.
+- Billing/operations users can trust entitlement checks during replay because offline value is confirmed by the server, not by stale local state.
 
 This keeps offline-first behavior scalable: more tenants and devices can work locally without multiplying trusted client-side rules.
 

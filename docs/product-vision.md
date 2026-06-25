@@ -29,6 +29,8 @@ The vision is governed by [Core Product Principles](product-principles.md). In s
 
 The target role model is defined in [Target User Roles](user-roles.md). Role boundaries explain who can own, operate, manage, support, bill, use, join, recover, or preview the product.
 
+The SaaS value map is defined in [SaaS Value Map](saas-value-map.md). Value boundaries explain why platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team need different outcomes from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
+
 ## Problem The System Solves
 
 Organizations that rely on mobile work usually face the same problem: the people doing the work need a simple app, but the business needs centralized control.
@@ -144,6 +146,7 @@ Scalable SaaS principles:
 - **Idempotent sync** - offline writes replay safely with idempotency keys and explicit conflict handling.
 - **Operational visibility** - admins can observe app adoption, device trust, sync health, notification health, support load, and feature rollout state.
 - **Role separation** - SaaS owners, tenant admins, support, billing, and mobile users each see only the controls or workflows they need.
+- **Value separation** - platform, tenant, mobile, support, and billing stakeholders receive different value from the same control plane without receiving the same visibility or authority.
 - **Progressive rollout** - features can move from internal tenant to limited tenant to general availability with rollback.
 - **Documentation discipline** - product decisions, risks, boundaries, and architecture decisions stay written before implementation.
 
@@ -163,6 +166,19 @@ The full principle set lives in [Core Product Principles](product-principles.md)
 8. Mobile UX stays simple and honest.
 9. Documentation comes before product-critical implementation.
 10. Feature expansion is modular and complete across admin, API, mobile, support, audit, and sync.
+
+## SaaS Value Map
+
+The full value map lives in [SaaS Value Map](saas-value-map.md). The vision-level summary is:
+
+1. Platform owner value is strategic control, SaaS governance, rollout safety, and risk visibility.
+2. Tenant business value is governed mobile operations without custom app forks.
+3. Tenant admin value is tenant-scoped control over users, modules, notifications, reports, support, and sync health.
+4. Mobile worker/client value is a simple permitted app with useful offline behavior and clear status.
+5. Support team value is safe diagnostic context for faster issue resolution.
+6. Billing/operations value is connecting plan, quota, entitlement, and usage state to product access.
+
+Every future feature should identify which stakeholder receives value and which capability proves it: admin control, mobile access, offline sync, notifications, reports, security, feature flags, or a deliberate combination.
 
 ## Boundaries
 
