@@ -17,6 +17,7 @@
         "kevinbatdorf/nativephp-fullscreen": "^0.1.0",
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
+        "livewire/livewire": "^4.3",
         "mobikul/mobikul_loader": "^1.0",
         "nativephp/mobile": "^3.3",
         "nativephp/mobile-browser": "^1.0",
