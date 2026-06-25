@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Mobile Version Control Logic documentation for minimum supported
+  versions, optional updates, forced updates, maintenance mode, outdated app
+  behavior, store links, update messages, and protection from broken old
+  versions.
 - Created the implementation status checklist that maps all documented SaaS,
   API/admin, mobile, NativePHP, offline/sync, support, billing, reports, and
   quality-loop requirements to current implementation state.
@@ -24,3 +28,7 @@ All notable changes to Mobile Lara will be documented in this file.
 - Scaffolded `apps/api-admin` as a Laravel 13 API/admin app with Livewire,
   Blade, Tailwind, a versioned mobile status endpoint, shared mobile API
   response envelopes, focused Pest coverage, and verified frontend build.
+- Copied the verified root NativePHP mobile client into `apps/mobile-client`
+  as a standalone Laravel app with Livewire routes, NativePHP config, local
+  SQLite infrastructure, mobile UI surfaces, tests, frontend build, and plugin
+  validation.

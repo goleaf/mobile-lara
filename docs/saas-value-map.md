@@ -30,6 +30,8 @@ The feature flag rules are defined in [Feature Flag Logic](feature-flag-logic.md
 
 The remote configuration rules are defined in [Remote Configuration Logic](remote-configuration-logic.md). Value is safely adjustable only when runtime config has allowed behavior types, defaults, scope, tenant overrides, mobile cache rules, offline behavior, validation, fallback, support visibility, audit, and rollback.
 
+The mobile version control rules are defined in [Mobile Version Control Logic](mobile-version-control-logic.md). Value is protected only when minimum supported versions, optional updates, forced updates, maintenance mode, store links, update messages, and old-version blocks are Admin/API controlled and support-visible.
+
 The control-plane responsibility rules are defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Value is operationally safe when each promised outcome maps to a clear Admin/API owner such as tenant management, permissions, API contracts, feature control, remote config, app-version policy, notifications, billing, support, reporting, audit, conflict decisions, or security enforcement.
 
 The mobile-client responsibility rules are defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Value reaches users safely when mobile UX, secure local session, cache, offline actions, NativePHP features, navigation, permissions UX, sync display, drafts, feedback, and feature visibility are local execution responsibilities rather than authority.
@@ -237,6 +239,7 @@ Use this value map before approving a future product slice.
 | Admin control ownership is unclear | Map each value claim to Admin Control Center logic before feature planning. |
 | Feature flag ownership is unclear | Map each value claim to Feature Flag Logic before feature planning. |
 | Remote config ownership is unclear | Map each value claim to Remote Configuration Logic before feature planning. |
+| Old mobile versions reduce product trust | Map affected value to Mobile Version Control Logic before changing minimum versions, update prompts, forced updates, or maintenance behavior. |
 | Mobile value becomes local authority | Map each mobile value claim to mobile-client responsibilities and keep API confirmation final. |
 | Mobile UX shows platform complexity | Translate policy into clear next actions and status labels. |
 

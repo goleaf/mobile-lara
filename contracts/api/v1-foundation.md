@@ -12,6 +12,12 @@ contracts should return resolved mobile-safe config values, config version,
 freshness, compatibility, tenant override context, and fallback/error states
 without exposing admin-only configuration internals.
 
+Mobile Version Control Logic is defined in
+`../../docs/mobile-version-control-logic.md`. Future app-version and
+maintenance contracts should return resolved update, force-update, blocked,
+deprecated, maintenance, store-link, message, and stale-client states without
+exposing raw admin policy internals.
+
 ## Base Path
 
 ```text

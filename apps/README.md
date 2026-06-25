@@ -7,7 +7,7 @@ This directory is the target monorepo boundary for the two Mobile Lara systems.
 | Path | Responsibility | Current state |
 | --- | --- | --- |
 | `apps/api-admin` | Laravel API plus Livewire admin panel. This is the SaaS control plane and source of authority. | Laravel app scaffold exists with Livewire dashboard shell, versioned status API, shared response envelope, tests, and build verification. |
-| `apps/mobile-client` | Laravel plus Livewire inside NativePHP Mobile. This is the managed edge client. | Scaffold documentation exists; current mobile implementation still lives at the repository root during Phase 1 transition. |
+| `apps/mobile-client` | Laravel plus Livewire inside NativePHP Mobile. This is the managed edge client. | Complete mobile app exists with Livewire routes, NativePHP config, local SQLite infrastructure, copied mobile UI, tests, and build verification. |
 
 The product contract remains unchanged:
 
@@ -26,6 +26,10 @@ The product contract remains unchanged:
   defines how safe runtime mobile behavior is remotely configured, delivered
   through API, cached locally, handled offline, overridden per tenant, and
   failed closed when missing or invalid.
+- Mobile Version Control Logic in
+  `../docs/mobile-version-control-logic.md` defines how minimum supported
+  versions, optional updates, forced updates, maintenance mode, store links,
+  update messages, and stale-client protection move through API outcomes.
 - Mobile owns local execution, NativePHP capability UX, cache, drafts, queues,
   sync display, and API-derived feature visibility.
 - Mobile never reads the admin database directly. Server-trusted behavior must
@@ -33,8 +37,7 @@ The product contract remains unchanged:
 
 ## Transition Rule
 
-Until the code migration is completed, the root Laravel app is treated as the
-existing mobile-client implementation. New control-plane code belongs in
-`apps/api-admin`. New mobile-client code should be added to the current root
-app only when it is required to preserve or stabilize existing mobile
-functionality before the move.
+The root Laravel app is retained as a transition mirror. New control-plane code
+belongs in `apps/api-admin`. New mobile-client code should target
+`apps/mobile-client` unless a later cleanup task explicitly removes or rewires
+the root app.

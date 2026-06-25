@@ -20,6 +20,8 @@ It depends on [Feature Flag Logic](feature-flag-logic.md): feature-controlled po
 
 It depends on [Remote Configuration Logic](remote-configuration-logic.md): config-driven positioning stays useful only when runtime behavior is safe to configure, versioned, scoped, cached carefully, tenant-aware, validated, and fallback-safe.
 
+It depends on [Mobile Version Control Logic](mobile-version-control-logic.md): version-aware positioning stays useful only when minimum supported versions, optional updates, forced updates, maintenance mode, store links, update messages, and old-version protection are controlled by Admin/API.
+
 It also depends on [Target User Roles](user-roles.md): each role has a different responsibility, visibility boundary, and control surface.
 
 It is made measurable by the [SaaS Value Map](saas-value-map.md): each positioning angle must create clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
@@ -56,6 +58,8 @@ The detailed admin control model lives in [Admin Control Center Logic](admin-con
 The detailed feature-control model lives in [Feature Flag Logic](feature-flag-logic.md).
 
 The detailed remote-config model lives in [Remote Configuration Logic](remote-configuration-logic.md).
+
+The detailed mobile-version model lives in [Mobile Version Control Logic](mobile-version-control-logic.md).
 
 ### Mobile Workforce And Client Platform
 
@@ -202,6 +206,7 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 9. Admin Control Center logic records who can control tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, and support before coding.
 10. Feature Flag Logic records how important mobile features resolve scope, priority, disabled states, rollout, impact, plan limits, support, and offline behavior before coding.
 11. Remote Configuration Logic records what can be configured, how mobile receives and caches config, offline behavior, tenant overrides, safe admin changes, and fallback behavior before coding.
+12. Mobile Version Control Logic records minimum supported versions, optional updates, forced updates, maintenance mode, outdated-client behavior, store links, update messages, and old-version protection before coding.
 12. Role boundaries determine who can see or control each surface.
 13. Stakeholder value determines why a feature exists and which outcome it should prove.
 14. Web-only is insufficient for mobile work.
@@ -221,6 +226,7 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 | Admin Control Center scope becomes vague | Use the control-center checklist before planning tenant, user, role, permission, feature, config, version, maintenance, force-update, sync, notification, report, billing, or support controls. |
 | Feature flags become hidden product logic | Use Feature Flag Logic to define scope, priority, mobile state, admin impact, rollout, plan limits, support, audit, and retirement. |
 | Remote config becomes hidden product logic | Use Remote Configuration Logic to define safe config types, scope, defaults, overrides, caching, offline behavior, validation, fallback, support, audit, and rollback. |
+| Old mobile versions damage trust | Use Mobile Version Control Logic to define minimum supported versions, update paths, maintenance behavior, store links, support messages, and stale-client blocks. |
 | Mobile grows into an independent app | Keep mobile API-driven and policy-controlled. |
 | Offline features undermine authority | Treat local writes as intents and reconcile through the API. |
 | Tenant flexibility becomes custom code | Prefer tenant config, feature flags, entitlements, and versioned API contracts. |

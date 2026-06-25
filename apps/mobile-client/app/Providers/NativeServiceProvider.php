@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Providers;
+
+use Codingwithrk\DoubleBackToClose\DoubleBackToCloseServiceProvider;
+use Codingwithrk\NoScreenshot\NoScreenshotServiceProvider;
+use Developernauts\NativephpMobileLocales\NativephpMobileLocalesServiceProvider;
+use Illuminate\Support\ServiceProvider;
+use KevinBatdorf\Fullscreen\FullscreenServiceProvider;
+use MobikulLoader\MobikulLoaderServiceProvider;
+use Native\Mobile\Providers\BrowserServiceProvider;
+use Native\Mobile\Providers\CameraServiceProvider;
+use Native\Mobile\Providers\DeviceServiceProvider;
+use Native\Mobile\Providers\DialogServiceProvider;
+use Native\Mobile\Providers\FileServiceProvider;
+use Native\Mobile\Providers\MicrophoneServiceProvider;
+use Native\Mobile\Providers\NetworkServiceProvider;
+use Native\Mobile\Providers\ShareServiceProvider;
+use Native\Mobile\Providers\SystemServiceProvider;
+use Nativephp\AllPermissionHandler\AllPermissionHandlerServiceProvider;
+use Nativephp\InAppReviews\InAppReviewsServiceProvider;
+use S2BR\MobileSplashscreen\MobileSplashscreenServiceProvider;
+use Wilsonatb\InAppUpdate\InAppUpdateServiceProvider;
+
+class NativeServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        //
+    }
+
+    /**
+     * The NativePHP plugins to enable.
+     *
+     * Only plugins listed here will be compiled into your native builds.
+     * This is a security measure to prevent transitive dependencies from
+     * automatically registering plugins without your explicit consent.
+     *
+     * @return array<int, class-string<ServiceProvider>>
+     */
+    public function plugins(): array
+    {
+        return [
+            AllPermissionHandlerServiceProvider::class,
+            DoubleBackToCloseServiceProvider::class,
+            NoScreenshotServiceProvider::class,
+            NativephpMobileLocalesServiceProvider::class,
+            FullscreenServiceProvider::class,
+            MobikulLoaderServiceProvider::class,
+            BrowserServiceProvider::class,
+            CameraServiceProvider::class,
+            DeviceServiceProvider::class,
+            DialogServiceProvider::class,
+            FileServiceProvider::class,
+            MicrophoneServiceProvider::class,
+            NetworkServiceProvider::class,
+            ShareServiceProvider::class,
+            SystemServiceProvider::class,
+            MobileSplashscreenServiceProvider::class,
+            InAppUpdateServiceProvider::class,
+            InAppReviewsServiceProvider::class,
+            ...$this->optionalLocalNotificationProviders(),
+        ];
+    }
+
+    /**
+     * @return array<int, class-string<ServiceProvider>>
+     */
+    private function optionalLocalNotificationProviders(): array
+    {
+        return array_values(array_filter(
+            (array) config('mobile_notifications.native.providers', []),
+            static fn (mixed $provider): bool => is_string($provider)
+                && class_exists($provider)
+                && is_subclass_of($provider, ServiceProvider::class),
+        ));
+    }
+}

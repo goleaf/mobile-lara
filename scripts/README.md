@@ -18,6 +18,12 @@ Scripts must also respect Remote Configuration Logic in
 documented config contracts, freshness, fallback, and invalid-config behavior
 without creating runtime authority outside Admin/API.
 
+Scripts must also respect Mobile Version Control Logic in
+`../docs/mobile-version-control-logic.md`: any future helper should verify
+documented minimum-version, optional-update, force-update, maintenance, store
+link, update-message, and stale-client behavior without creating runtime
+authority outside Admin/API.
+
 Do not add custom verification scripts when a normal project command already
 proves the behavior. Prefer the real commands:
 

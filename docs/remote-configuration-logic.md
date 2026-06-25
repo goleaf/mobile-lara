@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the remote configuration logic for Mobile Lara. It explains what behavior should be remotely configurable, how mobile should receive and cache config, what happens offline, how tenant-specific config overrides global defaults, how admins should safely change config, and how mobile should handle missing or invalid config. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.
 
-Use this document with [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Core Product Principles](product-principles.md), and [Documentation-First Architecture](documentation-first-architecture.md): remote config is a server-controlled product decision that mobile consumes through API.
+Use this document with [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Mobile Version Control Logic](mobile-version-control-logic.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Core Product Principles](product-principles.md), and [Documentation-First Architecture](documentation-first-architecture.md): remote config is a server-controlled product decision that mobile consumes through API.
 
 ## Remote Configuration Statement
 
@@ -65,6 +65,7 @@ Override principles:
 - Tenant-specific config can override global defaults only inside platform, plan, permission, version, and safety limits.
 - A tenant override cannot enable a feature that feature flags, plan limits, app-version policy, or permissions block.
 - User-specific presentation config cannot bypass tenant, plan, feature, permission, or version rules.
+- Remote config cannot bypass [Mobile Version Control Logic](mobile-version-control-logic.md); it may tune update copy or support text, but it cannot make a blocked or forced-update version safe.
 - Emergency and maintenance overrides can narrow behavior or change user-facing messages, but should not silently broaden authority.
 - Mobile receives the resolved config and config metadata, not raw unresolved layers.
 

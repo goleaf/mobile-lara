@@ -19,6 +19,12 @@ Remote Configuration Logic lives in
 should return resolved values, config version, freshness/compatibility metadata,
 and safe fallback/error behavior rather than raw admin config layers.
 
+Mobile Version Control Logic lives in
+`../../docs/mobile-version-control-logic.md`. Every contract that exposes
+version or maintenance policy should return resolved mobile-safe states,
+store/update links, user-safe messages, support context, and stale-client error
+behavior rather than raw admin version rules.
+
 ## Versioning
 
 Mobile contracts are grouped by API version. The first implementation target is:

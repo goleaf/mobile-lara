@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the logical responsibilities of the Mobile Lara mobile client. It explains what the NativePHP + Livewire client owns, what it may cache or perform locally, how it should present server-controlled behavior, and which authority it must never claim. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, NativePHP plugins, or application logic.
 
-Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), and [Remote Configuration Logic](remote-configuration-logic.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution and presentation, admin controls define API-derived outcomes, feature flags resolve to mobile-safe states, remote config resolves to mobile-safe values, and every mobile screen documents its API dependency before implementation.
+Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), and [Mobile Version Control Logic](mobile-version-control-logic.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution and presentation, admin controls define API-derived outcomes, feature flags resolve to mobile-safe states, remote config resolves to mobile-safe values, mobile version policy resolves to update/maintenance states, and every mobile screen documents its API dependency before implementation.
 
 ## Responsibility Statement
 
@@ -84,6 +84,8 @@ Principles:
 The cache is useful memory, not business truth.
 
 Remote config cache follows [Remote Configuration Logic](remote-configuration-logic.md): mobile may cache resolved values with version and freshness metadata, but stale or invalid config cannot grant authority.
+
+Version policy follows [Mobile Version Control Logic](mobile-version-control-logic.md): mobile reports its version, follows optional-update, force-update, maintenance, blocked, or deprecated API outcomes, preserves safe local drafts where possible, and avoids protected actions when old-version policy is unsafe.
 
 ## Offline Actions
 

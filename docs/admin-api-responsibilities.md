@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the logical responsibilities of the Admin/API system in Mobile Lara. It explains what the SaaS control plane owns, why it owns it, how that authority relates to the mobile client, and which risks the responsibility model prevents. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, or application logic.
 
-Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), and [Remote Configuration Logic](remote-configuration-logic.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution, admin controls are scoped and auditable, feature flags and remote config are resolved server-side, and every feature/control/risk is documented before implementation.
+Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), and [Mobile Version Control Logic](mobile-version-control-logic.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution, admin controls are scoped and auditable, feature flags, remote config, and mobile version policy are resolved server-side, and every feature/control/risk is documented before implementation.
 
 ## Responsibility Statement
 
@@ -139,6 +139,7 @@ Admin/API owns mobile version rules because old clients can call stale contracts
 Principles:
 
 - Version policy can mark builds as supported, recommended update, deprecated, blocked, or internal-only.
+- Version policy should follow [Mobile Version Control Logic](mobile-version-control-logic.md): minimum supported versions, optional updates, forced updates, maintenance state, outdated responses, store links, update messages, support context, audit, rollback, and old-version protection are documented before implementation.
 - Version rules can differ by platform, tenant, rollout cohort, feature risk, or incident state.
 - API contracts should deprecate before removal when feasible.
 - Version policy should protect security, billing, sync, and feature-control assumptions.

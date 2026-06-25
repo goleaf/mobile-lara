@@ -56,6 +56,8 @@ Feature flag logic is detailed in [Feature Flag Logic](feature-flag-logic.md). E
 
 Remote configuration logic is detailed in [Remote Configuration Logic](remote-configuration-logic.md). Every runtime-configurable mobile behavior must define allowed config type, default, scope, tenant override, mobile receive/cache rules, offline behavior, invalid-config fallback, admin safety, support meaning, audit expectation, and rollback before coding.
 
+Mobile version control logic is detailed in [Mobile Version Control Logic](mobile-version-control-logic.md). Every app-version-sensitive behavior must define minimum supported versions, optional update behavior, forced update behavior, maintenance mode, outdated-client response, store links, update messages, support meaning, audit expectation, and old-version protection before coding.
+
 ## Target User Roles
 
 The logical role model lives in [Target User Roles](user-roles.md). The main roles are:
@@ -136,6 +138,14 @@ The detailed remote-configuration model lives in [Remote Configuration Logic](re
 Remote configuration controls safe runtime variation for mobile behavior: copy, limits, workflow options, offline/sync behavior, native permission wording, support guidance, notification presentation, version messaging, and tenant presentation.
 
 Remote config should be scoped, versioned, validated, cached carefully, tenant-aware, support-visible, auditable where sensitive, and safe when offline, missing, or invalid.
+
+## Mobile Version Control Logic
+
+The detailed mobile-version model lives in [Mobile Version Control Logic](mobile-version-control-logic.md).
+
+Mobile version control protects users and tenants from broken old builds. Admin/API controls minimum supported versions, optional update prompts, forced updates, maintenance states, platform-specific store links, user-safe update messages, support context, and stale-client blocks.
+
+Mobile should report its version, follow the API's resolved state, preserve safe local drafts where possible, avoid protected actions when outdated or blocked, and refresh policy after update before resuming normal work.
 
 ## Mobile Client Responsibilities
 

@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the feature flag logic for Mobile Lara. It explains why important mobile features should be controlled by feature flags, how global, tenant, and user-level decisions should be prioritized, how disabled features should appear on mobile, how admins should understand impact, how flags support safe rollout, and how flags support plan limits. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.
 
-Use this document with [Admin Control Center Logic](admin-control-center-logic.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Core Product Principles](product-principles.md), [SaaS Value Map](saas-value-map.md), and [Remote Configuration Logic](remote-configuration-logic.md): feature flags are admin-controlled product decisions that reach mobile through API outcomes, while remote config tunes safe runtime behavior for enabled features.
+Use this document with [Admin Control Center Logic](admin-control-center-logic.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Core Product Principles](product-principles.md), [SaaS Value Map](saas-value-map.md), [Remote Configuration Logic](remote-configuration-logic.md), and [Mobile Version Control Logic](mobile-version-control-logic.md): feature flags are admin-controlled product decisions that reach mobile through API outcomes, remote config tunes safe runtime behavior for enabled features, and mobile version control decides whether the build can safely use those outcomes.
 
 ## Feature Flag Statement
 
@@ -25,6 +25,11 @@ Remote config complements feature flags. A flag decides whether a feature is
 available and in what mobile-safe state; remote config decides safe values such
 as copy, limits, thresholds, workflow options, offline rules, support prompts,
 notification presentation, version messaging, and tenant presentation.
+
+Mobile version control complements feature flags. A flag can require a minimum
+app version or block stale clients, but [Mobile Version Control Logic](mobile-version-control-logic.md)
+decides optional update, forced update, maintenance, blocked, deprecated, store
+link, and outdated-client behavior.
 
 ## Why Important Mobile Features Need Flags
 

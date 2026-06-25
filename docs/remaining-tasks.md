@@ -22,12 +22,16 @@ Remaining runtime-config work must map configurable behavior to documented
 scope, safe defaults, mobile caching, offline behavior, validation, fallback,
 support visibility, audit, and rollback.
 
+Mobile Version Control Logic is defined in
+`docs/mobile-version-control-logic.md`. Remaining version/maintenance work must
+map minimum supported versions, optional updates, forced updates, maintenance
+mode, outdated responses, store links, update messages, support context, audit,
+rollback, and old-version protection.
+
 ## Active Implementation Work
 
-- Move from the current root Laravel mobile app to the requested monorepo shape
-  with `apps/api-admin` and `apps/mobile-client`.
-- Complete the mobile-client relocation from the current root Laravel app into
-  `apps/mobile-client`.
+- Decide when to remove or rewire the root Laravel app now that
+  `apps/api-admin` and `apps/mobile-client` both exist as Laravel apps.
 - Implement mobile bootstrap as the first real control-plane endpoint after the
   foundation status route.
 - Add the remaining concrete API contracts in `contracts/api`.

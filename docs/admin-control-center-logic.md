@@ -10,6 +10,8 @@ Use [Feature Flag Logic](feature-flag-logic.md) whenever a control changes impor
 
 Use [Remote Configuration Logic](remote-configuration-logic.md) whenever a control changes safe runtime mobile behavior, config defaults, tenant overrides, mobile caching, offline behavior, or invalid-config fallback.
 
+Use [Mobile Version Control Logic](mobile-version-control-logic.md) whenever a control changes minimum supported versions, optional updates, forced updates, maintenance mode, outdated app behavior, store links, update messages, support context, or stale-client protection.
+
 ## Control Center Statement
 
 The Admin Control Center is the operational control surface for the SaaS.
@@ -130,6 +132,7 @@ Admin control of app versions keeps stale mobile clients safe.
 Principles:
 
 - Version states should include supported, recommended update, deprecated, blocked, and internal-only.
+- Version controls should follow [Mobile Version Control Logic](mobile-version-control-logic.md): admins define minimum supported versions, optional update prompts, forced updates, maintenance state, store links, update messages, support context, audit, rollback, and old-version protection.
 - Version rules should consider platform, tenant, feature risk, API contract, security, billing, sync, and rollout cohort.
 - Deprecation should happen before removal when feasible.
 - Support should be able to see which version rule affected a user.

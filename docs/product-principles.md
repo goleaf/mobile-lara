@@ -18,6 +18,8 @@ The [Feature Flag Logic](feature-flag-logic.md) defines how important mobile fea
 
 The [Remote Configuration Logic](remote-configuration-logic.md) defines how safe runtime behavior is configured, delivered, cached, overridden, validated, audited, and handled when offline, missing, or invalid.
 
+The [Mobile Version Control Logic](mobile-version-control-logic.md) defines how supported versions, optional updates, forced updates, maintenance mode, outdated responses, store links, update messages, and old-version protection are controlled.
+
 The role model in [Target User Roles](user-roles.md) defines who can see and control product surfaces. Role boundaries are part of every principle below.
 
 The [SaaS Value Map](saas-value-map.md) defines why each product surface matters. Stakeholder value is part of every principle below: admin control, mobile access, offline sync, notifications, reports, security, and feature flags must create clear value for the right role without leaking authority to the wrong one.
@@ -77,6 +79,8 @@ Product rule: every feature ships with enable, disable, rollback, support, and a
 Use [Feature Flag Logic](feature-flag-logic.md) to define global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, and offline decisions before implementation.
 
 Use [Remote Configuration Logic](remote-configuration-logic.md) to define safe runtime config, defaults, tenant overrides, mobile caching, offline behavior, invalid-config fallback, support visibility, audit, and rollback.
+
+Use [Mobile Version Control Logic](mobile-version-control-logic.md) to define minimum supported versions, optional updates, forced updates, maintenance behavior, store links, update messages, support visibility, audit, and rollback.
 
 ## 4. Tenant Isolation Is Non-Negotiable
 

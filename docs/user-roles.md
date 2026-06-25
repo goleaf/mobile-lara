@@ -12,6 +12,7 @@ Roles are product boundaries, not only labels.
 - Role and permission decisions must follow [Admin Control Center Logic](admin-control-center-logic.md): every role-sensitive control has a named scope, mobile effect, API context, audit expectation, support meaning, and offline behavior.
 - Role and permission decisions must follow [Feature Flag Logic](feature-flag-logic.md): role and user-level feature access can refine availability only inside global, tenant, plan, version, permission, and safety boundaries.
 - Role and permission decisions must follow [Remote Configuration Logic](remote-configuration-logic.md): role or user presentation config can change safe UX behavior but cannot grant authority, billing access, tenant access, or permissions.
+- Role and permission decisions must follow [Mobile Version Control Logic](mobile-version-control-logic.md): support, release, internal, invited, suspended, and guest states may affect version visibility, update prompts, maintenance access, and blocked old-version behavior without bypassing API authority.
 - Every role must be enforced by the Admin/API system.
 - The mobile client must receive role-derived capability state through the API.
 - Roles should follow least privilege.

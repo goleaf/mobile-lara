@@ -24,6 +24,12 @@ scope, safe defaults, override rules, mobile caching, offline behavior,
 validation, fallback, support visibility, audit, and rollback before code is
 written.
 
+Mobile Version Control Logic is defined in
+`docs/mobile-version-control-logic.md`. Future app-version work must map
+minimum supported versions, optional updates, forced updates, maintenance mode,
+outdated responses, store links, update messages, support context, audit,
+rollback, and old-version protection before code is written.
+
 Status values:
 
 - `not started` - No durable implementation exists yet.
@@ -39,17 +45,17 @@ Status values:
 
 | Area | Current state |
 | --- | --- |
-| Root application | A Laravel 13 + Livewire 4 + NativePHP Mobile app exists at the repository root. |
-| Requested monorepo paths | `apps/api-admin` is now a Laravel API/admin app; `apps/mobile-client` remains a Phase 1 boundary scaffold. |
+| Root application | A Laravel 13 + Livewire 4 + NativePHP Mobile app remains at the repository root as a transition mirror. |
+| Requested monorepo paths | `apps/api-admin` and `apps/mobile-client` are now separate Laravel applications. |
 | API routes | `apps/api-admin/routes/api.php` exposes the first versioned route at `GET /api/v1/mobile/status`. |
-| Mobile routes | 52 `mobile.*` Livewire routes exist in `routes/web.php`. |
+| Mobile routes | 52 `mobile.*` Livewire routes exist in both the root transition app and `apps/mobile-client/routes/web.php`. |
 | Active database | Default SQLite contains only framework tables and `users`; no SaaS control-plane schema exists yet. |
-| Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist. |
+| Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, Livewire dashboard shell, shared API response envelope, and first mobile status endpoint. Auth, tenancy, and SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance and the first `v1-foundation.md` contract. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | Root mobile suite passed in the Phase 1 pass. `apps/api-admin` has focused Pest coverage for admin routing and API envelopes. |
-| Native tooling | Docs record that Xcode, Android Studio, and Gradle were not detected in previous checks. |
+| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/api-admin` has focused Pest coverage for admin routing and API envelopes. |
+| Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
 
@@ -59,15 +65,16 @@ Status values:
 | Admin Control Center logic | documented | Control principles exist for tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance, force update, sync, notifications, reports, billing, and support. |
 | Feature Flag Logic | documented | Feature flag principles exist for important mobile features, global/tenant/user priority, disabled states, admin impact, rollout safety, and plan limits. |
 | Remote Configuration Logic | documented | Remote config principles exist for configurable behavior, mobile receive/cache rules, offline behavior, tenant overrides, safe admin changes, fallback, and invalid config handling. |
-| Root monorepo structure | partial | `apps/api-admin` is implemented as a Laravel app; `apps/mobile-client` still needs the root mobile app migration. |
+| Mobile Version Control Logic | documented | Version-control principles exist for minimum supported versions, optional updates, forced updates, maintenance mode, store links, update messages, support context, and old-version protection. |
+| Root monorepo structure | partial | `apps/api-admin` and `apps/mobile-client` are implemented as Laravel apps; the root app remains only as a transition mirror until a later cleanup decision. |
 | `apps/api-admin` | tested | Laravel app, Livewire dashboard route, versioned API route, shared responder, tests, and frontend build exist. |
-| `apps/mobile-client` | partial | Path and boundary README exist; existing root mobile app migration is pending. |
+| `apps/mobile-client` | tested | Laravel app, Livewire mobile routes, NativePHP config, local SQLite infrastructure, copied mobile UI, tests, and frontend build exist. |
 | `docs` | documented | Core docs exist; implementation docs need to track real code as it lands. |
 | `contracts/api` | partial | Directory, response-envelope README, and `v1-foundation.md` exist; domain-specific v1 contracts are pending. |
 | Root scripts | partial | Directory and guidance exist; no custom wrappers are needed before app split. |
-| Environment examples | partial | Root `.env.example` and `apps/api-admin/.env.example` exist; mobile-client per-app env is pending. |
+| Environment examples | partial | Root, `apps/api-admin`, and `apps/mobile-client` `.env.example` files exist; future API base URL and bootstrap keys still need product-specific entries. |
 | Documentation structure | partial | Product docs, implementation status, remaining tasks, changelog, app boundary docs, and contract guidance exist. |
-| Git state discipline | partial | Repository is clean and ahead of origin by 2 commits before this implementation pass. |
+| Git state discipline | partial | Implementation slices are being committed separately; local branch remains ahead of origin. |
 
 ## Phase 2 - API/Admin Foundation
 
@@ -88,20 +95,20 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Complete Laravel app under `apps/mobile-client` | partial | A complete mobile Laravel app exists at root, but not in the requested path. |
-| NativePHP Mobile configuration | partial | NativePHP config and generated native artifacts exist. Tooling blockers remain for simulator/emulator builds. |
-| Livewire + Blade mobile UI | partial | Many class-based Livewire mobile components and Blade views exist. |
-| Tailwind mobile styling | partial | Tailwind v4/SCSS entrypoint and mobile design tokens exist. |
-| Mobile-first layout and safe-area shell | partial | Layout and mobile components exist; needs per-app relocation/verification. |
-| Welcome screen | partial | `Mobile\Welcome` route and view exist. |
-| Auth screens | partial | Login, register, password reset, verification, PIN, unlock, and consent screens exist. API authority is still missing. |
-| Dashboard | partial | `Mobile\Dashboard` exists. Admin/API bootstrap integration is missing. |
-| Bottom navigation | partial | `<x-mobile.bottom-navigation>` exists. Feature-gated navigation is not API-controlled yet. |
-| Settings | partial | Settings index and sections exist. Remote config/tenant policy are not integrated. |
-| Profile | partial | Profile and edit profile screens exist. API profile endpoint is missing. |
-| Notifications page | partial | Local notification inbox exists. Push/API notification authority is missing. |
-| Debug/diagnostics page | partial | Debug screen exists. Full privacy-safe diagnostics export/share is incomplete. |
-| Reusable mobile UI components | partial | Components exist and have some test coverage. |
+| Complete Laravel app under `apps/mobile-client` | tested | Root mobile app was copied into `apps/mobile-client` with Composer/NPM lockfiles; `composer validate`, 52 route verification, full Pest suite, Pint, Vite build, and NativePHP plugin validation pass. |
+| NativePHP Mobile configuration | tested | NativePHP config, launcher, lockfile, service provider, wrappers, tests, and plugin validation exist in `apps/mobile-client`; simulator/emulator builds still depend on external tooling. |
+| Livewire + Blade mobile UI | tested | Class-based Livewire mobile components and Blade views exist under `apps/mobile-client` and are covered by route/component tests. |
+| Tailwind mobile styling | tested | Tailwind v4/SCSS entrypoint and mobile design tokens build through Vite in `apps/mobile-client`. |
+| Mobile-first layout and safe-area shell | tested | Shared layout, mobile components, safe-area shell, and bottom navigation are covered by feature tests. |
+| Welcome screen | tested | `Mobile\Welcome` route and view exist in `apps/mobile-client`. |
+| Auth screens | tested | Login, register, password reset, verification, PIN, unlock, and consent screens exist; API authority is still missing. |
+| Dashboard | tested | `Mobile\Dashboard` exists and renders in `apps/mobile-client`; Admin/API bootstrap integration is missing. |
+| Bottom navigation | tested | `<x-mobile.bottom-navigation>` exists and is covered by shell tests; feature-gated navigation is not API-controlled yet. |
+| Settings | tested | Settings index and sections exist; remote config/tenant policy are not integrated. |
+| Profile | tested | Profile and edit profile screens exist; API profile endpoint is missing. |
+| Notifications page | tested | Local notification inbox exists; push/API notification authority is missing. |
+| Debug/diagnostics page | tested | Debug screen exists; full privacy-safe diagnostics export/share is incomplete. |
+| Reusable mobile UI components | tested | Components exist and are covered by mobile UI component tests. |
 
 ## Phase 4 - API Contracts
 
@@ -206,7 +213,7 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Admin app version control | not started | Required by docs. |
+| Admin app version control | not started | Required by Mobile Version Control Logic. |
 | Minimum supported version | not started | Required for stale clients. |
 | Optional update rules | not started | Required for release operations. |
 | Force update rules | not started | Required for blocked clients. |

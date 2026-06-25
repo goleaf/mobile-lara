@@ -26,6 +26,8 @@ The feature flag model is explicit: important mobile features are controlled by 
 
 The remote configuration model is explicit: Admin/API controls safe runtime mobile behavior through versioned, scoped, validated config that mobile receives through API, caches carefully, and treats as non-authoritative when stale or invalid.
 
+The mobile version control model is explicit: Admin/API controls minimum supported versions, optional updates, forced updates, maintenance mode, store links, update messages, and old-version protection through mobile-safe API outcomes.
+
 The product solves a common business problem: mobile teams need a simple app, but the organization needs tenant-safe control over permissions, billing, feature availability, app versions, support, notifications, reports, and sync behavior without publishing a new mobile build for every policy change.
 
 The product is split into two cooperating systems:
@@ -79,6 +81,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/admin-control-center-logic.md](docs/admin-control-center-logic.md) | Admin Control Center logic for tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, and support controls. |
 | [docs/feature-flag-logic.md](docs/feature-flag-logic.md) | Feature flag logic for important mobile features, global/tenant/user priority, disabled mobile states, admin impact, safe rollout, and plan limits. |
 | [docs/remote-configuration-logic.md](docs/remote-configuration-logic.md) | Remote configuration logic for configurable behavior, mobile receive/cache rules, offline behavior, tenant overrides, safe admin changes, and missing/invalid config. |
+| [docs/mobile-version-control-logic.md](docs/mobile-version-control-logic.md) | Mobile version control logic for minimum supported versions, optional updates, forced updates, maintenance mode, outdated app behavior, store links, update messages, and old-version protection. |
 | [docs/saas-mobile-admin-platform.md](docs/saas-mobile-admin-platform.md) | Canonical product and system concept. |
 | [docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md](docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md) | ADR for the two-system architecture. |
 | [docs/mobile-stack.md](docs/mobile-stack.md) | Stack, package, and boundary notes. |
@@ -102,7 +105,11 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 - Tailwind CSS 4 through the SCSS/PostCSS bridge.
 - Pest 4 for tests.
 
-The repository currently contains mobile-client surfaces and local-mobile infrastructure in the root Laravel app. The target monorepo boundary now exists under `apps/api-admin` and `apps/mobile-client`, with `contracts/api` reserved for versioned mobile API contracts. The admin/API system remains the next implementation priority.
+The repository now contains separate Laravel applications under
+`apps/api-admin` and `apps/mobile-client`. The root Laravel app is retained as a
+temporary mobile-client transition mirror until a later cleanup task removes or
+rewires it. `contracts/api` remains the home for versioned mobile API
+contracts.
 
 ## Operating Rules
 
@@ -118,6 +125,7 @@ The repository currently contains mobile-client surfaces and local-mobile infras
 - Apply [Admin Control Center logic](docs/admin-control-center-logic.md) before planning admin controls, remote config, app-version policy, maintenance, force update, sync policy, notifications, reports, billing, or support workflows.
 - Apply [feature flag logic](docs/feature-flag-logic.md) before planning important mobile features, flag priority, disabled mobile states, rollout, rollback, or plan-limited access.
 - Apply [remote configuration logic](docs/remote-configuration-logic.md) before planning runtime-configurable mobile behavior, config caching, offline config use, tenant-specific overrides, safe admin config changes, or missing/invalid config handling.
+- Apply [mobile version control logic](docs/mobile-version-control-logic.md) before planning minimum supported versions, optional update prompts, forced updates, maintenance mode, outdated-client responses, store links, update messages, or old-version protection.
 - Keep admin business rules on the server. Mobile UI state is never an authorization boundary.
 - Let admin settings control mobile behavior because mobile state may be stale, offline, copied between devices, or running an old app version.
 - Position the product as both admin control center and mobile workforce/client platform; avoid web-only or mobile-only thinking.

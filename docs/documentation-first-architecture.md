@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines documentation-first architecture principles for Mobile Lara. It explains how product ideas, admin controls, mobile screens, API dependencies, sync behavior, permissions, and risks must be documented before implementation. It is documentation only and does not define endpoints, routes, database fields, migrations, controllers, Livewire components, resources, policies, jobs, services, NativePHP plugins, or application logic.
 
-Use this document with [Core Product Principles](product-principles.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), and [Remote Configuration Logic](remote-configuration-logic.md): documentation is the agreement that prevents authority, API behavior, admin controls, feature flags, remote config, mobile UX, offline behavior, permissions, and risk handling from drifting during implementation.
+Use this document with [Core Product Principles](product-principles.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), and [Mobile Version Control Logic](mobile-version-control-logic.md): documentation is the agreement that prevents authority, API behavior, admin controls, feature flags, remote config, mobile-version policy, mobile UX, offline behavior, permissions, and risk handling from drifting during implementation.
 
 ## Architecture Statement
 
@@ -71,6 +71,8 @@ Use [Admin Control Center Logic](admin-control-center-logic.md) as the checklist
 Use [Feature Flag Logic](feature-flag-logic.md) as the checklist for important mobile feature priority, disabled states, rollout, admin impact, plan limits, support, audit, offline behavior, and retirement.
 
 Use [Remote Configuration Logic](remote-configuration-logic.md) as the checklist for remote-configurable behavior, scope, default, tenant override, mobile receive/cache rules, offline behavior, missing/invalid fallback, admin safety, support, audit, rollback, and retirement.
+
+Use [Mobile Version Control Logic](mobile-version-control-logic.md) as the checklist for minimum supported versions, optional updates, forced updates, maintenance mode, outdated responses, store links, update messages, support, audit, rollback, and old-version protection.
 
 ## Every Mobile Screen Must Document Its API Dependency
 
@@ -191,6 +193,7 @@ Use this checklist before a feature moves from planning to implementation.
 | What Admin Control Center area owns it? | Tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, or support control is named. |
 | What feature flag logic applies? | Global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, disabled state, rollout, and offline behavior are named. |
 | What remote configuration logic applies? | Config type, default, scope, tenant override, mobile cache, offline behavior, missing/invalid fallback, admin safety, support, audit, and rollback are named. |
+| What mobile version control logic applies? | Minimum version, optional update, forced update, maintenance mode, store link, update message, stale-client response, support, audit, and rollback are named. |
 | What does mobile own? | Local UX, cache, draft, queue, NativePHP, sync display, feedback, or visibility owner is named. |
 | What is the API purpose? | API context, response states, errors, sync/conflict, and tenant boundary are documented. |
 | What is the admin control's mobile effect? | Mobile visibility, copy, disabled/blocked state, offline behavior, sync behavior, or support prompt is explicit. |

@@ -34,6 +34,12 @@ must validate, scope, version, audit, and safely expose resolved mobile config
 without letting config become authorization, billing, tenant, or permission
 authority.
 
+Mobile Version Control Logic is defined in
+`../../docs/mobile-version-control-logic.md`. Future API/Admin implementation
+must resolve minimum supported versions, optional updates, forced updates,
+maintenance mode, store links, update messages, and outdated-client protection
+into mobile-safe API outcomes.
+
 ## Current Phase 2 State
 
 This directory is now a Laravel 13 application with a Livewire admin dashboard

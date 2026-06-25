@@ -33,13 +33,46 @@ defines how the client receives resolved config, caches it with version and
 freshness state, behaves offline, and falls back or fails closed when config is
 missing or invalid.
 
-## Current Phase 1 State
+Mobile Version Control Logic in
+`../../docs/mobile-version-control-logic.md` defines how the client reports its
+version, receives optional-update, force-update, maintenance, blocked, or
+deprecated states, shows store links/update messages, and avoids unsafe old
+version behavior.
 
-The existing mobile implementation still lives at the repository root. It
-already contains many mobile screens, NativePHP wrappers, local models,
-repositories, migrations, and tests. Moving it into this directory is a
-dedicated implementation task because path changes affect Composer autoloading,
-Vite, NativePHP generated assets, database paths, tests, and Laravel Boost.
+## Current Phase 3 State
 
-Until that move is complete, treat this directory as the documented target
-boundary and the root app as the working mobile-client codebase.
+This directory now contains a complete Laravel 13 + Livewire 4 + NativePHP
+Mobile application copied from the verified root mobile client.
+
+Implemented foundation:
+
+- 52 `mobile.*` Livewire routes.
+- Mobile-first Blade layout, safe-area shell, bottom navigation, and reusable
+  mobile components.
+- Welcome, auth, dashboard, settings, profile, notifications, debug,
+  records/content, media, scanner, location, voice-note, sync, and local
+  support surfaces from the root mobile app.
+- NativePHP config, launcher, lockfile, service provider, and safe service
+  wrappers.
+- Dedicated `mobile_local` SQLite connection, migrations, models,
+  repositories, queue/sync worker, local notifications, and health command.
+- Focused Pest coverage copied with the app.
+
+Fresh verification:
+
+```bash
+composer validate --strict
+php artisan route:list --name=mobile
+php artisan test --compact
+vendor/bin/pint --dirty --format agent
+npm run build
+php artisan native:plugin:validate --no-interaction
+```
+
+`native:plugin:validate` exits successfully. It reports non-fatal warnings for
+two third-party plugins that do not define bridge functions or native code
+directories.
+
+The repository root app remains temporarily as a transition mirror. Future
+mobile work should target `apps/mobile-client` unless a cleanup task explicitly
+removes or rewires the root app.

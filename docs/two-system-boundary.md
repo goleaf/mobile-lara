@@ -28,6 +28,8 @@ The feature flag model is defined in [Feature Flag Logic](feature-flag-logic.md)
 
 The remote configuration model is defined in [Remote Configuration Logic](remote-configuration-logic.md). Use it with this boundary document whenever mobile behavior can vary by safe runtime config, tenant override, app version, cache freshness, offline state, or invalid-config fallback.
 
+The mobile version control model is defined in [Mobile Version Control Logic](mobile-version-control-logic.md). Use it with this boundary document whenever minimum supported versions, optional updates, forced updates, maintenance mode, outdated-client behavior, store links, update messages, or old-version protection affect mobile behavior.
+
 The detailed control-plane responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Use it with this boundary document whenever a feature touches tenants, users, permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, or security enforcement.
 
 The detailed API contract model is defined in [API-First Principles](api-first-principles.md). Use it with this boundary document whenever a feature touches mobile/API communication, operating context, predictable responses, mobile-friendly errors, sync replay, conflict logic, version rules, or tenant-scoped responses.
