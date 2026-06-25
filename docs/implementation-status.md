@@ -128,10 +128,10 @@ Status values:
 | Mobile routes | The root transition app still exposes 52 `mobile.*` Livewire routes; `apps/mobile-client/routes/web.php` now exposes 53 `mobile.*` routes including `mobile.settings.workspace`. |
 | Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, security audit events, tenants, tenant-user memberships, feature flag tables, remote config tables, and app-version policy tables. Broader control-plane domain schema remains pending. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
-| Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, audited global feature flag controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
+| Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, audited global feature flag controls, audited global remote config controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 54 tests / 444 assertions covering admin routing, feature flag controls, app version controls, remote config resolution, app version policy, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, and feature flag resolution. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 59 tests / 470 assertions covering admin routing, feature flag controls, remote config controls, app version controls, remote config resolution, app version policy, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, and feature flag resolution. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -266,8 +266,8 @@ Status values:
 | --- | --- | --- |
 | Global remote config | tested | `MobileRemoteConfig` schema/model/factory and resolver coverage exist for mobile-category, non-sensitive global config sections. |
 | Tenant remote config | tested | `TenantRemoteConfigOverride` schema/model/factory and resolver coverage exist for tenant overrides that merge above global config. |
-| Admin remote config UI | not started | Admin shell exists; remote config screens are not implemented yet. |
-| Config validation and audit | partial | Resolver excludes sensitive global config and returns compatible/fresh resolved payloads; admin validation, audit, publish, and rollback workflows remain pending. |
+| Admin remote config UI | tested | `/admin/mobile/config` manages audited global mobile config defaults with JSON-object validation, impact preview, create/update actions, dashboard/nav entry points, and restore from audit snapshots. Tenant override UI remains pending. |
+| Config validation and audit | tested | Resolver excludes sensitive global config and the admin UI validates JSON objects, requires mobile-effect confirmation, records before/after audit metadata, and restores prior snapshots. Publish workflows and tenant override audit remain pending. |
 | Mobile config store/cache | not started | Required after bootstrap exists. |
 | Offline defaults | tested | API/admin returns defaults-used, freshness, compatibility, and fallback metadata; mobile-local stale-cache behavior remains pending. |
 | Config-driven sync/upload/legal/support behavior | tested | Remote config payload resolves `sync`, `uploads`, `legal`, `support`, `dashboard`, and `app_lock` sections for mobile consumption. |
@@ -495,14 +495,14 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Central mobile control dashboard | partial | The dashboard shell exists and links to the live feature flag and app version controls; broader module controls remain pending. |
-| Module controls | not started | Needs feature flag/remote config foundation. |
+| Central mobile control dashboard | partial | The dashboard shell exists and links to the live feature flag, remote config, and app version controls; broader module controls remain pending. |
+| Module controls | partial | Foundation controls exist for global feature defaults, global remote config, and app versions; tenant/user scoped controls remain pending. |
 | Feature flags and tenant overrides | partial | Global feature defaults are implemented in the admin UI; tenant-specific overrides, user-specific overrides, and mobile effect previews remain pending. |
-| Remote config | not started | Needs config implementation. |
+| Remote config | tested | Admin/API has global config schema, resolver, API endpoint, bootstrap integration, and audited admin controls. Tenant override UI and publish workflows remain pending. |
 | App versions, force update, maintenance | tested | Admin/API has policy schema, resolver, API endpoint, bootstrap integration, and audited admin controls. Tenant/cohort scoping and mobile blocked-state screens remain pending. |
 | Sync/offline/upload limits | not started | Needs sync/config implementation. |
 | Push/support/legal links | not started | Needs notification/support/config implementation. |
-| Mobile effect preview | partial | Implemented for app-version policy controls; still required for other dangerous control-plane settings. |
+| Mobile effect preview | partial | Implemented for remote config and app-version policy controls; still required for other dangerous control-plane settings. |
 
 ## Phase 28 - Mobile Diagnostics
 
@@ -540,7 +540,7 @@ Status values:
 | Check | Status | Notes |
 | --- | --- | --- |
 | API/admin formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/api-admin`. |
-| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 54 tests / 444 assertions. |
+| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 59 tests / 470 assertions. |
 | API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
 | API routes verification | tested | `php artisan route:list --except-vendor` shows 20 app routes including app-version, auth, bootstrap, config, contracts, features, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
@@ -555,8 +555,8 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Complete resource policies, feature flag scoped override controls, remote
-   config admin controls, tenant/cohort version controls, and audit before broad
+1. Complete resource policies, feature flag scoped override controls, tenant
+   remote config controls, tenant/cohort version controls, and audit before broad
    records/support/billing/reporting expansion.
 2. Replace bootstrap foundation defaults with real subscription, notification,
    and sync policy modules.

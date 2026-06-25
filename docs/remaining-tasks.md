@@ -118,7 +118,7 @@ before implementation scope is added.
   partition verification.
 - Complete admin role/permission management, resource policies, feature-flag
   tenant/user override controls, impact previews, plan-version-device gates,
-  remote config admin UI/audit/rollback, app version tenant/cohort scoping,
+  tenant remote config override UI, app version tenant/cohort scoping,
   subscription state, notification policy, sync policy, and audit foundations.
 - Rewire existing mobile-local screens so server-trusted behavior comes from
   API/bootstrap state instead of local placeholders.

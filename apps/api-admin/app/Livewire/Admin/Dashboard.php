@@ -38,9 +38,10 @@ final class Dashboard extends Component
             ],
             [
                 'label' => 'Remote config',
-                'status' => 'Planned',
-                'detail' => 'Scoped config, versioning, fallback, rollback, and audit.',
-                'tone' => 'neutral',
+                'status' => 'Live',
+                'detail' => 'Global mobile defaults with JSON validation, audit, impact preview, and rollback.',
+                'tone' => 'success',
+                'route' => 'admin.mobile.config',
             ],
             [
                 'label' => 'App versions',

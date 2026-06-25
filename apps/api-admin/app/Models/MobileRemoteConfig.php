@@ -46,4 +46,45 @@ final class MobileRemoteConfig extends Model
             ->where('is_sensitive', false)
             ->orderBy('key');
     }
+
+    /**
+     * @param  Builder<MobileRemoteConfig>  $query
+     * @return Builder<MobileRemoteConfig>
+     */
+    public function scopeForAdminIndex(Builder $query): Builder
+    {
+        return $query
+            ->select([
+                'id',
+                'key',
+                'category',
+                'value',
+                'version',
+                'description',
+                'is_sensitive',
+                'metadata',
+                'updated_at',
+            ])
+            ->orderBy('key');
+    }
+
+    /**
+     * @param  Builder<MobileRemoteConfig>  $query
+     * @return Builder<MobileRemoteConfig>
+     */
+    public function scopeMatchingAdminSearch(Builder $query, string $search): Builder
+    {
+        $search = trim($search);
+
+        if ($search === '') {
+            return $query;
+        }
+
+        return $query->where(function (Builder $query) use ($search): void {
+            $query
+                ->where('key', 'like', '%'.$search.'%')
+                ->orWhere('description', 'like', '%'.$search.'%')
+                ->orWhere('version', 'like', '%'.$search.'%');
+        });
+    }
 }

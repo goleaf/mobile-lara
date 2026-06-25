@@ -152,6 +152,9 @@ All notable changes to Mobile Lara will be documented in this file.
   tenant-scoped overrides, resolved `/config` API output, bootstrap
   integration, freshness metadata, deterministic config versions, and focused
   contract coverage.
+- Added the API/admin remote config control page with JSON-object validation,
+  mobile impact preview, audited create/update, dashboard navigation, and
+  restore-from-audit coverage.
 - Added the API/admin app version and maintenance foundation with
   minimum-version force updates, optional update states, public `/app-version`
   API output, bootstrap maintenance integration, and focused policy coverage.

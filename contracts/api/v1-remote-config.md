@@ -4,9 +4,10 @@ Updated: 2026-06-26
 
 Status: partially implemented. `GET /api/v1/mobile/config` returns resolved
 foundation, global, and tenant-scoped mobile config with freshness,
-compatibility, fallback, and deterministic version metadata. Admin management
-UI, publish/audit workflows, rollback, plan/version/feature gates, and mobile
-local cache integration remain pending.
+compatibility, fallback, and deterministic version metadata. Platform-admin
+users can manage global config defaults with JSON validation, impact preview,
+audit, and audit-history restore. Tenant override UI, publish workflows,
+plan/version/feature gates, and mobile local cache integration remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 lets admins adjust safe mobile behavior without turning the mobile app into a
@@ -141,16 +142,18 @@ override, and retirement.
 
 Automated coverage:
 
+- `apps/api-admin/tests/Feature/AdminRemoteConfigsTest.php`
 - `apps/api-admin/tests/Feature/MobileRemoteConfigResolutionTest.php`
 - `apps/api-admin/tests/Feature/MobileBootstrapApiTest.php`
 
 Fresh checks:
 
 ```bash
+cd apps/api-admin && php artisan test --compact --filter=AdminRemoteConfigsTest
 cd apps/api-admin && php artisan test --compact --filter=MobileRemoteConfigResolutionTest
 cd apps/api-admin && php artisan test --compact --filter=MobileBootstrapApiTest
 ```
 
-Future Phase 9 coverage should add admin validation/audit workflows, rollback,
+Future Phase 9 coverage should add tenant override UI, publish workflows,
 mobile stale-cache behavior, plan/version/feature gate interactions, and
-invalid config failure modes.
+invalid config failure modes beyond JSON-object validation.
