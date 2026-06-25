@@ -54,6 +54,12 @@ Admin Control Center Logic is defined in
 session, user-state, device, support, and security controls scoped,
 authorized, auditable, and exposed to mobile only as resolved API outcomes.
 
+Remote Configuration Logic is defined in
+`../../docs/remote-configuration-logic.md`: auth screens may use resolved
+config for safe copy, support links, recovery guidance, native permission text,
+and pre-login presentation, but session validity, account state, tenant access,
+and device trust remain Admin/API authority.
+
 ## Purpose
 
 Auth endpoints make the Admin/API system authoritative for mobile identity,

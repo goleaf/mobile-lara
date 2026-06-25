@@ -1,6 +1,6 @@
 # Remote Configuration Logic
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This document defines the remote configuration logic for Mobile Lara. It explains what behavior should be remotely configurable, how mobile should receive and cache config, what happens offline, how tenant-specific config overrides global defaults, how admins should safely change config, and how mobile should handle missing or invalid config. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.
 
@@ -13,6 +13,22 @@ Remote configuration lets Admin/API adjust mobile behavior without publishing a 
 Remote config should control safe runtime variation: copy, thresholds, limits, workflow options, offline eligibility, sync behavior, native permission wording, maintenance/support messages, and feature behavior that has already been documented.
 
 Remote config must not become hidden business logic, authorization, billing authority, permission authority, tenant authority, or a substitute for versioned API contracts.
+
+## Remote Configuration Decision Contract
+
+Every remote configuration value should be documented before implementation because it changes mobile behavior after the app has shipped. Admin/API owns the resolved decision; mobile receives only safe, compatible, cached configuration outcomes through API.
+
+| Decision area | Principle | Required outcome |
+| --- | --- | --- |
+| Configurable behavior | Remote config is for safe runtime variation such as copy, thresholds, limits, workflow options, offline eligibility, sync timing, native permission wording, notification presentation, support guidance, maintenance text, update text, and tenant presentation. | Config changes adapt mobile UX without redefining authorization, billing, tenant authority, security, validation, or API contracts. |
+| Mobile receive path | Mobile receives resolved config through API boot/context, targeted refresh, login, resume, tenant switch, app-version change, and sensitive workflow refresh where needed. | Mobile gets config values, config version, freshness, compatibility, fallback behavior, and user-safe next actions rather than raw admin layers. |
+| Mobile cache | Mobile may cache only resolved mobile-safe config with version, freshness, tenant scope, and fallback metadata. | Cache improves startup and offline stability, but cached config never becomes current authority for protected actions. |
+| Offline behavior | Offline mobile uses last-known config for safe presentation and previously allowed offline behavior only. | Mobile labels stale context where needed, avoids newly protected actions, refreshes before replay, and lets API recheck current tenant, user, feature, permission, billing, version, maintenance, and sync policy. |
+| Tenant override | Tenant-specific config may override global defaults only inside platform safety, plan, feature flag, permission, app-version, support, and emergency limits. | Tenant variation improves fit without allowing tenants or users to bypass global safety, plan ceilings, disabled features, blocked versions, or permissions. |
+| Safe admin change | Admin changes need owner, purpose, scope, default, validation, preview or staged rollout where useful, support meaning, audit expectation, compatibility check, and rollback path. | Admins understand affected tenants, users, roles, versions, features, offline/sync behavior, reports, billing, support, and risk before activation. |
+| Missing or invalid config | Missing, incompatible, expired, or invalid config must fall back safely or fail closed depending on risk. | Mobile avoids crashes, shows user-friendly fallback states, records safe diagnostic context, and never receives broader access because config is absent or malformed. |
+
+This contract is intentionally principle-level. It does not create config storage, schemas, migrations, endpoints, validation classes, policies, Filament resources, Livewire components, jobs, services, provider integrations, or application logic.
 
 ## What Should Be Remotely Configurable
 

@@ -63,6 +63,12 @@ targeting affordances, and notification-related mobile features must follow
 resolved flag state, rollout, plan, permission, version, and disabled-state
 rules.
 
+Remote Configuration Logic is defined in
+`../../docs/remote-configuration-logic.md`: notification preference labels,
+permission prompts, quiet-hour copy, local display guidance, deep-link copy,
+and support explanations may be tuned by resolved config while targeting and
+delivery truth remain Admin/API authority.
+
 ## Purpose
 
 Notification endpoints manage notification preferences, push token

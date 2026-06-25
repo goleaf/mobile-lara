@@ -56,6 +56,12 @@ Admin Control Center Logic is defined in
 plan, quota, entitlement, support-tier, and failed-payment controls scoped,
 authorized, auditable, and exposed to mobile only as resolved API outcomes.
 
+Remote Configuration Logic is defined in
+`../../docs/remote-configuration-logic.md`: billing presentation, quota copy,
+contact-admin guidance, entitlement messages, and support text may be tuned by
+resolved config, but billing authority, plan state, payment outcomes, and quota
+acceptance stay in Admin/API.
+
 ## Purpose
 
 Billing endpoints expose mobile-safe plan and subscription state. Admin/API

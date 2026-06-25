@@ -58,6 +58,13 @@ contract must resolve important mobile features through controlled purpose,
 global/tenant/user priority, disabled-state behavior, admin impact, safe
 rollout, and plan-limit rules before mobile receives any feature outcome.
 
+Remote Configuration Logic is defined in
+`../../docs/remote-configuration-logic.md`: enabled, disabled, blocked, beta,
+deprecated, update-required, offline-limited, and emergency-disabled feature
+states may receive resolved copy, limits, thresholds, workflow options, support
+guidance, and offline/sync presentation without giving config feature
+authority.
+
 ## Purpose
 
 Feature endpoints expose resolved mobile-safe feature outcomes. Mobile never
