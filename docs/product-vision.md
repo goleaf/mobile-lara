@@ -33,6 +33,8 @@ The SaaS value map is defined in [SaaS Value Map](saas-value-map.md). Value boun
 
 The logical system boundary is defined in [Two-System Boundary Logic](two-system-boundary.md). Boundary rules explain what Admin/API owns, what mobile owns, what mobile must never own, what must happen through the API, what can be cached locally, what admin must control remotely, and what happens offline.
 
+The Admin/API responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Responsibility rules explain how tenant management, users and permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, and security enforcement stay in the control plane.
+
 ## Problem The System Solves
 
 Organizations that rely on mobile work usually face the same problem: the people doing the work need a simple app, but the business needs centralized control.
@@ -151,6 +153,7 @@ Scalable SaaS principles:
 - **Operational visibility** - admins can observe app adoption, device trust, sync health, notification health, support load, and feature rollout state.
 - **Role separation** - SaaS owners, tenant admins, support, billing, and mobile users each see only the controls or workflows they need.
 - **Value separation** - platform, tenant, mobile, support, and billing stakeholders receive different value from the same control plane without receiving the same visibility or authority.
+- **Responsibility separation** - Admin/API responsibilities remain explicit so tenant, permission, API, feature, version, billing, support, reporting, audit, conflict, and security decisions do not drift into mobile-local logic.
 - **Progressive rollout** - features can move from internal tenant to limited tenant to general availability with rollback.
 - **Documentation discipline** - product decisions, risks, boundaries, and architecture decisions stay written before implementation.
 

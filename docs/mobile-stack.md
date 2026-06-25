@@ -21,6 +21,8 @@ Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New 
 
 Stack decisions must also preserve [Two-System Boundary Logic](two-system-boundary.md). A dependency, package, NativePHP plugin, queue, notification channel, cache, or local store should not move Admin/API authority into the mobile client.
 
+Stack decisions must also preserve [Admin/API Responsibilities](admin-api-responsibilities.md). A dependency or package should not blur tenant management, users and permissions, admin panel operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit, conflict decisions, or security enforcement.
+
 ## Current Package Baseline
 
 | Package / tool | Version | Product role |
@@ -51,6 +53,7 @@ The Admin/API system should be implemented as the SaaS control plane:
 - Eloquent resources or JSON:API style resources for mobile-facing payloads.
 - Audit logs for admin changes and sensitive mobile-originated events.
 - Role-aware dashboards and APIs that expose only the context each role should see.
+- Responsibility-aware modules that make the owning Admin/API concern clear before code is added.
 
 ### Mobile Client System
 
@@ -76,6 +79,7 @@ The Mobile client system should be implemented as the managed edge client:
 - Keep stack expansion modular: new packages or surfaces should map to a clear feature slice and principle.
 - Keep stack expansion value-mapped: new infrastructure should prove stakeholder value instead of adding technical surface area for its own sake.
 - Keep stack expansion boundary-safe: new mobile-local infrastructure must remain cache, draft, queue, local metadata, or presentation unless API confirms otherwise.
+- Keep stack expansion responsibility-safe: tenant, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, and security concerns must remain Admin/API-owned.
 
 ## Why NativePHP + Livewire
 

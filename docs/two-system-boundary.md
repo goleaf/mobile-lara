@@ -20,6 +20,8 @@ The simplest rule is:
 
 The mobile client may remember server decisions for usability, but it must never become the place where business authority is created.
 
+The detailed control-plane responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Use it with this boundary document whenever a feature touches tenants, users, permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, or security enforcement.
+
 ## System Ownership Summary
 
 | Area | Admin/API owns | Mobile client owns |
@@ -41,6 +43,8 @@ The mobile client may remember server decisions for usability, but it must never
 ## What Admin/API Owns
 
 The Admin/API system owns all business-sensitive authority.
+
+See [Admin/API Responsibilities](admin-api-responsibilities.md) for the detailed principles behind each responsibility area.
 
 It owns:
 
@@ -274,3 +278,5 @@ The boundary is healthy when every feature can answer:
 10. How does the API enforce the final result?
 
 If these answers are unclear, the feature is not ready for implementation planning.
+
+If the Admin/API responsibility owner is also unclear, the feature is not ready for product planning.

@@ -21,6 +21,8 @@ UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform
 
 UI decisions must also express [Two-System Boundary Logic](two-system-boundary.md): admin surfaces show authority and scope, while mobile surfaces show API-derived capability state, local freshness, pending work, conflicts, and offline limits without pretending to own server truth.
 
+UI decisions must also express [Admin/API Responsibilities](admin-api-responsibilities.md): admin UI exposes scoped control-plane responsibilities, while mobile UI presents only the resulting capability, version, notification, billing, support, report, audit, conflict, and security states.
+
 ## Shared Principles
 
 - Keep UI in Livewire + Blade.
@@ -58,6 +60,8 @@ The admin panel should be dense, searchable, and audit-friendly.
 Admin users include SaaS owners, platform operators, tenant admins, support, billing, release, and security/compliance roles. The UI should make scope and consequence obvious before a setting changes mobile behavior.
 
 The admin UI should distinguish platform owner, super admin, tenant admin, tenant manager, support agent, and billing manager actions instead of presenting one generic admin surface.
+
+The admin UI should also distinguish responsibility areas. Tenant management, users and permissions, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reports, audit, conflicts, and security should not collapse into one unscoped settings page.
 
 - Optimize for repeated operations, not landing-page presentation.
 - Use tables, filters, tabs, segmented controls, and clear state badges.

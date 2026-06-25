@@ -18,6 +18,8 @@ It is made measurable by the [SaaS Value Map](saas-value-map.md): each positioni
 
 It is made operational by [Two-System Boundary Logic](two-system-boundary.md): each positioning angle must respect the split between Admin/API authority and mobile-client execution.
 
+It is made accountable by [Admin/API Responsibilities](admin-api-responsibilities.md): the control center must own tenant management, users and permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing/subscription logic, support operations, reporting, audit history, conflict decisions, and security enforcement.
+
 ## Six Product Angles
 
 ### SaaS Control Center
@@ -34,6 +36,8 @@ The control center owns:
 - Audit context for changes that affect mobile behavior.
 
 This positioning matters because mobile operations cannot be controlled safely from each device. SaaS control belongs in one server-side operating layer.
+
+The detailed control-plane responsibility map lives in [Admin/API Responsibilities](admin-api-responsibilities.md).
 
 ### Mobile Workforce And Client Platform
 
@@ -175,6 +179,7 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 11. Mobile-only is insufficient for SaaS governance.
 12. Product positioning should guide every future modular feature slice.
 13. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
+14. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
 
 ## Risks
 

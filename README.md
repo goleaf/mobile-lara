@@ -12,6 +12,8 @@ The value map is explicit too: platform owner, tenant business, tenant admin, mo
 
 The two-system boundary is explicit: Admin/API owns SaaS authority, while mobile owns local execution, native capability use, cache, drafts, queues, and clear state presentation.
 
+The Admin/API responsibility model is explicit: tenant management, users and permissions, admin panel operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing/subscription logic, support, reporting, audit, conflict decisions, and security enforcement belong to the control plane.
+
 The product solves a common business problem: mobile teams need a simple app, but the organization needs tenant-safe control over permissions, billing, feature availability, app versions, support, notifications, reports, and sync behavior without publishing a new mobile build for every policy change.
 
 The product is split into two cooperating systems:
@@ -58,6 +60,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/user-roles.md](docs/user-roles.md) | Main logical user roles, responsibilities, limitations, visibility, and control boundaries. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
+| [docs/admin-api-responsibilities.md](docs/admin-api-responsibilities.md) | Admin/API responsibility map for tenant management, users and permissions, API contracts, feature/config/version control, notifications, billing, support, reports, audit, conflicts, and security. |
 | [docs/saas-mobile-admin-platform.md](docs/saas-mobile-admin-platform.md) | Canonical product and system concept. |
 | [docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md](docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md) | ADR for the two-system architecture. |
 | [docs/mobile-stack.md](docs/mobile-stack.md) | Stack, package, and boundary notes. |
@@ -86,6 +89,7 @@ The repository currently contains mobile-client surfaces and local-mobile infras
 - Apply [target user roles](docs/user-roles.md) before designing permissions, visibility, support, billing, or mobile access.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
+- Apply [Admin/API responsibilities](docs/admin-api-responsibilities.md) before planning control-plane behavior, API contracts, admin panels, reports, support, billing, notifications, audit, conflict, or security work.
 - Keep admin business rules on the server. Mobile UI state is never an authorization boundary.
 - Let admin settings control mobile behavior because mobile state may be stale, offline, copied between devices, or running an old app version.
 - Position the product as both admin control center and mobile workforce/client platform; avoid web-only or mobile-only thinking.

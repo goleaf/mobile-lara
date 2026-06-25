@@ -89,6 +89,14 @@ The detailed ownership model lives in [Two-System Boundary Logic](two-system-bou
 - Local cache is allowed only as cache, draft, pending intent, safe local metadata, or server-confirmed copy with freshness state.
 - Offline mode can keep useful work moving only inside admin/API policy and must reconcile through API when connectivity returns.
 
+## Admin/API Responsibilities
+
+The detailed control-plane responsibility model lives in [Admin/API Responsibilities](admin-api-responsibilities.md).
+
+Admin/API logically owns tenant management, users and permissions, admin panel operations, API contracts, feature control, remote configuration, mobile version rules, notification orchestration, billing/subscription logic, support operations, reporting, audit history, conflict decisions, and security enforcement.
+
+Mobile may consume, cache, display, and act on those decisions, but it must not become the place where those decisions are created or trusted.
+
 ## System Split
 
 ### Admin/API System
@@ -191,6 +199,8 @@ Every mobile feature should be described by six decisions before implementation:
 No feature should exist only as a mobile screen. Each feature needs an admin story, API story, mobile story, support story, and failure story.
 
 Each feature also needs a boundary story: what Admin/API owns, what mobile owns, what must happen through API, what can be cached, what remote admin controls, and what happens offline.
+
+Each feature also needs a responsibility story: which Admin/API responsibility owns tenant, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
 
 ## Admin Control Logic
 

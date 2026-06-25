@@ -20,6 +20,8 @@ The product is valuable only when both sides stay connected:
 
 The ownership rules for that connection are defined in [Two-System Boundary Logic](two-system-boundary.md). Value is created when Admin/API keeps authority and mobile keeps execution simple, resilient, and honest.
 
+The control-plane responsibility rules are defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Value is operationally safe when each promised outcome maps to a clear Admin/API owner such as tenant management, permissions, API contracts, feature control, remote config, app-version policy, notifications, billing, support, reporting, audit, conflict decisions, or security enforcement.
+
 ## Stakeholder Value Summary
 
 | Stakeholder | Primary value | Product proof |
@@ -200,6 +202,7 @@ Use this value map before approving a future product slice.
 7. **Connect feature flags to operations** - Every flag that changes behavior needs owner, scope, audit, support explanation, and rollback.
 8. **Measure the promised value** - Reports should prove adoption, health, usage, support load, billing impact, or security posture.
 9. **Respect the system boundary** - A feature can create mobile value without moving tenant, permission, billing, report, sync, or support authority into the mobile client.
+10. **Map value to responsibility** - A feature can create stakeholder value only when its Admin/API responsibility owner is clear.
 
 ## Risks
 
@@ -211,6 +214,7 @@ Use this value map before approving a future product slice.
 | Support access becomes broad admin access | Support sees safe diagnostics and case context, not secrets or unrelated tenant data. |
 | Offline value becomes false authority | Treat local work as cache, draft, pending intent, conflict, or failed state until API confirmation. |
 | Feature flags become invisible complexity | Require owner, audit, support visibility, rollout state, and rollback path. |
+| Responsibility ownership is unclear | Map each value claim to Admin/API responsibilities before feature planning. |
 | Mobile UX shows platform complexity | Translate policy into clear next actions and status labels. |
 
 ## Boundaries

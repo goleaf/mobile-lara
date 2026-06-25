@@ -25,6 +25,8 @@ The value standard is [SaaS Value Map](saas-value-map.md). Audits should verify 
 
 The boundary standard is [Two-System Boundary Logic](two-system-boundary.md). Audits should verify that Admin/API owns authority, mobile owns local execution, API confirms server-trusted behavior, local cache stays non-authoritative, admin controls mobile behavior remotely, and offline behavior reconciles through the API.
 
+The responsibility standard is [Admin/API Responsibilities](admin-api-responsibilities.md). Audits should verify that tenant management, users and permissions, admin panel operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing/subscription logic, support operations, reporting, audit history, conflict decisions, and security enforcement stay in the control plane.
+
 ## Product Vision Audit
 
 | Vision question | Product answer |
@@ -74,6 +76,25 @@ If a feature cannot name stakeholder value, it should not move from idea to impl
 | What can be cached locally? | Safe boot snapshots, config copies, server-confirmed resources, drafts, queued intents, sync metadata, and safe local activity with freshness state. |
 | What is remotely controlled? | Feature flags, remote config, app-version policy, offline eligibility, sync policy, notification policy, support diagnostics, and entitlements. |
 | What happens offline? | Mobile can read cache, create drafts, or queue allowed intents, but API must confirm or reject when online. |
+
+## Admin/API Responsibilities Audit
+
+| Responsibility | Audit lens |
+| --- | --- |
+| Tenant management | Are tenant lifecycle, tenant settings, tenant isolation, plan state, and tenant-blocked outcomes server-owned? |
+| Users and permissions | Are invitations, activation, suspension, roles, permissions, and account-state restrictions enforced by Admin/API? |
+| Admin panel | Are operational controls scoped, auditable, role-aware, and backed by API/server authority? |
+| API contracts | Are request/response shapes, validation, authorization, errors, rate limits, idempotency, and versions explicit? |
+| Feature control | Can each feature be enabled, disabled, blocked, deprecated, reported, supported, audited, and rolled back centrally? |
+| Remote configuration | Are config scope, version, defaults, compatibility, support visibility, and rollback expectations documented? |
+| Mobile version rules | Can Admin/API classify builds as supported, recommended update, deprecated, blocked, or internal-only? |
+| Notification orchestration | Are templates, channels, targeting, quiet hours, delivery policy, and delivery visibility centrally controlled? |
+| Billing/subscription logic | Are plans, quotas, entitlements, trials, invoices, restrictions, and replay checks server-side? |
+| Support operations | Are cases, safe diagnostics, escalation, and support visibility scoped by tenant, case, and role? |
+| Reporting | Are report definitions, aggregation, exports, and visibility scoped by tenant, role, support, and billing purpose? |
+| Audit history | Are sensitive changes and accepted sensitive mobile-originated events recorded as server-trusted history? |
+| Conflict decisions | Does API decide accepted, transformed, rejected, duplicated, stale, unauthorized, out-of-policy, or conflicted outcomes? |
+| Security enforcement | Are authentication, authorization, tenant scope, token revocation, device trust, rate limits, and secrets policy server-owned? |
 
 ## Current Product Assets
 
@@ -128,6 +149,7 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Product vision governance | Every future feature must prove the full loop from admin setting to API enforcement to mobile UX to support/audit visibility. |
 | Product positioning governance | Future slices must preserve the combined SaaS control center plus mobile platform positioning rather than drifting into web-only or mobile-only work. |
 | SaaS value governance | Every future slice must prove stakeholder value and connect that value to admin control, mobile access, offline sync, notifications, reports, security, or feature flags. |
+| Admin/API responsibility governance | Every future slice must identify which control-plane responsibility owns tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |
 
 ## Business Logic Audit
 
@@ -248,6 +270,7 @@ php artisan native:plugin:validate
 - [Target User Roles](user-roles.md)
 - [SaaS Value Map](saas-value-map.md)
 - [Two-System Boundary Logic](two-system-boundary.md)
+- [Admin/API Responsibilities](admin-api-responsibilities.md)
 - [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md)
 - Laravel Boost application info and documentation search.
 - Laravel API routing, authentication, resources, and JSON testing documentation.
