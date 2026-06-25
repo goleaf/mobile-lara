@@ -18,6 +18,11 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 foundation must preserve admin control, API-first communication, tenant
 isolation, secure defaults, simple mobile UX, and modular feature expansion.
 
+API-First Principles are defined in
+`../../docs/api-first-principles.md`: this foundation must prove predictable
+response envelopes, error semantics, operating-context conventions, and
+tenant-safe API behavior before domain contracts expand.
+
 Target User Roles are defined in `../../docs/user-roles.md`: foundation
 contracts must keep role and account-state context explicit before domain
 endpoints depend on it.

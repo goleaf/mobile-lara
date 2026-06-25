@@ -16,6 +16,12 @@ app must never bypass API authority, must keep mobile UX simple, and must treat
 offline state as cache, draft, queue, pending, synced, conflict, or failed
 state rather than server truth.
 
+API-First Principles are defined in
+`../../docs/api-first-principles.md`: this app communicates with Admin/API only
+through API, consumes predictable context and response states, shows
+mobile-friendly errors, replays offline work through sync/conflict contracts,
+and treats tenant boundaries as server-protected.
+
 Target User Roles are defined in `../../docs/user-roles.md`: this app must show
 mobile, invited, suspended, and guest/pre-login states as API-derived UX, not
 local permission authority.

@@ -16,6 +16,11 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+API-First Principles are defined in
+`../../docs/api-first-principles.md`: this contract must keep diagnostics
+submission, redaction results, support next actions, mobile-friendly errors,
+and tenant-safe visibility API-defined.
+
 Target User Roles are defined in `../../docs/user-roles.md`: diagnostics must
 separate support-agent visibility from tenant, billing, mobile, invited,
 suspended, and guest/pre-login visibility.

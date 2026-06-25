@@ -17,6 +17,12 @@ tracked against admin authority, API-only mobile behavior, feature control,
 tenant isolation, useful offline behavior, secure defaults, simple mobile UX,
 documentation-first planning, and modular expansion.
 
+API-First Principles are defined in `docs/api-first-principles.md`. Status is
+tracked against API-only mobile communication, predictable responses, explicit
+feature API purpose, permissions/feature/config/version/user context,
+mobile-friendly errors, sync/conflict behavior, and tenant-boundary protection
+before implementation grows.
+
 Target User Roles are defined in `docs/user-roles.md`. Status is tracked
 against role responsibilities, limitations, visibility, and control boundaries
 before implementation grows.

@@ -14,6 +14,12 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 app must keep authority server-side, tenant-scoped, feature-controlled,
 secure-by-default, API-first, documented, and modular.
 
+API-First Principles are defined in
+`../../docs/api-first-principles.md`: this app must expose mobile behavior only
+through predictable API contracts that return user context, permissions,
+feature flags, config, version rules, mobile-friendly errors, sync/conflict
+outcomes, and tenant-safe responses.
+
 Target User Roles are defined in `../../docs/user-roles.md`: this app must map
 each admin, support, billing, tenant, mobile, invited, suspended, and
 guest/pre-login responsibility to server-side authority and visibility.

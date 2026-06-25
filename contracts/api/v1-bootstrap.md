@@ -16,6 +16,12 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+API-First Principles are defined in
+`../../docs/api-first-principles.md`: this contract must return predictable
+operating context for user, tenant, permissions, feature flags, config, version
+rules, sync policy, notification policy, support state, and entitlement
+outcomes.
+
 Target User Roles are defined in `../../docs/user-roles.md`: bootstrap context
 must return role-derived capability state and account-state limits as
 mobile-safe outcomes.

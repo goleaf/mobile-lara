@@ -1,6 +1,6 @@
 # API-First Principles
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This document defines API-first principles for Mobile Lara. It explains how the Admin/API system and NativePHP + Livewire mobile client communicate, what the API must make predictable, how mobile features depend on API purpose, and how API behavior protects tenants, permissions, sync, conflicts, and mobile UX. It is documentation only and does not define endpoints, routes, database fields, migrations, controllers, resources, policies, jobs, services, or application logic.
 
@@ -34,6 +34,22 @@ The API is not a convenience layer. It is the contract that turns Admin/API auth
 8. **The API is version-aware** - Mobile-dependent behavior should be compatible, additive where possible, and governed by app-version policy before removal.
 9. **The API shapes data for mobile** - Mobile should receive useful payloads and allowed actions, not raw internal models or admin machinery.
 10. **The API is supportable** - API outcomes should leave enough safe context for support, audit, reporting, billing, and conflict explanation.
+
+## API-First Contract
+
+Every mobile feature planning decision should name its API purpose before implementation planning.
+
+| API-first area | Principle | Mobile-safe outcome |
+| --- | --- | --- |
+| Communication path | The mobile client communicates with Admin/API only through the API for every server-trusted read, write, replay, support action, notification registration, report, entitlement check, and version check. | Mobile uses local cache, drafts, queues, and NativePHP state only as temporary local execution until API confirms truth. |
+| Predictable responses | API responses use consistent states, metadata, error categories, pagination/bounds, freshness/version context, and next-action semantics. | Mobile can render allowed, denied, blocked, disabled, pending, synced, conflict, failed, retry-later, update-required, or maintenance states without guessing. |
+| Feature API purpose | Every mobile feature names why it talks to API before endpoint or screen design. | Features are planned as boot/context, read, action, draft submission, offline replay, conflict, support, notification, reporting, entitlement, or version behavior. |
+| Operating context | API returns the permissions, feature flags, remote config, version rules, user context, tenant context, sync policy, notification policy, support state, and billing/entitlement outcomes mobile needs. | Mobile presents capability and next actions from server-shaped context instead of inferring authority from local role names, plan labels, cached flags, or device state. |
+| Mobile-friendly errors | API errors are structured, safe, non-leaking, and mapped to useful mobile recovery states. | Mobile can show field feedback, permission denial, tenant block, billing/quota limit, maintenance, stale-client, conflict, retry, support, or logout guidance. |
+| Sync and conflict logic | API supports queued intents, idempotency, replay decisions, stale-state handling, conflict categories, and safe conflict reasons. | Mobile can show pending, synced, conflict, failed, blocked, stale, retry-later, or user-resolution states while API keeps canonical authority. |
+| Tenant boundary protection | API resolves tenant scope server-side for every protected request and response, including offline replay and support/report/billing contexts. | Mobile shows only tenant-safe context and never treats a local tenant ID, cached membership, route, or screen as tenant authority. |
+
+This contract is intentionally principle-level. It does not define endpoints, routes, fields, database tables, migrations, controllers, resources, policies, jobs, services, provider integrations, or application logic.
 
 ## Mobile Communicates Only With API
 

@@ -16,6 +16,11 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+API-First Principles are defined in
+`../../docs/api-first-principles.md`: this contract must return predictable
+report purpose, scoped summaries, freshness metadata, mobile-friendly errors,
+and tenant-safe visibility without exposing report/export authority.
+
 Target User Roles are defined in `../../docs/user-roles.md`: report summaries
 must respect platform, tenant, manager, support, billing, mobile, and blocked
 account-state visibility.

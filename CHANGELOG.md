@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified API-First Principles with an API-first contract for API-only mobile
+  communication, predictable responses, explicit mobile-feature API purpose,
+  permissions/feature/config/version/user context, mobile-friendly errors,
+  sync/conflict behavior, and tenant-boundary protection.
 - Clarified Mobile Client Responsibilities with a mobile ownership contract for
   mobile UX, secure local session, cache, offline actions, NativePHP device
   features, navigation, permissions UX, sync status display, local drafts,

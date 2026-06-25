@@ -16,6 +16,11 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+API-First Principles are defined in
+`../../docs/api-first-principles.md`: this contract must make queued intents,
+idempotency, replay outcomes, conflicts, retry states, mobile errors, and
+tenant re-checks first-class API behavior.
+
 Target User Roles are defined in `../../docs/user-roles.md`: sync replay,
 conflict visibility, and offline state must follow role and account-state
 boundaries.

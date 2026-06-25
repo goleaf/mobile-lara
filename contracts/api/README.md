@@ -16,6 +16,11 @@ every contract must preserve admin authority, tenant isolation, API-only mobile
 behavior, feature control, useful offline behavior, secure defaults, simple
 mobile UX, documentation-first planning, and modular expansion.
 
+API-First Principles are defined in
+`../../docs/api-first-principles.md`: every contract must state the API purpose,
+expected operating context, predictable response states, mobile-friendly error
+meaning, sync/conflict behavior where relevant, and tenant-boundary protection.
+
 Target User Roles are defined in `../../docs/user-roles.md`: every contract must
 describe role and account-state effects as mobile-safe outcomes, not raw role
 authority.

@@ -16,6 +16,11 @@ Use this document with [Core Product Principles](product-principles.md): mobile
 version rules are admin-controlled, API-first, secure-by-default, tenant-aware,
 documented, and modular.
 
+Use this document with [API-First Principles](api-first-principles.md): version
+policy reaches mobile only through predictable API responses that include
+version rules, update state, maintenance state, user-safe errors, and
+tenant-safe context.
+
 Use this document with [Target User Roles](user-roles.md): version prompts,
 maintenance access, internal-only access, support visibility, and suspended or
 guest behavior must follow role and account-state boundaries.

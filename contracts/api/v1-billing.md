@@ -16,6 +16,11 @@ Core Product Principles are defined in `../../docs/product-principles.md`: this
 contract must preserve admin control, API-first communication, tenant isolation,
 secure defaults, simple mobile UX, and modular feature expansion.
 
+API-First Principles are defined in
+`../../docs/api-first-principles.md`: this contract must return predictable
+entitlement, quota, plan-impact, feature-visibility, mobile-error, and
+tenant-safe billing outcomes without exposing billing authority.
+
 Target User Roles are defined in `../../docs/user-roles.md`: billing outcomes
 must distinguish billing manager authority, tenant admin visibility, support
 context, and mobile entitlement messages.
