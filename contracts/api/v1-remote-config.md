@@ -24,6 +24,10 @@ creates value by safely tuning mobile behavior, notifications, sync messaging,
 support guidance, and feature presentation without turning config into
 authority.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: config authority and validation stay in
+Admin/API while mobile caches resolved config with freshness and fallback state.
+
 ## Purpose
 
 Remote config endpoints expose validated, resolved, mobile-safe runtime values.

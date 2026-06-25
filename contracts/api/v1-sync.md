@@ -24,6 +24,11 @@ SaaS Value Map is defined in `../../docs/saas-value-map.md`: sync contracts
 create value when offline work, tenant continuity, support diagnostics,
 reports, security, and billing/entitlement checks reconcile through API.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: mobile may queue intents and show pending
+state, but API replay decides acceptance, rejection, conflict, retry, and
+canonical server state.
+
 ## Purpose
 
 Sync endpoints let the mobile client replay queued local intents and pull

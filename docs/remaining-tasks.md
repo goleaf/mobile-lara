@@ -27,6 +27,11 @@ SaaS Value Map is defined in `docs/saas-value-map.md`. Remaining work must map
 platform owner, tenant business, tenant admin, mobile worker/client, support
 team, and billing/operations value before adding implementation scope.
 
+Two-System Boundary Logic is defined in `docs/two-system-boundary.md`.
+Remaining work must map what Admin/API owns, what mobile owns, what must go
+through API, what may be cached locally, what admin controls remotely, and what
+happens offline before adding implementation scope.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Remaining implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

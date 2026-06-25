@@ -23,6 +23,10 @@ stakeholder value operable through admin controls, API contracts, reports,
 security, billing/operations context, support context, notifications, and
 feature flags.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: this app owns the trusted side of the
+boundary and must expose mobile-safe outcomes only through API contracts.
+
 ## Product Role
 
 This system owns SaaS authority:

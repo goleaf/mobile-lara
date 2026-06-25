@@ -21,6 +21,11 @@ SaaS Value Map is defined in `../../docs/saas-value-map.md`: feature outcomes
 must explain stakeholder value from rollout control, tenant adoption, mobile
 clarity, support explanation, billing entitlements, and security boundaries.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: feature authority and rollout decisions
+stay in Admin/API while mobile renders resolved enabled, disabled, blocked,
+deprecated, or update-required states.
+
 ## Purpose
 
 Feature endpoints expose resolved mobile-safe feature outcomes. Mobile never

@@ -24,6 +24,10 @@ SaaS Value Map is defined in `../docs/saas-value-map.md`: both apps must connect
 admin control, mobile access, offline sync, notifications, reports, security,
 and feature flags to explicit stakeholder value.
 
+Two-System Boundary Logic is defined in `../docs/two-system-boundary.md`: both
+apps must keep Admin/API authority separate from mobile local execution, cache,
+drafts, queues, NativePHP capability use, and offline state.
+
 ## Systems
 
 | Path | Responsibility | Current state |

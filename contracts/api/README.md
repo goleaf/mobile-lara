@@ -25,6 +25,11 @@ name the stakeholder value it supports and connect that value to admin control,
 mobile access, offline sync, notifications, reports, security, or feature flags
 without exposing raw authority.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: every contract must state which behavior
+is API-only, which mobile state may be cached or queued, and which authority
+stays in Admin/API.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

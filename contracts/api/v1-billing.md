@@ -24,6 +24,11 @@ SaaS Value Map is defined in `../../docs/saas-value-map.md`: billing outcomes
 connect commercial value to plan limits, entitlement-driven feature flags,
 mobile-safe access messages, reports, security, and billing/operations insight.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: billing authority, quota checks, and
+entitlement decisions stay in Admin/API while mobile shows allowed, blocked,
+quota, or contact-admin outcomes.
+
 ## Purpose
 
 Billing endpoints expose mobile-safe plan and subscription state. Admin/API

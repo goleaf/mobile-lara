@@ -24,6 +24,11 @@ SaaS Value Map is defined in `../../docs/saas-value-map.md`: notification
 contracts create value when platform, tenant, mobile, support, and billing
 messages reach the right audience without leaking tenant or admin authority.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: notification targeting and delivery truth
+stay in Admin/API while mobile owns device registration UX, permission UX, and
+safe local display.
+
 ## Purpose
 
 Notification endpoints manage notification preferences, push token

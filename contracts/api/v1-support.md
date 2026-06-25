@@ -24,6 +24,11 @@ SaaS Value Map is defined in `../../docs/saas-value-map.md`: support contracts
 create value by connecting mobile help, diagnostics, notifications, sync state,
 reports, security boundaries, and feature-flag explanation.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: support authority, assignment, visibility,
+and escalation stay in Admin/API while mobile owns help entry and safe
+diagnostic submission.
+
 ## Purpose
 
 Support endpoints let mobile users create tickets, view tickets, add messages,

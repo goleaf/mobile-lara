@@ -24,6 +24,11 @@ SaaS Value Map is defined in `../../docs/saas-value-map.md`: diagnostics create
 support-team value through safe mobile context, sync visibility, version/config
 evidence, security boundaries, and reportable incident patterns.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: mobile may collect safe local diagnostics,
+but Admin/API controls acceptance, visibility, redaction, support scope, and
+audit.
+
 ## Purpose
 
 Diagnostics endpoints let mobile share privacy-safe troubleshooting context

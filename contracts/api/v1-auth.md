@@ -24,6 +24,11 @@ SaaS Value Map is defined in `../../docs/saas-value-map.md`: auth outcomes
 create stakeholder value by making secure mobile access, tenant isolation,
 support recovery, billing restrictions, and feature eligibility trustworthy.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: identity, tenant access, session validity,
+device trust, and revocation remain Admin/API authority while mobile presents
+local session state.
+
 ## Purpose
 
 Auth endpoints make the Admin/API system authoritative for mobile identity,

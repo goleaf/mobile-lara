@@ -24,6 +24,10 @@ stakeholder-value coverage for admin controls, mobile access, offline sync,
 notifications, reports, security, and feature flags, but must not create hidden
 product authority.
 
+Two-System Boundary Logic is defined in `../docs/two-system-boundary.md`:
+scripts may verify boundary coverage, but must not create side-channel authority
+outside Admin/API or mobile-local verification outside documented contracts.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force

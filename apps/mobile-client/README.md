@@ -25,6 +25,11 @@ stakeholder value into simple API-derived mobile access, offline/sync state,
 notification UX, secure local behavior, and clear enabled or blocked feature
 states.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: this app owns local execution and must not
+turn cache, drafts, queued intents, NativePHP state, or UI visibility into SaaS
+authority.
+
 ## Product Role
 
 This system owns local execution:

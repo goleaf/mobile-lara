@@ -25,6 +25,11 @@ is where stakeholder value first becomes mobile-visible through allowed
 features, tenant context, reports, notifications, sync policy, security, and
 admin-controlled state.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: bootstrap returns Admin/API decisions as
+mobile-safe operating context, and cached bootstrap state is never final
+authority.
+
 ## Purpose
 
 Bootstrap gives the mobile client one resolved operating context after login,

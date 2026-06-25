@@ -25,6 +25,11 @@ tenant-business and mobile-worker value through governed mobile access,
 offline-capable work where allowed, reports, security, supportability, and
 feature-controlled availability.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: record authority and validation stay in
+Admin/API while mobile may cache records, create drafts, and queue allowed
+intents for API replay.
+
 ## Purpose
 
 Records endpoints provide tenant-scoped content authority for list, detail,

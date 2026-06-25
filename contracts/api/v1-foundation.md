@@ -26,6 +26,10 @@ SaaS Value Map is defined in `../../docs/saas-value-map.md`: foundation
 contracts should prove that API shape, errors, metadata, and contract catalogue
 support stakeholder value without implementing hidden product authority.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: foundation contracts should prove the API
+is the boundary between Admin/API authority and mobile-local execution.
+
 Remote Configuration Logic is defined in
 `../../docs/remote-configuration-logic.md`. Future bootstrap and config
 contracts should return resolved mobile-safe config values, config version,

@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Two-System Boundary Logic with an explicit boundary contract for
+  Admin/API ownership, mobile ownership, API-only behavior, local cache,
+  remote admin control, and offline behavior.
 - Clarified the SaaS Value Map with a value delivery contract that connects
   stakeholders to admin control, mobile access, offline sync, notifications,
   reports, security, feature flags, API outcomes, boundaries, and proof

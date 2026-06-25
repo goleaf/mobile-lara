@@ -25,6 +25,11 @@ maintenance outcomes protect platform-owner rollout control, tenant-business
 continuity, support diagnosability, billing/operations entitlement clarity, and
 mobile-worker trust.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: version authority belongs to Admin/API,
+while mobile reports build context and presents update, maintenance, deprecated,
+or blocked outcomes.
+
 ## Purpose
 
 App-version and maintenance endpoints tell mobile whether the current build can

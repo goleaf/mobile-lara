@@ -24,6 +24,11 @@ SaaS Value Map is defined in `../../docs/saas-value-map.md`: report contracts
 must prove value through scoped adoption, operations, sync, support, billing,
 security, and feature-usage insight without overexposing raw tenant data.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: report definitions, scope, aggregation,
+and export authority stay in Admin/API while mobile receives only allowed
+summaries.
+
 ## Purpose
 
 Reports endpoints expose only permission-safe tenant and user report summaries

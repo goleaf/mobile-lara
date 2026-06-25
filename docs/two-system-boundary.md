@@ -41,6 +41,22 @@ The simplest rule is:
 
 The mobile client may remember server decisions for usability, but it must never become the place where business authority is created.
 
+## Boundary Contract
+
+Every product decision should pass this boundary contract before implementation planning:
+
+| Boundary question | Product answer |
+| --- | --- |
+| What does Admin/API own? | All SaaS authority: tenants, users, roles, permissions, billing, feature flags, remote config, app-version policy, notifications, reports, support, audit, security, sync acceptance, and conflict decisions. |
+| What does mobile own? | Local execution: NativePHP + Livewire UX, secure session presentation, local cache, drafts, queued intents, device capability UX, navigation, sync status, offline/freshness labels, and user feedback. |
+| What must mobile never own? | Tenant authority, permission authority, billing authority, feature/config/version authority, report authority, support authority, audit truth, final sync truth, conflict decisions, or secrets in unsafe storage. |
+| What must only happen through API? | Server-trusted reads, writes, boot context, tenant resolution, permission checks, billing checks, feature decisions, notification registration, support actions, report access, sync replay, and audit acceptance. |
+| What can be cached locally? | Safe server-confirmed snapshots, tenant labels, capability snapshots, resolved config, recent resources, drafts, queued intents, sync metadata, safe activity hints, and local notification history with freshness state. |
+| What must admin control remotely? | Tenant/user access, roles, permissions, feature availability, remote config, version policy, maintenance, force update, sync rules, notifications, report visibility, billing entitlements, support diagnostics, and security posture. |
+| What happens offline? | Mobile may show safe cached data, create drafts, and queue allowed intents, but it must label freshness/pending state and reconcile through API before anything becomes server truth. |
+
+The contract is intentionally strict. Mobile can improve speed, clarity, and resilience, but it cannot move the trust boundary away from Admin/API.
+
 The documentation-first architecture model is defined in [Documentation-First Architecture](documentation-first-architecture.md). Use it with this boundary document to record every feature, admin mobile effect, mobile screen API dependency, sync behavior, permission owner, and risk before implementation.
 
 The Admin Control Center model is defined in [Admin Control Center Logic](admin-control-center-logic.md). Use it with this boundary document whenever admin control touches tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, or support.

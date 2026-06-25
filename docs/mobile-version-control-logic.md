@@ -25,6 +25,10 @@ protect stakeholder value by preserving platform rollout control, tenant
 continuity, mobile-worker trust, support diagnosability, and billing/operations
 clarity.
 
+Use this document with [Two-System Boundary Logic](two-system-boundary.md):
+Admin/API decides version safety, while mobile reports build context and
+presents update, limited-mode, maintenance, deprecated, or blocked states.
+
 ## Version Control Statement
 
 Mobile app version control is a control-plane responsibility.

@@ -25,6 +25,10 @@ create value by preserving tenant isolation while enabling governed mobile
 access, tenant reports, support context, billing visibility, notifications, and
 feature flags.
 
+Two-System Boundary Logic is defined in
+`../../docs/two-system-boundary.md`: tenant authority stays in Admin/API while
+mobile displays current tenant context and switch choices returned by API.
+
 ## Purpose
 
 Tenancy endpoints keep tenant authority on the Admin/API system. Mobile may
