@@ -21,6 +21,8 @@ UI decisions must follow [Admin Control Center Logic](admin-control-center-logic
 
 UI decisions must follow [Feature Flag Logic](feature-flag-logic.md): feature-controlled surfaces must distinguish hidden, visible, disabled, blocked, beta, deprecated, update-required, offline-limited, and emergency-disabled states without exposing raw flag internals.
 
+UI decisions must follow [Remote Configuration Logic](remote-configuration-logic.md): remotely configured copy, limits, workflow options, offline/sync messaging, support prompts, and tenant presentation must have safe defaults and invalid-config fallbacks.
+
 UI decisions must also follow [Target User Roles](user-roles.md): each role should see the controls, diagnostics, billing context, support context, tenant scope, or pre-login state that matches its job.
 
 UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform owners need high-level control and risk visibility, tenant admins need scoped management, mobile workers need simple next actions, support needs safe diagnostics, and billing/operations needs entitlement clarity without tenant workflow overreach.

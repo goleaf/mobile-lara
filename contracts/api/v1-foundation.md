@@ -6,6 +6,12 @@ This contract records the first implemented mobile-facing API foundation in
 `apps/api-admin`. It proves the route namespace and standard envelope before
 the domain contracts are implemented.
 
+Remote Configuration Logic is defined in
+`../../docs/remote-configuration-logic.md`. Future bootstrap and config
+contracts should return resolved mobile-safe config values, config version,
+freshness, compatibility, tenant override context, and fallback/error states
+without exposing admin-only configuration internals.
+
 ## Base Path
 
 ```text

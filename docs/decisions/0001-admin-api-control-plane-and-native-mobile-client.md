@@ -26,6 +26,8 @@ The Admin Control Center model is defined in [Admin Control Center Logic](../adm
 
 The feature flag model is defined in [Feature Flag Logic](../feature-flag-logic.md). The architecture must require important mobile features to resolve global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, and offline decisions into mobile-safe API states.
 
+The remote configuration model is defined in [Remote Configuration Logic](../remote-configuration-logic.md). The architecture must require runtime-configurable behavior to define safe config types, defaults, scope, tenant overrides, mobile receive/cache behavior, offline behavior, invalid-config fallback, admin safety, support meaning, audit expectations, and rollback before implementation.
+
 The target role model is defined in [Target User Roles](../user-roles.md). The architecture must keep platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user boundaries distinct.
 
 The SaaS value map is defined in [SaaS Value Map](../saas-value-map.md). The architecture must preserve value for platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team without giving each stakeholder the same visibility or control.
@@ -54,6 +56,8 @@ Future implementation must follow [Documentation-First Architecture](../document
 Future Admin Control Center implementation must follow [Admin Control Center Logic](../admin-control-center-logic.md) before coding tenant, user, role, permission, feature, config, version, maintenance, force-update, sync, notification, report, billing, or support controls.
 
 Future feature flag implementation must follow [Feature Flag Logic](../feature-flag-logic.md) before coding mobile feature availability, global/tenant/user priority, disabled states, rollout, plan limits, support, audit, or offline behavior.
+
+Future remote configuration implementation must follow [Remote Configuration Logic](../remote-configuration-logic.md) before coding configurable mobile copy, limits, thresholds, workflow options, offline behavior, sync behavior, NativePHP permission text, support prompts, notification behavior, version messaging, tenant presentation, cache behavior, validation, fallback, audit, or rollback.
 
 The Admin/API system must remain the owner of the responsibility areas documented in [Admin/API Responsibilities](../admin-api-responsibilities.md). The mobile client receives outcomes from those responsibilities; it does not duplicate or override them.
 
@@ -113,6 +117,7 @@ The mobile client would be implemented as a fully native iOS/Android application
 - Feature work must document product behavior, admin mobile effects, mobile API dependencies, sync behavior, permission ownership, risks, non-goals, and acceptance criteria before implementation.
 - Feature work must document Admin Control Center scope, authorized role, mobile effect, API context, audit expectation, support meaning, offline behavior, and risk before implementation.
 - Feature work must document feature flag priority, disabled mobile state, admin impact, rollout path, plan-limit behavior, support meaning, audit expectation, offline behavior, and risk before implementation.
+- Feature work must document remote configuration type, default, scope, tenant override, mobile cache freshness, offline behavior, invalid-config fallback, support meaning, audit expectation, and rollback before implementation.
 - Feature work must identify system ownership: what Admin/API owns, what mobile owns, what is API-only, what can be cached locally, what admin controls remotely, and how offline reconciliation works.
 - Feature work must identify API-first behavior: why mobile talks to API, which context is returned, which response states/errors exist, how sync/conflict works, and how tenant scope is protected.
 - Feature work must identify responsibility ownership: which Admin/API responsibility owns tenant, user, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.

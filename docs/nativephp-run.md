@@ -16,6 +16,8 @@ Native build and release work must follow [Admin Control Center Logic](admin-con
 
 Native build and release work must follow [Feature Flag Logic](feature-flag-logic.md): app-version compatibility, NativePHP capability availability, rollout cohorts, disabled states, force update, and plan-limited features must resolve through API-provided feature states.
 
+Native build and release work must follow [Remote Configuration Logic](remote-configuration-logic.md): bundled defaults, remote config compatibility, config freshness, tenant overrides, and invalid-config fallback must be documented before release.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.
@@ -199,6 +201,7 @@ Also verify product policy before a real mobile release:
 - Documentation-first architecture checks are complete for every enabled mobile capability.
 - Admin Control Center checks are complete for app-version, maintenance, force-update, feature, sync, notification, support, report, and billing behavior affected by the release.
 - Feature Flag Logic checks are complete for every enabled, beta, disabled, blocked, update-required, offline-limited, and emergency-disabled mobile capability in the release.
+- Remote Configuration Logic checks are complete for every runtime-configurable copy, limit, workflow option, offline/sync behavior, native permission wording, support prompt, notification presentation, version message, and tenant presentation value in the release.
 - Remote config and feature flags are compatible with the build.
 - Two-system boundary ownership is documented for every mobile capability in the release.
 - Admin/API responsibility ownership is documented for every mobile capability in the release.
@@ -233,6 +236,7 @@ Before production distribution, the project needs:
 - Documentation-first architecture: [Documentation-First Architecture](documentation-first-architecture.md)
 - Admin Control Center logic: [Admin Control Center Logic](admin-control-center-logic.md)
 - Feature flag logic: [Feature Flag Logic](feature-flag-logic.md)
+- Remote configuration logic: [Remote Configuration Logic](remote-configuration-logic.md)
 - Target user roles: [Target User Roles](user-roles.md)
 - SaaS value map: [SaaS Value Map](saas-value-map.md)
 - Two-system boundary: [Two-System Boundary Logic](two-system-boundary.md)

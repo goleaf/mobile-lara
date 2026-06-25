@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the feature flag logic for Mobile Lara. It explains why important mobile features should be controlled by feature flags, how global, tenant, and user-level decisions should be prioritized, how disabled features should appear on mobile, how admins should understand impact, how flags support safe rollout, and how flags support plan limits. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.
 
-Use this document with [Admin Control Center Logic](admin-control-center-logic.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Core Product Principles](product-principles.md), and [SaaS Value Map](saas-value-map.md): feature flags are admin-controlled product decisions that reach mobile through API outcomes.
+Use this document with [Admin Control Center Logic](admin-control-center-logic.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Core Product Principles](product-principles.md), [SaaS Value Map](saas-value-map.md), and [Remote Configuration Logic](remote-configuration-logic.md): feature flags are admin-controlled product decisions that reach mobile through API outcomes, while remote config tunes safe runtime behavior for enabled features.
 
 ## Feature Flag Statement
 
@@ -20,6 +20,11 @@ A feature flag is not just a boolean. It is a product-control decision that answ
 - What support, reporting, audit, billing, and rollback context exists.
 
 Feature flags make the mobile app governable without turning the mobile client into the source of authority.
+
+Remote config complements feature flags. A flag decides whether a feature is
+available and in what mobile-safe state; remote config decides safe values such
+as copy, limits, thresholds, workflow options, offline rules, support prompts,
+notification presentation, version messaging, and tenant presentation.
 
 ## Why Important Mobile Features Need Flags
 
@@ -191,6 +196,7 @@ Use this checklist before planning any feature flag.
 | What is the admin impact? | Affected tenants/users/plans/versions/devices/cohorts, mobile effect, sync effect, support effect, report effect, billing effect, audit, and rollback are named. |
 | What rollout path applies? | Internal, pilot, cohort, plan/tenant/user rollout, general availability, rollback, or emergency disablement. |
 | What plan limit applies? | Included, not included, quota-limited, trial, expired, payment-failed, exception, or promotion outcome is explicit. |
+| What remote config applies? | Configurable values, defaults, tenant overrides, cache freshness, offline behavior, validation, fallback, support, audit, and rollback are documented in Remote Configuration Logic. |
 | What is out of scope? | Database fields, schemas, endpoints, controllers, policies, resources, services, jobs, and code remain deferred until implementation. |
 
 ## Risks
@@ -206,6 +212,7 @@ Use this checklist before planning any feature flag.
 | Rollout causes support spikes | Start internal/pilot, expose support context, monitor reports, and keep rollback ready. |
 | Plan gating leaks billing internals | Mobile receives product outcomes; billing details stay role-scoped in Admin/API. |
 | Offline queued work violates new flags | Replay rechecks current flag, plan, permission, version, tenant, and maintenance state. |
+| Remote config is mistaken for feature availability | Flags decide availability; remote config tunes safe behavior only after API authority resolves the feature state. |
 | Old flags stay forever | Flags should have a lifecycle: proposed, active rollout, default-on, deprecated, retired, or emergency-disabled. |
 
 ## Success Test
