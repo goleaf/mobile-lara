@@ -49,6 +49,12 @@ permissions and feature flags, sync replay, offline behavior, and logout
 cleanup must preserve tenant isolation and never turn mobile-local state
 into tenant authority.
 
+Offline-First Principles are defined in `docs/offline-first-principles.md`:
+mobile may use safe cache, drafts, queued intents, sync status, and clear
+offline messaging to keep users productive, but protected reads, writes,
+conflicts, billing, permissions, feature access, audit, and tenant authority
+must wait for API confirmation before becoming trusted.
+
 The SaaS value map is defined in `docs/saas-value-map.md`: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
 The two-system boundary is defined in `docs/two-system-boundary.md`: Admin/API owns SaaS authority and mobile owns local execution, native capability use, cache, drafts, queues, and state presentation.
@@ -117,6 +123,7 @@ Use these docs before changing the product direction:
 - `docs/tenant-lifecycle-logic.md`
 - `docs/tenant-admin-logic.md`
 - `docs/multi-tenant-mobile-logic.md`
+- `docs/offline-first-principles.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -149,6 +156,7 @@ Use these docs before changing the product direction:
 - Tenant lifecycle decisions must follow `docs/tenant-lifecycle-logic.md`.
 - Tenant admin decisions must follow `docs/tenant-admin-logic.md`.
 - Multi-tenant mobile decisions must follow `docs/multi-tenant-mobile-logic.md`.
+- Offline-first decisions must follow `docs/offline-first-principles.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -180,6 +188,7 @@ Use these docs before changing the product direction:
 - Any tenant creation, onboarding, trial, active, suspended, archived, billing-blocked, deletion/requested deletion, restore, or mobile tenant-state behavior must map to `docs/tenant-lifecycle-logic.md`.
 - Any tenant-admin control, invitation, delegated mobile-feature management, tenant report, tenant support workflow, tenant admin safety decision, or cross-tenant isolation behavior must map to `docs/tenant-admin-logic.md`.
 - Any mobile tenant choice, remembered tenant context, tenant switch, tenant-scoped cache, per-tenant permission or feature state, post-switch sync behavior, offline tenant behavior, or logout tenant cleanup must map to `docs/multi-tenant-mobile-logic.md`.
+- Any offline-capable mobile screen, local cache, draft, queued action, pending change, sync status, conflict state, offline message, never-cache rule, or admin offline limit must map to `docs/offline-first-principles.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.

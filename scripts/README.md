@@ -133,6 +133,12 @@ permissions and feature flags, sync replay, offline behavior, and logout
 cleanup must preserve tenant isolation and never turn mobile-local state
 into tenant authority.
 
+Offline-First Principles are defined in `../docs/offline-first-principles.md`:
+mobile may use safe cache, drafts, queued intents, sync status, and clear
+offline messaging to keep users productive, but protected reads, writes,
+conflicts, billing, permissions, feature access, audit, and tenant authority
+must wait for API confirmation before becoming trusted.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force

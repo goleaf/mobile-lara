@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Offline-First Principles documentation for offline mobile capability,
+  online-only API authority, cache rules, never-cache rules, offline state
+  messaging, queued action logic, pending-change UX, and admin-controlled
+  offline limits.
 - Added Multi-Tenant Mobile Logic documentation for multiple-tenant choice,
   remembered current tenant context, safe tenant switching, tenant-scoped cache,
   per-tenant permissions and feature flags, sync after switch, offline behavior,

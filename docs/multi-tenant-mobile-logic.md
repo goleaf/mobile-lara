@@ -21,10 +21,12 @@ Local Storage](nativephp-local-storage.md), [Mobile App Shell Logic](mobile-app-
 [Role And Permission Logic](role-permission-logic.md), [Feature Flag Logic](feature-flag-logic.md),
 [Remote Configuration Logic](remote-configuration-logic.md), [Tenant Lifecycle
 Logic](tenant-lifecycle-logic.md), [Tenant Admin Logic](tenant-admin-logic.md),
-[Audit Logic](audit-logic.md), [Data Privacy Principles](data-privacy-principles.md),
-[Admin Safety Principles](admin-safety-principles.md), and [API v1 Tenancy
-Contract](../contracts/api/v1-tenancy.md): multi-tenant mobile behavior is the
-local user experience for choosing and remembering tenant context while
+[Offline-First Principles](offline-first-principles.md), [Audit Logic](audit-logic.md),
+[Data Privacy Principles](data-privacy-principles.md), [Admin Safety
+Principles](admin-safety-principles.md), and [API v1 Tenancy Contract](../contracts/api/v1-tenancy.md):
+multi-tenant mobile behavior is the local user experience for choosing and
+remembering tenant context while offline-first behavior defines which tenant
+data may be cached, queued, shown, or blocked without online confirmation.
 Admin/API remains authoritative for tenant access, tenant state, permissions,
 features, config, sync acceptance, and logout/session revocation.
 

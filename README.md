@@ -20,6 +20,11 @@ The tenant admin model is explicit: tenant admins manage tenant-scoped users, in
 
 The multi-tenant mobile model is explicit: mobile users with multiple tenants choose and remember tenant context only through API-confirmed state, while tenant switching, cache separation, per-tenant permissions/features, sync replay, offline behavior, and logout cleanup preserve tenant isolation.
 
+The offline-first model is explicit: mobile may use safe cache, drafts, queued
+intents, sync state, and offline messaging to keep users productive, while API
+authority remains required for protected reads, writes, conflicts, billing,
+permissions, feature access, audit, and tenant authority.
+
 The value map is explicit too: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team each receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
 The two-system boundary is explicit: Admin/API owns SaaS authority, while mobile owns local execution, native capability use, cache, drafts, queues, and clear state presentation.
@@ -107,6 +112,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/tenant-lifecycle-logic.md](docs/tenant-lifecycle-logic.md) | Tenant lifecycle logic for creation, onboarding, trial, active, suspended, archived, billing-blocked, deletion/requested deletion, restore, and mobile-visible tenant states. |
 | [docs/tenant-admin-logic.md](docs/tenant-admin-logic.md) | Tenant admin logic for tenant-scoped controls, platform-only boundaries, invitations, delegated mobile-feature management, reports, support, and cross-tenant isolation. |
 | [docs/multi-tenant-mobile-logic.md](docs/multi-tenant-mobile-logic.md) | Multi-tenant mobile logic for tenant choice, remembered tenant context, safe tenant switching, tenant-scoped cache, per-tenant permissions/features, sync after switch, and logout cleanup. |
+| [docs/offline-first-principles.md](docs/offline-first-principles.md) | Offline-first principles for offline mobile capability, online-only API authority, cache rules, never-cache rules, offline state messaging, queued action logic, pending-change UX, and admin-controlled offline limits. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
 | [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
@@ -165,6 +171,7 @@ contracts.
 - Apply [tenant lifecycle logic](docs/tenant-lifecycle-logic.md) before planning tenant creation, onboarding, trial, active, suspended, archived, billing-blocked, deletion/requested deletion, restore, or mobile tenant-state behavior.
 - Apply [tenant admin logic](docs/tenant-admin-logic.md) before planning tenant-admin controls, invitations, delegated mobile-feature management, tenant reports, tenant support, tenant admin safety, or cross-tenant isolation behavior.
 - Apply [multi-tenant mobile logic](docs/multi-tenant-mobile-logic.md) before planning mobile tenant choice, remembered tenant context, tenant switching, tenant-scoped cache, per-tenant permissions or features, sync after tenant switch, offline tenant behavior, or logout tenant cleanup.
+- Apply [offline-first principles](docs/offline-first-principles.md) before planning offline-capable mobile screens, local cache, drafts, queued actions, sync state, pending changes, conflict behavior, or admin-controlled offline limits.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
 - Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.

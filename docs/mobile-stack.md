@@ -107,6 +107,12 @@ permissions and feature flags, sync replay, offline behavior, and logout
 cleanup must preserve tenant isolation and never turn mobile-local state
 into tenant authority.
 
+Offline-First Principles are defined in `offline-first-principles.md`:
+mobile may use safe cache, drafts, queued intents, sync status, and clear
+offline messaging to keep users productive, but protected reads, writes,
+conflicts, billing, permissions, feature access, audit, and tenant authority
+must wait for API confirmation before becoming trusted.
+
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.

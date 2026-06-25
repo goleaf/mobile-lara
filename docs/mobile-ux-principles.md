@@ -78,6 +78,12 @@ permissions and feature flags, sync replay, offline behavior, and logout
 cleanup must preserve tenant isolation and never turn mobile-local state
 into tenant authority.
 
+Offline-First Principles are defined in `offline-first-principles.md`:
+mobile may use safe cache, drafts, queued intents, sync status, and clear
+offline messaging to keep users productive, but protected reads, writes,
+conflicts, billing, permissions, feature access, audit, and tenant authority
+must wait for API confirmation before becoming trusted.
+
 Updated: 2026-06-26
 
 This document defines mobile UX principles for the Mobile Lara NativePHP client. It explains mobile-first navigation, simple screens, clear loading states, clear offline states, thumb-friendly controls, minimum typing, fast actions, feature visibility based on admin rules, secure session behavior, and permission education before native permission prompts. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, or application logic.

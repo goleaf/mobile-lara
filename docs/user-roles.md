@@ -110,6 +110,12 @@ permissions and feature flags, sync replay, offline behavior, and logout
 cleanup must preserve tenant isolation and never turn mobile-local state
 into tenant authority.
 
+Offline-First Principles are defined in `offline-first-principles.md`:
+mobile may use safe cache, drafts, queued intents, sync status, and clear
+offline messaging to keep users productive, but protected reads, writes,
+conflicts, billing, permissions, feature access, audit, and tenant authority
+must wait for API confirmation before becoming trusted.
+
 Roles define authority and visibility. The [SaaS Value Map](saas-value-map.md) defines product value. A stakeholder may receive value from a feature without receiving direct control over it; for example, a tenant business benefits from reports and offline sync, while the tenant admin or support team may be the role that actually sees the management surface.
 
 Roles also depend on [Two-System Boundary Logic](two-system-boundary.md). Admin/API enforces role authority, while mobile only renders API-derived capability state and account-state restrictions.
