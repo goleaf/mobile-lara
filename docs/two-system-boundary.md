@@ -20,6 +20,8 @@ The simplest rule is:
 
 The mobile client may remember server decisions for usability, but it must never become the place where business authority is created.
 
+The documentation-first architecture model is defined in [Documentation-First Architecture](documentation-first-architecture.md). Use it with this boundary document to record every feature, admin mobile effect, mobile screen API dependency, sync behavior, permission owner, and risk before implementation.
+
 The detailed control-plane responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Use it with this boundary document whenever a feature touches tenants, users, permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, or security enforcement.
 
 The detailed API contract model is defined in [API-First Principles](api-first-principles.md). Use it with this boundary document whenever a feature touches mobile/API communication, operating context, predictable responses, mobile-friendly errors, sync replay, conflict logic, version rules, or tenant-scoped responses.
@@ -292,3 +294,5 @@ If the Admin/API responsibility owner is also unclear, the feature is not ready 
 If the mobile-client responsibility owner is also unclear, the feature is not ready for product planning.
 
 If the API purpose, response, context, error, sync/conflict, or tenant-boundary behavior is unclear, the feature is not ready for product planning.
+
+If the feature's documentation-first checklist is incomplete, the feature is not ready for implementation planning.

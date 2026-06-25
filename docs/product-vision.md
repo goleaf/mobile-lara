@@ -27,6 +27,8 @@ See [Product Positioning](product-positioning.md) for the full positioning model
 
 The vision is governed by [Core Product Principles](product-principles.md). In short: Admin/API controls business authority; mobile never bypasses the API; every feature is controllable; tenant isolation is mandatory; offline-first is used where it helps; security is default; communication is API-first; mobile UX stays simple; documentation precedes implementation; and new capabilities expand as modular feature slices.
 
+The documentation standard is defined in [Documentation-First Architecture](documentation-first-architecture.md). It explains how every feature, admin control, mobile screen, sync behavior, permission, and risk must be documented before implementation.
+
 The target role model is defined in [Target User Roles](user-roles.md). Role boundaries explain who can own, operate, manage, support, bill, use, join, recover, or preview the product.
 
 The SaaS value map is defined in [SaaS Value Map](saas-value-map.md). Value boundaries explain why platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team need different outcomes from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
@@ -162,6 +164,7 @@ Scalable SaaS principles:
 - **Local execution separation** - Mobile-client responsibilities remain explicit so UX, cache, drafts, offline queues, NativePHP features, sync display, and feedback can improve resilience without claiming authority.
 - **Progressive rollout** - features can move from internal tenant to limited tenant to general availability with rollback.
 - **Documentation discipline** - product decisions, risks, boundaries, and architecture decisions stay written before implementation.
+- **Documentation-first architecture** - admin effects on mobile, mobile API dependencies, sync behavior, permission ownership, and risks are written before coding.
 
 Scalability here is not only traffic volume. It is the ability to serve many tenants, devices, roles, app versions, feature states, and support cases without losing control or trust.
 

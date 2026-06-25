@@ -20,6 +20,8 @@ The product positioning is deliberately combined: SaaS control center, mobile wo
 
 The architecture must also satisfy [Core Product Principles](../product-principles.md): admin authority, API-first mobile communication, feature control, tenant isolation, useful offline behavior, secure defaults, simple mobile UX, documentation-first decisions, and modular expansion.
 
+The documentation-first architecture model is defined in [Documentation-First Architecture](../documentation-first-architecture.md). The architecture must require written feature behavior, admin mobile effects, mobile screen API dependencies, sync behavior, permission ownership, risks, and acceptance criteria before implementation.
+
 The target role model is defined in [Target User Roles](../user-roles.md). The architecture must keep platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user boundaries distinct.
 
 The SaaS value map is defined in [SaaS Value Map](../saas-value-map.md). The architecture must preserve value for platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team without giving each stakeholder the same visibility or control.
@@ -42,6 +44,8 @@ Use a two-system architecture:
 The mobile client must consume server-provided boot config, remote config, feature flags, permissions, app-version policy, and sync policy. Local mobile state can improve resilience and UX, but it cannot grant business authority.
 
 The API must remain the mobile client's only trusted communication path to Admin/API. Future endpoint design should follow the principles in [API-First Principles](../api-first-principles.md), but this ADR does not define endpoint details.
+
+Future implementation must follow [Documentation-First Architecture](../documentation-first-architecture.md) before coding any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change.
 
 The Admin/API system must remain the owner of the responsibility areas documented in [Admin/API Responsibilities](../admin-api-responsibilities.md). The mobile client receives outcomes from those responsibilities; it does not duplicate or override them.
 
@@ -98,6 +102,7 @@ The mobile client would be implemented as a fully native iOS/Android application
 - API design must be versioned, idempotent for replayable writes, and explicit about conflicts.
 - Feature work must include admin logic, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior.
 - Feature work must identify stakeholder value and connect it to admin control, mobile access, offline sync, notifications, reports, security, feature flags, or an explicit combination.
+- Feature work must document product behavior, admin mobile effects, mobile API dependencies, sync behavior, permission ownership, risks, non-goals, and acceptance criteria before implementation.
 - Feature work must identify system ownership: what Admin/API owns, what mobile owns, what is API-only, what can be cached locally, what admin controls remotely, and how offline reconciliation works.
 - Feature work must identify API-first behavior: why mobile talks to API, which context is returned, which response states/errors exist, how sync/conflict works, and how tenant scope is protected.
 - Feature work must identify responsibility ownership: which Admin/API responsibility owns tenant, user, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.

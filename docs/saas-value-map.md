@@ -22,6 +22,8 @@ The ownership rules for that connection are defined in [Two-System Boundary Logi
 
 The API contract rules are defined in [API-First Principles](api-first-principles.md). Value reaches mobile safely when API context, response shapes, user-friendly errors, sync/conflict outcomes, and tenant boundaries are predictable.
 
+The documentation-first rules are defined in [Documentation-First Architecture](documentation-first-architecture.md). Value is implementable only when feature docs, admin mobile effects, screen API dependencies, sync behavior, permission ownership, and risks are written before coding.
+
 The control-plane responsibility rules are defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Value is operationally safe when each promised outcome maps to a clear Admin/API owner such as tenant management, permissions, API contracts, feature control, remote config, app-version policy, notifications, billing, support, reporting, audit, conflict decisions, or security enforcement.
 
 The mobile-client responsibility rules are defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Value reaches users safely when mobile UX, secure local session, cache, offline actions, NativePHP features, navigation, permissions UX, sync display, drafts, feedback, and feature visibility are local execution responsibilities rather than authority.
@@ -204,11 +206,12 @@ Use this value map before approving a future product slice.
 5. **Make admin value operational** - Admin users need control, visibility, audit, rollback, and support context.
 6. **Treat offline value as conditional** - Offline work is valuable only when users understand freshness and the server remains final.
 7. **Connect feature flags to operations** - Every flag that changes behavior needs owner, scope, audit, support explanation, and rollback.
-8. **Measure the promised value** - Reports should prove adoption, health, usage, support load, billing impact, or security posture.
-9. **Respect the system boundary** - A feature can create mobile value without moving tenant, permission, billing, report, sync, or support authority into the mobile client.
-10. **Map value to API purpose** - A feature can create mobile value only when API purpose, context, errors, sync/conflict behavior, and tenant scope are clear.
-11. **Map value to responsibility** - A feature can create stakeholder value only when its Admin/API responsibility owner is clear.
-12. **Map mobile value to local responsibility** - A feature can create mobile value only when its UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility owner is clear.
+8. **Document value before implementation** - Every feature should record stakeholder value, admin mobile effect, mobile API dependency, sync behavior, permission ownership, and risks before coding.
+9. **Measure the promised value** - Reports should prove adoption, health, usage, support load, billing impact, or security posture.
+10. **Respect the system boundary** - A feature can create mobile value without moving tenant, permission, billing, report, sync, or support authority into the mobile client.
+11. **Map value to API purpose** - A feature can create mobile value only when API purpose, context, errors, sync/conflict behavior, and tenant scope are clear.
+12. **Map value to responsibility** - A feature can create stakeholder value only when its Admin/API responsibility owner is clear.
+13. **Map mobile value to local responsibility** - A feature can create mobile value only when its UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility owner is clear.
 
 ## Risks
 

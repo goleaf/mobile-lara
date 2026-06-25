@@ -10,6 +10,8 @@ It also supports the [Product Positioning](product-positioning.md): NativePHP tu
 
 Native build and release work must follow [Core Product Principles](product-principles.md): admin controls version and feature policy, the mobile client never bypasses the API, app behavior is feature-controlled, security is default, and mobile UX stays simple.
 
+Native build and release work must follow [Documentation-First Architecture](documentation-first-architecture.md): release features, admin mobile effects, screen API dependencies, sync/offline behavior, permission ownership, and risks must be written before implementation or release.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.
@@ -190,6 +192,7 @@ Also verify product policy before a real mobile release:
 
 - API boot config exists for the target app version.
 - API-first purpose, response, context, error, sync/conflict, and tenant-boundary expectations are documented for every enabled mobile capability.
+- Documentation-first architecture checks are complete for every enabled mobile capability.
 - Remote config and feature flags are compatible with the build.
 - Two-system boundary ownership is documented for every mobile capability in the release.
 - Admin/API responsibility ownership is documented for every mobile capability in the release.
@@ -221,6 +224,7 @@ Before production distribution, the project needs:
 - Product vision: [Product Vision](product-vision.md)
 - Product positioning: [Product Positioning](product-positioning.md)
 - Core product principles: [Core Product Principles](product-principles.md)
+- Documentation-first architecture: [Documentation-First Architecture](documentation-first-architecture.md)
 - Target user roles: [Target User Roles](user-roles.md)
 - SaaS value map: [SaaS Value Map](saas-value-map.md)
 - Two-system boundary: [Two-System Boundary Logic](two-system-boundary.md)

@@ -10,6 +10,8 @@ Mobile Lara is a tenant-based SaaS control center with an API-first, feature-con
 
 Every future feature should satisfy these principles before implementation begins.
 
+The documentation-first architecture standard in [Documentation-First Architecture](documentation-first-architecture.md) defines how those principles become planning requirements: every feature, admin control, mobile screen, sync behavior, permission, and risk is documented before coding.
+
 The role model in [Target User Roles](user-roles.md) defines who can see and control product surfaces. Role boundaries are part of every principle below.
 
 The [SaaS Value Map](saas-value-map.md) defines why each product surface matters. Stakeholder value is part of every principle below: admin control, mobile access, offline sync, notifications, reports, security, and feature flags must create clear value for the right role without leaking authority to the wrong one.
@@ -133,6 +135,8 @@ Product-critical decisions must be written before implementation.
 
 Documentation-first means feature work starts with principles, boundaries, flows, risks, API behavior, admin control behavior, mobile behavior, offline behavior, support behavior, and audit behavior. ADRs record decisions that would be expensive to reverse.
 
+The detailed checklist lives in [Documentation-First Architecture](documentation-first-architecture.md).
+
 Documentation is not a substitute for tests or implementation. It is the agreement that makes future implementation safer.
 
 Product rule: if a feature changes product authority, tenant behavior, API contracts, sync behavior, native permissions, billing, support, or security, document the decision before writing code.
@@ -177,7 +181,7 @@ Before a future feature is implemented, answer:
 | Is it secure by default? | Yes; authorization, secrets, audit, and least privilege are defined. |
 | Is the API contract clear? | Yes; request, response, errors, versioning, and idempotency are known. |
 | Is mobile UX simple? | Yes; users see clear next actions and status. |
-| Is the decision documented? | Yes; docs/ADR/spec updated before code. |
+| Is the decision documented? | Yes; documentation-first architecture checks feature docs, admin mobile effect, screen API dependency, sync behavior, permission owner, and risks before code. |
 | Is it modular? | Yes; admin/API/mobile/support/audit behavior belongs to one feature slice. |
 
 ## Boundaries
@@ -214,7 +218,7 @@ Those belong in future implementation prompts with tests and acceptance criteria
 | Tenant boundaries blur in support/reporting | Tenant scope applies to operations as strongly as core data. |
 | Offline behavior creates false confidence | Local state is labeled cache, draft, pending, synced, conflict, or failed. |
 | Security is delayed | Secure-by-default is part of every feature checklist. |
-| Documentation drifts | Docs are updated as part of feature definition and reviewed before implementation. |
+| Documentation drifts | Use Documentation-First Architecture to update docs as part of feature definition and before accepting implementation changes. |
 | Modules become tangled | Features expand as complete slices with clear admin/API/mobile/support/audit ownership. |
 
 ## Success Test

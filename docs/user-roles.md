@@ -8,6 +8,7 @@ This document defines the main logical user roles for Mobile Lara. It describes 
 
 Roles are product boundaries, not only labels.
 
+- Role and permission decisions must follow [Documentation-First Architecture](documentation-first-architecture.md): every permission documents who controls it, who can use it, what it exposes, how mobile receives it, and which risk or audit expectation applies.
 - Every role must be enforced by the Admin/API system.
 - The mobile client must receive role-derived capability state through the API.
 - Roles should follow least privilege.
@@ -390,6 +391,7 @@ Those belong in future implementation prompts with tests, migrations, policies, 
 | --- | --- |
 | Platform owner and super admin blur together | Keep owner as business/accountability role and super admin as operational role. |
 | Tenant manager becomes hidden tenant admin | Limit manager scope to assigned teams/workflows and avoid tenant-wide settings by default. |
+| Permission ownership is undocumented | Use Documentation-First Architecture so every permission states who controls it, how mobile receives it, and what risk/audit expectations apply. |
 | Support sees too much private data | Support gets safe diagnostics and case-scoped context, not broad tenant access. |
 | Billing manager changes operational access | Billing controls entitlements and invoices, not day-to-day workflows. |
 | Stakeholder value is confused with role authority | Use the SaaS value map to identify who benefits and this role model to decide who can see or control. |

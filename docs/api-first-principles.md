@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines API-first principles for Mobile Lara. It explains how the Admin/API system and NativePHP + Livewire mobile client communicate, what the API must make predictable, how mobile features depend on API purpose, and how API behavior protects tenants, permissions, sync, conflicts, and mobile UX. It is documentation only and does not define endpoints, routes, database fields, migrations, controllers, resources, policies, jobs, services, or application logic.
 
-Use this document with [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), and [Mobile Client Responsibilities](mobile-client-responsibilities.md): Admin/API owns authority, mobile owns local execution, and API is the only trusted contract between them.
+Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), and [Mobile Client Responsibilities](mobile-client-responsibilities.md): Admin/API owns authority, mobile owns local execution, API is the only trusted contract between them, and API behavior is documented before implementation.
 
 ## API-First Statement
 
@@ -66,6 +66,8 @@ Predictability reduces mobile complexity and support confusion.
 ## Every Mobile Feature Has A Clear API Purpose
 
 Every mobile feature should explain why it talks to the API before implementation.
+
+[Documentation-First Architecture](documentation-first-architecture.md) requires this API purpose to be written before endpoint design or mobile screen implementation.
 
 Common API purposes include:
 

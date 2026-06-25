@@ -15,6 +15,8 @@ It also supports the [Product Positioning](product-positioning.md): SaaS control
 
 Stack decisions must preserve [Core Product Principles](product-principles.md): admin authority, API-first mobile communication, tenant isolation, secure defaults, simple mobile UX, documentation-first changes, and modular feature expansion.
 
+Stack decisions must preserve [Documentation-First Architecture](documentation-first-architecture.md). New packages, NativePHP plugins, mobile screens, API surfaces, sync mechanisms, permission behavior, and risk-sensitive changes need documentation before implementation.
+
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
@@ -77,6 +79,7 @@ The Mobile client system should be implemented as the managed edge client:
 
 - Keep mobile UI in Laravel + Livewire + Blade. Do not add React, Vue, Inertia, Ionic, or Capacitor unless a future ADR supersedes this decision.
 - Use NativePHP for native capabilities rather than a separate mobile runtime.
+- Document feature behavior, admin mobile effects, mobile API dependencies, sync behavior, permission ownership, and risks before adding stack or runtime surface area.
 - Keep tenant and feature authority on the Admin/API system.
 - Keep mobile local data as cache/draft/queue unless the API confirms it.
 - Keep `resources/css/app.scss` as the canonical frontend stylesheet entrypoint.

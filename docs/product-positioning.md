@@ -12,6 +12,8 @@ The product is stronger than a normal web app because it reaches mobile workers 
 
 The positioning depends on [Core Product Principles](product-principles.md): admin authority, API-first mobile behavior, feature control, tenant isolation, useful offline behavior, secure defaults, simple mobile UX, documentation-first decisions, and modular expansion.
 
+It depends on [Documentation-First Architecture](documentation-first-architecture.md): positioning stays useful only when features, admin effects, mobile API dependencies, sync behavior, permission ownership, and risks are documented before implementation.
+
 It also depends on [Target User Roles](user-roles.md): each role has a different responsibility, visibility boundary, and control surface.
 
 It is made measurable by the [SaaS Value Map](saas-value-map.md): each positioning angle must create clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
@@ -181,15 +183,16 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 5. Features are controlled by policy before they appear as screens.
 6. Tenants are the primary commercial and security boundary.
 7. Secure-by-default is part of the product position, not a separate hardening phase.
-8. Role boundaries determine who can see or control each surface.
-9. Stakeholder value determines why a feature exists and which outcome it should prove.
-10. Web-only is insufficient for mobile work.
-11. Mobile-only is insufficient for SaaS governance.
-12. Product positioning should guide every future modular feature slice.
-13. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
-14. API-first principles decide the purpose, predictability, context, error, sync/conflict, and tenant-scope expectations for mobile/API behavior.
-15. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
-16. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
+8. Documentation-first architecture records feature behavior, admin mobile effects, screen API dependencies, sync behavior, permission ownership, and risks before coding.
+9. Role boundaries determine who can see or control each surface.
+10. Stakeholder value determines why a feature exists and which outcome it should prove.
+11. Web-only is insufficient for mobile work.
+12. Mobile-only is insufficient for SaaS governance.
+13. Product positioning should guide every future modular feature slice.
+14. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
+15. API-first principles decide the purpose, predictability, context, error, sync/conflict, and tenant-scope expectations for mobile/API behavior.
+16. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
+17. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
 
 ## Risks
 

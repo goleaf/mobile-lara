@@ -19,6 +19,8 @@ The product positioning is a tenant-based SaaS control center plus an API-first,
 
 The audit standard is [Core Product Principles](product-principles.md). Current and future features should be judged by whether admin controls them, mobile uses the API, feature state is controllable, tenant isolation is explicit, offline behavior is useful and bounded, security is default, mobile UX is simple, documentation exists, and expansion is modular.
 
+The documentation-first standard is [Documentation-First Architecture](documentation-first-architecture.md). Audits should verify that every feature, admin control, mobile screen, sync behavior, permission, and risk is documented before implementation.
+
 The role standard is [Target User Roles](user-roles.md). Audits should verify platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user visibility separately.
 
 The value standard is [SaaS Value Map](saas-value-map.md). Audits should verify that platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive clear value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags without receiving inappropriate visibility or authority.
@@ -42,6 +44,17 @@ The mobile responsibility standard is [Mobile Client Responsibilities](mobile-cl
 | Why admin-controlled mobile? | Mobile state can be stale, offline, copied, tampered with, or running an old version, so server policy must remain final. |
 | Why NativePHP + Livewire? | It keeps the product Laravel-first while allowing native mobile capabilities and dynamic Blade/Livewire workflows. |
 | Why scalable as SaaS? | Tenant isolation, feature flags, remote config, app-version policy, idempotent sync, observability, support, and billing entitlements turn growth into operations instead of one-off app builds. |
+
+## Documentation-First Architecture Audit
+
+| Documentation principle | Audit lens |
+| --- | --- |
+| Feature documented before implementation | Does the feature document stakeholder value, roles, boundaries, API purpose, mobile UX, sync, support, billing, audit, risks, and non-goals? |
+| Admin control documents mobile effect | Does every admin control explain mobile visibility, copy, disabled/blocked state, offline behavior, sync behavior, support prompt, and rollback/audit expectation? |
+| Mobile screen documents API dependency | Does every screen name its boot context, tenant context, permission state, feature/config/version state, payload purpose, errors, and sync states? |
+| Sync behavior documents offline and online behavior | Does the plan explain cache, drafts, queued intents, blocked offline actions, replay, idempotency, conflicts, retry, failure, and support context? |
+| Permission documents controller | Does each permission name who controls it, where it applies, what it exposes, what mobile receives, and how denials/audit/support work? |
+| Risk recorded before coding | Are product, tenant, security, permission, billing, sync, NativePHP, API, support/reporting/audit, user-confusion, and rollout risks recorded with status? |
 
 ## Product Positioning Audit
 
@@ -180,6 +193,7 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Conflict governance | API decides conflict state; mobile displays and resolves according to policy; admin can monitor conflict rate. |
 | Product vision governance | Every future feature must prove the full loop from admin setting to API enforcement to mobile UX to support/audit visibility. |
 | Product positioning governance | Future slices must preserve the combined SaaS control center plus mobile platform positioning rather than drifting into web-only or mobile-only work. |
+| Documentation-first governance | Every future slice must document feature behavior, admin mobile effect, mobile API dependency, sync behavior, permission owner, risks, and acceptance criteria before implementation. |
 | SaaS value governance | Every future slice must prove stakeholder value and connect that value to admin control, mobile access, offline sync, notifications, reports, security, or feature flags. |
 | API-first governance | Every future slice must define API purpose, operating context, predictable responses, mobile-friendly errors, sync/conflict behavior, and tenant-boundary protection before endpoint design. |
 | Admin/API responsibility governance | Every future slice must identify which control-plane responsibility owns tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |
@@ -301,6 +315,7 @@ php artisan native:plugin:validate
 - [Product Vision](product-vision.md)
 - [Product Positioning](product-positioning.md)
 - [Core Product Principles](product-principles.md)
+- [Documentation-First Architecture](documentation-first-architecture.md)
 - [Target User Roles](user-roles.md)
 - [SaaS Value Map](saas-value-map.md)
 - [Two-System Boundary Logic](two-system-boundary.md)

@@ -48,6 +48,8 @@ All product and system design should follow [Core Product Principles](product-pr
 9. Documentation comes before implementation.
 10. Feature expansion is modular.
 
+Documentation-first architecture is detailed in [Documentation-First Architecture](documentation-first-architecture.md). Every feature must document its admin mobile effect, mobile screen API dependency, sync/offline behavior, permission owner, risks, and non-goals before implementation.
+
 ## Target User Roles
 
 The logical role model lives in [Target User Roles](user-roles.md). The main roles are:
@@ -221,6 +223,8 @@ Each feature also needs an API story: why mobile talks to API, what operating co
 Each feature also needs a responsibility story: which Admin/API responsibility owns tenant, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
 
 Each feature also needs a mobile responsibility story: which mobile-client responsibility owns UX, local session, cache, offline queue, NativePHP capability, navigation, permission prompt, sync display, draft, feedback, or feature visibility.
+
+Each feature also needs a documentation story: which docs record the feature, admin control effect on mobile, mobile API dependency, offline/online sync behavior, permission owner, risks, and acceptance criteria before coding.
 
 ## Admin Control Logic
 

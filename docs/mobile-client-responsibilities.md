@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the logical responsibilities of the Mobile Lara mobile client. It explains what the NativePHP + Livewire client owns, what it may cache or perform locally, how it should present server-controlled behavior, and which authority it must never claim. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, NativePHP plugins, or application logic.
 
-Use this document with [API-First Principles](api-first-principles.md), [Admin/API Responsibilities](admin-api-responsibilities.md), and [Two-System Boundary Logic](two-system-boundary.md): Admin/API owns authority, API is the trusted contract, while mobile owns local execution and presentation.
+Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Admin/API Responsibilities](admin-api-responsibilities.md), and [Two-System Boundary Logic](two-system-boundary.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution and presentation, and every mobile screen documents its API dependency before implementation.
 
 ## Responsibility Statement
 
@@ -46,6 +46,7 @@ The mobile client owns the working surface for mobile users.
 
 Principles:
 
+- Every mobile screen should document its API dependency before implementation.
 - Screens should be task-focused and mobile-first.
 - The app should make allowed workflows easy to start, pause, resume, and complete.
 - Loading, empty, error, offline, disabled, blocked, pending, synced, conflict, and failed states should be clear.

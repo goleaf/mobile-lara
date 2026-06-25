@@ -15,6 +15,8 @@ It also supports the [Product Positioning](product-positioning.md): the admin UI
 
 UI decisions must follow [Core Product Principles](product-principles.md): admin controls policy, mobile never presents local state as server authority, disabled features are clear, tenant scope is visible where relevant, secure defaults are not hidden behind UI-only affordances, and mobile UX stays simple.
 
+UI decisions must follow [Documentation-First Architecture](documentation-first-architecture.md): every admin control documents its mobile effect, every mobile screen documents its API dependency, every sync state documents online/offline behavior, and every UX risk is recorded before coding.
+
 UI decisions must also follow [Target User Roles](user-roles.md): each role should see the controls, diagnostics, billing context, support context, tenant scope, or pre-login state that matches its job.
 
 UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform owners need high-level control and risk visibility, tenant admins need scoped management, mobile workers need simple next actions, support needs safe diagnostics, and billing/operations needs entitlement clarity without tenant workflow overreach.

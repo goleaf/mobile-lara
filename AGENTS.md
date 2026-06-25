@@ -22,6 +22,8 @@ Mobile client responsibilities are defined in `docs/mobile-client-responsibiliti
 
 API-first principles are defined in `docs/api-first-principles.md`: mobile communicates only with API, API responses are predictable, every mobile feature has a clear API purpose, API returns operating context, errors are mobile-friendly, sync and conflict behavior are first-class, and tenant boundaries are protected server-side.
 
+Documentation-first architecture is defined in `docs/documentation-first-architecture.md`: every feature must be documented before implementation, every admin control must document its mobile effect, every mobile screen must document its API dependency, every sync behavior must document offline and online behavior, every permission must document who controls it, and every risk must be recorded before coding.
+
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
 2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
 
@@ -50,6 +52,7 @@ Use these docs before changing the product direction:
 - `docs/product-vision.md`
 - `docs/product-positioning.md`
 - `docs/product-principles.md`
+- `docs/documentation-first-architecture.md`
 - `docs/user-roles.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
@@ -66,6 +69,7 @@ Use these docs before changing the product direction:
 
 - Admin/API is authoritative for SaaS rules.
 - Mobile is authoritative only for local presentation, local drafts, local queues, and native device interaction.
+- Documentation-first architecture decisions must follow `docs/documentation-first-architecture.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -76,6 +80,7 @@ Use these docs before changing the product direction:
 - Secure tokens belong in secure storage, not SQLite.
 - Every replayable mobile write must be idempotent at the API boundary.
 - Any feature must define admin behavior, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior before implementation.
+- Any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change must be documented before implementation according to `docs/documentation-first-architecture.md`.
 - Any feature must pass the core principles checklist in `docs/product-principles.md`.
 - Any feature that changes visibility or control must map behavior to the role model in `docs/user-roles.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
