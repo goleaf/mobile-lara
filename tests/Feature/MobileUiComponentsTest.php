@@ -98,3 +98,29 @@ test('mobile ui components render expected markup', function (string $template, 
         ['Dashboard', 'Overview', 'href="/"', 'aria-label="Back"', 'dark:text-zinc-100'],
     ],
 ]);
+
+test('floating action button renders route mode', function (): void {
+    $html = Blade::render(
+        '<x-mobile.floating-action-button label="Create" route="mobile.create"><x-slot:icon><span>+</span></x-slot:icon></x-mobile.floating-action-button>',
+    );
+
+    expect($html)
+        ->toContain('href="'.route('mobile.create').'"')
+        ->toContain('wire:navigate')
+        ->toContain('aria-label="Create"')
+        ->toContain('bottom-24')
+        ->toContain('Create');
+});
+
+test('floating action button renders action loading and disabled mode', function (): void {
+    $html = Blade::render(
+        '<x-mobile.floating-action-button label="Refresh" action="refreshDashboard" target="refreshDashboard" disabled loading-label="Refreshing..." />',
+    );
+
+    expect($html)
+        ->toContain('wire:click="refreshDashboard"')
+        ->toContain('wire:loading.attr="disabled"')
+        ->toContain('wire:target="refreshDashboard"')
+        ->toContain('disabled')
+        ->toContain('Refreshing...');
+});

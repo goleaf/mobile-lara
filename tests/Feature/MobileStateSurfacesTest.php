@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Mobile\Dashboard;
+use App\Livewire\Mobile\Notifications;
 use App\Livewire\Mobile\Profile;
 use App\Livewire\Mobile\Search;
 use App\Livewire\Mobile\Settings;
@@ -22,7 +23,8 @@ test('dashboard renders loading empty network and retry surfaces', function (): 
         ->assertSee('Offline status')
         ->assertSee('Notification preview')
         ->assertSee('Pending sync')
-        ->assertSee('Background sync prepared');
+        ->assertSee('Background sync prepared')
+        ->assertSee('aria-label="Create"', false);
 
     Livewire::test(Dashboard::class)
         ->set('hasNetworkError', true)
@@ -30,6 +32,18 @@ test('dashboard renders loading empty network and retry surfaces', function (): 
         ->call('refreshDashboard')
         ->assertSet('hasNetworkError', false)
         ->assertSet('isOffline', false);
+});
+
+test('list pages render the floating create action', function (): void {
+    Livewire::test(Search::class)
+        ->assertSee('aria-label="Create"', false)
+        ->assertSee('bottom-24', false)
+        ->assertSee(route('mobile.create'), false);
+
+    Livewire::test(Notifications::class)
+        ->assertSee('aria-label="Create"', false)
+        ->assertSee('bottom-24', false)
+        ->assertSee(route('mobile.create'), false);
 });
 
 test('profile renders submit spinner empty network and retry surfaces', function (): void {
