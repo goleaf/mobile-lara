@@ -21,12 +21,20 @@ Responsibilities](mobile-client-responsibilities.md), [API-First Principles](api
 [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md),
 [Mobile Version Control Logic](mobile-version-control-logic.md), [Audit
 Logic](audit-logic.md), [Data Privacy Principles](data-privacy-principles.md),
-[Admin Safety Principles](admin-safety-principles.md), [Mobile Dashboard
+[Multi-Tenant Mobile Logic](multi-tenant-mobile-logic.md), [Admin Safety
+Principles](admin-safety-principles.md), [Mobile Dashboard
 Logic](mobile-dashboard-logic.md), [Mobile Settings Logic](mobile-settings-logic.md),
 and [API v1 Tenancy Contract](../contracts/api/v1-tenancy.md): tenant admins
 operate one tenant inside platform-defined limits, while Admin/API remains the
 source of authority for scope, lifecycle, billing, security, and mobile-safe
 outcomes.
+
+Multi-Tenant Mobile Logic is defined in `multi-tenant-mobile-logic.md`:
+users with more than one tenant choose and remember tenant context through
+API-confirmed state; tenant switching, tenant-scoped cache, per-tenant
+permissions and feature flags, sync replay, offline behavior, and logout
+cleanup must preserve tenant isolation and never turn mobile-local state
+into tenant authority.
 
 ## Tenant Admin Statement
 

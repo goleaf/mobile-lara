@@ -100,6 +100,13 @@ only inside their tenant; platform-only controls, cross-tenant visibility,
 global policy, billing authority, lifecycle authority, app-version policy, and
 security posture remain Admin/API-owned boundaries.
 
+Multi-Tenant Mobile Logic is defined in `multi-tenant-mobile-logic.md`:
+users with more than one tenant choose and remember tenant context through
+API-confirmed state; tenant switching, tenant-scoped cache, per-tenant
+permissions and feature flags, sync replay, offline behavior, and logout
+cleanup must preserve tenant isolation and never turn mobile-local state
+into tenant authority.
+
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.

@@ -71,6 +71,13 @@ only inside their tenant; platform-only controls, cross-tenant visibility,
 global policy, billing authority, lifecycle authority, app-version policy, and
 security posture remain Admin/API-owned boundaries.
 
+Multi-Tenant Mobile Logic is defined in `multi-tenant-mobile-logic.md`:
+users with more than one tenant choose and remember tenant context through
+API-confirmed state; tenant switching, tenant-scoped cache, per-tenant
+permissions and feature flags, sync replay, offline behavior, and logout
+cleanup must preserve tenant isolation and never turn mobile-local state
+into tenant authority.
+
 Updated: 2026-06-26
 
 This document defines mobile UX principles for the Mobile Lara NativePHP client. It explains mobile-first navigation, simple screens, clear loading states, clear offline states, thumb-friendly controls, minimum typing, fast actions, feature visibility based on admin rules, secure session behavior, and permission education before native permission prompts. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, or application logic.

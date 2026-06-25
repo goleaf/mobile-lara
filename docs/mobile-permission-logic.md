@@ -49,6 +49,13 @@ only inside their tenant; platform-only controls, cross-tenant visibility,
 global policy, billing authority, lifecycle authority, app-version policy, and
 security posture remain Admin/API-owned boundaries.
 
+Multi-Tenant Mobile Logic is defined in `multi-tenant-mobile-logic.md`:
+users with more than one tenant choose and remember tenant context through
+API-confirmed state; tenant switching, tenant-scoped cache, per-tenant
+permissions and feature flags, sync replay, offline behavior, and logout
+cleanup must preserve tenant isolation and never turn mobile-local state
+into tenant authority.
+
 ## Permission Statement
 
 Mobile permissions should be requested only when the user understands the purpose and the feature is actually available.

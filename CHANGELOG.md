@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Multi-Tenant Mobile Logic documentation for multiple-tenant choice,
+  remembered current tenant context, safe tenant switching, tenant-scoped cache,
+  per-tenant permissions and feature flags, sync after switch, offline behavior,
+  and logout tenant cleanup.
 - Added Tenant Admin Logic documentation for tenant-scoped controls,
   platform-only boundaries, invitations, delegated mobile-feature management,
   reports, support, admin safety, and cross-tenant isolation.

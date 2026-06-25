@@ -95,6 +95,13 @@ only inside their tenant; platform-only controls, cross-tenant visibility,
 global policy, billing authority, lifecycle authority, app-version policy, and
 security posture remain Admin/API-owned boundaries.
 
+Multi-Tenant Mobile Logic is defined in `multi-tenant-mobile-logic.md`:
+users with more than one tenant choose and remember tenant context through
+API-confirmed state; tenant switching, tenant-scoped cache, per-tenant
+permissions and feature flags, sync replay, offline behavior, and logout
+cleanup must preserve tenant isolation and never turn mobile-local state
+into tenant authority.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.

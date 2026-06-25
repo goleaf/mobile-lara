@@ -131,6 +131,13 @@ only inside their tenant; platform-only controls, cross-tenant visibility,
 global policy, billing authority, lifecycle authority, app-version policy, and
 security posture remain Admin/API-owned boundaries.
 
+Multi-Tenant Mobile Logic is defined in `../../docs/multi-tenant-mobile-logic.md`:
+users with more than one tenant choose and remember tenant context through
+API-confirmed state; tenant switching, tenant-scoped cache, per-tenant
+permissions and feature flags, sync replay, offline behavior, and logout
+cleanup must preserve tenant isolation and never turn mobile-local state
+into tenant authority.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep offline
 eligibility, queueable actions, replay windows, retry limits, conflict modes,
