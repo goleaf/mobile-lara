@@ -45,6 +45,12 @@ final class Developer extends SettingsSectionPage
             'badge' => 'Local',
         ],
         [
+            'label' => 'Voice notes',
+            'description' => 'Record, save, delete, and queue microphone upload placeholders.',
+            'route' => 'mobile.voice-notes',
+            'badge' => 'Audio',
+        ],
+        [
             'label' => 'File manager',
             'description' => 'Read, write, import, export, share, copy, move, and delete local app files.',
             'route' => 'mobile.files',

@@ -7,7 +7,6 @@ use App\Models\MobileLocalMediaItem;
 use App\Services\Native\AudioRecordingService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -277,7 +276,7 @@ class VoiceNotes extends Component
     {
         try {
             return $this->audioRecordings->recentVoiceNotes();
-        } catch (QueryException|Throwable) {
+        } catch (Throwable) {
             return MobileLocalMediaItem::newCollection();
         }
     }
@@ -288,7 +287,7 @@ class VoiceNotes extends Component
             $this->audioRecordings->recentVoiceNotes(1);
 
             return true;
-        } catch (QueryException|Throwable) {
+        } catch (Throwable) {
             return false;
         }
     }

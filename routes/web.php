@@ -40,6 +40,7 @@ use App\Livewire\Mobile\Settings\Storage as SettingsStorage;
 use App\Livewire\Mobile\Settings\Support as SettingsSupport;
 use App\Livewire\Mobile\Settings\Sync as SettingsSync;
 use App\Livewire\Mobile\TermsOfService;
+use App\Livewire\Mobile\VoiceNotes;
 use App\Livewire\Mobile\Welcome;
 use Illuminate\Support\Facades\Route;
 
@@ -91,6 +92,7 @@ Route::middleware(['web'])
                 Route::livewire('/sync/conflicts/{offlineAction}', ConflictDetail::class)->name('conflicts.show');
                 Route::livewire('/media-capture', MediaCapture::class)->name('media.capture');
                 Route::livewire('/media-gallery', MediaGallery::class)->name('media.gallery');
+                Route::livewire('/voice-notes', VoiceNotes::class)->name('voice-notes');
                 Route::livewire('/files', FileManager::class)->name('files');
                 Route::livewire('/debug', Debug::class)->name('debug');
                 Route::livewire('/pin/change', PinChange::class)->name('pin.change');
