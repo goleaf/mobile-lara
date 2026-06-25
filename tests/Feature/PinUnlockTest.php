@@ -5,11 +5,15 @@ use App\Livewire\Mobile\PinChange;
 use App\Livewire\Mobile\PinConfirm;
 use App\Livewire\Mobile\PinCreate;
 use App\Livewire\Mobile\PinRemove;
+use App\Models\User;
 use App\Services\MobileAuth\AppUnlockStateService;
 use App\Services\MobileAuth\PinUnlockService;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 use Native\Mobile\SecureStorage;
+
+uses(LazilyRefreshDatabase::class);
 
 beforeEach(function (): void {
     $this->startSession();
@@ -99,6 +103,7 @@ test('protected routes redirect to unlock and accept the correct pin', function 
     $pinUnlocks = app(PinUnlockService::class);
     $unlockState = app(AppUnlockStateService::class);
 
+    $this->actingAs(User::factory()->create());
     $pinUnlocks->startCreation('1234');
     expect($pinUnlocks->confirmCreation('1234'))->toBeTrue();
     $unlockState->lock();

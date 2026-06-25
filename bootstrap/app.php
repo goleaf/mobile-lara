@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo(fn (Request $request) => route('mobile.login'));
+        $middleware->redirectUsersTo(fn (Request $request) => route('mobile.dashboard'));
+
         $middleware->alias([
             'biometric.unlock' => RequireMobileUnlock::class,
             'mobile.unlock' => RequireMobileUnlock::class,

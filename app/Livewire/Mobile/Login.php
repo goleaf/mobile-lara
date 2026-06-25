@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Mobile;
 
+use App\Services\MobileAuth\MobileSessionService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
@@ -26,6 +28,13 @@ class Login extends Component
     public ?string $toastMessage = null;
 
     public string $toastVariant = 'success';
+
+    protected MobileSessionService $mobileSessions;
+
+    public function boot(MobileSessionService $mobileSessions): void
+    {
+        $this->mobileSessions = $mobileSessions;
+    }
 
     /**
      * @return array<string, list<string>>
@@ -51,10 +60,25 @@ class Login extends Component
             throw $exception;
         }
 
-        $this->reset('password');
+        if (! Auth::attempt([
+            'email' => $this->email,
+            'password' => $this->password,
+        ], $this->remember)) {
+            $this->showToast('These credentials do not match our records.', 'error');
 
-        $this->status = 'Sign-in details validated.';
+            throw ValidationException::withMessages([
+                'email' => 'These credentials do not match our records.',
+            ]);
+        }
+
+        session()->regenerate();
+
+        $this->reset('password');
+        $this->mobileSessions->recordLogin();
+
+        $this->status = 'Signed in.';
         $this->showToast($this->status, 'success');
+        $this->redirect(route('mobile.dashboard'), navigate: true);
     }
 
     public function updated(): void

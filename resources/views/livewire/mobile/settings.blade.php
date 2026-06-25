@@ -94,6 +94,66 @@
                         </div>
                     </x-slot:footer>
                 </x-mobile.card>
+
+                <x-mobile.card title="Device sessions" description="Review the current app session and future remote sessions API.">
+                    <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                        <div class="min-w-0">
+                            <p class="text-base font-semibold text-app-ink dark:text-zinc-100">Current device session</p>
+                            <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                Includes last login time, app version, logout, and remote session placeholders.
+                            </p>
+                        </div>
+
+                        <x-mobile.badge variant="accent">
+                            New
+                        </x-mobile.badge>
+                    </div>
+
+                    <x-slot:footer>
+                        <a href="{{ route('mobile.sessions') }}" wire:navigate class="inline-flex min-h-12 w-full items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800">
+                            Open sessions
+                        </a>
+                    </x-slot:footer>
+                </x-mobile.card>
+
+                <x-mobile.card title="Legal and consent" description="Review policies, accepted versions, and server sync readiness.">
+                    <div class="grid gap-3">
+                        <a href="{{ route('mobile.terms') }}" wire:navigate class="flex min-h-12 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-sm font-semibold text-app-ink transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900">
+                            Terms of Service
+                            <span class="text-app-muted dark:text-zinc-400">Review</span>
+                        </a>
+                        <a href="{{ route('mobile.privacy') }}" wire:navigate class="flex min-h-12 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-sm font-semibold text-app-ink transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900">
+                            Privacy Policy
+                            <span class="text-app-muted dark:text-zinc-400">Review</span>
+                        </a>
+                    </div>
+
+                    <x-slot:footer>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                            <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white">
+                                Accept consent
+                            </a>
+                            <a href="{{ route('mobile.consent.history') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800">
+                                Consent history
+                            </a>
+                        </div>
+                    </x-slot:footer>
+                </x-mobile.card>
+
+                <x-mobile.card title="Danger zone" description="Destructive account actions require an extra confirmation step.">
+                    <div class="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-400/30 dark:bg-red-400/10">
+                        <p class="text-base font-semibold text-red-900 dark:text-red-100">Delete account</p>
+                        <p class="mt-1 text-sm leading-5 text-red-800 dark:text-red-200/80">
+                            Open the protected deletion screen to confirm with a password or device biometrics.
+                        </p>
+                    </div>
+
+                    <x-slot:footer>
+                        <a href="{{ route('mobile.account.delete') }}" wire:navigate class="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-red-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400">
+                            Delete account
+                        </a>
+                    </x-slot:footer>
+                </x-mobile.card>
             </div>
         @endif
     </div>

@@ -27,7 +27,20 @@
         </div>
     </div>
 
-    <a href="{{ route('mobile.dashboard') }}" wire:navigate class="text-center text-sm font-semibold text-app-accent">
-        Continue to dashboard
-    </a>
+    <div class="grid gap-4 text-center">
+        <a href="{{ route('mobile.dashboard') }}" wire:navigate class="text-sm font-semibold text-app-accent">
+            Continue to dashboard
+        </a>
+
+        <div class="grid gap-2 text-xs font-semibold text-app-muted">
+            <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="text-app-accent dark:text-emerald-300">
+                Review consent
+            </a>
+            <div class="flex items-center justify-center gap-3">
+                <a href="{{ route('mobile.terms') }}" wire:navigate>Terms</a>
+                <span aria-hidden="true">·</span>
+                <a href="{{ route('mobile.privacy') }}" wire:navigate>Privacy</a>
+            </div>
+        </div>
+    </div>
 </section>

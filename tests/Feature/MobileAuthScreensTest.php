@@ -5,7 +5,11 @@ use App\Livewire\Mobile\ForgotPassword;
 use App\Livewire\Mobile\Login;
 use App\Livewire\Mobile\Register;
 use App\Livewire\Mobile\ResetPassword;
+use App\Models\User;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\Livewire;
+
+uses(LazilyRefreshDatabase::class);
 
 test('login validates required credentials', function (): void {
     Livewire::test(Login::class)
@@ -18,7 +22,11 @@ test('login validates required credentials', function (): void {
         ->assertSet('toastVariant', 'error');
 });
 
-test('login accepts valid credentials format', function (): void {
+test('login accepts valid credentials and signs the user in', function (): void {
+    $user = User::factory()->create([
+        'email' => 'person@example.com',
+    ]);
+
     $component = Livewire::test(Login::class);
 
     expect($component->instance()->canSubmit())->toBeFalse();
@@ -34,10 +42,29 @@ test('login accepts valid credentials format', function (): void {
     $component
         ->call('login')
         ->assertHasNoErrors()
+        ->assertRedirect(route('mobile.dashboard'))
         ->assertSet('password', '')
-        ->assertSet('status', 'Sign-in details validated.')
-        ->assertSet('toastMessage', 'Sign-in details validated.')
+        ->assertSet('status', 'Signed in.')
+        ->assertSet('toastMessage', 'Signed in.')
         ->assertSet('toastVariant', 'success');
+
+    $this->assertAuthenticatedAs($user);
+});
+
+test('login rejects invalid credentials', function (): void {
+    User::factory()->create([
+        'email' => 'person@example.com',
+    ]);
+
+    Livewire::test(Login::class)
+        ->set('email', 'person@example.com')
+        ->set('password', 'wrong-password')
+        ->call('login')
+        ->assertHasErrors('email')
+        ->assertSet('toastMessage', 'These credentials do not match our records.')
+        ->assertSet('toastVariant', 'error');
+
+    $this->assertGuest();
 });
 
 test('login validates email in real time', function (): void {

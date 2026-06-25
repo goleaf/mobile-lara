@@ -3,11 +3,15 @@
 use App\Livewire\Mobile\AppUnlock;
 use App\Livewire\Mobile\Dashboard;
 use App\Livewire\Mobile\Settings;
+use App\Models\User;
 use App\Services\MobileAuth\BiometricUnlockService;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\Livewire;
 use Native\Mobile\Biometrics;
 use Native\Mobile\PendingBiometric;
 use Native\Mobile\SecureStorage;
+
+uses(LazilyRefreshDatabase::class);
 
 beforeEach(function (): void {
     $this->startSession();
@@ -103,6 +107,7 @@ test('settings can enable and disable biometric unlock in secure storage', funct
 test('protected mobile routes redirect to unlock when biometric unlock is enabled and locked', function (): void {
     $biometricUnlocks = app(BiometricUnlockService::class);
 
+    $this->actingAs(User::factory()->create());
     $biometricUnlocks->setEnabled(true);
     $biometricUnlocks->lock();
 
