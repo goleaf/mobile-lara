@@ -8,6 +8,9 @@ This document defines the SaaS value map for Mobile Lara. It explains who receiv
 
 Mobile Lara creates value by connecting centralized SaaS control with simple mobile execution.
 
+Use this document with [Product Vision](product-vision.md): stakeholder value
+must support the same product promise, remote control with local resilience.
+
 The Admin/API system gives the business control over tenants, users, permissions, billing, reports, support, feature flags, notifications, app versions, security, and sync behavior. The mobile client turns those decisions into usable field or client workflows with native capability access, offline resilience where useful, and clear status for allowed, blocked, pending, synced, conflicted, and offline states.
 
 The product is valuable only when both sides stay connected:

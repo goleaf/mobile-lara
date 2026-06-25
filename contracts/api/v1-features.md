@@ -4,6 +4,9 @@ Updated: 2026-06-25
 
 Status: documented. Endpoint is planned for Phase 8.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+keeps important mobile capabilities feature-controlled by Admin/API.
+
 ## Purpose
 
 Feature endpoints expose resolved mobile-safe feature outcomes. Mobile never

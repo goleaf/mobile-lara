@@ -8,6 +8,10 @@ This document defines how Mobile Lara should be positioned as a product. It expl
 
 Mobile Lara is a SaaS control center for tenant-based mobile operations. It gives administrators central control over tenants, users, permissions, features, versions, billing, support, notifications, reports, and sync policy while giving mobile users an API-driven, offline-capable NativePHP client for real work.
 
+The positioning starts from [Product Vision](product-vision.md): the product
+exists to provide remote control with local resilience for managed mobile
+workflows.
+
 The product is stronger than a normal web app because it reaches mobile workers where work happens. It is stronger than a standalone mobile app because mobile behavior is centrally governed, auditable, version-aware, and tenant-safe.
 
 The positioning depends on [Core Product Principles](product-principles.md): admin authority, API-first mobile behavior, feature control, tenant isolation, useful offline behavior, secure defaults, simple mobile UX, documentation-first decisions, and modular expansion.

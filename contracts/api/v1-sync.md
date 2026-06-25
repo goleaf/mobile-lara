@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoints are planned for Phase 14.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+supports offline-capable mobile work while Admin/API remains authoritative for
+replay, conflicts, and canonical state.
+
 ## Purpose
 
 Sync endpoints let the mobile client replay queued local intents and pull

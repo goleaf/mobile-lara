@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 This document defines the mobile app version control logic for Mobile Lara. It explains how admins control minimum supported versions, how optional updates work, how forced updates work, how maintenance mode works, how mobile behaves when API says the app is outdated, how store links and update messages are controlled, and how users are protected from broken old versions. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.
 
+Use this document with [Product Vision](product-vision.md): version control
+protects the vision by keeping old mobile builds from breaking central
+authority or local resilience.
+
 ## Version Control Statement
 
 Mobile app version control is a control-plane responsibility.

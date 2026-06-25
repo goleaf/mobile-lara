@@ -6,6 +6,9 @@ This file tracks active work left after the current implementation pass. It is
 not a substitute for `docs/implementation-status.md`; the status checklist is
 the source of truth for feature state.
 
+Product Vision is defined in `docs/product-vision.md`. Remaining work should
+protect the vision before adding implementation scope.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Remaining implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

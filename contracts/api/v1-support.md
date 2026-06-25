@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoints are planned for Phase 24.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+keeps support operations centralized while mobile users receive clear help and
+case status.
+
 ## Purpose
 
 Support endpoints let mobile users create tickets, view tickets, add messages,

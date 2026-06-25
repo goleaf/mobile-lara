@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoints are planned for Phase 12.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+lets mobile users do tenant-scoped work while Admin/API remains the source of
+record authority.
+
 ## Purpose
 
 Records endpoints provide tenant-scoped content authority for list, detail,

@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Product Vision documentation so the SaaS problem, admin users,
+  mobile users, two-system need, admin-controlled mobile behavior,
+  NativePHP + Livewire rationale, and SaaS scalability logic stay explicit.
 - Added Mobile Version Control Logic documentation for minimum supported
   versions, optional updates, forced updates, maintenance mode, outdated app
   behavior, store links, update messages, and protection from broken old

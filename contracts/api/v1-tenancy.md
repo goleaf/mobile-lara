@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoints are planned for Phase 6.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+keeps tenant isolation and tenant access controlled by Admin/API while mobile
+shows only allowed tenant context.
+
 ## Purpose
 
 Tenancy endpoints keep tenant authority on the Admin/API system. Mobile may

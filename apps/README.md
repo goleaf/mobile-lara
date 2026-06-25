@@ -2,6 +2,10 @@
 
 This directory is the target monorepo boundary for the two Mobile Lara systems.
 
+Product Vision is defined in `../docs/product-vision.md`: both apps exist to
+support remote control with local resilience, where Admin/API owns authority and
+mobile owns local execution.
+
 ## Systems
 
 | Path | Responsibility | Current state |

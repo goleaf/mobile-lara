@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoint is planned for Phase 9.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+lets admins adjust safe mobile behavior without turning the mobile app into a
+configuration authority.
+
 ## Purpose
 
 Remote config endpoints expose validated, resolved, mobile-safe runtime values.

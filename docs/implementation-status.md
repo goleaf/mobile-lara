@@ -6,6 +6,9 @@ This file is the required implementation gate for Mobile Lara. It translates the
 product Markdown corpus into an executable checklist and records the current
 state before new implementation work continues.
 
+Product Vision is defined in `docs/product-vision.md`. Status is tracked
+against the vision before implementation grows.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoint is planned for Phase 25.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+supports scalable SaaS reporting while protecting tenant and role boundaries on
+mobile.
+
 ## Purpose
 
 Reports endpoints expose only permission-safe tenant and user report summaries

@@ -4,6 +4,9 @@ This directory records mobile-facing API contracts before endpoint
 implementation. The contracts are the bridge between the Admin/API control
 plane and the NativePHP mobile client.
 
+Product Vision is defined in `../../docs/product-vision.md`: API contracts exist
+to turn central SaaS authority into predictable mobile behavior.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

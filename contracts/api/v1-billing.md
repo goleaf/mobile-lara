@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoint is planned for Phase 23.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+keeps billing and entitlement authority centralized while mobile receives only
+safe plan outcomes.
+
 ## Purpose
 
 Billing endpoints expose mobile-safe plan and subscription state. Admin/API

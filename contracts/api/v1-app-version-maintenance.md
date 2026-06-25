@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoint is planned for Phase 11.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+protects the product promise by keeping stale or unsafe mobile builds under
+Admin/API control.
+
 ## Purpose
 
 App-version and maintenance endpoints tell mobile whether the current build can

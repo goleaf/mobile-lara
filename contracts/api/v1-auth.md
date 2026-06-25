@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoints are planned for Phase 5.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+keeps identity and session authority in Admin/API while mobile presents a
+simple NativePHP + Livewire authentication experience.
+
 ## Purpose
 
 Auth endpoints make the Admin/API system authoritative for mobile identity,

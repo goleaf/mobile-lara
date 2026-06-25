@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoints are planned for Phase 21.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+keeps notification orchestration centralized while mobile handles device
+registration and user-facing delivery state.
+
 ## Purpose
 
 Notification endpoints manage notification preferences, push token

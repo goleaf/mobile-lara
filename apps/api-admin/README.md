@@ -3,6 +3,10 @@
 `apps/api-admin` is the target home for the Laravel API and Livewire admin
 control plane.
 
+Product Vision is defined in `../../docs/product-vision.md`: this app exists
+because SaaS authority, tenant control, support, billing, version policy,
+reports, audit, and sync decisions must be centralized.
+
 ## Product Role
 
 This system owns SaaS authority:

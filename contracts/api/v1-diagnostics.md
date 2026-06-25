@@ -4,6 +4,10 @@ Updated: 2026-06-25
 
 Status: documented. Endpoint is planned for Phase 28.
 
+Product Vision is defined in `../../docs/product-vision.md`: this contract
+supports scalable SaaS operations by giving support safe mobile context without
+moving authority to the device.
+
 ## Purpose
 
 Diagnostics endpoints let mobile share privacy-safe troubleshooting context

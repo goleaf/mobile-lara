@@ -13,6 +13,10 @@ It explains ownership, API-only behavior, local caching, remote admin control, o
 
 The Admin/API system is the source of SaaS authority. The mobile client is a managed execution surface.
 
+Use this document with [Product Vision](product-vision.md): the boundary exists
+because the product needs both central SaaS authority and resilient mobile
+execution.
+
 The simplest rule is:
 
 - **Admin/API decides** what is allowed, configured, billable, reportable, auditable, supported, secure, and synced.

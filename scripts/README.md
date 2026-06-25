@@ -2,6 +2,10 @@
 
 This directory is reserved for root-level monorepo helper scripts.
 
+Product Vision is defined in `../docs/product-vision.md`: scripts may support
+verification, but they must preserve the two-system product idea and must not
+create hidden authority outside Admin/API.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force
