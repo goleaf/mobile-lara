@@ -172,6 +172,9 @@ All notable changes to Mobile Lara will be documented in this file.
 - Enforced feature minimum app-version gates so otherwise-enabled mobile
   features return `update_required` with an `update_app` action when the
   reported app build is too old.
+- Added API/admin resource policies for current mobile control-plane resources,
+  registered them explicitly, and wired Livewire edit/save/restore actions
+  through policy authorization.
 - Added the API/admin tenant feature override control page with tenant-scoped
   feature states, mobile impact preview, audited create/update, dashboard
   navigation, and restore-from-audit coverage.

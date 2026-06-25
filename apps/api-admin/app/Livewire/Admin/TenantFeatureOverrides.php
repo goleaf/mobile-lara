@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -63,6 +64,8 @@ final class TenantFeatureOverrides extends Component
             ])
             ->findOrFail($overrideId);
 
+        Gate::authorize('update', $override);
+
         $this->editingOverrideId = $override->id;
         $this->form = [
             'tenant_id' => (string) $override->tenant_id,
@@ -87,7 +90,7 @@ final class TenantFeatureOverrides extends Component
     {
         $user = auth()->user();
 
-        abort_unless($user instanceof User && $user->is_platform_admin, 403);
+        abort_unless($user instanceof User, 403);
 
         /** @var array{form: array<string, mixed>} $validated */
         $validated = $this->validate($this->rules(), attributes: $this->validationAttributes());
@@ -107,6 +110,8 @@ final class TenantFeatureOverrides extends Component
                 ])
                 ->findOrFail($this->editingOverrideId);
 
+        Gate::authorize($override instanceof TenantFeatureOverride ? 'update' : 'create', $override ?? TenantFeatureOverride::class);
+
         app(SaveTenantFeatureOverrideAction::class)->handle($validated['form'], $user, request(), $override);
 
         session()->flash('status', 'Tenant feature override saved.');
@@ -119,7 +124,8 @@ final class TenantFeatureOverrides extends Component
     {
         $user = auth()->user();
 
-        abort_unless($user instanceof User && $user->is_platform_admin, 403);
+        abort_unless($user instanceof User, 403);
+        Gate::authorize('create', TenantFeatureOverride::class);
 
         $event = SecurityAuditEvent::query()
             ->select(['id', 'event', 'metadata', 'created_at'])

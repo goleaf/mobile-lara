@@ -224,6 +224,9 @@ Implemented foundation:
 - `App\Services\MobileVersion\MobileAppVersionPolicyResolver` resolves
   supported, optional-update, force-update, blocked, and maintenance outcomes
   from tenant, cohort, platform, and global fallback policy order.
+- Policies are registered for current mobile control-plane resources:
+  feature flags, tenant/user feature overrides, remote config, tenant remote
+  config overrides, and app-version policies.
 - `GET /admin/login` renders the admin login form.
 - `POST /admin/login` authenticates platform-admin users.
 - `POST /admin/logout` invalidates the admin session.
@@ -270,13 +273,13 @@ Implemented foundation:
   controls, tenant and user feature override controls, remote config admin
   controls, tenant remote config controls, app version admin controls, remote
   config resolution, feature app-version gates, tenant/cohort app version
-  policy, success envelope, error envelope, contract catalogue, and contract
-  Markdown file coverage.
+  policy, resource policies, success envelope, error envelope, contract
+  catalogue, and contract Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
-  resource policies, and broader control-plane audit.
+  broader resource policy expansion, and broader control-plane audit.
 - App-version range scoping, plan/device feature gates, sync,
   notifications, records/content, support, billing, and reports.
 - Protected domain routes for records/content, sync, notifications, support,

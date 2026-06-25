@@ -9,6 +9,7 @@ use App\Models\User;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -59,6 +60,8 @@ final class RemoteConfigs extends Component
             ])
             ->findOrFail($configId);
 
+        Gate::authorize('update', $config);
+
         $this->editingConfigId = $config->id;
         $this->form = [
             'key' => $config->key,
@@ -82,7 +85,7 @@ final class RemoteConfigs extends Component
     {
         $user = auth()->user();
 
-        abort_unless($user instanceof User && $user->is_platform_admin, 403);
+        abort_unless($user instanceof User, 403);
 
         /** @var array{form: array<string, mixed>} $validated */
         $validated = $this->validate($this->rules(), attributes: $this->validationAttributes());
@@ -102,6 +105,8 @@ final class RemoteConfigs extends Component
                 ])
                 ->findOrFail($this->editingConfigId);
 
+        Gate::authorize($config instanceof MobileRemoteConfig ? 'update' : 'create', $config ?? MobileRemoteConfig::class);
+
         app(SaveMobileRemoteConfigAction::class)->handle($validated['form'], $user, request(), $config);
 
         session()->flash('status', 'Remote config saved.');
@@ -114,7 +119,8 @@ final class RemoteConfigs extends Component
     {
         $user = auth()->user();
 
-        abort_unless($user instanceof User && $user->is_platform_admin, 403);
+        abort_unless($user instanceof User, 403);
+        Gate::authorize('create', MobileRemoteConfig::class);
 
         $event = SecurityAuditEvent::query()
             ->select(['id', 'event', 'metadata', 'created_at'])

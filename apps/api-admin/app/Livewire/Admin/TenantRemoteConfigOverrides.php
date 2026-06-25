@@ -12,6 +12,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -53,6 +54,8 @@ final class TenantRemoteConfigOverrides extends Component
             ->select(['id', 'tenant_id', 'config_key', 'value', 'version', 'reason', 'metadata'])
             ->findOrFail($overrideId);
 
+        Gate::authorize('update', $override);
+
         $this->editingOverrideId = $override->id;
         $this->form = [
             'tenant_id' => (string) $override->tenant_id,
@@ -76,7 +79,7 @@ final class TenantRemoteConfigOverrides extends Component
     {
         $admin = auth()->user();
 
-        abort_unless($admin instanceof User && $admin->is_platform_admin, 403);
+        abort_unless($admin instanceof User, 403);
 
         /** @var array{form: array<string, mixed>} $validated */
         $validated = $this->validate($this->rules(), attributes: $this->validationAttributes());
@@ -86,6 +89,8 @@ final class TenantRemoteConfigOverrides extends Component
             : TenantRemoteConfigOverride::query()
                 ->select(['id', 'tenant_id', 'config_key', 'value', 'version', 'reason', 'metadata'])
                 ->findOrFail($this->editingOverrideId);
+
+        Gate::authorize($override instanceof TenantRemoteConfigOverride ? 'update' : 'create', $override ?? TenantRemoteConfigOverride::class);
 
         app(SaveTenantRemoteConfigOverrideAction::class)->handle($validated['form'], $admin, request(), $override);
 
@@ -99,7 +104,8 @@ final class TenantRemoteConfigOverrides extends Component
     {
         $admin = auth()->user();
 
-        abort_unless($admin instanceof User && $admin->is_platform_admin, 403);
+        abort_unless($admin instanceof User, 403);
+        Gate::authorize('create', TenantRemoteConfigOverride::class);
 
         $event = SecurityAuditEvent::query()
             ->select(['id', 'event', 'metadata', 'created_at'])

@@ -7,6 +7,7 @@ use App\Enums\MobileFeatureState;
 use App\Models\MobileFeatureFlag;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -72,6 +73,8 @@ final class FeatureFlags extends Component
             ])
             ->findOrFail($featureFlagId);
 
+        Gate::authorize('update', $featureFlag);
+
         $this->editingFeatureFlagId = $featureFlag->id;
         $this->form = [
             'key' => $featureFlag->key,
@@ -96,7 +99,7 @@ final class FeatureFlags extends Component
     {
         $user = auth()->user();
 
-        abort_unless($user instanceof User && $user->is_platform_admin, 403);
+        abort_unless($user instanceof User, 403);
 
         /** @var array{form: array{key: string, name: string, default_state: string, reason?: string|null, message?: string|null, minimum_app_version?: string|null, offline_behavior: string}} $validated */
         $validated = $this->validate($this->rules(), attributes: $this->validationAttributes());
@@ -116,6 +119,8 @@ final class FeatureFlags extends Component
                     'metadata',
                 ])
                 ->findOrFail($this->editingFeatureFlagId);
+
+        Gate::authorize($featureFlag instanceof MobileFeatureFlag ? 'update' : 'create', $featureFlag ?? MobileFeatureFlag::class);
 
         app(SaveMobileFeatureFlagAction::class)->handle($validated['form'], $user, request(), $featureFlag);
 

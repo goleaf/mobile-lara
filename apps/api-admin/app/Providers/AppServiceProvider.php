@@ -2,6 +2,19 @@
 
 namespace App\Providers;
 
+use App\Models\MobileAppVersionPolicy;
+use App\Models\MobileFeatureFlag;
+use App\Models\MobileRemoteConfig;
+use App\Models\TenantFeatureOverride;
+use App\Models\TenantRemoteConfigOverride;
+use App\Models\UserFeatureOverride;
+use App\Policies\MobileAppVersionPolicyPolicy;
+use App\Policies\MobileFeatureFlagPolicy;
+use App\Policies\MobileRemoteConfigPolicy;
+use App\Policies\TenantFeatureOverridePolicy;
+use App\Policies\TenantRemoteConfigOverridePolicy;
+use App\Policies\UserFeatureOverridePolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::policy(MobileFeatureFlag::class, MobileFeatureFlagPolicy::class);
+        Gate::policy(TenantFeatureOverride::class, TenantFeatureOverridePolicy::class);
+        Gate::policy(UserFeatureOverride::class, UserFeatureOverridePolicy::class);
+        Gate::policy(MobileRemoteConfig::class, MobileRemoteConfigPolicy::class);
+        Gate::policy(TenantRemoteConfigOverride::class, TenantRemoteConfigOverridePolicy::class);
+        Gate::policy(MobileAppVersionPolicy::class, MobileAppVersionPolicyPolicy::class);
     }
 }

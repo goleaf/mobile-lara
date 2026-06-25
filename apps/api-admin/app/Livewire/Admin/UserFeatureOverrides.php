@@ -13,6 +13,7 @@ use App\Models\UserFeatureOverride;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -56,6 +57,8 @@ final class UserFeatureOverrides extends Component
             ->select(['id', 'tenant_id', 'user_id', 'feature_key', 'state', 'reason', 'message', 'offline_behavior', 'metadata'])
             ->findOrFail($overrideId);
 
+        Gate::authorize('update', $override);
+
         $this->editingOverrideId = $override->id;
         $this->form = [
             'tenant_id' => (string) $override->tenant_id,
@@ -81,7 +84,7 @@ final class UserFeatureOverrides extends Component
     {
         $admin = auth()->user();
 
-        abort_unless($admin instanceof User && $admin->is_platform_admin, 403);
+        abort_unless($admin instanceof User, 403);
 
         /** @var array{form: array<string, mixed>} $validated */
         $validated = $this->validate($this->rules(), attributes: $this->validationAttributes());
@@ -91,6 +94,8 @@ final class UserFeatureOverrides extends Component
             : UserFeatureOverride::query()
                 ->select(['id', 'tenant_id', 'user_id', 'feature_key', 'state', 'reason', 'message', 'offline_behavior', 'metadata'])
                 ->findOrFail($this->editingOverrideId);
+
+        Gate::authorize($override instanceof UserFeatureOverride ? 'update' : 'create', $override ?? UserFeatureOverride::class);
 
         app(SaveUserFeatureOverrideAction::class)->handle($validated['form'], $admin, request(), $override);
 
@@ -104,7 +109,8 @@ final class UserFeatureOverrides extends Component
     {
         $admin = auth()->user();
 
-        abort_unless($admin instanceof User && $admin->is_platform_admin, 403);
+        abort_unless($admin instanceof User, 403);
+        Gate::authorize('create', UserFeatureOverride::class);
 
         $event = SecurityAuditEvent::query()
             ->select(['id', 'event', 'metadata', 'created_at'])
