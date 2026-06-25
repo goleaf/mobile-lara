@@ -30,6 +30,9 @@ test('debug screen renders native dialog examples', function (): void {
         ->assertSee('Test flashlight')
         ->assertSee('Test vibration')
         ->assertSee('Test haptics')
+        ->assertSee('Native sharing')
+        ->assertSee('Share debug snapshot')
+        ->assertSee('Share report placeholder')
         ->assertSee('Native dialogs')
         ->assertSee('Livewire toasts')
         ->assertSee('Prompt default value')
@@ -45,6 +48,28 @@ test('debug screen renders native dialog examples', function (): void {
         ->assertSee('Action')
         ->assertSee('Persistent');
 });
+
+test('debug share actions report browser fallback state', function (string $action, string $status): void {
+    Livewire::test(Debug::class)
+        ->call($action)
+        ->assertSet('shareStatus', $status)
+        ->assertSee($status)
+        ->assertDispatched('mobile-toast', function (string $event, array $params) use ($status): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Share unavailable'
+                && ($params['message'] ?? null) === $status;
+        });
+})->with([
+    'debug snapshot' => [
+        'shareDebugSnapshot',
+        'Native text sharing is unavailable in this browser runtime.',
+    ],
+    'report placeholder' => [
+        'shareReportPlaceholder',
+        'Native URL sharing is unavailable in this browser runtime.',
+    ],
+]);
 
 test('debug native test buttons report browser fallback state', function (string $action, string $property, string $status): void {
     Livewire::test(Debug::class)

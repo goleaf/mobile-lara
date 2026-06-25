@@ -5,7 +5,6 @@ use App\Livewire\Mobile\Settings\Appearance;
 use App\Livewire\Mobile\Settings\Developer;
 use App\Livewire\Mobile\Settings\Legal;
 use App\Livewire\Mobile\Settings\Notifications;
-use App\Livewire\Mobile\Settings\Permissions;
 use App\Livewire\Mobile\Settings\Security;
 use App\Livewire\Mobile\Settings\Storage;
 use App\Livewire\Mobile\Settings\Support;
@@ -25,7 +24,6 @@ test('mobile settings section pages render shared placeholder structure', functi
     'notifications' => [Notifications::class, 'Notification settings'],
     'appearance' => [Appearance::class, 'Appearance settings'],
     'sync' => [Sync::class, 'Sync settings'],
-    'permissions' => [Permissions::class, 'Permission settings'],
     'support' => [Support::class, 'Support settings'],
     'legal' => [Legal::class, 'Legal settings'],
     'developer' => [Developer::class, 'Developer settings'],
@@ -45,6 +43,12 @@ test('settings section pages include connected and placeholder entries', functio
     Livewire::test(Developer::class)
         ->assertSee('Mobile debug')
         ->assertSee(route('mobile.debug'), false)
+        ->assertSee('Media capture')
+        ->assertSee(route('mobile.media.capture'), false)
+        ->assertSee('Media gallery')
+        ->assertSee(route('mobile.media.gallery'), false)
+        ->assertSee('File manager')
+        ->assertSee(route('mobile.files'), false)
         ->assertSee('Tailwind check')
         ->assertSee(route('dev.tailwind'), false);
 

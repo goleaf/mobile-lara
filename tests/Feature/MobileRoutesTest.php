@@ -10,8 +10,11 @@ use App\Livewire\Mobile\Dashboard;
 use App\Livewire\Mobile\Debug;
 use App\Livewire\Mobile\EditProfile;
 use App\Livewire\Mobile\EmailVerification;
+use App\Livewire\Mobile\FileManager;
 use App\Livewire\Mobile\ForgotPassword;
 use App\Livewire\Mobile\Login;
+use App\Livewire\Mobile\MediaCapture;
+use App\Livewire\Mobile\MediaGallery;
 use App\Livewire\Mobile\Notifications;
 use App\Livewire\Mobile\OfflineBanner;
 use App\Livewire\Mobile\PinChange;
@@ -102,6 +105,9 @@ test('protected mobile routes redirect guests to login', function (string $route
     'account delete' => 'mobile.account.delete',
     'notifications' => 'mobile.notifications',
     'search' => 'mobile.search',
+    'media capture' => 'mobile.media.capture',
+    'media gallery' => 'mobile.media.gallery',
+    'files' => 'mobile.files',
     'debug' => 'mobile.debug',
 ]);
 
@@ -139,6 +145,9 @@ test('protected mobile routes render for authenticated users', function (string 
     'account delete' => ['mobile.account.delete', AccountDeletion::class, 'Delete account'],
     'notifications' => ['mobile.notifications', Notifications::class, 'Notifications'],
     'search' => ['mobile.search', Search::class, 'Search'],
+    'media capture' => ['mobile.media.capture', MediaCapture::class, 'Media capture'],
+    'media gallery' => ['mobile.media.gallery', MediaGallery::class, 'Media gallery'],
+    'files' => ['mobile.files', FileManager::class, 'File manager'],
     'debug' => ['mobile.debug', Debug::class, 'Debug'],
 ]);
 

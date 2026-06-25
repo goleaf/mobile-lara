@@ -28,9 +28,27 @@ final class Developer extends SettingsSectionPage
         ],
         [
             'label' => 'Native permissions',
-            'description' => 'Placeholder for future NativePHP permission diagnostics.',
+            'description' => 'Open NativePHP platform helpers and permission recovery actions.',
             'route' => 'mobile.settings.permissions',
-            'badge' => 'Next',
+            'badge' => 'Live',
+        ],
+        [
+            'label' => 'Media capture',
+            'description' => 'Open NativePHP camera, video recorder, and gallery picker checks.',
+            'route' => 'mobile.media.capture',
+            'badge' => 'Media',
+        ],
+        [
+            'label' => 'Media gallery',
+            'description' => 'Review local media_items records and sync status on this device.',
+            'route' => 'mobile.media.gallery',
+            'badge' => 'Local',
+        ],
+        [
+            'label' => 'File manager',
+            'description' => 'Read, write, import, export, share, copy, move, and delete local app files.',
+            'route' => 'mobile.files',
+            'badge' => 'Files',
         ],
     ];
 }

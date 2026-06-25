@@ -6,6 +6,7 @@ use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Livewire\Concerns\DispatchesToasts;
 use App\Services\Native\DeviceService;
 use App\Services\Native\NativeDialogService;
+use App\Services\Native\ShareService;
 use Composer\InstalledVersions;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
@@ -48,6 +49,8 @@ class Debug extends Component
 
     public ?string $hapticStatus = null;
 
+    public ?string $shareStatus = null;
+
     public ?string $pendingCameraTestId = null;
 
     public ?string $pendingNotificationTestId = null;
@@ -61,11 +64,14 @@ class Debug extends Component
 
     private DeviceService $devices;
 
-    public function boot(NativeDialogService $dialogs, MobileNetworkState $networkState, DeviceService $devices): void
+    private ShareService $shares;
+
+    public function boot(NativeDialogService $dialogs, MobileNetworkState $networkState, DeviceService $devices, ShareService $shares): void
     {
         $this->dialogs = $dialogs;
         $this->networkState = $networkState;
         $this->devices = $devices;
+        $this->shares = $shares;
     }
 
     public function showAlertExample(): void
@@ -300,6 +306,27 @@ class Debug extends Component
         $this->toastWarning($this->hapticStatus, 'Haptics unavailable');
     }
 
+    public function shareDebugSnapshot(): void
+    {
+        $result = $this->shares->shareText(
+            title: 'Mobile Lara debug snapshot',
+            text: $this->debugSnapshotText(),
+        );
+
+        $this->rememberShareResult($result, 'Debug shared', 'Share unavailable');
+    }
+
+    public function shareReportPlaceholder(): void
+    {
+        $result = $this->shares->shareUrl(
+            title: 'Mobile Lara report placeholder',
+            text: 'Share this placeholder report link while the server-side report workflow is being connected.',
+            url: route('mobile.debug'),
+        );
+
+        $this->rememberShareResult($result, 'Report shared', 'Share unavailable');
+    }
+
     #[OnNative(PhotoTaken::class)]
     public function handleDebugPhotoTaken(string $path, string $mimeType = 'image/jpeg', ?string $id = null): void
     {
@@ -360,6 +387,7 @@ class Debug extends Component
             'debugRows' => $this->debugRows(),
             'dialogActions' => $this->dialogActions(),
             'dialogResultRows' => $this->dialogResultRows(),
+            'shareActions' => $this->shareActions(),
             'testActions' => $this->testActions(),
             'testStatusRows' => $this->testStatusRows(),
             'toastActions' => $this->toastActions(),
@@ -585,6 +613,25 @@ class Debug extends Component
     }
 
     /**
+     * @return list<array{label: string, action: string, variant: string}>
+     */
+    private function shareActions(): array
+    {
+        return [
+            [
+                'label' => 'Share debug snapshot',
+                'action' => 'shareDebugSnapshot',
+                'variant' => 'primary',
+            ],
+            [
+                'label' => 'Share report placeholder',
+                'action' => 'shareReportPlaceholder',
+                'variant' => 'secondary',
+            ],
+        ];
+    }
+
+    /**
      * @return list<array{key: string, label: string, value: string}>
      */
     private function dialogResultRows(): array
@@ -637,6 +684,7 @@ class Debug extends Component
             'flashlight' => ['Flashlight', $this->flashlightStatus],
             'vibration' => ['Vibration', $this->vibrationStatus],
             'haptics' => ['Haptics', $this->hapticStatus],
+            'share' => ['Share', $this->shareStatus],
         ] as $key => [$label, $value]) {
             if (! is_string($value) || $value === '') {
                 continue;
@@ -650,6 +698,29 @@ class Debug extends Component
         }
 
         return $rows;
+    }
+
+    private function debugSnapshotText(): string
+    {
+        return collect($this->debugRows())
+            ->map(static fn (array $row): string => "{$row['label']}: {$row['value']}")
+            ->implode(PHP_EOL);
+    }
+
+    /**
+     * @param  array{success: bool, message: string}  $result
+     */
+    private function rememberShareResult(array $result, string $successTitle, string $failureTitle): void
+    {
+        $this->shareStatus = $result['message'];
+
+        if ($result['success']) {
+            $this->toastSuccess($result['message'], $successTitle);
+
+            return;
+        }
+
+        $this->toastWarning($result['message'], $failureTitle);
     }
 
     private function nativeBridgeIsAvailable(): bool

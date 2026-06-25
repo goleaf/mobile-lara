@@ -83,6 +83,44 @@
     </x-mobile.card>
 
     <x-mobile.card
+        title="Native sharing"
+        description="Share text, links, and report placeholders through the NativePHP share sheet."
+    >
+        <div class="grid gap-4">
+            <div class="grid grid-cols-2 gap-3">
+                @forelse ($shareActions as $shareAction)
+                    <x-mobile.button
+                        wire:key="share-action-{{ $shareAction['action'] }}"
+                        wire:click="{{ $shareAction['action'] }}"
+                        wire:loading.attr="disabled"
+                        wire:target="{{ $shareAction['action'] }}"
+                        :variant="$shareAction['variant']"
+                        class="min-w-0"
+                    >
+                        <span wire:loading.remove wire:target="{{ $shareAction['action'] }}">
+                            {{ $shareAction['label'] }}
+                        </span>
+                        <span wire:loading wire:target="{{ $shareAction['action'] }}">
+                            Sharing
+                        </span>
+                    </x-mobile.button>
+                @empty
+                    <x-mobile.empty-state
+                        title="No share actions"
+                        description="Native share examples are not available."
+                    />
+                @endforelse
+            </div>
+
+            @if ($shareStatus)
+                <div class="rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/30 dark:bg-sky-400/10">
+                    <p class="text-sm font-semibold text-sky-950 dark:text-sky-100">{{ $shareStatus }}</p>
+                </div>
+            @endif
+        </div>
+    </x-mobile.card>
+
+    <x-mobile.card
         title="Native dialogs"
         description="Alert, confirm, prompt fallback, toast, and snackbar calls through the Laravel wrapper."
     >

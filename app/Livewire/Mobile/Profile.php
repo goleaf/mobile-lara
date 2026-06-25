@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Mobile;
 
+use App\Livewire\Concerns\DispatchesToasts;
 use App\Services\MobileAuth\MobileSessionService;
 use App\Services\MobileProfile\AvatarStorageService;
+use App\Services\Native\ShareService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -13,6 +15,8 @@ use Livewire\Component;
 #[Title('Profile')]
 class Profile extends Component
 {
+    use DispatchesToasts;
+
     public string $displayName = 'Mobile Lara';
 
     public string $email = 'mobile@example.test';
@@ -37,10 +41,13 @@ class Profile extends Component
 
     protected AvatarStorageService $avatarStorage;
 
-    public function boot(MobileSessionService $mobileSessions, AvatarStorageService $avatarStorage): void
+    protected ShareService $shares;
+
+    public function boot(MobileSessionService $mobileSessions, AvatarStorageService $avatarStorage, ShareService $shares): void
     {
         $this->mobileSessions = $mobileSessions;
         $this->avatarStorage = $avatarStorage;
+        $this->shares = $shares;
     }
 
     public function mount(): void
@@ -78,6 +85,23 @@ class Profile extends Component
         $this->hasProfile = true;
         $this->isEditingProfile = false;
         $this->refreshDerivedProfileState();
+    }
+
+    public function shareProfile(): void
+    {
+        $this->refreshDerivedProfileState();
+
+        $result = $this->shares->shareUrl(
+            title: "Profile: {$this->displayName}",
+            text: implode(PHP_EOL, [
+                $this->displayName,
+                $this->email,
+                $this->bio,
+            ]),
+            url: route('mobile.profile'),
+        );
+
+        $this->toastForShareResult($result, 'Profile shared', 'Share unavailable');
     }
 
     public function retryProfile(): void
@@ -172,5 +196,19 @@ class Profile extends Component
             ->implode('');
 
         return $initials === '' ? 'ML' : $initials;
+    }
+
+    /**
+     * @param  array{success: bool, message: string}  $result
+     */
+    private function toastForShareResult(array $result, string $successTitle, string $failureTitle): void
+    {
+        if ($result['success']) {
+            $this->toastSuccess($result['message'], $successTitle);
+
+            return;
+        }
+
+        $this->toastWarning($result['message'], $failureTitle);
     }
 }

@@ -1,9 +1,9 @@
 <section class="safe-x safe-pb flex min-h-full flex-col gap-5 py-6">
-    <x-mobile.loading-state target="saveProfile, retryProfile, logout" message="Updating profile..." />
+    <x-mobile.loading-state target="saveProfile, retryProfile, shareProfile, logout" message="Updating profile..." />
 
-    <x-mobile.page-skeleton wire:loading.delay wire:target="saveProfile, retryProfile, logout" />
+    <x-mobile.page-skeleton wire:loading.delay wire:target="saveProfile, retryProfile, shareProfile, logout" />
 
-    <div wire:loading.remove wire:target="saveProfile, retryProfile, logout" class="contents">
+    <div wire:loading.remove wire:target="saveProfile, retryProfile, shareProfile, logout" class="contents">
         @if ($hasNetworkError)
             <x-mobile.network-error-state retry-action="retryProfile" />
         @elseif (! $hasProfile)
@@ -53,7 +53,7 @@
                     </dl>
 
                     <x-slot:footer>
-                        <div class="grid gap-3">
+                        <div class="grid gap-3 sm:grid-cols-2">
                             <a
                                 href="{{ route('mobile.profile.edit') }}"
                                 wire:navigate
@@ -61,6 +61,17 @@
                             >
                                 Edit profile
                             </a>
+
+                            <x-mobile.button
+                                wire:click="shareProfile"
+                                wire:loading.attr="disabled"
+                                wire:target="shareProfile"
+                                variant="secondary"
+                                full
+                            >
+                                <span wire:loading.remove wire:target="shareProfile">Share profile</span>
+                                <span wire:loading wire:target="shareProfile">Sharing</span>
+                            </x-mobile.button>
                         </div>
                     </x-slot:footer>
                 </x-mobile.card>

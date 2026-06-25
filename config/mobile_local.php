@@ -18,6 +18,9 @@ return [
     'storage' => [
         'file_cache_path' => storage_path('framework/cache/data'),
         'export_path' => storage_path('app/mobile/mobile-local-export.json'),
+        'file_manager_path' => storage_path('app/mobile/files'),
+        'file_export_path' => storage_path('app/mobile/exports'),
+        'file_preview_bytes' => 65536,
     ],
 
     'network' => [

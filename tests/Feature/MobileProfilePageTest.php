@@ -50,12 +50,30 @@ test('profile page renders authenticated account overview and shortcuts', functi
         ->assertSee('Local mobile account')
         ->assertSee('Verified')
         ->assertSee('Edit profile')
+        ->assertSee('Share profile')
         ->assertSee('Security')
         ->assertSee('Notifications')
         ->assertSee('Logout')
         ->assertSee(route('mobile.profile.edit'), false)
         ->assertSee(route('mobile.settings.security'), false)
         ->assertSee(route('mobile.settings.notifications'), false);
+});
+
+test('profile share button reports browser fallback outside NativePHP', function (): void {
+    $user = User::factory()->create([
+        'name' => 'Taylor Mobile',
+        'email' => 'taylor@example.test',
+    ]);
+
+    Livewire::actingAs($user)
+        ->test(Profile::class)
+        ->call('shareProfile')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Share unavailable'
+                && ($params['message'] ?? null) === 'Native URL sharing is unavailable in this browser runtime.';
+        });
 });
 
 test('edit profile screen renders editable fields and saves valid details', function (): void {
