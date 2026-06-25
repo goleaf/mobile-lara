@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Role And Permission Logic documentation for platform-level,
+  tenant-level, admin-user, and mobile-user permissions, API access, mobile UI
+  visibility, feature flag interaction, and suspended user or tenant behavior.
 - Added Mobile App Lock Principles documentation for lock timing,
   sensitive-area confirmation, biometric unlock, PIN unlock, repeated failed
   unlock handling, logout behavior, admin-disabled biometrics, and offline

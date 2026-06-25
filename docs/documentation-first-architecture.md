@@ -43,6 +43,12 @@ confirmation for sensitive areas; use biometric or PIN unlock only as local
 protection; handle failed attempts, logout, admin-disabled biometrics, and
 offline cached data without bypassing Admin/API authority.
 
+Role And Permission Logic is defined in `role-permission-logic.md`:
+platform, tenant, admin-user, and mobile-user permissions must be resolved by
+Admin/API before API access or mobile UI visibility; permissions interact
+with feature flags as separate gates; suspended users and suspended tenants
+fail closed without bypassing tenant isolation.
+
 ## Architecture Statement
 
 Mobile Lara is documentation-first because the product has two systems, tenant boundaries, offline behavior, feature control, mobile-local state, NativePHP capabilities, billing effects, support expectations, reports, audit needs, and security concerns.

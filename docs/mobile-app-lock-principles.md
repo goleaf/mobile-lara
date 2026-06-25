@@ -17,13 +17,20 @@ Principles](product-principles.md), [Two-System Boundary Logic](two-system-bound
 [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX
 Principles](mobile-ux-principles.md), [Mobile App Shell Logic](mobile-app-shell-logic.md),
 [Mobile Settings Logic](mobile-settings-logic.md), [Mobile Permission Logic](mobile-permission-logic.md),
-[Authentication Principles](authentication-principles.md), [API-First Principles](api-first-principles.md),
+[Authentication Principles](authentication-principles.md), [Role And Permission
+Logic](role-permission-logic.md), [API-First Principles](api-first-principles.md),
 [Remote Configuration Logic](remote-configuration-logic.md), [Feature Flag
 Logic](feature-flag-logic.md), [Admin Safety Principles](admin-safety-principles.md),
 and [NativePHP Local Storage](nativephp-local-storage.md): app lock protects
 local access to private mobile state, but it never replaces Admin/API
 authentication, authorization, tenant authority, billing authority, feature
 authority, or server revocation.
+
+Role And Permission Logic is defined in `role-permission-logic.md`:
+platform, tenant, admin-user, and mobile-user permissions must be resolved by
+Admin/API before API access or mobile UI visibility; permissions interact with
+feature flags as separate gates; suspended users and suspended tenants fail
+closed without bypassing tenant isolation.
 
 ## App Lock Statement
 

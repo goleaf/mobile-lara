@@ -12,6 +12,12 @@ offline drafts, and app resume behavior, but never replaces API login,
 authorization, tenant access, billing authority, feature authority, or server
 revocation.
 
+Role And Permission Logic is defined in `role-permission-logic.md`:
+platform, tenant, admin-user, and mobile-user permissions must be resolved by
+Admin/API before API access or mobile UI visibility; permissions interact
+with feature flags as separate gates; suspended users and suspended tenants
+fail closed without bypassing tenant isolation.
+
 ## Authentication Statement
 
 Mobile authentication is an Admin/API authority.

@@ -12,6 +12,8 @@ Core product principles: Admin/API controls business authority, mobile never byp
 
 Target user roles are defined in `docs/user-roles.md`: platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user. Treat invited/suspended/pre-login as access states that override normal role permissions.
 
+Role And Permission Logic is defined in `docs/role-permission-logic.md`: platform, tenant, admin-user, and mobile-user permissions must be resolved by Admin/API before API access or mobile UI visibility; permissions interact with feature flags as separate gates; suspended users and suspended tenants fail closed without bypassing tenant isolation.
+
 The SaaS value map is defined in `docs/saas-value-map.md`: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
 The two-system boundary is defined in `docs/two-system-boundary.md`: Admin/API owns SaaS authority and mobile owns local execution, native capability use, cache, drafts, queues, and state presentation.
@@ -74,6 +76,7 @@ Use these docs before changing the product direction:
 - `docs/product-principles.md`
 - `docs/documentation-first-architecture.md`
 - `docs/user-roles.md`
+- `docs/role-permission-logic.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -100,6 +103,7 @@ Use these docs before changing the product direction:
 - Admin/API is authoritative for SaaS rules.
 - Mobile is authoritative only for local presentation, local drafts, local queues, and native device interaction.
 - Documentation-first architecture decisions must follow `docs/documentation-first-architecture.md`.
+- Role and permission decisions must follow `docs/role-permission-logic.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -125,6 +129,7 @@ Use these docs before changing the product direction:
 - Any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change must be documented before implementation according to `docs/documentation-first-architecture.md`.
 - Any feature must pass the core principles checklist in `docs/product-principles.md`.
 - Any feature that changes visibility or control must map behavior to the role model in `docs/user-roles.md`.
+- Any platform-level permission, tenant-level permission, admin-user permission, mobile-user permission, API access rule, mobile UI visibility rule, feature-flag access interaction, suspended-user behavior, or suspended-tenant behavior must map to `docs/role-permission-logic.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.

@@ -91,6 +91,12 @@ confirmation for sensitive areas; use biometric or PIN unlock only as local
 protection; handle failed attempts, logout, admin-disabled biometrics, and
 offline cached data without bypassing Admin/API authority.
 
+Role And Permission Logic is defined in `role-permission-logic.md`:
+platform, tenant, admin-user, and mobile-user permissions must be resolved by
+Admin/API before API access or mobile UI visibility; permissions interact
+with feature flags as separate gates; suspended users and suspended tenants
+fail closed without bypassing tenant isolation.
+
 The mobile client should be calm, direct, and explicit about sync state.
 
 Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.

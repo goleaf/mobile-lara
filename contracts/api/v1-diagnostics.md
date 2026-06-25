@@ -98,6 +98,12 @@ confirmation for sensitive areas; use biometric or PIN unlock only as local
 protection; handle failed attempts, logout, admin-disabled biometrics, and
 offline cached data without bypassing Admin/API authority.
 
+Role And Permission Logic is defined in `../../docs/role-permission-logic.md`:
+platform, tenant, admin-user, and mobile-user permissions must be resolved by
+Admin/API before API access or mobile UI visibility; permissions interact
+with feature flags as separate gates; suspended users and suspended tenants
+fail closed without bypassing tenant isolation.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep diagnostic
 collection, support visibility, privacy boundaries, recovery guidance, and

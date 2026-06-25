@@ -8,6 +8,8 @@ The core principle is strict: Admin/API controls business authority; mobile neve
 
 The role model is explicit: platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user each have different responsibilities, visibility, and control boundaries.
 
+The role and permission model is explicit: platform, tenant, admin-user, and mobile-user permissions are resolved by Admin/API before API access or mobile UI visibility, feature flags remain separate availability gates, and suspended users or tenants fail closed.
+
 The value map is explicit too: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team each receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
 The two-system boundary is explicit: Admin/API owns SaaS authority, while mobile owns local execution, native capability use, cache, drafts, queues, and clear state presentation.
@@ -89,6 +91,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/product-principles.md](docs/product-principles.md) | Core product principles for admin control, API-first mobile behavior, feature control, tenant isolation, offline use, security, documentation, and modular expansion. |
 | [docs/documentation-first-architecture.md](docs/documentation-first-architecture.md) | Documentation-first architecture principles for feature docs, admin mobile effects, screen API dependencies, sync behavior, permission ownership, risks, and acceptance criteria. |
 | [docs/user-roles.md](docs/user-roles.md) | Main logical user roles, responsibilities, limitations, visibility, and control boundaries. |
+| [docs/role-permission-logic.md](docs/role-permission-logic.md) | Role and permission logic for platform-level, tenant-level, admin-user, and mobile-user permissions, API access, mobile UI visibility, feature flag interaction, and suspended users or tenants. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
 | [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
@@ -141,6 +144,7 @@ contracts.
 - Apply [core product principles](docs/product-principles.md) before feature implementation.
 - Apply [documentation-first architecture](docs/documentation-first-architecture.md) before coding any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change.
 - Apply [target user roles](docs/user-roles.md) before designing permissions, visibility, support, billing, or mobile access.
+- Apply [role and permission logic](docs/role-permission-logic.md) before planning platform-level permissions, tenant-level permissions, admin-user permissions, mobile-user permissions, API access, mobile UI visibility, feature flag interaction, suspended users, or suspended tenants.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
 - Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.
