@@ -1,6 +1,6 @@
 # Mobile Version Control Logic
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This document defines the mobile app version control logic for Mobile Lara. It explains how admins control minimum supported versions, how optional updates work, how forced updates work, how maintenance mode works, how mobile behaves when API says the app is outdated, how store links and update messages are controlled, and how users are protected from broken old versions. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.
 
@@ -28,6 +28,11 @@ clarity.
 Use this document with [Two-System Boundary Logic](two-system-boundary.md):
 Admin/API decides version safety, while mobile reports build context and
 presents update, limited-mode, maintenance, deprecated, or blocked states.
+
+Use this document with [Mobile Client Responsibilities](mobile-client-responsibilities.md):
+mobile owns the update, maintenance, limited-mode, blocked, deprecated,
+store-link, local draft protection, and support-guidance experience, but it
+does not own version authority.
 
 ## Version Control Statement
 

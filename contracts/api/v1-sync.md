@@ -34,6 +34,11 @@ Admin/API Responsibilities are defined in
 decisions, API contracts, tenant management, users and permissions,
 billing/subscription checks, audit history, and security enforcement.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supports offline
+actions, pending queues, sync status display, conflict presentation, retry
+feedback, stale-state warnings, and local draft recovery.
+
 ## Purpose
 
 Sync endpoints let the mobile client replay queued local intents and pull

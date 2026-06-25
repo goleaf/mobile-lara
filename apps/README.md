@@ -33,6 +33,13 @@ Admin/API Responsibilities are defined in
 permission, API, feature, config, version, notification, billing, support,
 report, audit, conflict, and security decisions to the control plane.
 
+Mobile Client Responsibilities are defined in
+`../docs/mobile-client-responsibilities.md`: both apps must keep mobile UX,
+secure local session, cache, offline actions, NativePHP device features,
+navigation, permissions UX, sync display, drafts, feedback, and API-derived
+feature visibility in the managed mobile client without moving authority out
+of Admin/API.
+
 ## Systems
 
 | Path | Responsibility | Current state |

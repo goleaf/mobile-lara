@@ -36,6 +36,11 @@ management, users and permissions, feature control, remote configuration,
 mobile version rules, notification policy, billing/subscription, support,
 reporting, sync/conflict, and security into one mobile-safe context.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supplies the
+operating context mobile uses for navigation, cache freshness, sync display,
+feature visibility, local feedback, and safe startup recovery.
+
 ## Purpose
 
 Bootstrap gives the mobile client one resolved operating context after login,

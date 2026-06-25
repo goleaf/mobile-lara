@@ -33,6 +33,12 @@ Admin/API Responsibilities are defined in
 configuration, feature control, API contracts, support operations, audit
 history, and security enforcement.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supports local
+config cache, freshness display, safe fallback feedback, feature presentation,
+permission-purpose copy, and sync/navigation tuning without giving mobile
+global configuration authority.
+
 ## Purpose
 
 Remote config endpoints expose validated, resolved, mobile-safe runtime values.

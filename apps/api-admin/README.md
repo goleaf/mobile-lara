@@ -33,6 +33,13 @@ users and permissions, admin operations, API contracts, feature/config/version
 control, notifications, billing, support, reporting, audit, conflicts, and
 security enforcement.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this app must expose API
+outcomes that let mobile own UX, local session presentation, cache, offline
+actions, NativePHP capability UX, navigation, permissions UX, sync display,
+drafts, local feedback, and feature visibility without granting local
+authority.
+
 ## Product Role
 
 This system owns SaaS authority:

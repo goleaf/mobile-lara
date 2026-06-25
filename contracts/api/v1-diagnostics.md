@@ -34,6 +34,12 @@ Admin/API Responsibilities are defined in
 operations, diagnostics policy, security enforcement, audit history, API
 contracts, and reporting.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supports local
+diagnostic presentation, safe device/context collection, submission feedback,
+support guidance, sync/config/version evidence display, and privacy-safe local
+review.
+
 ## Purpose
 
 Diagnostics endpoints let mobile share privacy-safe troubleshooting context

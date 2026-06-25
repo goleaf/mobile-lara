@@ -1,6 +1,6 @@
 # Mobile Client Responsibilities
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This document defines the logical responsibilities of the Mobile Lara mobile client. It explains what the NativePHP + Livewire client owns, what it may cache or perform locally, how it should present server-controlled behavior, and which authority it must never claim. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, NativePHP plugins, or application logic.
 
@@ -23,6 +23,26 @@ It does not own SaaS authority. Tenant authority, billing authority, permission 
 5. **Secure local session is not server authority** - Local unlock, secure storage, and session display can protect the device experience, but the server can revoke access.
 6. **Mobile UX stays simple** - Mobile users should see clear next actions, not raw feature flags, billing rules, tenant policy, or support internals.
 7. **API remains the path to truth** - Any server-trusted read, write, sync replay, support action, notification registration, or audit event must pass through API.
+
+## Mobile Responsibility Ownership Contract
+
+Every mobile planning decision should name the local responsibility area that owns the experience before implementation planning.
+
+| Mobile responsibility | Mobile client owns | Must not become |
+| --- | --- | --- |
+| Mobile user experience | Task flow, mobile layout, loading, empty, error, offline, disabled, blocked, pending, synced, conflict, and failed states. | Product authority, server validation, workflow permission, or canonical data state. |
+| Secure local session | Secure local session presentation, token-storage UX where available, app lock/unlock, timeout, logout, and session-expired messaging. | Authentication authority, token issuance, token revocation, forced logout policy, device trust, or account status. |
+| Local cache | Safe server-confirmed copies, bootstrap snapshots, capability snapshots, freshness labels, and refresh UX. | Tenant authority, permission authority, billing authority, global configuration authority, feature authority, or audit truth. |
+| Offline actions | Queued intents, retry metadata, pending state, failed state, replay prompts, and offline-only explanation. | Accepted server records, entitlement decisions, authorization results, conflict decisions, or canonical persistence. |
+| NativePHP device features | Device permission prompts, capture/selection UX, capability availability, denial guidance, unsupported-platform state, and local device feedback. | Product eligibility, server storage, validation, audit acceptance, tenant scope, or bypass of API rules. |
+| Mobile navigation | Shell structure, tabs, menus, back flows, route grouping, screen state, and account-state presentation. | Permission system, feature flag source, tenant-switch authority, or app-version authority. |
+| Mobile permissions UX | User education for camera, files, biometrics, network, notifications, location, scanner, microphone, and settings recovery. | SaaS role permission, policy decision, billing entitlement, feature gate, or device-trust authority. |
+| Sync status display | Last sync, freshness, pending count, retry count, conflict count, network state, stale warnings, and user-safe recovery paths. | Sync policy, replay acceptance, conflict reason authority, support visibility, report authority, or server truth. |
+| Local drafts | Unsynced work, draft recovery, edit/resume, discard, submit, and interruption recovery UX. | Validated submission, permission grant, billing grant, canonical record, accepted audit event, or conflict outcome. |
+| Local user feedback | Toasts, banners, inline messages, Livewire loading state, validation response display, retry guidance, support prompts, and local/server confirmation wording. | Error semantics, validation rule authority, authorization decision, support policy, billing outcome, or security decision. |
+| Feature visibility from admin rules | API-derived show, hide, disable, block, beta, deprecate, update-required, offline-limited, and emergency-disabled presentation. | Feature flag authority, remote config authority, plan gate, tenant gate, role gate, version gate, cohort rule, or emergency override. |
+
+This contract is intentionally principle-level. It does not create models, tables, policies, jobs, controllers, Livewire components, API routes, NativePHP plugins, local storage tables, provider integrations, or feature records.
 
 ## Responsibility Map
 

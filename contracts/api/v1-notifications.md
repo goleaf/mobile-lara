@@ -34,6 +34,12 @@ Admin/API Responsibilities are defined in
 notification orchestration, users and permissions, tenant management,
 feature/version/billing gates, support/reporting visibility, and audit history.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supports native
+notification permission UX, push-token registration feedback, inbox
+presentation, unread status, local display state, and feature-gated
+notification visibility.
+
 ## Purpose
 
 Notification endpoints manage notification preferences, push token

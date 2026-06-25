@@ -34,6 +34,11 @@ Admin/API Responsibilities are defined in
 operations, diagnostics policy, users and permissions, tenant management, API
 contracts, audit history, reporting, and security enforcement.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supports mobile
+help UX, local feedback, safe diagnostic submission, support status display,
+sync/config/version context presentation, and recovery guidance.
+
 ## Purpose
 
 Support endpoints let mobile users create tickets, view tickets, add messages,

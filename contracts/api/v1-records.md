@@ -35,6 +35,11 @@ Admin/API Responsibilities are defined in
 contracts, users and permissions, tenant management, reporting, audit history,
 conflict decisions, and security enforcement.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supports mobile
+record UX, local cache, local drafts, offline action preparation, sync status
+display, validation feedback, and API-derived feature visibility.
+
 ## Purpose
 
 Records endpoints provide tenant-scoped content authority for list, detail,

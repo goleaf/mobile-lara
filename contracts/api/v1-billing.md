@@ -34,6 +34,12 @@ Admin/API Responsibilities are defined in
 billing/subscription logic, feature control, tenant management, API contracts,
 reporting, audit history, and security enforcement.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supports
+mobile-safe entitlement feedback, quota warnings, contact-admin/support prompts,
+feature visibility, navigation limits, and local blocked-state messages without
+giving mobile billing authority.
+
 ## Purpose
 
 Billing endpoints expose mobile-safe plan and subscription state. Admin/API

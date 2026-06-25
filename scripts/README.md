@@ -34,6 +34,12 @@ coverage, but must not create tenant, user, permission, API, feature, config,
 version, notification, billing, support, report, audit, conflict, or security
 authority.
 
+Mobile Client Responsibilities are defined in
+`../docs/mobile-client-responsibilities.md`: scripts may verify mobile
+responsibility coverage, but must not create local UX, session, cache, offline,
+NativePHP, navigation, permission, sync, draft, feedback, or feature-visibility
+logic outside documented contracts.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force

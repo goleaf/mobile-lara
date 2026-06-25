@@ -35,6 +35,11 @@ Admin/API Responsibilities are defined in
 version rules, feature control, maintenance/remote config coordination, support
 operations, audit history, and security enforcement.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supports update
+prompts, maintenance UX, limited-mode navigation, local draft protection,
+blocked-state feedback, store-link presentation, and support guidance.
+
 ## Purpose
 
 App-version and maintenance endpoints tell mobile whether the current build can

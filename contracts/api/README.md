@@ -35,6 +35,12 @@ Admin/API Responsibilities are defined in
 control-plane responsibility owns the request, response, error, sync, support,
 billing, report, audit, or security outcome.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: every contract must also name
+which mobile responsibility consumes the outcome as UX, local session, cache,
+offline action, NativePHP capability, navigation, permission prompt, sync
+status, draft, feedback, or feature visibility.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

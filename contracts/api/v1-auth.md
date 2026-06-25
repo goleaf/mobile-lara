@@ -34,6 +34,11 @@ Admin/API Responsibilities are defined in
 users and permissions, security enforcement, audit history, and API-contract
 responsibility.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this contract supports secure
+local session UX, login/logout feedback, guest/pre-login navigation, and
+API-derived account-state visibility without giving mobile auth authority.
+
 ## Purpose
 
 Auth endpoints make the Admin/API system authoritative for mobile identity,

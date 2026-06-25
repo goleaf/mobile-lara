@@ -35,6 +35,12 @@ Admin/API Responsibilities are defined in
 contracts, security enforcement, audit history, and response-shape
 responsibility before domain contracts expand.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this foundation should prove
+the response shape mobile can consume for UX, local session, cache, offline,
+sync, feedback, and feature-visibility responsibilities before domain
+contracts expand.
+
 Remote Configuration Logic is defined in
 `../../docs/remote-configuration-logic.md`. Future bootstrap and config
 contracts should return resolved mobile-safe config values, config version,
