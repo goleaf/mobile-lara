@@ -57,6 +57,12 @@ notification templates, channels, targeting, quiet hours, priority, escalation,
 suppression, and delivery visibility scoped, authorized, auditable, and exposed
 to mobile only as resolved API outcomes.
 
+Feature Flag Logic is defined in `../../docs/feature-flag-logic.md`:
+notification inbox, push registration, deep links, channel visibility,
+targeting affordances, and notification-related mobile features must follow
+resolved flag state, rollout, plan, permission, version, and disabled-state
+rules.
+
 ## Purpose
 
 Notification endpoints manage notification preferences, push token

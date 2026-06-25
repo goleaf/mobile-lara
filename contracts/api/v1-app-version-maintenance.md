@@ -57,6 +57,11 @@ version, maintenance mode, force update, store-link, update-message, and
 stale-client controls scoped, authorized, auditable, and exposed to mobile
 only as resolved API outcomes.
 
+Feature Flag Logic is defined in `../../docs/feature-flag-logic.md`: app
+version and maintenance policy must be able to constrain, block, deprecate, or
+roll out feature-flagged mobile behavior when compatibility, safety, plan, or
+support risk requires it.
+
 ## Purpose
 
 App-version and maintenance endpoints tell mobile whether the current build can

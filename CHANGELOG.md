@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Feature Flag Logic with a decision contract for controlled mobile
+  feature availability, global/tenant/user priority, disabled mobile states,
+  admin impact, safe rollout, and plan-limit behavior.
 - Clarified Admin Control Center Logic with a control ownership contract for
   tenants, users, roles, permissions, mobile features, remote config, app
   versions, maintenance mode, force update, sync behavior, notifications,

@@ -1,6 +1,6 @@
 # Feature Flag Logic
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This document defines the feature flag logic for Mobile Lara. It explains why important mobile features should be controlled by feature flags, how global, tenant, and user-level decisions should be prioritized, how disabled features should appear on mobile, how admins should understand impact, how flags support safe rollout, and how flags support plan limits. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.
 
@@ -30,6 +30,21 @@ Mobile version control complements feature flags. A flag can require a minimum
 app version or block stale clients, but [Mobile Version Control Logic](mobile-version-control-logic.md)
 decides optional update, forced update, maintenance, blocked, deprecated, store
 link, and outdated-client behavior.
+
+## Feature Flag Decision Contract
+
+Every important mobile feature needs a feature-flag decision before implementation because the Admin/API system must be able to control availability without shipping a new mobile build, protect tenants and plans from accidental access, stop unsafe behavior quickly, and explain feature outcomes to support, billing, admins, and mobile users.
+
+| Decision area | Principle | Required outcome |
+| --- | --- | --- |
+| Flag purpose | The flag must exist for a named product reason: rollout, tenant variation, plan limit, app-version compatibility, offline control, NativePHP capability safety, supportability, or emergency recovery. | Admins know why the feature is controlled and when the flag can be retired, expanded, or emergency-disabled. |
+| Scope priority | Resolution must apply safety and authority gates first, then plan/entitlement ceiling, global default, tenant decision, role/permission decision, user decision, device/app-version/cohort compatibility, and offline policy. | Global safety blocks cannot be bypassed by tenant or user enables; plan limits remain above tenant/user access; user-level flags never bypass tenant, plan, permission, version, or security boundaries. |
+| Mobile disabled state | Disabled features must resolve into mobile-safe states such as hidden, disabled, blocked, beta, deprecated, update-required, offline-limited, or emergency-disabled. | Mobile shows a clear product outcome and next action without exposing raw flag names, tenant-private admin reasoning, billing internals, or rollout mechanics. |
+| Admin impact | Admins must understand affected tenants, users, roles, plans, app versions, devices, cohorts, mobile screens, API behavior, offline queues, sync replay, notifications, reports, billing, support, audit, and rollback. | Enabling or disabling a feature is an explainable operational decision, not a hidden toggle with unknown blast radius. |
+| Safe rollout | Flags must support documented proposal, internal-only use, compatibility gate, pilot tenant, cohort expansion, general availability, monitoring, rollback, and emergency disablement. | New features can expand gradually, be observed safely, and be stopped without confusing mobile users or support teams. |
+| Plan limits | Billing and entitlement define the commercial ceiling; feature flags expose or hide behavior only inside that ceiling. | Mobile receives included, disabled, blocked, quota-limited, trial, expired, payment-failed, contact-admin, contact-support, or upgrade/contact-sales outcomes while billing authority remains in Admin/API. |
+
+This contract is intentionally principle-level. It does not create flag storage, schemas, migrations, endpoints, policies, Filament resources, Livewire components, jobs, services, provider integrations, or application logic.
 
 ## Why Important Mobile Features Need Flags
 

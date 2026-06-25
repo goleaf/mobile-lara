@@ -53,6 +53,11 @@ enablement, disablement, rollout, rollback, plan limits, emergency blocks,
 and disabled mobile states scoped, authorized, auditable, and exposed to mobile
 only as resolved API outcomes.
 
+Feature Flag Logic is defined in `../../docs/feature-flag-logic.md`: this
+contract must resolve important mobile features through controlled purpose,
+global/tenant/user priority, disabled-state behavior, admin impact, safe
+rollout, and plan-limit rules before mobile receives any feature outcome.
+
 ## Purpose
 
 Feature endpoints expose resolved mobile-safe feature outcomes. Mobile never
