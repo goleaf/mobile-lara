@@ -10,6 +10,10 @@ keeps important mobile capabilities feature-controlled by Admin/API.
 Product Positioning is defined in `../../docs/product-positioning.md`: this
 contract is the API-first expression of the feature-controlled platform.
 
+Core Product Principles are defined in `../../docs/product-principles.md`: this
+contract must preserve admin control, API-first communication, tenant isolation,
+secure defaults, simple mobile UX, and modular feature expansion.
+
 ## Purpose
 
 Feature endpoints expose resolved mobile-safe feature outcomes. Mobile never

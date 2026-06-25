@@ -21,6 +21,11 @@ Use this document with [Product Positioning](product-positioning.md): the
 boundary is what keeps the SaaS control center and mobile workforce/client
 platform coordinated without collapsing into web-only or mobile-only design.
 
+Use this document with [Core Product Principles](product-principles.md): the
+boundary enforces admin control, API-only mobile behavior, tenant isolation,
+secure defaults, useful offline behavior, simple mobile UX, documentation-first
+planning, and modular expansion.
+
 The simplest rule is:
 
 - **Admin/API decides** what is allowed, configured, billable, reportable, auditable, supported, secure, and synced.

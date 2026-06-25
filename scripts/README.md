@@ -10,6 +10,11 @@ Product Positioning is defined in `../docs/product-positioning.md`: scripts
 should verify the combined SaaS control center and mobile platform posture,
 not create side channels around it.
 
+Core Product Principles are defined in `../docs/product-principles.md`: scripts
+may verify admin authority, API-first behavior, tenant isolation, security,
+offline state, and documentation coverage, but must not create application
+logic.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force

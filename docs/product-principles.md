@@ -17,6 +17,25 @@ Use this document with [Product Positioning](product-positioning.md): the
 principles protect the six positioning angles from drifting into web-only,
 mobile-only, or tenant-unsafe behavior.
 
+## Principles Contract
+
+| Principle | Product rule | Feature behavior |
+| --- | --- | --- |
+| Admin controls everything | Admin/API is the source of business authority for tenants, users, permissions, features, config, versions, billing, support, notifications, reports, sync, audit, and security. | Every feature names its admin owner, allowed scope, mobile effect, API outcome, audit expectation, support meaning, and rollback path. |
+| Mobile client never bypasses API | Mobile is a managed executor, not a policy engine or data authority. | Server-trusted reads, writes, sync replay, support actions, notification registration, billing checks, feature state, config, and version policy move through API only. |
+| Every feature can be enabled or disabled | A feature is not product-ready until it can be safely enabled, disabled, limited, rolled out, blocked, or retired. | Important features define global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, offline, and disabled states. |
+| Tenant isolation | Tenant scope is the commercial, security, reporting, support, billing, notification, and sync boundary. | Every admin action, API response, mobile context, report, support case, notification, audit entry, and sync decision is tenant-scoped and server-enforced. |
+| Offline-first where useful | Offline behavior is valuable only when it improves mobile work without claiming authority. | Mobile may cache, draft, queue, label freshness, retry, and show conflicts, but queued work remains local intent until API accepts it. |
+| Secure by default | Security is part of every product slice, not a later cleanup phase. | Authorization, tenant scope, least privilege, token handling, secure local storage, audit, rate limits, safe errors, and secret boundaries are defined before implementation. |
+| API-first communication | The API is the trusted contract between the SaaS control center and mobile execution. | Mobile receives shaped permissions, feature flags, remote config, version policy, user/tenant context, sync rules, support state, entitlement outcomes, and clear errors through versioned API responses. |
+| Simple mobile UX | Mobile users should see clear next actions, not admin machinery. | Mobile screens show only permitted workflows and honest states for loading, disabled, blocked, offline, pending, synced, conflict, failed, deprecated, and update-required behavior. |
+| Documentation-first development | Product-critical behavior is written before implementation. | Features document stakeholder value, admin mobile effect, API dependency, offline behavior, permission owner, risks, support meaning, audit needs, and acceptance criteria before code. |
+| Modular feature expansion | The product grows through complete feature slices, not scattered screens. | Each module carries admin controls, API contracts, mobile UX, feature flags, remote config, tenant scope, offline rules, support/reporting visibility, audit behavior, rollout, and rollback. |
+
+These principles are not optional preferences. They are the acceptance gate for
+future product planning, API contracts, admin controls, mobile screens, support
+operations, billing behavior, sync behavior, and NativePHP capability use.
+
 The documentation-first architecture standard in [Documentation-First Architecture](documentation-first-architecture.md) defines how those principles become planning requirements: every feature, admin control, mobile screen, sync behavior, permission, and risk is documented before coding.
 
 The [Admin Control Center Logic](admin-control-center-logic.md) defines how admin authority becomes operational control over tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, and support.

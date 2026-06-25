@@ -13,6 +13,11 @@ Product Positioning is defined in `docs/product-positioning.md`. Remaining work
 should preserve the SaaS control center plus mobile workforce/client platform
 position before adding implementation scope.
 
+Core Product Principles are defined in `docs/product-principles.md`. Remaining
+work must preserve admin authority, API-only mobile behavior, feature control,
+tenant isolation, useful offline behavior, secure defaults, simple mobile UX,
+documentation-first planning, and modular expansion.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Remaining implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

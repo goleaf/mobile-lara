@@ -12,6 +12,10 @@ Product Positioning is defined in `../../docs/product-positioning.md`: this
 contract supports the feature-controlled and offline-capable mobile platform by
 keeping runtime behavior configurable from the control center.
 
+Core Product Principles are defined in `../../docs/product-principles.md`: this
+contract must preserve admin control, API-first communication, tenant isolation,
+secure defaults, simple mobile UX, and modular feature expansion.
+
 ## Purpose
 
 Remote config endpoints expose validated, resolved, mobile-safe runtime values.

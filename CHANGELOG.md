@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Core Product Principles documentation so admin authority, API-only
+  mobile behavior, feature control, tenant isolation, useful offline behavior,
+  secure defaults, API-first communication, simple mobile UX, documentation-first
+  development, and modular expansion stay explicit across the Markdown corpus.
 - Clarified Product Positioning documentation so the SaaS control center,
   mobile workforce/client platform, API-first system, offline-capable mobile
   system, feature-controlled platform, tenant-based product, and web-only vs

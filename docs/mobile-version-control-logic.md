@@ -12,6 +12,10 @@ Use this document with [Product Positioning](product-positioning.md): version
 policy is part of the feature-controlled, API-first mobile platform posture, not
 a device-local preference.
 
+Use this document with [Core Product Principles](product-principles.md): mobile
+version rules are admin-controlled, API-first, secure-by-default, tenant-aware,
+documented, and modular.
+
 ## Version Control Statement
 
 Mobile app version control is a control-plane responsibility.

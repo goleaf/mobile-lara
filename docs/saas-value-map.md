@@ -15,6 +15,11 @@ Use this document with [Product Positioning](product-positioning.md):
 stakeholder value should prove why the combined SaaS control center and mobile
 workforce/client platform is stronger than web-only or mobile-only delivery.
 
+Use this document with [Core Product Principles](product-principles.md):
+stakeholder value should reinforce admin authority, API-only mobile behavior,
+feature control, tenant isolation, useful offline behavior, secure defaults,
+simple mobile UX, documentation-first planning, and modular expansion.
+
 The Admin/API system gives the business control over tenants, users, permissions, billing, reports, support, feature flags, notifications, app versions, security, and sync behavior. The mobile client turns those decisions into usable field or client workflows with native capability access, offline resilience where useful, and clear status for allowed, blocked, pending, synced, conflicted, and offline states.
 
 The product is valuable only when both sides stay connected:

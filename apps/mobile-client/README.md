@@ -11,6 +11,11 @@ Product Positioning is defined in `../../docs/product-positioning.md`: this app
 is the mobile workforce/client platform side of the product, not an independent
 mobile authority.
 
+Core Product Principles are defined in `../../docs/product-principles.md`: this
+app must never bypass API authority, must keep mobile UX simple, and must treat
+offline state as cache, draft, queue, pending, synced, conflict, or failed
+state rather than server truth.
+
 ## Product Role
 
 This system owns local execution:

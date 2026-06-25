@@ -12,6 +12,10 @@ Product Positioning is defined in `../../docs/product-positioning.md`: this
 contract supports the combined platform by keeping notification policy
 centralized while mobile presents safe user-facing delivery behavior.
 
+Core Product Principles are defined in `../../docs/product-principles.md`: this
+contract must preserve admin control, API-first communication, tenant isolation,
+secure defaults, simple mobile UX, and modular feature expansion.
+
 ## Purpose
 
 Notification endpoints manage notification preferences, push token

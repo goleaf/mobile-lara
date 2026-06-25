@@ -12,6 +12,10 @@ Product Positioning is defined in `../../docs/product-positioning.md`: this
 contract supports the tenant-based product by keeping workspace access and
 tenant switching server-controlled.
 
+Core Product Principles are defined in `../../docs/product-principles.md`: this
+contract must preserve admin control, API-first communication, tenant isolation,
+secure defaults, simple mobile UX, and modular feature expansion.
+
 ## Purpose
 
 Tenancy endpoints keep tenant authority on the Admin/API system. Mobile may

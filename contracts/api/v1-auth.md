@@ -12,6 +12,10 @@ Product Positioning is defined in `../../docs/product-positioning.md`: this
 contract supports the API-first tenant-based platform by keeping identity,
 sessions, and device trust out of mobile-local authority.
 
+Core Product Principles are defined in `../../docs/product-principles.md`: this
+contract must preserve admin control, API-first communication, tenant isolation,
+secure defaults, simple mobile UX, and modular feature expansion.
+
 ## Purpose
 
 Auth endpoints make the Admin/API system authoritative for mobile identity,

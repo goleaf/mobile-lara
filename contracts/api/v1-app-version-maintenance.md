@@ -12,6 +12,10 @@ Product Positioning is defined in `../../docs/product-positioning.md`: this
 contract supports the feature-controlled, API-first, tenant-based mobile
 platform by making version and maintenance policy centrally governable.
 
+Core Product Principles are defined in `../../docs/product-principles.md`: this
+contract must preserve admin control, API-first communication, tenant isolation,
+secure defaults, simple mobile UX, and modular feature expansion.
+
 ## Purpose
 
 App-version and maintenance endpoints tell mobile whether the current build can

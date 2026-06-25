@@ -10,6 +10,10 @@ reports, audit, and sync decisions must be centralized.
 Product Positioning is defined in `../../docs/product-positioning.md`: this app
 is the SaaS control center side of the product, not a generic admin dashboard.
 
+Core Product Principles are defined in `../../docs/product-principles.md`: this
+app must keep authority server-side, tenant-scoped, feature-controlled,
+secure-by-default, API-first, documented, and modular.
+
 ## Product Role
 
 This system owns SaaS authority:

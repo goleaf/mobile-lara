@@ -10,6 +10,11 @@ Product Positioning is defined in `../docs/product-positioning.md`: the two apps
 must remain one SaaS control center plus one managed mobile workforce/client
 platform.
 
+Core Product Principles are defined in `../docs/product-principles.md`: both
+apps must preserve admin authority, API-only mobile behavior, feature control,
+tenant isolation, useful offline behavior, secure defaults, simple mobile UX,
+documentation-first planning, and modular expansion.
+
 ## Systems
 
 | Path | Responsibility | Current state |

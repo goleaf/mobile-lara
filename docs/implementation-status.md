@@ -12,6 +12,11 @@ against the vision before implementation grows.
 Product Positioning is defined in `docs/product-positioning.md`. Status is also
 tracked against the six positioning angles before implementation grows.
 
+Core Product Principles are defined in `docs/product-principles.md`. Status is
+tracked against admin authority, API-only mobile behavior, feature control,
+tenant isolation, useful offline behavior, secure defaults, simple mobile UX,
+documentation-first planning, and modular expansion.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

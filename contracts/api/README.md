@@ -11,6 +11,11 @@ Product Positioning is defined in `../../docs/product-positioning.md`: these
 contracts are what make the product API-first instead of web-only or
 mobile-only.
 
+Core Product Principles are defined in `../../docs/product-principles.md`:
+every contract must preserve admin authority, tenant isolation, API-only mobile
+behavior, feature control, useful offline behavior, secure defaults, simple
+mobile UX, documentation-first planning, and modular expansion.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or
