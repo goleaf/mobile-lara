@@ -6,7 +6,7 @@ This directory is the target monorepo boundary for the two Mobile Lara systems.
 
 | Path | Responsibility | Current state |
 | --- | --- | --- |
-| `apps/api-admin` | Laravel API plus Livewire admin panel. This is the SaaS control plane and source of authority. | Scaffold documentation exists; Laravel app implementation is pending. |
+| `apps/api-admin` | Laravel API plus Livewire admin panel. This is the SaaS control plane and source of authority. | Laravel app scaffold exists with Livewire dashboard shell, versioned status API, shared response envelope, tests, and build verification. |
 | `apps/mobile-client` | Laravel plus Livewire inside NativePHP Mobile. This is the managed edge client. | Scaffold documentation exists; current mobile implementation still lives at the repository root during Phase 1 transition. |
 
 The product contract remains unchanged:
@@ -31,6 +31,6 @@ The product contract remains unchanged:
 
 Until the code migration is completed, the root Laravel app is treated as the
 existing mobile-client implementation. New control-plane code belongs in
-`apps/api-admin` once that Laravel app is scaffolded. New mobile-client code
-should be added to the current root app only when it is required to preserve or
-stabilize existing mobile functionality before the move.
+`apps/api-admin`. New mobile-client code should be added to the current root
+app only when it is required to preserve or stabilize existing mobile
+functionality before the move.

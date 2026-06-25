@@ -28,11 +28,38 @@ API/Admin implementation must resolve global, tenant, plan, role, permission,
 user, app-version, device, cohort, maintenance, and emergency feature decisions
 into API outcomes before mobile uses them.
 
-## Current Phase 1 State
+## Current Phase 2 State
 
-The directory exists so the monorepo boundary is explicit. The Laravel app,
-admin routes, versioned API routes, schemas, policies, Livewire admin screens,
-and tests are pending implementation.
+This directory is now a Laravel 13 application with a Livewire admin dashboard
+shell and the first versioned mobile API route.
+
+Implemented foundation:
+
+- `GET /admin/dashboard` renders `App\Livewire\Admin\Dashboard`.
+- `/` redirects to `/admin/dashboard`.
+- `GET /api/v1/mobile/status` returns the standard mobile success envelope.
+- `App\Support\Api\MobileApiResponse` centralizes success and error envelopes.
+- Blade layouts exist for admin, auth, and dashboard surfaces.
+- Reusable admin Blade components exist for section headings and status badges.
+- Pest tests cover the dashboard route, root redirect, success envelope, and
+  error envelope.
+
+Still pending:
+
+- Admin authentication, tenant scoping, roles, permissions, policies, and audit.
+- Domain modules for feature flags, remote config, app versions, sync,
+  notifications, records/content, support, billing, and reports.
+- Real mobile bootstrap contract and endpoint.
+
+Verification commands for this app:
+
+```bash
+composer validate --strict
+php artisan route:list --except-vendor
+php artisan test --compact
+vendor/bin/pint --dirty --format agent
+npm run build
+```
 
 Before implementing endpoints or screens, update the relevant contract in
 `contracts/api` and keep `docs/implementation-status.md` accurate.

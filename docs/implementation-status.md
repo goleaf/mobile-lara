@@ -66,16 +66,16 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Complete Laravel app under `apps/api-admin` | not started | No control-plane app exists in the requested path. |
-| Livewire admin panel | not started | No admin Livewire namespace, layout, or routes exist yet. |
-| Blade and Tailwind admin UI | not started | Admin design principles exist only in docs. |
-| Admin, auth, and dashboard layouts | not started | Required layouts are missing for the admin system. |
-| Reusable admin UI components | not started | Required components are missing. |
-| Grouped admin routes | not started | No admin route group exists. |
-| Versioned API route structure | not started | `routes/api.php` is missing in the current root app. |
-| Standard API success response | not started | No shared API responder/resource envelope exists yet. |
-| Standard API error response | partial | Bootstrap config renders JSON for `api/*`, but no documented envelope exists. |
-| API/admin tests | not started | No control-plane feature tests exist. |
+| Complete Laravel app under `apps/api-admin` | tested | Laravel 13 app scaffolded with Composer/NPM lockfiles; `php artisan test --compact` and `npm run build` pass for this app. |
+| Livewire admin panel | tested | `App\Livewire\Admin\Dashboard` renders at `/admin/dashboard`. Domain controls are represented as foundation cards until later phases implement real modules. |
+| Blade and Tailwind admin UI | tested | Admin shell uses Blade, Livewire, and Tailwind v4; production build passes. |
+| Admin, auth, and dashboard layouts | implemented | Layout files exist under `resources/views/layouts`; the admin layout is exercised by the dashboard test. |
+| Reusable admin UI components | implemented | Admin section heading and status badge components exist and are used by the dashboard. |
+| Grouped admin routes | tested | Web routes redirect `/` to the named `admin.dashboard` route inside an `admin` prefix/name group. |
+| Versioned API route structure | tested | `apps/api-admin/routes/api.php` exposes `GET /api/v1/mobile/status` under the `api.v1.mobile.*` name prefix. |
+| Standard API success response | tested | `App\Support\Api\MobileApiResponse::success()` returns the documented `success/data/meta` envelope. |
+| Standard API error response | tested | `App\Support\Api\MobileApiResponse::error()` returns the documented `success/error/meta` envelope. |
+| API/admin tests | tested | Focused Pest tests cover the admin dashboard route, root redirect, success envelope, and error envelope. |
 
 ## Phase 3 - Mobile Client Foundation
 
@@ -101,7 +101,7 @@ Status values:
 | Contract Area | Status | Notes |
 | --- | --- | --- |
 | API contract documentation directory | partial | `contracts/api/README.md` defines envelope standards and required contract files. |
-| Versioned response envelope | not started | Must define `success`, `data`, `meta`, `errors`, and mobile next actions. |
+| Versioned response envelope | tested | Shared responder and `GET /api/v1/mobile/status` test cover `success`, `data`, `error`, `meta`, and `next_action` shape. |
 | Auth contract | documented | Product behavior is documented; endpoints are not implemented. |
 | Bootstrap contract | documented | Required payload is documented; endpoint is not implemented. |
 | Features contract | documented | Resolution rules are documented; endpoint is not implemented. |
@@ -137,7 +137,7 @@ Status values:
 | Tenant roles and invitations | not started | Role states are documented only. |
 | Tenant settings | not started | Required for feature/config/sync policy. |
 | Tenant-scoped API middleware | not started | Critical security boundary. |
-| Admin tenant management screens | not started | No admin panel exists. |
+| Admin tenant management screens | not started | Admin shell exists; tenant management screens are not implemented yet. |
 | Mobile tenant store/display/switcher | not started | Required after API bootstrap exists. |
 | Tenant-separated local cache | partial | Local models have mobile-local storage, but tenant partitioning is not fully proven. |
 
@@ -148,7 +148,7 @@ Status values:
 | Role definitions | documented | Product role model exists; implementation missing. |
 | Permission definitions | documented | Permission ownership rules exist; implementation missing. |
 | Policies for API/admin | not started | Required before protected actions. |
-| Protected admin routes | not started | No admin routes exist. |
+| Protected admin routes | not started | Dashboard route exists; authentication, authorization, and policy protection are not implemented yet. |
 | Protected API routes | not started | API routes are missing. |
 | Mobile permission payload | not started | Bootstrap endpoint must provide this. |
 | Mobile permission-aware UI | partial | Permission settings/center exists for NativePHP device permissions, not SaaS permissions. |
@@ -161,7 +161,7 @@ Status values:
 | Tenant feature overrides | not started | Required for SaaS control. |
 | User feature overrides | not started | Required by requested resolution order. |
 | Resolution order safety -> plan -> global -> tenant -> role/permission -> user -> version/device/cohort -> offline | documented | Defined in Feature Flag Logic; needs implementation and tests. |
-| Admin feature flag UI | not started | No admin panel exists. |
+| Admin feature flag UI | not started | Admin shell exists; feature flag management screens are not implemented yet. |
 | Mobile feature store/cache | not started | Required after bootstrap exists. |
 | Feature-gated mobile navigation/actions | partial | Mobile routes exist; not API/feature controlled yet. |
 
@@ -171,7 +171,7 @@ Status values:
 | --- | --- | --- |
 | Global remote config | not started | Required server authority. |
 | Tenant remote config | not started | Required for tenant variation. |
-| Admin remote config UI | not started | No admin panel exists. |
+| Admin remote config UI | not started | Admin shell exists; remote config screens are not implemented yet. |
 | Config validation and audit | not started | Required for sensitive controls. |
 | Mobile config store/cache | not started | Required after bootstrap exists. |
 | Offline defaults | documented | Needs implementation against API payloads. |
@@ -220,7 +220,7 @@ Status values:
 | Notes | not started | partial | Mobile-local notes exist. |
 | Attachment metadata | not started | partial | Mobile-local attachment metadata exists. |
 | Activity timeline | not started | partial | Local activity timeline exists; server audit missing. |
-| Admin records management | not started | n/a | No admin panel exists. |
+| Admin records management | not started | n/a | Admin shell exists; records management screens are not implemented yet. |
 | Records API endpoints | not started | partial | Mobile queues reference API-style endpoints, but no server endpoints exist. |
 
 ## Phase 13 - Search, Filters, Saved Views
@@ -241,7 +241,7 @@ Status values:
 | Sync bootstrap | not started | partial | Mobile sync status exists; server settings missing. |
 | Sync push/pull/ack | not started | partial | Mobile queue and worker exist; server endpoints missing. |
 | Sync conflict tracking | not started | partial | Local conflict fields and screens exist. |
-| Admin sync monitoring | not started | n/a | No admin panel exists. |
+| Admin sync monitoring | not started | n/a | Admin shell exists; sync monitoring screens are not implemented yet. |
 | Local SQLite cache | n/a | partial | Dedicated `mobile_local` connection and migrations exist. |
 | Offline action queue | n/a | partial | Queue/repository/worker exist. |
 | Retry logic | not started | partial | Local worker has retry/backoff behavior. |
@@ -329,7 +329,7 @@ Status values:
 | Notifications | not started | partial | Local notification inbox exists; server notifications missing. |
 | Notification preferences | not started | partial | Mobile settings exist; API authority missing. |
 | Push token registration/revocation | not started | not started | Required for push. |
-| Admin notification center | not started | n/a | No admin panel exists. |
+| Admin notification center | not started | n/a | Admin shell exists; notification center screens are not implemented yet. |
 | Campaign placeholders | not started | n/a | Not implemented. |
 | Delivery/open tracking | not started | partial | Local history exists; server truth missing. |
 | Mark read/all read/delete | not started | partial | Local inbox behavior exists. |
@@ -356,7 +356,7 @@ Status values:
 | Plans/subscriptions | not started | Documented only. |
 | Invoice placeholders | not started | Documented only. |
 | Usage events | not started | Documented only. |
-| Admin billing screens | not started | No admin panel exists. |
+| Admin billing screens | not started | Admin shell exists; billing screens are not implemented yet. |
 | Plan-based feature availability | not started | Required in feature resolution/bootstrap. |
 | Mobile plan/status display | not started | Required after bootstrap/billing API. |
 | Trial/expired/suspended behavior | documented | Implementation missing. |
@@ -367,7 +367,7 @@ Status values:
 | --- | --- | --- |
 | Support tickets/messages | not started | Documented only. |
 | Support attachments | not started | Documented only. |
-| Admin support panel | not started | No admin panel exists. |
+| Admin support panel | not started | Admin shell exists; support screens are not implemented yet. |
 | Assignment/status/priority | not started | Documented only. |
 | Support audit | not started | Required. |
 | Mobile support ticket list/create/detail | not started | Settings support page exists, but full support system is missing. |

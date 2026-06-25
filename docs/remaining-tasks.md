@@ -21,11 +21,11 @@ maintenance, emergency, disabled-state, rollout, and plan-limit decisions.
 
 - Move from the current root Laravel mobile app to the requested monorepo shape
   with `apps/api-admin` and `apps/mobile-client`.
-- Scaffold the API/Admin Laravel app and implement the first versioned mobile
-  API route group.
-- Add the shared mobile API response and error envelope.
-- Write the first concrete API contracts in `contracts/api`.
-- Implement mobile bootstrap as the first control-plane endpoint.
+- Complete the mobile-client relocation from the current root Laravel app into
+  `apps/mobile-client`.
+- Implement mobile bootstrap as the first real control-plane endpoint after the
+  foundation status route.
+- Add the remaining concrete API contracts in `contracts/api`.
 - Add tenancy, roles, permissions, feature flags, remote config, app version
   policy, maintenance mode, subscription state, notification policy, sync
   policy, and audit foundations.

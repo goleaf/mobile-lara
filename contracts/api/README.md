@@ -25,6 +25,11 @@ Mobile contracts are grouped by API version. The first implementation target is:
 Contracts should be additive where possible. Breaking behavior must be governed
 through app-version policy before old mobile clients lose support.
 
+## Implemented Foundation
+
+- [v1-foundation.md](v1-foundation.md) defines the implemented
+  `GET /api/v1/mobile/status` endpoint and the shared success/error envelope.
+
 ## Standard Success Envelope
 
 All mobile API success responses should use the same outer shape:
@@ -72,6 +77,7 @@ Allowed categories include `validation`, `unauthenticated`, `permission`,
 
 Future implementation phases should add one Markdown file per contract group:
 
+- `v1-foundation.md`
 - `v1-auth.md`
 - `v1-bootstrap.md`
 - `v1-tenancy.md`
