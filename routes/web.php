@@ -1,7 +1,10 @@
 <?php
 
 use App\Livewire\Mobile\AccountDeletion;
+use App\Livewire\Mobile\ActivityFeed;
 use App\Livewire\Mobile\AppUnlock;
+use App\Livewire\Mobile\Conflicts\ConflictDetail;
+use App\Livewire\Mobile\Conflicts\ConflictList;
 use App\Livewire\Mobile\ConsentAcceptance;
 use App\Livewire\Mobile\ConsentHistory;
 use App\Livewire\Mobile\Create;
@@ -78,8 +81,11 @@ Route::middleware(['web'])
                 Route::livewire('/settings/developer', SettingsDeveloper::class)->name('settings.developer');
                 Route::livewire('/sessions', Sessions::class)->name('sessions');
                 Route::livewire('/account/delete', AccountDeletion::class)->name('account.delete');
+                Route::livewire('/activity', ActivityFeed::class)->name('activity');
                 Route::livewire('/notifications', Notifications::class)->name('notifications');
                 Route::livewire('/search', Search::class)->name('search');
+                Route::livewire('/sync/conflicts', ConflictList::class)->name('conflicts.index');
+                Route::livewire('/sync/conflicts/{offlineAction}', ConflictDetail::class)->name('conflicts.show');
                 Route::livewire('/debug', Debug::class)->name('debug');
                 Route::livewire('/pin/change', PinChange::class)->name('pin.change');
                 Route::livewire('/pin/remove', PinRemove::class)->name('pin.remove');

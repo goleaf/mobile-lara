@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 use App\Contracts\MobileAuth\MobileTokenStore;
+use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Services\MobileAuth\NativeSecureMobileTokenStore;
 use App\Services\MobileAuth\SessionMobileTokenStore;
+use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\NativeMobileNetworkState;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
 
@@ -22,13 +25,15 @@ class AppServiceProvider extends ServiceProvider
                 default => throw new InvalidArgumentException('Unsupported mobile auth token store driver.'),
             };
         });
+
+        $this->app->bind(MobileNetworkState::class, NativeMobileNetworkState::class);
     }
 
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(MobileLocalDatabase $mobileLocalDatabase): void
     {
-        //
+        $mobileLocalDatabase->ensureFileExists();
     }
 }

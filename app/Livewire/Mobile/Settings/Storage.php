@@ -2,32 +2,129 @@
 
 namespace App\Livewire\Mobile\Settings;
 
+use App\Livewire\Concerns\DispatchesToasts;
+use App\Services\MobileLocal\MobileStorageManager;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Title;
+use Livewire\Component;
+use Throwable;
 
 #[Title('Storage settings')]
-final class Storage extends SettingsSectionPage
+final class Storage extends Component
 {
-    protected const TITLE = 'Storage settings';
+    use DispatchesToasts;
 
-    protected const DESCRIPTION = 'Prepare cache usage, offline payloads, secure values, and local cleanup.';
+    public bool $confirmingClearCache = false;
 
-    protected const STATUS = 'This is a placeholder route for storage controls.';
+    public bool $confirmingResetLocalData = false;
 
-    protected const ITEMS = [
-        [
-            'label' => 'Offline cache',
-            'description' => 'Placeholder for cached screens, queued writes, and local payload limits.',
-            'badge' => 'Next',
-        ],
-        [
-            'label' => 'Secure auth values',
-            'description' => 'Placeholder for token, user id, and expiry storage visibility.',
-            'badge' => 'Secure',
-        ],
-        [
-            'label' => 'Clear local data',
-            'description' => 'Placeholder for clearing cache without deleting the account.',
-            'badge' => 'Next',
-        ],
-    ];
+    public ?string $statusMessage = null;
+
+    public string $statusVariant = 'info';
+
+    private MobileStorageManager $storage;
+
+    public function boot(MobileStorageManager $storage): void
+    {
+        $this->storage = $storage;
+    }
+
+    public function confirmClearCache(): void
+    {
+        $this->confirmingClearCache = true;
+    }
+
+    public function cancelClearCache(): void
+    {
+        $this->confirmingClearCache = false;
+    }
+
+    public function clearCache(): void
+    {
+        if (! $this->confirmingClearCache) {
+            $this->confirmClearCache();
+
+            return;
+        }
+
+        try {
+            $this->storage->clearFileCache();
+            $this->setStatusMessage('File cache cleared.', 'success');
+            $this->toastSuccess('Cached files were cleared from local storage.', 'Cache cleared');
+        } catch (Throwable) {
+            $this->setStatusMessage('File cache could not be cleared.', 'error');
+            $this->toastError('Check the configured mobile cache path and try again.', 'Storage action failed');
+        } finally {
+            $this->confirmingClearCache = false;
+        }
+    }
+
+    public function confirmResetLocalData(): void
+    {
+        $this->confirmingResetLocalData = true;
+    }
+
+    public function cancelResetLocalData(): void
+    {
+        $this->confirmingResetLocalData = false;
+    }
+
+    public function resetLocalData(): void
+    {
+        if (! $this->confirmingResetLocalData) {
+            $this->confirmResetLocalData();
+
+            return;
+        }
+
+        try {
+            $this->storage->resetLocalData();
+            $this->setStatusMessage('Local data reset. The mobile database schema was recreated.', 'success');
+            $this->toastSuccess('The local mobile database has been reset.', 'Local data reset');
+        } catch (Throwable) {
+            $this->setStatusMessage('Local data could not be reset.', 'error');
+            $this->toastError('Check the mobile local database configuration and try again.', 'Storage action failed');
+        } finally {
+            $this->confirmingResetLocalData = false;
+        }
+    }
+
+    public function exportLocalData(): void
+    {
+        $message = $this->storage->exportPlaceholderMessage();
+
+        $this->setStatusMessage($message, 'info');
+        $this->toastInfo($message, 'Export placeholder');
+    }
+
+    public function render(): View
+    {
+        $snapshot = $this->storage->snapshot();
+
+        return view('livewire.mobile.settings.storage', [
+            'storageRows' => [
+                [
+                    'label' => 'Local database size',
+                    'value' => $snapshot['local_database_size'],
+                    'description' => 'SQLite file size placeholder for NativePHP local storage.',
+                ],
+                [
+                    'label' => 'File cache size',
+                    'value' => $snapshot['file_cache_size'],
+                    'description' => 'Laravel file cache estimate placeholder for cached app payloads.',
+                ],
+                [
+                    'label' => 'Export destination',
+                    'value' => $snapshot['export_path'],
+                    'description' => 'Placeholder path for a future local data export file.',
+                ],
+            ],
+        ]);
+    }
+
+    private function setStatusMessage(string $message, string $variant): void
+    {
+        $this->statusMessage = $message;
+        $this->statusVariant = $variant;
+    }
 }

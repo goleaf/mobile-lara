@@ -2,6 +2,7 @@
 
 use App\Livewire\Mobile\AccountDeletion;
 use App\Livewire\Mobile\AppUnlock;
+use App\Livewire\Mobile\Conflicts\ConflictList;
 use App\Livewire\Mobile\ConsentAcceptance;
 use App\Livewire\Mobile\ConsentHistory;
 use App\Livewire\Mobile\Create;
@@ -12,6 +13,7 @@ use App\Livewire\Mobile\EmailVerification;
 use App\Livewire\Mobile\ForgotPassword;
 use App\Livewire\Mobile\Login;
 use App\Livewire\Mobile\Notifications;
+use App\Livewire\Mobile\OfflineBanner;
 use App\Livewire\Mobile\PinChange;
 use App\Livewire\Mobile\PinConfirm;
 use App\Livewire\Mobile\PinCreate;
@@ -95,6 +97,7 @@ test('protected mobile routes redirect guests to login', function (string $route
     'settings support' => 'mobile.settings.support',
     'settings legal' => 'mobile.settings.legal',
     'settings developer' => 'mobile.settings.developer',
+    'conflicts index' => 'mobile.conflicts.index',
     'sessions' => 'mobile.sessions',
     'account delete' => 'mobile.account.delete',
     'notifications' => 'mobile.notifications',
@@ -131,6 +134,7 @@ test('protected mobile routes render for authenticated users', function (string 
     'settings support' => ['mobile.settings.support', SettingsSupport::class, 'Support settings'],
     'settings legal' => ['mobile.settings.legal', SettingsLegal::class, 'Legal settings'],
     'settings developer' => ['mobile.settings.developer', SettingsDeveloper::class, 'Developer settings'],
+    'conflicts index' => ['mobile.conflicts.index', ConflictList::class, 'Sync conflicts'],
     'sessions' => ['mobile.sessions', Sessions::class, 'Sessions'],
     'account delete' => ['mobile.account.delete', AccountDeletion::class, 'Delete account'],
     'notifications' => ['mobile.notifications', Notifications::class, 'Notifications'],
@@ -155,6 +159,7 @@ test('mobile routes render the shared livewire app shell', function (): void {
     $this->get(route('mobile.dashboard'))
         ->assertOk()
         ->assertSee('Dashboard')
+        ->assertSeeLivewire(OfflineBanner::class)
         ->assertSeeLivewire(ToastCenter::class)
         ->assertSee('aria-label="Notifications"', false)
         ->assertSee('aria-label="Profile"', false)

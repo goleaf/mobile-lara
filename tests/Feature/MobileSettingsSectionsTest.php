@@ -24,7 +24,6 @@ test('mobile settings section pages render shared placeholder structure', functi
     'security' => [Security::class, 'Security settings'],
     'notifications' => [Notifications::class, 'Notification settings'],
     'appearance' => [Appearance::class, 'Appearance settings'],
-    'storage' => [Storage::class, 'Storage settings'],
     'sync' => [Sync::class, 'Sync settings'],
     'permissions' => [Permissions::class, 'Permission settings'],
     'support' => [Support::class, 'Support settings'],
@@ -48,4 +47,14 @@ test('settings section pages include connected and placeholder entries', functio
         ->assertSee(route('mobile.debug'), false)
         ->assertSee('Tailwind check')
         ->assertSee(route('dev.tailwind'), false);
+
+    Livewire::test(Sync::class)
+        ->assertSee('Conflict inbox')
+        ->assertSee(route('mobile.conflicts.index'), false);
+
+    Livewire::test(Storage::class)
+        ->assertSee('Storage overview')
+        ->assertSee('Local database size')
+        ->assertSee('Clear cache')
+        ->assertSee(route('mobile.settings'), false);
 });

@@ -21,9 +21,10 @@ final class Sync extends SettingsSectionPage
             'badge' => 'Live',
         ],
         [
-            'label' => 'Pending queue',
-            'description' => 'Placeholder for queued mobile writes and retry attempts.',
-            'badge' => 'Next',
+            'label' => 'Conflict inbox',
+            'description' => 'Review offline writes that need local or remote resolution.',
+            'route' => 'mobile.conflicts.index',
+            'badge' => 'Live',
         ],
         [
             'label' => 'Conflict handling',

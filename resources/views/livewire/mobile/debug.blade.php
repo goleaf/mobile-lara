@@ -1,5 +1,11 @@
 <section class="safe-x safe-pb flex min-h-full flex-col gap-4 py-6">
-    <x-mobile.card title="Runtime">
+    <x-mobile.page-header
+        title="Developer Debug"
+        description="Hidden mobile diagnostics and native capability checks."
+        :back-href="route('mobile.settings.developer')"
+    />
+
+    <x-mobile.card title="Runtime" description="Current app, framework, NativePHP, storage, and worker configuration.">
         <div class="grid gap-3">
             @forelse ($debugRows as $debugRow)
                 <div
@@ -15,6 +21,64 @@
                     description="Debug rows are not available."
                 />
             @endforelse
+        </div>
+    </x-mobile.card>
+
+    <livewire:mobile.network-status />
+
+    <x-mobile.card
+        title="Native tests"
+        description="Quick checks for dialogs, secure storage, camera, notifications, and device hardware."
+    >
+        <div class="grid gap-4">
+            <div class="grid grid-cols-2 gap-3">
+                @forelse ($testActions as $testAction)
+                    <x-mobile.button
+                        wire:key="native-test-action-{{ $testAction['action'] }}"
+                        wire:click="{{ $testAction['action'] }}"
+                        wire:loading.attr="disabled"
+                        wire:target="{{ $testAction['action'] }}"
+                        :variant="$testAction['variant']"
+                        class="min-w-0"
+                    >
+                        <span wire:loading.remove wire:target="{{ $testAction['action'] }}">
+                            {{ $testAction['label'] }}
+                        </span>
+                        <span wire:loading wire:target="{{ $testAction['action'] }}">
+                            Testing
+                        </span>
+                    </x-mobile.button>
+                @empty
+                    <x-mobile.empty-state
+                        title="No tests available"
+                        description="Native test actions are not configured."
+                    />
+                @endforelse
+            </div>
+
+            @if ($dialogStatus)
+                <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-500/30 dark:bg-emerald-500/10">
+                    <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-100">{{ $dialogStatus }}</p>
+                </div>
+            @endif
+
+            @if ($testStatusRows !== [])
+                <dl class="grid gap-3">
+                    @forelse ($testStatusRows as $testStatusRow)
+                        <div
+                            wire:key="test-status-{{ $testStatusRow['key'] }}"
+                            class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        >
+                            <dt class="text-sm font-medium text-app-muted dark:text-zinc-400">{{ $testStatusRow['label'] }}</dt>
+                            <dd class="mt-1 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $testStatusRow['value'] }}</dd>
+                        </div>
+                    @empty
+                        <div class="text-sm text-app-muted dark:text-zinc-400">
+                            No native test results recorded.
+                        </div>
+                    @endforelse
+                </dl>
+            @endif
         </div>
     </x-mobile.card>
 

@@ -1,11 +1,35 @@
 <?php
 
 use App\Livewire\Mobile\Debug;
+use App\Livewire\Mobile\NetworkStatus;
 use Livewire\Livewire;
 
 test('debug screen renders native dialog examples', function (): void {
     Livewire::test(Debug::class)
+        ->assertSee('Developer Debug')
         ->assertSee('Runtime')
+        ->assertSee('App version')
+        ->assertSee('Laravel version')
+        ->assertSee('NativePHP status')
+        ->assertSee('Device model')
+        ->assertSee('OS version')
+        ->assertSee('Battery status')
+        ->assertSee('Charging status')
+        ->assertSee('Network status')
+        ->assertSee('Connection type')
+        ->assertSee('Metered connection')
+        ->assertSee('Network source')
+        ->assertSeeLivewire(NetworkStatus::class)
+        ->assertSee('Database path placeholder')
+        ->assertSee('Queue status placeholder')
+        ->assertSee('Native tests')
+        ->assertSee('Test dialogs')
+        ->assertSee('Test storage')
+        ->assertSee('Test camera')
+        ->assertSee('Test notifications')
+        ->assertSee('Test flashlight')
+        ->assertSee('Test vibration')
+        ->assertSee('Test haptics')
         ->assertSee('Native dialogs')
         ->assertSee('Livewire toasts')
         ->assertSee('Prompt default value')
@@ -20,6 +44,56 @@ test('debug screen renders native dialog examples', function (): void {
         ->assertSee('Info')
         ->assertSee('Action')
         ->assertSee('Persistent');
+});
+
+test('debug native test buttons report browser fallback state', function (string $action, string $property, string $status): void {
+    Livewire::test(Debug::class)
+        ->call($action)
+        ->assertSet($property, $status)
+        ->assertSee($status);
+})->with([
+    'storage' => [
+        'testStorageExample',
+        'storageStatus',
+        'Native secure storage is unavailable in this browser runtime.',
+    ],
+    'camera' => [
+        'testCameraExample',
+        'cameraStatus',
+        'Native camera is unavailable in this browser runtime.',
+    ],
+    'notifications' => [
+        'testNotificationsExample',
+        'notificationStatus',
+        'Native notification APIs are unavailable in this browser runtime.',
+    ],
+    'flashlight' => [
+        'testFlashlightExample',
+        'flashlightStatus',
+        'Flashlight is unavailable outside NativePHP runtime.',
+    ],
+    'vibration' => [
+        'testVibrationExample',
+        'vibrationStatus',
+        'Vibration is unavailable outside NativePHP runtime.',
+    ],
+    'haptics' => [
+        'testHapticsExample',
+        'hapticStatus',
+        'Haptic feedback is unavailable outside NativePHP runtime.',
+    ],
+]);
+
+test('debug native event callbacks update pending camera and notification statuses', function (): void {
+    Livewire::test(Debug::class)
+        ->set('pendingCameraTestId', 'debug-camera-test')
+        ->call('handleDebugPhotoTaken', '/tmp/native-avatar.jpg', 'image/jpeg', 'debug-camera-test')
+        ->assertSet('pendingCameraTestId', null)
+        ->assertSet('cameraStatus', 'Camera returned native-avatar.jpg (image/jpeg).')
+        ->set('pendingNotificationTestId', 'debug-push-test')
+        ->call('handleDebugPushTokenGenerated', 'abcdef1234567890', 'debug-push-test')
+        ->assertSet('pendingNotificationTestId', null)
+        ->assertSet('notificationStatus', 'Push token generated: abcdef...7890.');
 });
 
 test('debug dialog actions update the last payload', function (string $action, string $type, string $status): void {

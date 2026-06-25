@@ -1,0 +1,147 @@
+<?php
+
+use App\Models\MobileLocalOfflineAction;
+use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\OfflineActionRepository;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+
+beforeEach(function (): void {
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-06-25 12:00:00'));
+
+    $this->mobileLocalDatabasePath = storage_path('framework/testing/mobile-local-offline-actions.sqlite');
+
+    File::ensureDirectoryExists(dirname($this->mobileLocalDatabasePath));
+
+    if (File::exists($this->mobileLocalDatabasePath)) {
+        File::delete($this->mobileLocalDatabasePath);
+    }
+
+    config([
+        'database.connections.mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
+    ]);
+
+    app(MobileLocalDatabase::class)->ensureFileExists();
+
+    Artisan::call('migrate', [
+        '--database' => 'mobile_local',
+        '--path' => 'database/migrations/mobile-local',
+        '--force' => true,
+    ]);
+});
+
+afterEach(function (): void {
+    CarbonImmutable::setTestNow();
+
+    if (File::exists($this->mobileLocalDatabasePath)) {
+        File::delete($this->mobileLocalDatabasePath);
+    }
+});
+
+test('offline action repository enqueues local sync actions', function (): void {
+    $offlineAction = app(OfflineActionRepository::class)->enqueue(
+        actionType: 'profile.update',
+        endpoint: '/api/mobile/profile',
+        method: 'patch',
+        payload: ['name' => 'Ada'],
+        headers: ['X-Mobile-Client' => 'nativephp'],
+    );
+
+    expect($offlineAction)->toBeInstanceOf(MobileLocalOfflineAction::class)
+        ->and($offlineAction->getTable())->toBe('offline_actions')
+        ->and($offlineAction->action_type)->toBe('profile.update')
+        ->and($offlineAction->endpoint)->toBe('/api/mobile/profile')
+        ->and($offlineAction->method)->toBe('PATCH')
+        ->and($offlineAction->payload)->toBe(['name' => 'Ada'])
+        ->and($offlineAction->headers)->toBe(['X-Mobile-Client' => 'nativephp'])
+        ->and($offlineAction->status)->toBe(MobileLocalOfflineAction::STATUS_PENDING)
+        ->and($offlineAction->attempts)->toBe(0)
+        ->and($offlineAction->available_at?->equalTo(CarbonImmutable::now()))->toBeTrue()
+        ->and($offlineAction->created_at?->equalTo(CarbonImmutable::now()))->toBeTrue()
+        ->and($offlineAction->completed_at)->toBeNull();
+});
+
+test('offline action repository returns due actions in queue order', function (): void {
+    $repository = app(OfflineActionRepository::class);
+
+    $dueLater = $repository->enqueue(
+        actionType: 'settings.sync',
+        endpoint: '/api/mobile/settings',
+        availableAt: CarbonImmutable::now()->addMinutes(10),
+    );
+
+    $dueNow = $repository->enqueue(
+        actionType: 'activity.sync',
+        endpoint: '/api/mobile/activity',
+        availableAt: CarbonImmutable::now(),
+    );
+
+    $completed = $repository->markCompleted($repository->enqueue(
+        actionType: 'profile.sync',
+        endpoint: '/api/mobile/profile',
+        availableAt: CarbonImmutable::now(),
+    ));
+
+    $due = $repository->due(limit: 10);
+
+    expect($due)->toHaveCount(1)
+        ->and($due->first()?->is($dueNow))->toBeTrue()
+        ->and($due->contains(fn (MobileLocalOfflineAction $action): bool => $action->is($dueLater)))->toBeFalse()
+        ->and($due->contains(fn (MobileLocalOfflineAction $action): bool => $action->is($completed)))->toBeFalse();
+});
+
+test('offline action repository manages processing failure retry and completion states', function (): void {
+    $repository = app(OfflineActionRepository::class);
+
+    $offlineAction = $repository->enqueue(
+        actionType: 'notification.read',
+        endpoint: '/api/mobile/notifications/123/read',
+        method: 'post',
+    );
+
+    $processing = $repository->markProcessing($offlineAction);
+
+    expect($processing->status)->toBe(MobileLocalOfflineAction::STATUS_PROCESSING);
+
+    $failed = $repository->markFailed(
+        offlineAction: $processing,
+        lastError: 'Network unavailable',
+        availableAt: CarbonImmutable::now()->addMinute(),
+    );
+
+    expect($failed->status)->toBe(MobileLocalOfflineAction::STATUS_FAILED)
+        ->and($failed->attempts)->toBe(1)
+        ->and($failed->last_error)->toBe('Network unavailable')
+        ->and($failed->available_at?->equalTo(CarbonImmutable::now()->addMinute()))->toBeTrue()
+        ->and($repository->due())->toHaveCount(0);
+
+    $retry = $repository->releaseForRetry($failed);
+
+    expect($retry->status)->toBe(MobileLocalOfflineAction::STATUS_PENDING)
+        ->and($repository->due())->toHaveCount(1);
+
+    $completed = $repository->markCompleted($retry);
+
+    expect($completed->status)->toBe(MobileLocalOfflineAction::STATUS_COMPLETED)
+        ->and($completed->last_error)->toBeNull()
+        ->and($completed->completed_at?->equalTo(CarbonImmutable::now()))->toBeTrue();
+});
+
+test('offline action repository can list actions by status and cancel actions', function (): void {
+    $repository = app(OfflineActionRepository::class);
+
+    $pending = $repository->enqueue(
+        actionType: 'search.cache',
+        endpoint: '/api/mobile/search/cache',
+    );
+
+    $cancelled = $repository->cancel($pending, 'User cleared queue');
+
+    expect($cancelled->status)->toBe(MobileLocalOfflineAction::STATUS_CANCELLED)
+        ->and($cancelled->last_error)->toBe('User cleared queue')
+        ->and($repository->byStatus(MobileLocalOfflineAction::STATUS_CANCELLED))->toHaveCount(1)
+        ->and($repository->byStatus(MobileLocalOfflineAction::STATUS_PENDING))->toHaveCount(0);
+});

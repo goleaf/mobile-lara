@@ -128,6 +128,12 @@ class Dashboard extends Component
                 'route' => 'mobile.search',
             ],
             [
+                'key' => 'activity',
+                'label' => 'Activity',
+                'description' => 'Review local device events.',
+                'route' => 'mobile.activity',
+            ],
+            [
                 'key' => 'notifications',
                 'label' => 'Notifications',
                 'description' => 'Review alerts waiting on this device.',

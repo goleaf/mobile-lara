@@ -74,21 +74,7 @@
                 </section>
 
                 <div class="grid gap-3 sm:grid-cols-2">
-                    <x-mobile.card title="Sync status" description="{{ $syncStatus['description'] }}">
-                        <div class="flex items-center justify-between gap-4">
-                            <div>
-                                <p class="text-2xl font-semibold text-app-ink dark:text-zinc-100">{{ $syncStatus['label'] }}</p>
-                                <p class="mt-1 text-sm text-app-muted dark:text-zinc-400">Last sync {{ $syncStatus['last_synced_label'] }}</p>
-                            </div>
-                            <x-mobile.badge :variant="$syncStatus['variant']" dot>
-                                {{ $syncStatus['queued_changes'] }} queued
-                            </x-mobile.badge>
-                        </div>
-
-                        <x-slot:footer>
-                            <p class="text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $syncStatus['next_sync_label'] }}</p>
-                        </x-slot:footer>
-                    </x-mobile.card>
+                    <livewire:mobile.sync-status />
 
                     <x-mobile.card title="Offline status" description="{{ $offlineStatus['description'] }}">
                         <div class="flex items-center justify-between gap-4">

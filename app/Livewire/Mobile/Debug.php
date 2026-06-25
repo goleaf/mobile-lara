@@ -2,16 +2,27 @@
 
 namespace App\Livewire\Mobile;
 
+use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Services\Native\DeviceService;
 use App\Services\Native\NativeDialogService;
+use Composer\InstalledVersions;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Native\Mobile\Attributes\OnNative;
+use Native\Mobile\Events\Camera\PermissionDenied;
+use Native\Mobile\Events\Camera\PhotoCancelled;
+use Native\Mobile\Events\Camera\PhotoTaken;
+use Native\Mobile\Events\PushNotification\TokenGenerated;
+use Native\Mobile\Facades\Camera;
+use Native\Mobile\PushNotifications;
+use Native\Mobile\SecureStorage;
 
-#[Title('Debug')]
+#[Title('Developer Debug')]
 class Debug extends Component
 {
     use DispatchesToasts;
@@ -25,14 +36,36 @@ class Debug extends Component
 
     public ?string $toastActionStatus = null;
 
+    public ?string $storageStatus = null;
+
+    public ?string $cameraStatus = null;
+
+    public ?string $notificationStatus = null;
+
+    public ?string $flashlightStatus = null;
+
+    public ?string $vibrationStatus = null;
+
+    public ?string $hapticStatus = null;
+
+    public ?string $pendingCameraTestId = null;
+
+    public ?string $pendingNotificationTestId = null;
+
     #[Validate('nullable|string|max:80')]
     public string $promptValue = 'Demo value';
 
     private NativeDialogService $dialogs;
 
-    public function boot(NativeDialogService $dialogs): void
+    private MobileNetworkState $networkState;
+
+    private DeviceService $devices;
+
+    public function boot(NativeDialogService $dialogs, MobileNetworkState $networkState, DeviceService $devices): void
     {
         $this->dialogs = $dialogs;
+        $this->networkState = $networkState;
+        $this->devices = $devices;
     }
 
     public function showAlertExample(): void
@@ -144,6 +177,177 @@ class Debug extends Component
         );
     }
 
+    public function testStorageExample(): void
+    {
+        if (! $this->nativeBridgeIsAvailable()) {
+            $this->storageStatus = 'Native secure storage is unavailable in this browser runtime.';
+            $this->toastWarning($this->storageStatus, 'Storage fallback active');
+
+            return;
+        }
+
+        $key = 'debug.storage.'.Str::uuid()->toString();
+        $value = 'debug-'.Str::random(12);
+        $secureStorage = new SecureStorage;
+
+        $stored = $secureStorage->set($key, $value);
+        $readValue = $secureStorage->get($key);
+        $deleted = $secureStorage->delete($key);
+
+        if ($stored && is_string($readValue) && hash_equals($value, $readValue) && $deleted) {
+            $this->storageStatus = 'Native secure storage write/read/delete passed.';
+            $this->toastSuccess($this->storageStatus, 'Storage OK');
+
+            return;
+        }
+
+        $this->storageStatus = 'Native secure storage test failed.';
+        $this->toastError($this->storageStatus, 'Storage failed');
+    }
+
+    public function testCameraExample(): void
+    {
+        if (! $this->nativeBridgeIsAvailable()) {
+            $this->cameraStatus = 'Native camera is unavailable in this browser runtime.';
+            $this->toastInfo($this->cameraStatus, 'Camera fallback active');
+
+            return;
+        }
+
+        $testId = 'debug-camera-'.Str::uuid()->toString();
+        $this->pendingCameraTestId = $testId;
+
+        $started = Camera::getPhoto(['quality' => 80])
+            ->id($testId)
+            ->remember()
+            ->start();
+
+        if (! $started) {
+            $this->pendingCameraTestId = null;
+            $this->cameraStatus = 'Unable to open the native camera.';
+            $this->toastError($this->cameraStatus, 'Camera failed');
+
+            return;
+        }
+
+        $this->cameraStatus = 'Native camera opened. Capture or cancel on the device.';
+        $this->toastInfo($this->cameraStatus, 'Camera opened');
+    }
+
+    public function testNotificationsExample(): void
+    {
+        if (! $this->nativeBridgeIsAvailable()) {
+            $this->notificationStatus = 'Native notification APIs are unavailable in this browser runtime.';
+            $this->toastInfo($this->notificationStatus, 'Notifications fallback active');
+
+            return;
+        }
+
+        $pushNotifications = new PushNotifications;
+        $permissionStatus = $pushNotifications->checkPermission() ?: 'unknown';
+        $token = $pushNotifications->getToken();
+        $testId = 'debug-notifications-'.Str::uuid()->toString();
+
+        $this->pendingNotificationTestId = $testId;
+        $pushNotifications->enroll()->id($testId)->remember()->enroll();
+
+        $this->notificationStatus = $token === null
+            ? "Push permission requested. Current status: {$permissionStatus}. No token yet."
+            : 'Push permission requested. Current status: '.$permissionStatus.'. Token: '.$this->shortToken($token).'.';
+
+        $this->toastInfo($this->notificationStatus, 'Notifications requested');
+    }
+
+    public function testFlashlightExample(): void
+    {
+        $result = $this->devices->toggleFlashlight();
+        $this->flashlightStatus = $result['message'];
+
+        if ($result['success']) {
+            $this->toastSuccess($this->flashlightStatus, 'Flashlight OK');
+
+            return;
+        }
+
+        $this->toastWarning($this->flashlightStatus, 'Flashlight unavailable');
+    }
+
+    public function testVibrationExample(): void
+    {
+        $result = $this->devices->vibrate();
+        $this->vibrationStatus = $result['message'];
+
+        if ($result['success']) {
+            $this->toastSuccess($this->vibrationStatus, 'Vibration OK');
+
+            return;
+        }
+
+        $this->toastWarning($this->vibrationStatus, 'Vibration unavailable');
+    }
+
+    public function testHapticsExample(): void
+    {
+        $result = $this->devices->hapticFeedback();
+        $this->hapticStatus = $result['message'];
+
+        if ($result['success']) {
+            $this->toastSuccess($this->hapticStatus, 'Haptics OK');
+
+            return;
+        }
+
+        $this->toastWarning($this->hapticStatus, 'Haptics unavailable');
+    }
+
+    #[OnNative(PhotoTaken::class)]
+    public function handleDebugPhotoTaken(string $path, string $mimeType = 'image/jpeg', ?string $id = null): void
+    {
+        if (! $this->matchesPendingCameraTest($id)) {
+            return;
+        }
+
+        $this->pendingCameraTestId = null;
+        $this->cameraStatus = 'Camera returned '.basename($path)." ({$mimeType}).";
+        $this->toastSuccess($this->cameraStatus, 'Camera OK');
+    }
+
+    #[OnNative(PhotoCancelled::class)]
+    public function handleDebugPhotoCancelled(bool $cancelled = true, ?string $id = null): void
+    {
+        if (! $cancelled || ! $this->matchesPendingCameraTest($id)) {
+            return;
+        }
+
+        $this->pendingCameraTestId = null;
+        $this->cameraStatus = 'Camera test cancelled.';
+        $this->toastInfo($this->cameraStatus, 'Camera cancelled');
+    }
+
+    #[OnNative(PermissionDenied::class)]
+    public function handleDebugPermissionDenied(string $action, ?string $id = null): void
+    {
+        if (! $this->matchesPendingCameraTest($id)) {
+            return;
+        }
+
+        $this->pendingCameraTestId = null;
+        $this->cameraStatus = "Native {$action} permission denied.";
+        $this->toastError($this->cameraStatus, 'Permission denied');
+    }
+
+    #[OnNative(TokenGenerated::class)]
+    public function handleDebugPushTokenGenerated(string $token, ?string $id = null): void
+    {
+        if (! $this->matchesPendingNotificationTest($id)) {
+            return;
+        }
+
+        $this->pendingNotificationTestId = null;
+        $this->notificationStatus = 'Push token generated: '.$this->shortToken($token).'.';
+        $this->toastSuccess($this->notificationStatus, 'Notifications OK');
+    }
+
     #[On('debug-toast-action')]
     public function recordToastAction(string $status): void
     {
@@ -156,6 +360,8 @@ class Debug extends Component
             'debugRows' => $this->debugRows(),
             'dialogActions' => $this->dialogActions(),
             'dialogResultRows' => $this->dialogResultRows(),
+            'testActions' => $this->testActions(),
+            'testStatusRows' => $this->testStatusRows(),
             'toastActions' => $this->toastActions(),
         ]);
     }
@@ -174,16 +380,29 @@ class Debug extends Component
      */
     private function debugRows(): array
     {
+        $networkStatus = $this->networkState->status();
+        $deviceSnapshot = $this->devices->snapshot();
+
         return [
             [
-                'key' => 'laravel',
-                'label' => 'Laravel',
+                'key' => 'app-version',
+                'label' => 'App version',
+                'value' => $deviceSnapshot['app_version'],
+            ],
+            [
+                'key' => 'laravel-version',
+                'label' => 'Laravel version',
                 'value' => app()->version(),
             ],
             [
                 'key' => 'livewire',
                 'label' => 'Livewire',
                 'value' => '4.x',
+            ],
+            [
+                'key' => 'nativephp-status',
+                'label' => 'NativePHP status',
+                'value' => $this->nativePhpStatus(),
             ],
             [
                 'key' => 'nativephp-app-id',
@@ -196,9 +415,54 @@ class Debug extends Component
                 'value' => (string) config('nativephp.start_url', 'Not configured'),
             ],
             [
-                'key' => 'native-bridge',
-                'label' => 'Native bridge',
-                'value' => function_exists('nativephp_call') ? 'Available' : 'Browser fallback',
+                'key' => 'device-model',
+                'label' => 'Device model',
+                'value' => $deviceSnapshot['device_model'],
+            ],
+            [
+                'key' => 'os-version',
+                'label' => 'OS version',
+                'value' => $deviceSnapshot['os_version'],
+            ],
+            [
+                'key' => 'battery-status',
+                'label' => 'Battery status',
+                'value' => $deviceSnapshot['battery_status'],
+            ],
+            [
+                'key' => 'charging-status',
+                'label' => 'Charging status',
+                'value' => $deviceSnapshot['charging_status'],
+            ],
+            [
+                'key' => 'network-status',
+                'label' => 'Network status',
+                'value' => $networkStatus->stateLabel(),
+            ],
+            [
+                'key' => 'network-type',
+                'label' => 'Connection type',
+                'value' => $networkStatus->connectionTypeLabel(),
+            ],
+            [
+                'key' => 'network-metered',
+                'label' => 'Metered connection',
+                'value' => $networkStatus->meteredLabel(),
+            ],
+            [
+                'key' => 'network-source',
+                'label' => 'Network source',
+                'value' => $networkStatus->sourceLabel(),
+            ],
+            [
+                'key' => 'database-path',
+                'label' => 'Database path placeholder',
+                'value' => $this->databasePath(),
+            ],
+            [
+                'key' => 'queue-status',
+                'label' => 'Queue status placeholder',
+                'value' => $this->queueStatus(),
             ],
         ];
     }
@@ -232,6 +496,50 @@ class Debug extends Component
             [
                 'label' => 'Snackbar',
                 'action' => 'showSnackbarExample',
+                'variant' => 'ghost',
+            ],
+        ];
+    }
+
+    /**
+     * @return list<array{label: string, action: string, variant: string}>
+     */
+    private function testActions(): array
+    {
+        return [
+            [
+                'label' => 'Test dialogs',
+                'action' => 'showAlertExample',
+                'variant' => 'primary',
+            ],
+            [
+                'label' => 'Test storage',
+                'action' => 'testStorageExample',
+                'variant' => 'secondary',
+            ],
+            [
+                'label' => 'Test camera',
+                'action' => 'testCameraExample',
+                'variant' => 'secondary',
+            ],
+            [
+                'label' => 'Test notifications',
+                'action' => 'testNotificationsExample',
+                'variant' => 'accent',
+            ],
+            [
+                'label' => 'Test flashlight',
+                'action' => 'testFlashlightExample',
+                'variant' => 'secondary',
+            ],
+            [
+                'label' => 'Test vibration',
+                'action' => 'testVibrationExample',
+                'variant' => 'secondary',
+            ],
+            [
+                'label' => 'Test haptics',
+                'action' => 'testHapticsExample',
                 'variant' => 'ghost',
             ],
         ];
@@ -313,5 +621,107 @@ class Debug extends Component
         }
 
         return (string) $value;
+    }
+
+    /**
+     * @return list<array{key: string, label: string, value: string}>
+     */
+    private function testStatusRows(): array
+    {
+        $rows = [];
+
+        foreach ([
+            'storage' => ['Storage', $this->storageStatus],
+            'camera' => ['Camera', $this->cameraStatus],
+            'notifications' => ['Notifications', $this->notificationStatus],
+            'flashlight' => ['Flashlight', $this->flashlightStatus],
+            'vibration' => ['Vibration', $this->vibrationStatus],
+            'haptics' => ['Haptics', $this->hapticStatus],
+        ] as $key => [$label, $value]) {
+            if (! is_string($value) || $value === '') {
+                continue;
+            }
+
+            $rows[] = [
+                'key' => $key,
+                'label' => $label,
+                'value' => $value,
+            ];
+        }
+
+        return $rows;
+    }
+
+    private function nativeBridgeIsAvailable(): bool
+    {
+        return function_exists('nativephp_call')
+            && (
+                config('nativephp-internal.running') === true
+                || getenv('JUMP_BRIDGE_PORT') !== false
+            );
+    }
+
+    private function nativePhpStatus(): string
+    {
+        $version = InstalledVersions::isInstalled('nativephp/mobile')
+            ? (string) InstalledVersions::getPrettyVersion('nativephp/mobile')
+            : 'installed';
+
+        if (config('nativephp-internal.running') === true) {
+            return "Native runtime active ({$version})";
+        }
+
+        if (getenv('JUMP_BRIDGE_PORT') !== false) {
+            return "Jump bridge configured ({$version})";
+        }
+
+        return function_exists('nativephp_call')
+            ? "Browser fallback, bridge helper loaded ({$version})"
+            : "Browser fallback ({$version})";
+    }
+
+    private function databasePath(): string
+    {
+        $connection = (string) config('database.default', 'sqlite');
+        $database = config("database.connections.{$connection}.database");
+
+        if (! is_scalar($database) || trim((string) $database) === '') {
+            return "{$connection}: path placeholder not configured";
+        }
+
+        return "{$connection}: ".(string) $database;
+    }
+
+    private function queueStatus(): string
+    {
+        $connection = (string) config('queue.default', 'sync');
+        $queue = (string) config("queue.connections.{$connection}.queue", 'default');
+
+        return "{$connection} connection, {$queue} queue";
+    }
+
+    private function matchesPendingCameraTest(?string $id): bool
+    {
+        return is_string($id)
+            && is_string($this->pendingCameraTestId)
+            && hash_equals($this->pendingCameraTestId, $id);
+    }
+
+    private function matchesPendingNotificationTest(?string $id): bool
+    {
+        return is_string($id)
+            && is_string($this->pendingNotificationTestId)
+            && hash_equals($this->pendingNotificationTestId, $id);
+    }
+
+    private function shortToken(string $token): string
+    {
+        $token = trim($token);
+
+        if (Str::length($token) <= 12) {
+            return $token;
+        }
+
+        return Str::substr($token, 0, 6).'...'.Str::substr($token, -4);
     }
 }

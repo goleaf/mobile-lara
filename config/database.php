@@ -44,6 +44,18 @@ return [
             'transaction_mode' => 'DEFERRED',
         ],
 
+        'mobile_local' => [
+            'driver' => 'sqlite',
+            'url' => env('NATIVEPHP_LOCAL_DB_URL'),
+            'database' => env('NATIVEPHP_LOCAL_DB_DATABASE', storage_path('app/mobile/mobile-local.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('NATIVEPHP_LOCAL_DB_FOREIGN_KEYS', true),
+            'busy_timeout' => null,
+            'journal_mode' => null,
+            'synchronous' => null,
+            'transaction_mode' => 'DEFERRED',
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),

@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    protected $connection = 'mobile_local';
+
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::connection($this->connection)->create('mobile_local_settings', function (Blueprint $table) {
+            $table->id();
+            $table->string('settings_key')->default('default')->unique();
+            $table->string('theme', 32)->default('system');
+            $table->string('language', 16)->default('en');
+            $table->json('notification_preferences')->nullable();
+            $table->json('sync_settings')->nullable();
+            $table->boolean('biometric_enabled')->default(false);
+            $table->boolean('pin_enabled')->default(false);
+            $table->timestamp('last_sync_at')->nullable()->index();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::connection($this->connection)->dropIfExists('mobile_local_settings');
+    }
+};
