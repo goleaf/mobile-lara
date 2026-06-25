@@ -2,7 +2,11 @@
 
 Updated: 2026-06-26
 
-Status: documented. Endpoint is planned for Phase 11.
+Status: partially implemented. `GET /api/v1/mobile/app-version` returns
+resolved app-version and maintenance policy for reported platform/version
+context, and bootstrap uses the same resolver. Admin management UI, scoped
+tenant/cohort rules, audit workflows, rollback, support reports, and mobile
+force-update/maintenance screens remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 protects the product promise by keeping stale or unsafe mobile builds under
@@ -90,7 +94,7 @@ operate safely. Admin/API owns minimum versions, optional update prompts,
 forced updates, blocked versions, maintenance state, support messaging, and
 rollback.
 
-## Planned Route
+## Implemented Route
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -111,6 +115,12 @@ Allowed states include `current`, `supported`, `optional_update`,
 `recommended_update`, `deprecated`, `force_update`, `blocked`,
 `maintenance`, `internal_only`, and `stale_client`.
 
+The current implementation supports foundation defaults, platform-specific or
+global active policies, minimum-supported force-update decisions, optional
+update decisions from minimum recommended versions, explicit blocked versions,
+store links, maintenance state, retry timing, support links, and safe allowed
+actions.
+
 ## Gates
 
 Version state can differ by platform, tenant, feature risk, API contract,
@@ -129,5 +139,18 @@ stale-client denial, and support-visible impact.
 
 ## Tests
 
-Phase 11 should verify minimum version checks, optional update banners, forced
-update blocks, maintenance responses, and rollback behavior.
+Automated coverage:
+
+- `apps/api-admin/tests/Feature/MobileAppVersionPolicyTest.php`
+- `apps/api-admin/tests/Feature/MobileBootstrapApiTest.php`
+
+Fresh checks:
+
+```bash
+cd apps/api-admin && php artisan test --compact --filter=MobileAppVersionPolicyTest
+cd apps/api-admin && php artisan test --compact --filter=MobileBootstrapApiTest
+```
+
+Future Phase 11 coverage should add admin/audit/rollback workflows,
+tenant/cohort/version-range scoping, support-visible impact reporting, and
+mobile force-update or maintenance UI behavior.

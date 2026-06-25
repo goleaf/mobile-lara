@@ -143,6 +143,8 @@ Implemented foundation:
   available tenant data, role-derived permission payloads, resolved feature
   flags, resolved remote config, and explicit foundation defaults for pending
   subscription, notification, and sync modules.
+- `GET /api/v1/mobile/app-version` returns resolved app-version, update, and
+  maintenance policy for the reported mobile platform/version context.
 - `GET /api/v1/mobile/config` returns resolved mobile-safe remote config with
   tenant context, freshness metadata, compatibility state, and deterministic
   config version metadata.
@@ -163,6 +165,10 @@ Implemented foundation:
   first remote config data model.
 - `App\Services\MobileConfig\MobileRemoteConfigResolver` merges foundation,
   global, and tenant config into resolved mobile-safe config payloads.
+- `mobile_app_version_policies` provides the first version and maintenance
+  policy data model.
+- `App\Services\MobileVersion\MobileAppVersionPolicyResolver` resolves
+  supported, optional-update, force-update, blocked, and maintenance outcomes.
 - `GET /admin/login` renders the admin login form.
 - `POST /admin/login` authenticates platform-admin users.
 - `POST /admin/logout` invalidates the admin session.
@@ -179,16 +185,16 @@ Implemented foundation:
 - Blade layouts exist for admin, auth, and dashboard surfaces.
 - Reusable admin Blade components exist for section headings and status badges.
 - Pest tests cover the dashboard route, root redirect, feature flag admin
-  controls, remote config resolution, success envelope, error envelope,
-  contract catalogue, and contract Markdown file coverage.
+  controls, remote config resolution, app version policy, success envelope,
+  error envelope, contract catalogue, and contract Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   resource policies, and broader control-plane audit.
 - Tenant/user feature override UI, feature impact previews, remote config admin
-  UI/audit/rollback, app versions, sync, notifications, records/content,
-  support, billing, and reports.
+  UI/audit/rollback, app version admin UI/audit/rollback, sync, notifications,
+  records/content, support, billing, and reports.
 - Protected domain routes for records/content, sync, notifications, support,
   billing, reports, diagnostics, and feature/config/version policies.
 

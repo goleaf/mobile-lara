@@ -14,6 +14,7 @@ final class MobileBootstrapPayload
      * @param  array<string, mixed>  $permissions
      * @param  array<string, mixed>  $features
      * @param  array<string, mixed>  $remoteConfig
+     * @param  array<string, mixed>  $appVersion
      * @return array<string, mixed>
      */
     public static function make(
@@ -24,6 +25,7 @@ final class MobileBootstrapPayload
         array $permissions = [],
         array $features = [],
         array $remoteConfig = [],
+        array $appVersion = [],
     ): array {
         $now = CarbonImmutable::now();
 
@@ -35,12 +37,8 @@ final class MobileBootstrapPayload
             'permissions' => $permissions,
             'features' => $features ?: self::foundationFeatures($now),
             'remote_config' => $remoteConfig ?: self::foundationRemoteConfig($now),
-            'app_version' => self::appVersion($request),
-            'maintenance' => [
-                'enabled' => false,
-                'message' => null,
-                'support_url' => null,
-            ],
+            'app_version' => $appVersion ?: self::appVersion($request),
+            'maintenance' => $appVersion['maintenance'] ?? self::maintenance(),
             'subscription' => [
                 'status' => 'active',
                 'plan' => 'foundation',
@@ -190,22 +188,45 @@ final class MobileBootstrapPayload
     /**
      * @return array<string, mixed>
      */
+    private static function maintenance(): array
+    {
+        return [
+            'enabled' => false,
+            'message' => null,
+            'support_url' => null,
+            'retry_after' => null,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
     private static function appVersion(Request $request): array
     {
         $reportedVersion = $request->header('X-Mobile-App-Version');
         $reportedVersionCode = $request->header('X-Mobile-App-Version-Code');
 
         return [
+            'state' => 'supported',
             'reported_version' => is_string($reportedVersion) && trim($reportedVersion) !== '' ? $reportedVersion : null,
             'reported_version_code' => is_string($reportedVersionCode) && trim($reportedVersionCode) !== '' ? $reportedVersionCode : null,
             'status' => 'supported',
             'minimum_supported_version' => '1.0.0',
+            'minimum_recommended_version' => null,
+            'latest_version' => null,
             'optional_update' => false,
             'force_update' => false,
+            'store_url' => null,
             'store_urls' => [
                 'ios' => null,
                 'android' => null,
             ],
+            'message' => null,
+            'support_url' => null,
+            'retry_after' => null,
+            'allowed_actions' => ['continue', 'logout', 'support'],
+            'logout_allowed' => true,
+            'maintenance' => self::maintenance(),
         ];
     }
 }

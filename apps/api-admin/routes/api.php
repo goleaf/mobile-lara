@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Mobile\AppVersionController;
 use App\Http\Controllers\Api\V1\Mobile\Auth\CurrentUserController;
 use App\Http\Controllers\Api\V1\Mobile\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Mobile\Auth\LogoutAllDevicesController;
@@ -24,6 +25,7 @@ Route::prefix('v1')
             ->group(function (): void {
                 Route::get('/status', StatusController::class)->name('status');
                 Route::get('/contracts', ContractIndexController::class)->name('contracts.index');
+                Route::get('/app-version', AppVersionController::class)->name('app-version');
 
                 Route::middleware('mobile.auth')->group(function (): void {
                     Route::get('/bootstrap', BootstrapController::class)->name('bootstrap');

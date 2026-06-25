@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\MobileConfig\MobileRemoteConfigResolver;
 use App\Services\MobileFeatures\MobileFeatureResolver;
 use App\Services\MobilePermissions\MobilePermissionResolver;
+use App\Services\MobileVersion\MobileAppVersionPolicyResolver;
 use App\Services\Tenancy\MobileTenantContextResolver;
 use App\Support\Api\MobileApiResponse;
 use App\Support\Api\MobileBootstrapPayload;
@@ -21,6 +22,7 @@ final class BootstrapController extends Controller
         private MobilePermissionResolver $permissions,
         private MobileFeatureResolver $features,
         private MobileRemoteConfigResolver $config,
+        private MobileAppVersionPolicyResolver $versions,
     ) {}
 
     /**
@@ -45,6 +47,7 @@ final class BootstrapController extends Controller
         $permissions = $this->permissions->resolve($user, $tenantContext);
         $features = $this->features->resolve($user, $tenantContext, $permissions);
         $remoteConfig = $this->config->resolve($user, $tenantContext);
+        $appVersion = $this->versions->resolve($request);
 
         return MobileApiResponse::success(
             MobileBootstrapPayload::make(
@@ -55,6 +58,7 @@ final class BootstrapController extends Controller
                 $permissions,
                 $features,
                 $remoteConfig,
+                $appVersion,
             ),
             MobileBootstrapPayload::meta($features, $remoteConfig),
         );

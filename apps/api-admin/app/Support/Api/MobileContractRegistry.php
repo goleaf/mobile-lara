@@ -71,8 +71,8 @@ final class MobileContractRegistry
             self::group('remote_config', 'v1-remote-config.md', 'partial', 'Resolved mobile-safe config values, freshness, compatibility, and fallback metadata.', [
                 self::route('GET', '/config', 'implemented', 'mobile-token'),
             ]),
-            self::group('app_version_maintenance', 'v1-app-version-maintenance.md', 'documented', 'Minimum version, optional update, force update, blocked, deprecated, and maintenance decisions.', [
-                self::route('GET', '/app-version', 'planned', 'public-with-mobile-context'),
+            self::group('app_version_maintenance', 'v1-app-version-maintenance.md', 'partial', 'Minimum version, optional update, force update, blocked, deprecated, and maintenance decisions.', [
+                self::route('GET', '/app-version', 'implemented', 'public-with-mobile-context'),
             ]),
             self::group('records', 'v1-records.md', 'documented', 'Tenant-scoped records, categories, tags, notes, attachment metadata, and activity timeline.', [
                 self::route('GET', '/records', 'planned', 'mobile-token'),
