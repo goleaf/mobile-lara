@@ -83,6 +83,7 @@ class Settings extends Component
     public function render(): View
     {
         return view('livewire.mobile.settings', [
+            'settingsSections' => $this->hasSettings ? $this->settingsSections() : [],
             'settings' => $this->hasSettings ? [
                 ['label' => 'Notifications', 'property' => 'pushNotifications', 'description' => 'Allow mobile push and in-app alerts.'],
                 ['label' => 'Privacy', 'property' => 'privacyMode', 'description' => 'Reduce visible details in shared spaces.'],
@@ -104,5 +105,84 @@ class Settings extends Component
     {
         $this->toastMessage = $message;
         $this->toastVariant = $variant;
+    }
+
+    /**
+     * @return list<array{key: string, title: string, description: string, route: string, badge: string}>
+     */
+    private function settingsSections(): array
+    {
+        return [
+            [
+                'key' => 'account',
+                'title' => 'Account',
+                'description' => 'Profile, sessions, and account lifecycle.',
+                'route' => 'mobile.settings.account',
+                'badge' => 'Core',
+            ],
+            [
+                'key' => 'security',
+                'title' => 'Security',
+                'description' => 'PIN, biometrics, unlock, and protected access.',
+                'route' => 'mobile.settings.security',
+                'badge' => 'Secure',
+            ],
+            [
+                'key' => 'notifications',
+                'title' => 'Notifications',
+                'description' => 'Push, in-app alerts, quiet hours, and previews.',
+                'route' => 'mobile.settings.notifications',
+                'badge' => 'Alerts',
+            ],
+            [
+                'key' => 'appearance',
+                'title' => 'Appearance',
+                'description' => 'Theme, density, text scale, and display preferences.',
+                'route' => 'mobile.settings.appearance',
+                'badge' => 'UI',
+            ],
+            [
+                'key' => 'storage',
+                'title' => 'Storage',
+                'description' => 'Offline cache, secure values, and local cleanup.',
+                'route' => 'mobile.settings.storage',
+                'badge' => 'Device',
+            ],
+            [
+                'key' => 'sync',
+                'title' => 'Sync',
+                'description' => 'Background sync, retries, conflicts, and offline queue.',
+                'route' => 'mobile.settings.sync',
+                'badge' => 'Offline',
+            ],
+            [
+                'key' => 'permissions',
+                'title' => 'Permissions',
+                'description' => 'Camera, location, microphone, scanner, files, and biometrics.',
+                'route' => 'mobile.settings.permissions',
+                'badge' => 'Native',
+            ],
+            [
+                'key' => 'support',
+                'title' => 'Support',
+                'description' => 'Help, contact, diagnostics, and troubleshooting.',
+                'route' => 'mobile.settings.support',
+                'badge' => 'Help',
+            ],
+            [
+                'key' => 'legal',
+                'title' => 'Legal',
+                'description' => 'Terms, privacy, consent acceptance, and consent history.',
+                'route' => 'mobile.settings.legal',
+                'badge' => 'Policy',
+            ],
+            [
+                'key' => 'developer',
+                'title' => 'Developer/debug',
+                'description' => 'Runtime diagnostics, NativePHP checks, and debug tools.',
+                'route' => 'mobile.settings.developer',
+                'badge' => 'Debug',
+            ],
+        ];
     }
 }

@@ -29,6 +29,14 @@ test('mobile ui components render expected markup', function (string $template, 
         '<x-mobile.toast message="Saved" variant="success" />',
         ['role="status"', 'Saved', 'border-emerald-200', 'pointer-events-auto'],
     ],
+    'toast warning' => [
+        '<x-mobile.toast title="Check" message="Fallback active" variant="warning" />',
+        ['role="status"', 'Check', 'Fallback active', 'border-amber-200'],
+    ],
+    'toast info' => [
+        '<x-mobile.toast message="Queued" variant="info" />',
+        ['role="status"', 'Queued', 'border-sky-200'],
+    ],
     'retry button' => [
         '<x-mobile.retry-button wire:click="retry" target="retry">Try again</x-mobile.retry-button>',
         ['type="button"', 'wire:click="retry"', 'Retrying...', 'Try again'],

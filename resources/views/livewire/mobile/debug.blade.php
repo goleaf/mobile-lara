@@ -80,4 +80,42 @@
             @endif
         </div>
     </x-mobile.card>
+
+    <x-mobile.card
+        title="Livewire toasts"
+        description="Event-driven app notifications with auto-dismiss, persistent mode, and action buttons."
+    >
+        <div class="grid gap-4">
+            <div class="grid grid-cols-2 gap-3">
+                @forelse ($toastActions as $toastAction)
+                    <x-mobile.button
+                        wire:key="toast-action-{{ $toastAction['action'] }}"
+                        wire:click="{{ $toastAction['action'] }}"
+                        wire:loading.attr="disabled"
+                        wire:target="{{ $toastAction['action'] }}"
+                        :variant="$toastAction['variant']"
+                        class="min-w-0"
+                    >
+                        <span wire:loading.remove wire:target="{{ $toastAction['action'] }}">
+                            {{ $toastAction['label'] }}
+                        </span>
+                        <span wire:loading wire:target="{{ $toastAction['action'] }}">
+                            Working
+                        </span>
+                    </x-mobile.button>
+                @empty
+                    <x-mobile.empty-state
+                        title="No toast actions"
+                        description="Toast examples are not available."
+                    />
+                @endforelse
+            </div>
+
+            @if ($toastActionStatus)
+                <div class="rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/30 dark:bg-sky-400/10">
+                    <p class="text-sm font-semibold text-sky-950 dark:text-sky-100">{{ $toastActionStatus }}</p>
+                </div>
+            @endif
+        </div>
+    </x-mobile.card>
 </section>

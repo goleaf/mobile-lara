@@ -43,6 +43,8 @@
             aria-atomic="true"
             class="pointer-events-none fixed inset-x-0 top-0 z-50 mx-auto flex w-full max-w-md flex-col gap-2 safe-x safe-pt"
         >
+            <livewire:mobile.toast-center />
+
             @isset($toast)
                 {{ $toast }}
             @else

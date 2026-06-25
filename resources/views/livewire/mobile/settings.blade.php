@@ -20,6 +20,33 @@
             </x-mobile.empty-state>
         @else
             <div class="grid gap-5">
+                <x-mobile.card title="Settings sections" description="Open focused mobile settings pages.">
+                    <div class="grid gap-3">
+                        @forelse ($settingsSections as $section)
+                            <a
+                                wire:key="settings-section-{{ $section['key'] }}"
+                                href="{{ route($section['route']) }}"
+                                wire:navigate
+                                class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+                            >
+                                <span class="min-w-0">
+                                    <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $section['title'] }}</span>
+                                    <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $section['description'] }}</span>
+                                </span>
+
+                                <span class="flex shrink-0 items-center gap-2">
+                                    <x-mobile.badge variant="accent">
+                                        {{ $section['badge'] }}
+                                    </x-mobile.badge>
+                                    <span aria-hidden="true" class="text-lg font-semibold text-app-muted dark:text-zinc-500">›</span>
+                                </span>
+                            </a>
+                        @empty
+                            <x-mobile.empty-state title="No sections available" description="Settings sections will appear here once configured." />
+                        @endforelse
+                    </div>
+                </x-mobile.card>
+
                 <form wire:submit="saveSettings" class="grid gap-5">
                     <x-mobile.card title="Settings" description="Mobile configuration surface.">
                         <div class="grid gap-3">
