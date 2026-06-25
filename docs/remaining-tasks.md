@@ -77,10 +77,10 @@ rollback, and old-version protection.
   `apps/api-admin` and `apps/mobile-client` both exist as Laravel apps.
 - Replace the mobile bootstrap foundation defaults with real permission,
   feature, config, version, subscription, notification, and sync policy modules.
-- Complete tenancy beyond the foundation tenant list/switch API: admin tenant
-  management screens, invitations, tenant settings policy, tenant-scoped
-  resource middleware, mobile tenant store/display/switcher, and tenant-local
-  cache partition verification.
+- Complete tenancy beyond the foundation tenant list/switch API and mobile
+  workspace switcher: admin tenant management screens, invitations, tenant
+  settings policy, tenant-scoped resource middleware, and tenant-local cache
+  partition verification.
 - Add roles, permissions, feature flags, remote config, app version policy,
   maintenance mode, subscription state, notification policy, sync policy, and
   audit foundations.

@@ -49,6 +49,7 @@ use App\Livewire\Mobile\Settings\Security as SettingsSecurity;
 use App\Livewire\Mobile\Settings\Storage as SettingsStorage;
 use App\Livewire\Mobile\Settings\Support as SettingsSupport;
 use App\Livewire\Mobile\Settings\Sync as SettingsSync;
+use App\Livewire\Mobile\Settings\Workspace as SettingsWorkspace;
 use App\Livewire\Mobile\TermsOfService;
 use App\Livewire\Mobile\VoiceNotes;
 use App\Livewire\Mobile\Welcome;
@@ -84,6 +85,7 @@ Route::middleware(['web'])
                 Route::livewire('/profile/edit', EditProfile::class)->name('profile.edit');
                 Route::livewire('/settings', Settings::class)->name('settings');
                 Route::livewire('/settings/account', SettingsAccount::class)->name('settings.account');
+                Route::livewire('/settings/workspace', SettingsWorkspace::class)->name('settings.workspace');
                 Route::livewire('/settings/security', SettingsSecurity::class)->name('settings.security');
                 Route::livewire('/settings/notifications', SettingsNotifications::class)->name('settings.notifications');
                 Route::livewire('/settings/appearance', SettingsAppearance::class)->name('settings.appearance');

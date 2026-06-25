@@ -91,7 +91,7 @@ version, receives optional-update, force-update, maintenance, blocked, or
 deprecated states, shows store links/update messages, and avoids unsafe old
 version behavior.
 
-## Current Phase 5 State
+## Current Implementation State
 
 This directory now contains a complete Laravel 13 + Livewire 4 + NativePHP
 Mobile application copied from the verified root mobile client, plus the first
@@ -131,6 +131,21 @@ Implemented foundation:
 - Edit profile syncs the account name through `PATCH /auth/profile` when a
   valid access token exists; avatar storage remains local until a media/upload
   API slice.
+- `App\Services\MobileBootstrap\MobileBootstrapService` calls
+  `GET /bootstrap` with the stored access token and caches the response in the
+  mobile-local settings row.
+- Login and register refresh bootstrap immediately after authentication, so
+  the next phase can hydrate tenant, permission, feature, config, version,
+  subscription, notification, and sync policy from one cached context.
+- `App\Services\MobileTenancy\MobileTenantContextStore` reads the cached
+  bootstrap envelope for presentation-only tenant context and safely renders an
+  empty workspace state before the local settings table is initialized.
+- `App\Services\MobileTenancy\MobileTenantApiService` calls the Admin/API
+  tenant list and switch endpoints with the stored access token.
+- `App\Livewire\Mobile\Settings\Workspace` displays the current tenant,
+  available switchable tenants, supports manual bootstrap refresh, and switches
+  the current tenant through `POST /tenants/current` before refreshing
+  bootstrap.
 
 Fresh verification:
 
@@ -139,6 +154,9 @@ composer validate --strict
 php artisan route:list --name=mobile
 php artisan test --compact
 php artisan test --compact --filter=MobileAuthApiServiceTest
+php artisan test --compact --filter=MobileBootstrapServiceTest
+php artisan test --compact --filter=MobileTenantApiServiceTest
+php artisan test --compact --filter=MobileWorkspaceSettingsTest
 vendor/bin/pint --dirty --format agent
 npm run build
 php artisan native:plugin:validate --no-interaction
@@ -152,6 +170,7 @@ The repository root app remains temporarily as a transition mirror. Future
 mobile work should target `apps/mobile-client` unless a cleanup task explicitly
 removes or rewires the root app.
 
-Next auth work is to call mobile bootstrap after successful authentication and
-store the returned tenant, permission, feature, config, version, subscription,
-notification, and sync policy context.
+Next platform work is to replace bootstrap foundation defaults with real
+permission, feature flag, remote config, app-version, billing, notification,
+and sync policy modules, then partition local caches by API-selected tenant
+where each local module needs tenant-specific data.

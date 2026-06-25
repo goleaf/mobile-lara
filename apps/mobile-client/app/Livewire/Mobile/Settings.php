@@ -121,6 +121,13 @@ class Settings extends Component
                 'badge' => 'Core',
             ],
             [
+                'key' => 'workspace',
+                'title' => 'Workspace',
+                'description' => 'Current tenant, available tenants, and API-controlled switching.',
+                'route' => 'mobile.settings.workspace',
+                'badge' => 'Tenant',
+            ],
+            [
                 'key' => 'security',
                 'title' => 'Security',
                 'description' => 'PIN, biometrics, unlock, and protected access.',

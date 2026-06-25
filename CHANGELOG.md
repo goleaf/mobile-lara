@@ -112,3 +112,7 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added the API/admin tenancy foundation with tenant and tenant-membership
   schema, public tenant IDs, mobile tenant list/switch endpoints, bootstrap
   tenant context, switch denial handling, and tenant switch audit events.
+- Added the mobile tenant workspace foundation with cached bootstrap tenant
+  context, an authenticated tenant API service, workspace settings UI, manual
+  context refresh, tenant switching through API/admin, and focused coverage for
+  routes, settings, API calls, and cache refresh behavior.

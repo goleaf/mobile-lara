@@ -9,6 +9,7 @@ use App\Livewire\Mobile\Settings\Security;
 use App\Livewire\Mobile\Settings\Storage;
 use App\Livewire\Mobile\Settings\Support;
 use App\Livewire\Mobile\Settings\Sync;
+use App\Livewire\Mobile\Settings\Workspace;
 use Livewire\Livewire;
 
 test('mobile settings section pages render shared placeholder structure', function (string $component, string $title): void {
@@ -35,6 +36,11 @@ test('settings section pages include connected and placeholder entries', functio
         ->assertSee(route('mobile.profile'), false)
         ->assertSee('Delete account')
         ->assertSee(route('mobile.account.delete'), false);
+
+    Livewire::test(Workspace::class)
+        ->assertSee('No workspace selected')
+        ->assertSee('Switch workspace')
+        ->assertSee(route('mobile.settings'), false);
 
     Livewire::test(Appearance::class)
         ->assertSee('Theme mode')

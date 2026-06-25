@@ -90,13 +90,13 @@ Status values:
 | Root application | A Laravel 13 + Livewire 4 + NativePHP Mobile app remains at the repository root as a transition mirror. |
 | Requested monorepo paths | `apps/api-admin` and `apps/mobile-client` are now separate Laravel applications. |
 | API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status`, `GET /api/v1/mobile/contracts`, auth endpoints, authenticated `GET /api/v1/mobile/bootstrap`, `GET /api/v1/mobile/tenants`, and `POST /api/v1/mobile/tenants/current`. |
-| Mobile routes | 52 `mobile.*` Livewire routes exist in both the root transition app and `apps/mobile-client/routes/web.php`. |
+| Mobile routes | The root transition app still exposes 52 `mobile.*` Livewire routes; `apps/mobile-client/routes/web.php` now exposes 53 `mobile.*` routes including `mobile.settings.workspace`. |
 | Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, security audit events, tenants, and tenant-user memberships. Broader control-plane domain schema remains pending. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/mobile-client` now also has focused API auth and bootstrap service coverage. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, contract catalogue, mobile auth, bootstrap, and tenant context switching. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, contract catalogue, mobile auth, bootstrap, and tenant context switching. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -146,8 +146,8 @@ Status values:
 | Auth screens | tested | Login, register, profile update, profile logout, sessions logout, and sessions logout-all now consume the mobile auth API service; password reset and email verification remain local validation placeholders until API endpoints are documented and implemented. |
 | Dashboard | tested | `Mobile\Dashboard` exists and renders in `apps/mobile-client`; Admin/API bootstrap integration is missing. |
 | Bottom navigation | tested | `<x-mobile.bottom-navigation>` exists and is covered by shell tests; feature-gated navigation is not API-controlled yet. |
-| Settings | tested | Settings index and sections exist; remote config/tenant policy are not integrated. |
-| Profile | tested | Profile and edit profile screens exist; API profile endpoint is missing. |
+| Settings | tested | Settings index and sections exist; workspace settings now reads cached bootstrap tenant context and switches tenants through API. Remote config policy remains pending. |
+| Profile | tested | Profile and edit profile screens exist; edit profile syncs the account name through the API profile endpoint when a valid access token exists. |
 | Notifications page | tested | Local notification inbox exists; push/API notification authority is missing. |
 | Debug/diagnostics page | tested | Debug screen exists; full privacy-safe diagnostics export/share is incomplete. |
 | Reusable mobile UI components | tested | Components exist and are covered by mobile UI component tests. |
@@ -198,7 +198,7 @@ Status values:
 | Tenant settings | partial | `tenants.settings` exists for future config; no admin settings UI or config policy resolution exists yet. |
 | Tenant-scoped API middleware | partial | Tenant list/switch endpoints enforce membership server-side; generic tenant-scoped resource middleware remains pending. |
 | Admin tenant management screens | not started | Admin shell exists; tenant management screens are not implemented yet. |
-| Mobile tenant store/display/switcher | not started | Required after API bootstrap exists. |
+| Mobile tenant store/display/switcher | tested | `MobileTenantContextStore`, `MobileTenantApiService`, and `mobile.settings.workspace` display cached bootstrap tenant context, refresh bootstrap, and switch current tenant through `POST /tenants/current`. |
 | Tenant-separated local cache | partial | Local models have mobile-local storage, but tenant partitioning is not fully proven. |
 
 ## Phase 7 - Roles, Permissions, And Policies
@@ -253,7 +253,7 @@ Status values:
 | Notification preferences | partial | Bootstrap returns in-app enabled/push pending defaults until notification API exists. |
 | Sync settings | partial | Bootstrap returns sync disabled with local offline queue allowed until server sync endpoints exist. |
 | Unread notification count | partial | Bootstrap returns `0` until server notifications exist. |
-| Mobile bootstrap service/cache | tested | `MobileBootstrapService` calls `GET /bootstrap` with the stored access token and caches the envelope in mobile-local settings; login/register refresh it after authentication. |
+| Mobile bootstrap service/cache | tested | `MobileBootstrapService` calls `GET /bootstrap` with the stored access token and caches the envelope in mobile-local settings; login/register refresh it after authentication, and the workspace settings screen consumes/refetches that cached context after tenant switches. |
 
 ## Phase 11 - App Version, Force Update, And Maintenance Mode
 
@@ -509,11 +509,11 @@ Status values:
 | API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
 | API routes verification | tested | `php artisan route:list --except-vendor` shows status and contracts routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
-| Mobile formatting | partial | Existing PHP code needs fresh `vendor/bin/pint --dirty --format agent` after edits. |
-| Mobile tests | partial | Many tests exist; full fresh run pending. |
-| Mobile frontend build | partial | Build command exists; fresh run pending. |
-| Mobile navigation verification | partial | Routes exist; browser/native verification pending. |
-| NativePHP fallback verification | partial | Some service tests exist; native tooling blockers remain. |
+| Mobile formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/mobile-client`. |
+| Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 431 tests / 3427 assertions. |
+| Mobile frontend build | tested | `npm run build` passes in `apps/mobile-client`. |
+| Mobile navigation verification | tested | `php artisan route:list --name=mobile` shows 53 named mobile routes and route tests cover authenticated/guest rendering. Browser/native manual verification remains future. |
+| NativePHP fallback verification | tested | `php artisan native:plugin:validate --no-interaction` exits successfully with two non-fatal third-party manifest warnings; simulator/emulator release verification remains external-tooling dependent. |
 | Offline/sync verification | partial | Local worker tests exist; server sync missing. |
 | Root monorepo scripts | not started | Scripts missing. |
 | Final git status | not started | Must be clean after commits. |

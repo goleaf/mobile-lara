@@ -46,6 +46,7 @@ use App\Livewire\Mobile\Settings\Security as SettingsSecurity;
 use App\Livewire\Mobile\Settings\Storage as SettingsStorage;
 use App\Livewire\Mobile\Settings\Support as SettingsSupport;
 use App\Livewire\Mobile\Settings\Sync as SettingsSync;
+use App\Livewire\Mobile\Settings\Workspace as SettingsWorkspace;
 use App\Livewire\Mobile\TermsOfService;
 use App\Livewire\Mobile\ToastCenter;
 use App\Livewire\Mobile\VoiceNotes;
@@ -100,6 +101,7 @@ test('protected mobile routes redirect guests to login', function (string $route
     'profile edit' => 'mobile.profile.edit',
     'settings' => 'mobile.settings',
     'settings account' => 'mobile.settings.account',
+    'settings workspace' => 'mobile.settings.workspace',
     'settings security' => 'mobile.settings.security',
     'settings notifications' => 'mobile.settings.notifications',
     'settings appearance' => 'mobile.settings.appearance',
@@ -149,6 +151,7 @@ test('protected mobile routes render for authenticated users', function (string 
     'profile edit' => ['mobile.profile.edit', EditProfile::class, 'Edit profile'],
     'settings' => ['mobile.settings', Settings::class, 'Settings'],
     'settings account' => ['mobile.settings.account', SettingsAccount::class, 'Account settings'],
+    'settings workspace' => ['mobile.settings.workspace', SettingsWorkspace::class, 'Workspace settings'],
     'settings security' => ['mobile.settings.security', SettingsSecurity::class, 'Security settings'],
     'settings notifications' => ['mobile.settings.notifications', SettingsNotifications::class, 'Notification settings'],
     'settings appearance' => ['mobile.settings.appearance', SettingsAppearance::class, 'Appearance settings'],
