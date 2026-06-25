@@ -90,6 +90,7 @@ Use these docs before changing the product direction:
 - Feature flag decisions must follow `docs/feature-flag-logic.md`.
 - Remote configuration decisions must follow `docs/remote-configuration-logic.md`.
 - Mobile version control decisions must follow `docs/mobile-version-control-logic.md`.
+- Admin safety decisions must follow `docs/admin-safety-principles.md`.
 - Admin settings control mobile feature availability because mobile state can be stale, offline, copied between devices, or running an old app version.
 - API-first means admin decisions become enforceable mobile behavior through versioned server contracts.
 - Local SQLite stores cache, drafts, and queued intents, not trusted server facts.
@@ -108,6 +109,7 @@ Use these docs before changing the product direction:
 - Any important mobile feature flag must map to `docs/feature-flag-logic.md`, including priority, disabled mobile state, rollout, impact, plan limit, support, audit, and offline behavior.
 - Any remote-configurable behavior must map to `docs/remote-configuration-logic.md`, including allowed config type, scope, default, override behavior, mobile caching, offline behavior, validation, fallback, support, audit, and rollback.
 - Any app-version behavior must map to `docs/mobile-version-control-logic.md`, including minimum supported version, optional update, forced update, maintenance mode, outdated response, store link, update message, support context, audit, rollback, and old-version protection.
+- Any dangerous admin action must map to `docs/admin-safety-principles.md`, including confirmation, audit history, impact preview, mobile impact preview, rollback, and tenant-isolated scope.
 
 </project-product-contract>
 

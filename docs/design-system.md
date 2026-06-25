@@ -25,6 +25,8 @@ UI decisions must follow [Remote Configuration Logic](remote-configuration-logic
 
 UI decisions must follow [Mobile Version Control Logic](mobile-version-control-logic.md): optional update, forced update, maintenance, deprecated, blocked, store-link, update-message, support, and stale-client states must be clear without exposing raw admin policy.
 
+UI decisions must follow [Admin Safety Principles](admin-safety-principles.md): dangerous admin actions should show confirmation, audit context, impact before save, mobile impact preview, rollback meaning, and tenant-isolated scope in product language.
+
 UI decisions must also follow [Target User Roles](user-roles.md): each role should see the controls, diagnostics, billing context, support context, tenant scope, or pre-login state that matches its job.
 
 UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform owners need high-level control and risk visibility, tenant admins need scoped management, mobile workers need simple next actions, support needs safe diagnostics, and billing/operations needs entitlement clarity without tenant workflow overreach.

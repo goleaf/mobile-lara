@@ -72,6 +72,11 @@ minimum supported versions, optional updates, forced updates, maintenance mode,
 outdated responses, store links, update messages, support context, audit,
 rollback, and old-version protection before code is written.
 
+Admin Safety Principles are defined in `docs/admin-safety-principles.md`.
+Future dangerous admin-control work must map confirmation, audit history, impact
+preview, mobile impact preview, rollback, and tenant-isolated scope before code
+is written.
+
 Status values:
 
 - `not started` - No durable implementation exists yet.

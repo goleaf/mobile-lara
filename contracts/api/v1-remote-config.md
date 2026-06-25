@@ -39,6 +39,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: config authority and validation stay in
 Admin/API while mobile caches resolved config with freshness and fallback state.
 
+Admin Safety Principles are defined in
+`../../docs/admin-safety-principles.md`: dangerous admin actions behind this
+contract must be confirmed, audited, impact-previewed, mobile-previewed,
+rollback-aware, and tenant-isolated before implementation.
+
 Admin/API Responsibilities are defined in
 `../../docs/admin-api-responsibilities.md`: this contract belongs to remote
 configuration, feature control, API contracts, support operations, audit

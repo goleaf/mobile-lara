@@ -24,6 +24,11 @@ Use this document with [Target User Roles](user-roles.md): stakeholder value
 should be delivered through the correct role surface without confusing value
 received with authority granted.
 
+Use this document with [Admin Safety Principles](admin-safety-principles.md):
+stakeholder value is protected when dangerous admin actions show impact before
+saving, preview mobile outcomes, create audit history, support rollback, and
+stay tenant-isolated.
+
 The Admin/API system gives the business control over tenants, users, permissions, billing, reports, support, feature flags, notifications, app versions, security, and sync behavior. The mobile client turns those decisions into usable field or client workflows with native capability access, offline resilience where useful, and clear status for allowed, blocked, pending, synced, conflicted, and offline states.
 
 The product is valuable only when both sides stay connected:

@@ -12,6 +12,11 @@ The positioning starts from [Product Vision](product-vision.md): the product
 exists to provide remote control with local resilience for managed mobile
 workflows.
 
+The positioning is protected by [Admin Safety Principles](admin-safety-principles.md):
+dangerous admin controls are valuable only when confirmation, audit history,
+impact preview, mobile preview, rollback, and tenant isolation keep the control
+center trustworthy.
+
 ## Positioning Contract
 
 | Position | Product meaning | Boundary |

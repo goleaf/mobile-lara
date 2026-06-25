@@ -89,6 +89,12 @@ must resolve minimum supported versions, optional updates, forced updates,
 maintenance mode, store links, update messages, and outdated-client protection
 into mobile-safe API outcomes.
 
+Admin Safety Principles are defined in
+`../../docs/admin-safety-principles.md`. Future API/Admin implementation must
+confirm, audit, impact-preview, mobile-preview, rollback-plan, and
+tenant-isolate dangerous admin actions before those controls affect mobile
+users or tenants.
+
 ## Current Phase 5 State
 
 This directory is now a Laravel 13 application with a Livewire admin dashboard

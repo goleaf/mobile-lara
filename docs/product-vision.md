@@ -26,6 +26,7 @@ The strongest product promise is remote control with local resilience: administr
 | Why must admin settings control mobile? | Mobile can be stale, offline, copied, tampered with, or outdated; only server-side admin policy can safely enforce tenant scope, permissions, feature rollout, version rules, billing, support, and security. |
 | Why NativePHP + Livewire? | The product remains Laravel-first, uses Livewire/Blade for dynamic interfaces without a separate frontend framework, and uses NativePHP for mobile shell and native capability access while still communicating through the API. |
 | What makes it scalable SaaS? | Tenant isolation, API-first contracts, feature flags, remote config, mobile-version policy, idempotent sync, support visibility, billing entitlements, modular expansion, and documentation-first planning let many tenants, devices, roles, versions, and feature states operate from one control plane. |
+| How does admin safety protect the vision? | [Admin Safety Principles](admin-safety-principles.md) require dangerous admin actions to be confirmed, audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated before they affect users. |
 
 This contract is the product north star. Future documentation may add detail, but it should not reverse these answers without a new decision record.
 

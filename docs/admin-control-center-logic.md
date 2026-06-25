@@ -12,6 +12,8 @@ Use [Remote Configuration Logic](remote-configuration-logic.md) whenever a contr
 
 Use [Mobile Version Control Logic](mobile-version-control-logic.md) whenever a control changes minimum supported versions, optional updates, forced updates, maintenance mode, outdated app behavior, store links, update messages, support context, or stale-client protection.
 
+Use [Admin Safety Principles](admin-safety-principles.md) whenever a control is dangerous, broad, destructive, security-sensitive, billing-impacting, mobile-blocking, support-relevant, or tenant-sensitive enough to require confirmation, audit history, impact preview, mobile impact preview, rollback, or strict tenant isolation.
+
 ## Control Center Statement
 
 The Admin Control Center is the operational control surface for the SaaS.

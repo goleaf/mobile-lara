@@ -74,6 +74,10 @@ The product contract remains unchanged:
   `../docs/mobile-version-control-logic.md` defines how minimum supported
   versions, optional updates, forced updates, maintenance mode, store links,
   update messages, and stale-client protection move through API outcomes.
+- Admin Safety Principles in `../docs/admin-safety-principles.md` define how
+  dangerous admin actions are confirmed, audited, impact-previewed,
+  mobile-previewed, rollback-aware, and tenant-isolated before they affect
+  either app.
 - Mobile owns local execution, NativePHP capability UX, cache, drafts, queues,
   sync display, and API-derived feature visibility.
 - Mobile never reads the admin database directly. Server-trusted behavior must

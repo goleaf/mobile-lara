@@ -71,6 +71,11 @@ map minimum supported versions, optional updates, forced updates, maintenance
 mode, outdated responses, store links, update messages, support context, audit,
 rollback, and old-version protection.
 
+Admin Safety Principles are defined in `docs/admin-safety-principles.md`.
+Remaining admin-control work must map dangerous actions to confirmation, audit
+history, impact preview, mobile impact preview, rollback, and tenant isolation
+before implementation scope is added.
+
 ## Active Implementation Work
 
 - Decide when to remove or rewire the root Laravel app now that

@@ -39,6 +39,11 @@ Two-System Boundary Logic is defined in
 device trust, and revocation remain Admin/API authority while mobile presents
 local session state.
 
+Admin Safety Principles are defined in
+`../../docs/admin-safety-principles.md`: dangerous admin actions behind this
+contract must be confirmed, audited, impact-previewed, mobile-previewed,
+rollback-aware, and tenant-isolated before implementation.
+
 Admin/API Responsibilities are defined in
 `../../docs/admin-api-responsibilities.md`: this contract belongs to identity,
 users and permissions, security enforcement, audit history, and API-contract

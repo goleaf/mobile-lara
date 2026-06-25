@@ -40,6 +40,11 @@ Two-System Boundary Logic is defined in
 stay in Admin/API while mobile owns device registration UX, permission UX, and
 safe local display.
 
+Admin Safety Principles are defined in
+`../../docs/admin-safety-principles.md`: dangerous admin actions behind this
+contract must be confirmed, audited, impact-previewed, mobile-previewed,
+rollback-aware, and tenant-isolated before implementation.
+
 Admin/API Responsibilities are defined in
 `../../docs/admin-api-responsibilities.md`: this contract belongs to
 notification orchestration, users and permissions, tenant management,

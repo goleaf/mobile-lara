@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Admin Safety Principles documentation for dangerous admin actions,
+  confirmations, audit history, impact previews, mobile impact previews,
+  rollback, and tenant-isolated changes.
 - Clarified Mobile Version Control Logic with a decision contract for minimum
   supported versions, optional updates, forced updates, maintenance mode,
   outdated API responses, store links, update messages, and broken old-version

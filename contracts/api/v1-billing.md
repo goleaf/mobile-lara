@@ -40,6 +40,11 @@ Two-System Boundary Logic is defined in
 entitlement decisions stay in Admin/API while mobile shows allowed, blocked,
 quota, or contact-admin outcomes.
 
+Admin Safety Principles are defined in
+`../../docs/admin-safety-principles.md`: dangerous admin actions behind this
+contract must be confirmed, audited, impact-previewed, mobile-previewed,
+rollback-aware, and tenant-isolated before implementation.
+
 Admin/API Responsibilities are defined in
 `../../docs/admin-api-responsibilities.md`: this contract belongs to
 billing/subscription logic, feature control, tenant management, API contracts,

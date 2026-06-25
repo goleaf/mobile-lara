@@ -41,6 +41,11 @@ Two-System Boundary Logic is defined in
 `../../docs/two-system-boundary.md`: foundation contracts should prove the API
 is the boundary between Admin/API authority and mobile-local execution.
 
+Admin Safety Principles are defined in
+`../../docs/admin-safety-principles.md`: dangerous admin actions behind this
+contract must be confirmed, audited, impact-previewed, mobile-previewed,
+rollback-aware, and tenant-isolated before implementation.
+
 Admin/API Responsibilities are defined in
 `../../docs/admin-api-responsibilities.md`: this foundation belongs to API
 contracts, security enforcement, audit history, and response-shape

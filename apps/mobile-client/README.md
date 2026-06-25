@@ -91,6 +91,11 @@ version, receives optional-update, force-update, maintenance, blocked, or
 deprecated states, shows store links/update messages, and avoids unsafe old
 version behavior.
 
+Admin Safety Principles in `../../docs/admin-safety-principles.md` define how
+dangerous admin actions should be confirmed, audited, impact-previewed,
+mobile-previewed, rollback-aware, and tenant-isolated before the mobile client
+receives changed API outcomes.
+
 ## Current Implementation State
 
 This directory now contains a complete Laravel 13 + Livewire 4 + NativePHP

@@ -67,6 +67,11 @@ version or maintenance policy should return resolved mobile-safe states,
 store/update links, user-safe messages, support context, and stale-client error
 behavior rather than raw admin version rules.
 
+Admin Safety Principles live in `../../docs/admin-safety-principles.md`. Every
+contract that can be affected by dangerous admin actions should keep
+confirmation, audit history, impact preview, mobile impact preview, rollback,
+and tenant isolation visible before implementation.
+
 ## Versioning
 
 Mobile contracts are grouped by API version. The first implementation target is:

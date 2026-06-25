@@ -28,6 +28,8 @@ The remote configuration model is explicit: Admin/API controls safe runtime mobi
 
 The mobile version control model is explicit: Admin/API controls minimum supported versions, optional updates, forced updates, maintenance mode, store links, update messages, and old-version protection through mobile-safe API outcomes.
 
+The admin safety model is explicit: dangerous admin actions require confirmation, audit history, impact preview, mobile impact preview, rollback thinking, and tenant-isolated scope before they affect users.
+
 The product solves a common business problem: mobile teams need a simple app, but the organization needs tenant-safe control over permissions, billing, feature availability, app versions, support, notifications, reports, and sync behavior without publishing a new mobile build for every policy change.
 
 The product is split into two cooperating systems:
@@ -82,6 +84,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/feature-flag-logic.md](docs/feature-flag-logic.md) | Feature flag logic for important mobile features, global/tenant/user priority, disabled mobile states, admin impact, safe rollout, and plan limits. |
 | [docs/remote-configuration-logic.md](docs/remote-configuration-logic.md) | Remote configuration logic for configurable behavior, mobile receive/cache rules, offline behavior, tenant overrides, safe admin changes, and missing/invalid config. |
 | [docs/mobile-version-control-logic.md](docs/mobile-version-control-logic.md) | Mobile version control logic for minimum supported versions, optional updates, forced updates, maintenance mode, outdated app behavior, store links, update messages, and old-version protection. |
+| [docs/admin-safety-principles.md](docs/admin-safety-principles.md) | Admin safety principles for dangerous actions, confirmations, audit history, impact previews, mobile impact previews, rollback, and tenant-isolated changes. |
 | [docs/saas-mobile-admin-platform.md](docs/saas-mobile-admin-platform.md) | Canonical product and system concept. |
 | [docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md](docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md) | ADR for the two-system architecture. |
 | [docs/mobile-stack.md](docs/mobile-stack.md) | Stack, package, and boundary notes. |
@@ -126,6 +129,7 @@ contracts.
 - Apply [feature flag logic](docs/feature-flag-logic.md) before planning important mobile features, flag priority, disabled mobile states, rollout, rollback, or plan-limited access.
 - Apply [remote configuration logic](docs/remote-configuration-logic.md) before planning runtime-configurable mobile behavior, config caching, offline config use, tenant-specific overrides, safe admin config changes, or missing/invalid config handling.
 - Apply [mobile version control logic](docs/mobile-version-control-logic.md) before planning minimum supported versions, optional update prompts, forced updates, maintenance mode, outdated-client responses, store links, update messages, or old-version protection.
+- Apply [admin safety principles](docs/admin-safety-principles.md) before planning dangerous admin actions, confirmations, audit history, impact previews, mobile impact previews, rollback, or tenant-specific changes.
 - Keep admin business rules on the server. Mobile UI state is never an authorization boundary.
 - Let admin settings control mobile behavior because mobile state may be stale, offline, copied between devices, or running an old app version.
 - Position the product as both admin control center and mobile workforce/client platform; avoid web-only or mobile-only thinking.

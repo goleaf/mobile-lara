@@ -20,6 +20,8 @@ Native build and release work must follow [Remote Configuration Logic](remote-co
 
 Native build and release work must follow [Mobile Version Control Logic](mobile-version-control-logic.md): minimum supported versions, optional updates, forced updates, maintenance mode, store links, update messages, support context, and old-version protection must be documented before release.
 
+Native build and release work must follow [Admin Safety Principles](admin-safety-principles.md): dangerous release, force-update, maintenance, config, feature, notification, or sync controls must be confirmed, audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated before release.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.

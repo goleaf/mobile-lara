@@ -17,6 +17,10 @@ Use this document with [Product Positioning](product-positioning.md): the
 principles protect the six positioning angles from drifting into web-only,
 mobile-only, or tenant-unsafe behavior.
 
+Use this document with [Admin Safety Principles](admin-safety-principles.md):
+admin authority stays trustworthy only when dangerous controls are confirmed,
+audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated.
+
 ## Principles Contract
 
 | Principle | Product rule | Feature behavior |

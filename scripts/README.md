@@ -72,6 +72,12 @@ documented minimum-version, optional-update, force-update, maintenance, store
 link, update-message, and stale-client behavior without creating runtime
 authority outside Admin/API.
 
+Scripts must also respect Admin Safety Principles in
+`../docs/admin-safety-principles.md`: any future helper should verify dangerous
+admin-control documentation for confirmation, audit history, impact preview,
+mobile impact preview, rollback, and tenant isolation without creating
+application logic.
+
 Do not add custom verification scripts when a normal project command already
 proves the behavior. Prefer the real commands:
 

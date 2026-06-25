@@ -40,6 +40,11 @@ Two-System Boundary Logic is defined in
 and export authority stay in Admin/API while mobile receives only allowed
 summaries.
 
+Admin Safety Principles are defined in
+`../../docs/admin-safety-principles.md`: dangerous admin actions behind this
+contract must be confirmed, audited, impact-previewed, mobile-previewed,
+rollback-aware, and tenant-isolated before implementation.
+
 Admin/API Responsibilities are defined in
 `../../docs/admin-api-responsibilities.md`: this contract belongs to reporting,
 tenant management, users and permissions, billing/support visibility, API
