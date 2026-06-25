@@ -20,6 +20,11 @@ Target User Roles are defined in `../../docs/user-roles.md`: record access must
 resolve tenant admin, tenant manager, mobile user, support, invited, suspended,
 and guest/pre-login boundaries server-side.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: records create
+tenant-business and mobile-worker value through governed mobile access,
+offline-capable work where allowed, reports, security, supportability, and
+feature-controlled availability.
+
 ## Purpose
 
 Records endpoints provide tenant-scoped content authority for list, detail,

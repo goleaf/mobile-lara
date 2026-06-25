@@ -20,6 +20,10 @@ Target User Roles are defined in `../../docs/user-roles.md`: notification
 preferences, delivery state, and device registration must respect role and
 account-state visibility.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: notification
+contracts create value when platform, tenant, mobile, support, and billing
+messages reach the right audience without leaking tenant or admin authority.
+
 ## Purpose
 
 Notification endpoints manage notification preferences, push token

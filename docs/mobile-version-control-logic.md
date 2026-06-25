@@ -20,6 +20,11 @@ Use this document with [Target User Roles](user-roles.md): version prompts,
 maintenance access, internal-only access, support visibility, and suspended or
 guest behavior must follow role and account-state boundaries.
 
+Use this document with [SaaS Value Map](saas-value-map.md): version policy must
+protect stakeholder value by preserving platform rollout control, tenant
+continuity, mobile-worker trust, support diagnosability, and billing/operations
+clarity.
+
 ## Version Control Statement
 
 Mobile app version control is a control-plane responsibility.

@@ -20,6 +20,10 @@ platform owner, super admin, tenant admin, tenant manager, support agent,
 billing manager, mobile user, invited user, suspended user, and guest/pre-login
 boundaries explicit.
 
+SaaS Value Map is defined in `../docs/saas-value-map.md`: both apps must connect
+admin control, mobile access, offline sync, notifications, reports, security,
+and feature flags to explicit stakeholder value.
+
 ## Systems
 
 | Path | Responsibility | Current state |

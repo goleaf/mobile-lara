@@ -20,6 +20,10 @@ Target User Roles are defined in `../../docs/user-roles.md`: auth outcomes must
 distinguish admin, tenant, support, billing, mobile, invited, suspended, and
 guest/pre-login states without exposing raw authority.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: auth outcomes
+create stakeholder value by making secure mobile access, tenant isolation,
+support recovery, billing restrictions, and feature eligibility trustworthy.
+
 ## Purpose
 
 Auth endpoints make the Admin/API system authoritative for mobile identity,

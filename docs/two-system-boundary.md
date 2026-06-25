@@ -30,6 +30,10 @@ Use this document with [Target User Roles](user-roles.md): role authority belong
 to Admin/API, while mobile renders only API-derived capability and account-state
 outcomes.
 
+Use this document with [SaaS Value Map](saas-value-map.md): stakeholder value
+belongs in the correct system boundary, with Admin/API owning control and mobile
+presenting local execution value.
+
 The simplest rule is:
 
 - **Admin/API decides** what is allowed, configured, billable, reportable, auditable, supported, secure, and synced.

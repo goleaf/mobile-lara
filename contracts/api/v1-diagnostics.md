@@ -20,6 +20,10 @@ Target User Roles are defined in `../../docs/user-roles.md`: diagnostics must
 separate support-agent visibility from tenant, billing, mobile, invited,
 suspended, and guest/pre-login visibility.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: diagnostics create
+support-team value through safe mobile context, sync visibility, version/config
+evidence, security boundaries, and reportable incident patterns.
+
 ## Purpose
 
 Diagnostics endpoints let mobile share privacy-safe troubleshooting context

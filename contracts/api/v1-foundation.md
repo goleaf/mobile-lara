@@ -22,6 +22,10 @@ Target User Roles are defined in `../../docs/user-roles.md`: foundation
 contracts must keep role and account-state context explicit before domain
 endpoints depend on it.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: foundation
+contracts should prove that API shape, errors, metadata, and contract catalogue
+support stakeholder value without implementing hidden product authority.
+
 Remote Configuration Logic is defined in
 `../../docs/remote-configuration-logic.md`. Future bootstrap and config
 contracts should return resolved mobile-safe config values, config version,

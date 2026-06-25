@@ -20,6 +20,10 @@ Target User Roles are defined in `../../docs/user-roles.md`: sync replay,
 conflict visibility, and offline state must follow role and account-state
 boundaries.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: sync contracts
+create value when offline work, tenant continuity, support diagnostics,
+reports, security, and billing/entitlement checks reconcile through API.
+
 ## Purpose
 
 Sync endpoints let the mobile client replay queued local intents and pull

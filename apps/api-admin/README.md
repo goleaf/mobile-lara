@@ -18,6 +18,11 @@ Target User Roles are defined in `../../docs/user-roles.md`: this app must map
 each admin, support, billing, tenant, mobile, invited, suspended, and
 guest/pre-login responsibility to server-side authority and visibility.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: this app must make
+stakeholder value operable through admin controls, API contracts, reports,
+security, billing/operations context, support context, notifications, and
+feature flags.
+
 ## Product Role
 
 This system owns SaaS authority:

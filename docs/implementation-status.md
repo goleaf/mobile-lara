@@ -21,6 +21,10 @@ Target User Roles are defined in `docs/user-roles.md`. Status is tracked
 against role responsibilities, limitations, visibility, and control boundaries
 before implementation grows.
 
+SaaS Value Map is defined in `docs/saas-value-map.md`. Status is tracked
+against platform owner, tenant business, tenant admin, mobile worker/client,
+support team, and billing/operations value before implementation grows.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

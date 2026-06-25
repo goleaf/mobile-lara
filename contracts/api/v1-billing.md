@@ -20,6 +20,10 @@ Target User Roles are defined in `../../docs/user-roles.md`: billing outcomes
 must distinguish billing manager authority, tenant admin visibility, support
 context, and mobile entitlement messages.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: billing outcomes
+connect commercial value to plan limits, entitlement-driven feature flags,
+mobile-safe access messages, reports, security, and billing/operations insight.
+
 ## Purpose
 
 Billing endpoints expose mobile-safe plan and subscription state. Admin/API

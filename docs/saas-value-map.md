@@ -63,6 +63,21 @@ The mobile-client responsibility rules are defined in [Mobile Client Responsibil
 | Support team | Faster diagnosis with safe operational context. | Case-scoped diagnostics, app version/config visibility, sync state, notification history, conflict reports, secure access boundaries. |
 | Billing/operations team | Commercial access tied to entitlement and usage. | Plan state, quotas, billing reports, entitlement-driven feature flags, notifications, security, operational reports. |
 
+## Value Delivery Contract
+
+Every product slice should explain the value chain before implementation:
+
+| Value question | Required answer |
+| --- | --- |
+| Who receives the value? | One or more stakeholders from this map, named explicitly. |
+| Which capability creates it? | Admin control, mobile access, offline sync, notifications, reports, security, feature flags, or a documented combination. |
+| Who controls the capability? | A role and Admin/API responsibility, not an implied mobile-local decision. |
+| How does mobile receive it? | A mobile-safe API outcome, state, message, config value, sync result, notification, or report summary. |
+| How is misuse prevented? | Tenant boundary, role boundary, API authorization, app-version policy, support scope, billing scope, or audit expectation. |
+| How is value proven? | A report, support signal, usage signal, reduced risk, billing signal, sync health signal, or user outcome. |
+
+Value is not the same as authority. A tenant business can receive value from reports, notifications, security, offline sync, and feature flags without every mobile user seeing management controls. A billing/operations team can receive value from usage and entitlement signals without seeing private tenant workflow content. A support team can receive value from diagnostics without becoming a super admin.
+
 ## Platform Owner Value
 
 The platform owner receives value from strategic control and risk visibility.

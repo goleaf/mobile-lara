@@ -20,6 +20,11 @@ Target User Roles are defined in `../../docs/user-roles.md`: every contract must
 describe role and account-state effects as mobile-safe outcomes, not raw role
 authority.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: every contract must
+name the stakeholder value it supports and connect that value to admin control,
+mobile access, offline sync, notifications, reports, security, or feature flags
+without exposing raw authority.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

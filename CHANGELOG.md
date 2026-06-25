@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified the SaaS Value Map with a value delivery contract that connects
+  stakeholders to admin control, mobile access, offline sync, notifications,
+  reports, security, feature flags, API outcomes, boundaries, and proof
+  signals.
 - Clarified Target User Roles documentation so platform owner, super admin,
   tenant admin, tenant manager, support agent, billing manager, mobile user,
   invited user, suspended user, and guest/pre-login user responsibilities,

@@ -20,6 +20,10 @@ Target User Roles are defined in `../../docs/user-roles.md`: report summaries
 must respect platform, tenant, manager, support, billing, mobile, and blocked
 account-state visibility.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: report contracts
+must prove value through scoped adoption, operations, sync, support, billing,
+security, and feature-usage insight without overexposing raw tenant data.
+
 ## Purpose
 
 Reports endpoints expose only permission-safe tenant and user report summaries

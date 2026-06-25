@@ -20,6 +20,11 @@ Target User Roles are defined in `../../docs/user-roles.md`: bootstrap context
 must return role-derived capability state and account-state limits as
 mobile-safe outcomes.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: bootstrap context
+is where stakeholder value first becomes mobile-visible through allowed
+features, tenant context, reports, notifications, sync policy, security, and
+admin-controlled state.
+
 ## Purpose
 
 Bootstrap gives the mobile client one resolved operating context after login,

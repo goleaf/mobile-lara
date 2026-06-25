@@ -20,6 +20,11 @@ Target User Roles are defined in `../../docs/user-roles.md`: version and
 maintenance outcomes must respect platform, tenant, support, mobile, invited,
 suspended, and guest/pre-login boundaries.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: version and
+maintenance outcomes protect platform-owner rollout control, tenant-business
+continuity, support diagnosability, billing/operations entitlement clarity, and
+mobile-worker trust.
+
 ## Purpose
 
 App-version and maintenance endpoints tell mobile whether the current build can

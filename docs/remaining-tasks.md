@@ -23,6 +23,10 @@ platform owner, super admin, tenant admin, tenant manager, support agent,
 billing manager, mobile user, invited user, suspended user, and guest/pre-login
 behavior before adding implementation scope.
 
+SaaS Value Map is defined in `docs/saas-value-map.md`. Remaining work must map
+platform owner, tenant business, tenant admin, mobile worker/client, support
+team, and billing/operations value before adding implementation scope.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Remaining implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

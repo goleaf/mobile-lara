@@ -20,6 +20,11 @@ Target User Roles are defined in `../../docs/user-roles.md`: tenant access and
 tenant switching must resolve platform, tenant, invited, suspended, and
 guest/pre-login boundaries server-side.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: tenancy contracts
+create value by preserving tenant isolation while enabling governed mobile
+access, tenant reports, support context, billing visibility, notifications, and
+feature flags.
+
 ## Purpose
 
 Tenancy endpoints keep tenant authority on the Admin/API system. Mobile may

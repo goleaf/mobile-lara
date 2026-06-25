@@ -17,6 +17,10 @@ secure defaults, simple mobile UX, and modular feature expansion.
 Target User Roles are defined in `../../docs/user-roles.md`: feature outcomes
 must resolve role and account-state access into mobile-safe states.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: feature outcomes
+must explain stakeholder value from rollout control, tenant adoption, mobile
+clarity, support explanation, billing entitlements, and security boundaries.
+
 ## Purpose
 
 Feature endpoints expose resolved mobile-safe feature outcomes. Mobile never

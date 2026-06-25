@@ -20,6 +20,10 @@ Target User Roles are defined in `../../docs/user-roles.md`: support flows must
 separate support-agent controls from tenant, billing, mobile, invited,
 suspended, and guest/pre-login experiences.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: support contracts
+create value by connecting mobile help, diagnostics, notifications, sync state,
+reports, security boundaries, and feature-flag explanation.
+
 ## Purpose
 
 Support endpoints let mobile users create tickets, view tickets, add messages,

@@ -19,6 +19,11 @@ secure defaults, simple mobile UX, and modular feature expansion.
 Target User Roles are defined in `../../docs/user-roles.md`: config outcomes
 may vary presentation by role or account state, but must not grant authority.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: remote config
+creates value by safely tuning mobile behavior, notifications, sync messaging,
+support guidance, and feature presentation without turning config into
+authority.
+
 ## Purpose
 
 Remote config endpoints expose validated, resolved, mobile-safe runtime values.

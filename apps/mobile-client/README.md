@@ -20,6 +20,11 @@ Target User Roles are defined in `../../docs/user-roles.md`: this app must show
 mobile, invited, suspended, and guest/pre-login states as API-derived UX, not
 local permission authority.
 
+SaaS Value Map is defined in `../../docs/saas-value-map.md`: this app must turn
+stakeholder value into simple API-derived mobile access, offline/sync state,
+notification UX, secure local behavior, and clear enabled or blocked feature
+states.
+
 ## Product Role
 
 This system owns local execution:
