@@ -226,6 +226,12 @@ final class MobileBootstrapPayload
             'retry_after' => null,
             'allowed_actions' => ['continue', 'logout', 'support'],
             'logout_allowed' => true,
+            'policy_scope' => [
+                'type' => 'foundation',
+                'platform' => null,
+                'tenant_id' => null,
+                'cohort_key' => null,
+            ],
             'maintenance' => self::maintenance(),
         ];
     }

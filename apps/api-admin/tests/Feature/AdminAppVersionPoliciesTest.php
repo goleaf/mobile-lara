@@ -3,6 +3,7 @@
 use App\Livewire\Admin\AppVersionPolicies;
 use App\Models\MobileAppVersionPolicy;
 use App\Models\SecurityAuditEvent;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -67,6 +68,36 @@ test('platform admins can create audited app version policies', function (): voi
             ->exists())->toBeTrue();
 });
 
+test('platform admins can create audited tenant scoped app version policies', function (): void {
+    $admin = User::factory()->platformAdmin()->create();
+    $tenant = Tenant::factory()->create(['name' => 'Version Pilot Tenant']);
+
+    Livewire::actingAs($admin)
+        ->test(AppVersionPolicies::class)
+        ->set('form.scope_type', 'tenant')
+        ->set('form.tenant_id', (string) $tenant->id)
+        ->set('form.platform', 'ios')
+        ->set('form.minimum_supported_version', '3.0.0')
+        ->set('form.message', 'Tenant pilot requires an update.')
+        ->set('form.force_update', true)
+        ->set('form.allowed_actions', 'update, support, logout')
+        ->set('form.confirmed', true)
+        ->call('save')
+        ->assertHasNoErrors()
+        ->assertSee('ios');
+
+    $policy = MobileAppVersionPolicy::query()->firstWhere('tenant_id', $tenant->id);
+
+    expect($policy)->not->toBeNull()
+        ->and($policy?->scopeType())->toBe('tenant')
+        ->and($policy?->minimum_supported_version)->toBe('3.0.0')
+        ->and(SecurityAuditEvent::query()
+            ->where('event', 'admin_mobile_app_version_policy_created')
+            ->where('user_id', $admin->id)
+            ->where('metadata->scope_type', 'tenant')
+            ->exists())->toBeTrue();
+});
+
 test('blocking app version policies require explicit confirmation', function (): void {
     $admin = User::factory()->platformAdmin()->create();
 
@@ -85,6 +116,17 @@ test('app version policy actions are validated', function (): void {
         ->set('form.allowed_actions', 'continue, reboot')
         ->call('save')
         ->assertHasErrors(['form.allowed_actions']);
+});
+
+test('cohort scoped app version policies require safe cohort keys', function (): void {
+    $admin = User::factory()->platformAdmin()->create();
+
+    Livewire::actingAs($admin)
+        ->test(AppVersionPolicies::class)
+        ->set('form.scope_type', 'cohort')
+        ->set('form.cohort_key', 'Pilot Team')
+        ->call('save')
+        ->assertHasErrors(['form.cohort_key']);
 });
 
 test('platform admins can restore previous app version policy snapshots', function (): void {

@@ -184,3 +184,6 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added the API/admin app version policy control page with confirmation,
   mobile impact preview, audited create/update, dashboard navigation, and
   restore-from-audit coverage.
+- Extended app-version policy control with tenant and rollout-cohort scopes,
+  trusted bootstrap precedence for tenant policies, public cohort checks through
+  `X-Mobile-Cohort`, scoped audit snapshots, and focused resolver coverage.

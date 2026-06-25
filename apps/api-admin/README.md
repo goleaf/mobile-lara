@@ -204,10 +204,12 @@ Implemented foundation:
   first remote config data model.
 - `App\Services\MobileConfig\MobileRemoteConfigResolver` merges foundation,
   global, and tenant config into resolved mobile-safe config payloads.
-- `mobile_app_version_policies` provides the first version and maintenance
-  policy data model.
+- `mobile_app_version_policies` provides the first scoped version and
+  maintenance policy data model for global/platform, tenant, and cohort
+  decisions.
 - `App\Services\MobileVersion\MobileAppVersionPolicyResolver` resolves
-  supported, optional-update, force-update, blocked, and maintenance outcomes.
+  supported, optional-update, force-update, blocked, and maintenance outcomes
+  from tenant, cohort, platform, and global fallback policy order.
 - `GET /admin/login` renders the admin login form.
 - `POST /admin/login` authenticates platform-admin users.
 - `POST /admin/logout` invalidates the admin session.
@@ -227,8 +229,9 @@ Implemented foundation:
   access, and manages audited tenant remote config overrides with JSON
   validation, impact preview, and audit-history restore.
 - `/admin/mobile/app-versions` is protected by session auth and platform-admin
-  access, and manages audited global/platform mobile version policies with
-  confirmation, impact preview, and audit-history restore.
+  access, and manages audited global/platform, tenant, and cohort mobile
+  version policies with confirmation, impact preview, and audit-history
+  restore.
 - `App\Actions\Admin\SaveMobileFeatureFlagAction` persists feature defaults and
   writes before/after audit metadata to `security_audit_events`.
 - `App\Actions\Admin\SaveTenantFeatureOverrideAction` persists tenant feature
@@ -240,7 +243,7 @@ Implemented foundation:
 - `App\Actions\Admin\SaveTenantRemoteConfigOverrideAction` persists tenant
   config overrides and writes before/after audit metadata to
   `security_audit_events`.
-- `App\Actions\Admin\SaveMobileAppVersionPolicyAction` persists version
+- `App\Actions\Admin\SaveMobileAppVersionPolicyAction` persists scoped version
   policies and writes before/after audit metadata to `security_audit_events`.
 - `App\Support\Api\MobileApiResponse` centralizes success and error envelopes.
 - `App\Support\Api\MobileContractRegistry` centralizes documented contract
@@ -252,15 +255,15 @@ Implemented foundation:
 - Pest tests cover the dashboard route, root redirect, feature flag admin
   controls, tenant and user feature override controls, remote config admin
   controls, tenant remote config controls, app version admin controls, remote
-  config resolution, app version policy, success envelope, error envelope,
-  contract catalogue, and contract Markdown file coverage.
+  config resolution, tenant/cohort app version policy, success envelope, error
+  envelope, contract catalogue, and contract Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   resource policies, and broader control-plane audit.
-- App version tenant/cohort/version-range scoping, plan/version/device feature
-  gates, sync, notifications, records/content, support, billing, and reports.
+- App-version range scoping, plan/version/device feature gates, sync,
+  notifications, records/content, support, billing, and reports.
 - Protected domain routes for records/content, sync, notifications, support,
   billing, reports, diagnostics, and feature/config/version policies.
 

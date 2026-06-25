@@ -32,6 +32,9 @@ final class SaveMobileAppVersionPolicyAction
             metadata: [
                 'app_version_policy_id' => $policy->id,
                 'platform' => $policy->platform,
+                'scope_type' => $policy->scopeType(),
+                'tenant_id' => $policy->tenant_id,
+                'cohort_key' => $policy->cohort_key,
                 'before' => $before,
                 'after' => $this->snapshot($policy),
             ],
@@ -61,6 +64,9 @@ final class SaveMobileAppVersionPolicyAction
             metadata: [
                 'app_version_policy_id' => $policy->id,
                 'platform' => $policy->platform,
+                'scope_type' => $policy->scopeType(),
+                'tenant_id' => $policy->tenant_id,
+                'cohort_key' => $policy->cohort_key,
                 'source_audit_event_id' => $sourceEvent->id,
                 'before' => $before,
                 'after' => $this->snapshot($policy),
@@ -77,6 +83,9 @@ final class SaveMobileAppVersionPolicyAction
     {
         return [
             'id' => $policy->id,
+            'scope_type' => $policy->scopeType(),
+            'tenant_id' => $policy->tenant_id,
+            'cohort_key' => $policy->cohort_key,
             'platform' => $policy->platform,
             'minimum_supported_version' => $policy->minimum_supported_version,
             'minimum_recommended_version' => $policy->minimum_recommended_version,
@@ -104,6 +113,8 @@ final class SaveMobileAppVersionPolicyAction
     private function payload(array $data, array $metadata = []): array
     {
         return [
+            'tenant_id' => $this->tenantId($data),
+            'cohort_key' => $this->cohortKey($data),
             'platform' => $this->platform($data['platform'] ?? 'all'),
             'minimum_supported_version' => $this->requiredString($data['minimum_supported_version'] ?? '1.0.0'),
             'minimum_recommended_version' => $this->nullableString($data['minimum_recommended_version'] ?? null),
@@ -135,6 +146,8 @@ final class SaveMobileAppVersionPolicyAction
         $storeUrls = $this->arrayValue($snapshot['store_urls'] ?? []);
 
         return [
+            'tenant_id' => $this->nullableInteger($snapshot['tenant_id'] ?? null),
+            'cohort_key' => $this->nullableString($snapshot['cohort_key'] ?? null),
             'platform' => $this->platform($snapshot['platform'] ?? 'all'),
             'minimum_supported_version' => $this->requiredString($snapshot['minimum_supported_version'] ?? '1.0.0'),
             'minimum_recommended_version' => $this->nullableString($snapshot['minimum_recommended_version'] ?? null),
@@ -162,6 +175,30 @@ final class SaveMobileAppVersionPolicyAction
         $platform = is_string($value) ? str($value)->lower()->trim()->toString() : 'all';
 
         return $platform === '' ? 'all' : $platform;
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    private function tenantId(array $data): ?int
+    {
+        if (($data['scope_type'] ?? 'global') !== 'tenant') {
+            return null;
+        }
+
+        return $this->nullableInteger($data['tenant_id'] ?? null);
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    private function cohortKey(array $data): ?string
+    {
+        if (($data['scope_type'] ?? 'global') !== 'cohort') {
+            return null;
+        }
+
+        return $this->nullableString($data['cohort_key'] ?? null);
     }
 
     private function requiredString(mixed $value): string

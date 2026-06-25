@@ -124,6 +124,83 @@ test('maintenance policy is reflected in bootstrap', function (): void {
         ->assertJsonPath('data.maintenance.retry_after', 900);
 });
 
+test('tenant app version policy wins during authenticated bootstrap', function (): void {
+    $user = User::factory()->create([
+        'email' => 'tenant-version-worker@example.com',
+        'password' => 'password-secret',
+    ]);
+    $tenant = Tenant::factory()->create();
+
+    TenantUser::factory()
+        ->for($tenant)
+        ->for($user)
+        ->current()
+        ->role(TenantUserRole::TenantAdmin)
+        ->create();
+
+    MobileAppVersionPolicy::factory()->create([
+        'platform' => 'ios',
+        'minimum_supported_version' => '1.0.0',
+        'message' => 'Global policy.',
+    ]);
+
+    MobileAppVersionPolicy::factory()->for($tenant)->create([
+        'platform' => 'ios',
+        'minimum_supported_version' => '3.0.0',
+        'message' => 'Tenant requires a newer build.',
+    ]);
+
+    $accessToken = $this->postJson('/api/v1/mobile/auth/login', [
+        'email' => 'tenant-version-worker@example.com',
+        'password' => 'password-secret',
+        'device_id' => 'tenant-version-device-001',
+        'device_name' => 'Tenant Version Test Device',
+        'platform' => 'ios',
+        'app_version' => '2.0.0',
+    ])->json('data.tokens.access_token');
+
+    $this
+        ->withToken($accessToken)
+        ->withHeaders([
+            'X-Mobile-Platform' => 'ios',
+            'X-Mobile-App-Version' => '2.0.0',
+        ])
+        ->getJson('/api/v1/mobile/bootstrap')
+        ->assertOk()
+        ->assertJsonPath('data.app_version.state', 'force_update')
+        ->assertJsonPath('data.app_version.minimum_supported_version', '3.0.0')
+        ->assertJsonPath('data.app_version.policy_scope.type', 'tenant')
+        ->assertJsonPath('data.app_version.policy_scope.tenant_id', $tenant->public_id);
+});
+
+test('cohort app version policy can target public version checks', function (): void {
+    MobileAppVersionPolicy::factory()->create([
+        'cohort_key' => 'pilot_team',
+        'platform' => 'android',
+        'minimum_supported_version' => '4.0.0',
+        'message' => 'Pilot devices must update.',
+    ]);
+
+    MobileAppVersionPolicy::factory()->create([
+        'platform' => 'android',
+        'minimum_supported_version' => '1.0.0',
+        'message' => 'Global policy.',
+    ]);
+
+    $this
+        ->withHeaders([
+            'X-Mobile-Platform' => 'android',
+            'X-Mobile-App-Version' => '3.0.0',
+            'X-Mobile-Cohort' => 'pilot_team',
+        ])
+        ->getJson('/api/v1/mobile/app-version')
+        ->assertOk()
+        ->assertJsonPath('data.state', 'force_update')
+        ->assertJsonPath('data.minimum_supported_version', '4.0.0')
+        ->assertJsonPath('data.policy_scope.type', 'cohort')
+        ->assertJsonPath('data.policy_scope.cohort_key', 'pilot_team');
+});
+
 test('contract catalogue marks app version route as implemented', function (): void {
     $this->getJson('/api/v1/mobile/contracts')
         ->assertOk()

@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
+    'tenant_id',
+    'cohort_key',
     'platform',
     'minimum_supported_version',
     'minimum_recommended_version',
@@ -37,6 +40,7 @@ final class MobileAppVersionPolicy extends Model
     protected function casts(): array
     {
         return [
+            'tenant_id' => 'integer',
             'blocked_versions' => 'array',
             'store_urls' => 'array',
             'force_update' => 'boolean',
@@ -49,6 +53,11 @@ final class MobileAppVersionPolicy extends Model
         ];
     }
 
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
     /**
      * @param  Builder<MobileAppVersionPolicy>  $query
      * @return Builder<MobileAppVersionPolicy>
@@ -58,6 +67,8 @@ final class MobileAppVersionPolicy extends Model
         return $query
             ->select([
                 'id',
+                'tenant_id',
+                'cohort_key',
                 'platform',
                 'minimum_supported_version',
                 'minimum_recommended_version',
@@ -89,6 +100,8 @@ final class MobileAppVersionPolicy extends Model
         return $query
             ->select([
                 'id',
+                'tenant_id',
+                'cohort_key',
                 'platform',
                 'minimum_supported_version',
                 'minimum_recommended_version',
@@ -107,7 +120,10 @@ final class MobileAppVersionPolicy extends Model
                 'metadata',
                 'updated_at',
             ])
+            ->with('tenant:id,name,public_id,status')
             ->orderBy('platform')
+            ->orderBy('tenant_id')
+            ->orderBy('cohort_key')
             ->orderByDesc('updated_at');
     }
 
@@ -122,5 +138,35 @@ final class MobileAppVersionPolicy extends Model
         }
 
         return $query->where('platform', $platform);
+    }
+
+    public function scopeGlobalScope(Builder $query): Builder
+    {
+        return $query
+            ->whereNull('tenant_id')
+            ->whereNull('cohort_key');
+    }
+
+    public function scopeTenantScope(Builder $query, Tenant $tenant): Builder
+    {
+        return $query->where('tenant_id', $tenant->id);
+    }
+
+    public function scopeCohortScope(Builder $query, string $cohortKey): Builder
+    {
+        return $query->where('cohort_key', $cohortKey);
+    }
+
+    public function scopeType(): string
+    {
+        if ($this->tenant_id !== null) {
+            return 'tenant';
+        }
+
+        if (is_string($this->cohort_key) && trim($this->cohort_key) !== '') {
+            return 'cohort';
+        }
+
+        return 'global';
     }
 }

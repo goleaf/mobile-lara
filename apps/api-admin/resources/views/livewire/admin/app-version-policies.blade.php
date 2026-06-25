@@ -59,6 +59,23 @@
 
             <div class="grid gap-4 sm:grid-cols-2">
                 <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                    Scope
+                    <select
+                        wire:model.change="form.scope_type"
+                        class="h-11 rounded-lg border border-zinc-300 bg-white px-3 text-sm text-zinc-950 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-zinc-400 dark:focus:ring-zinc-800"
+                    >
+                        @forelse ($scopeOptions as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @empty
+                            <option value="global">Global/platform</option>
+                        @endforelse
+                    </select>
+                    @error('form.scope_type')
+                        <span class="text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</span>
+                    @enderror
+                </label>
+
+                <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
                     Platform
                     <select
                         wire:model.change="form.platform"
@@ -76,7 +93,42 @@
                         <span class="text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</span>
                     @enderror
                 </label>
+            </div>
 
+            @if ($form['scope_type'] === 'tenant')
+                <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                    Tenant
+                    <select
+                        wire:model.change="form.tenant_id"
+                        class="h-11 rounded-lg border border-zinc-300 bg-white px-3 text-sm text-zinc-950 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-zinc-400 dark:focus:ring-zinc-800"
+                    >
+                        <option value="">Choose tenant</option>
+                        @forelse ($tenants as $tenant)
+                            <option value="{{ $tenant->id }}">{{ $tenant->name }}</option>
+                        @empty
+                            <option value="">No tenants available</option>
+                        @endforelse
+                    </select>
+                    @error('form.tenant_id')
+                        <span class="text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</span>
+                    @enderror
+                </label>
+            @elseif ($form['scope_type'] === 'cohort')
+                <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                    Cohort key
+                    <input
+                        type="text"
+                        wire:model.blur="form.cohort_key"
+                        class="h-11 rounded-lg border border-zinc-300 bg-white px-3 text-sm text-zinc-950 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-zinc-400 dark:focus:ring-zinc-800"
+                        autocomplete="off"
+                    >
+                    @error('form.cohort_key')
+                        <span class="text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</span>
+                    @enderror
+                </label>
+            @endif
+
+            <div class="grid gap-4 sm:grid-cols-2">
                 <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
                     Minimum supported
                     <input
@@ -285,6 +337,7 @@
                         <table class="min-w-full divide-y divide-zinc-200 text-sm dark:divide-zinc-800">
                             <thead class="bg-zinc-50 text-left text-xs font-semibold uppercase tracking-normal text-zinc-500 dark:bg-zinc-950 dark:text-zinc-400">
                                 <tr>
+                                    <th class="px-4 py-3">Scope</th>
                                     <th class="px-4 py-3">Platform</th>
                                     <th class="px-4 py-3">Versions</th>
                                     <th class="px-4 py-3">State</th>
@@ -295,6 +348,20 @@
                             <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
                                 @forelse ($policies as $policy)
                                     <tr wire:key="app-version-policy-{{ $policy->id }}" class="align-top">
+                                        <td class="px-4 py-3">
+                                            <div class="grid gap-1">
+                                                <span class="font-medium text-zinc-950 dark:text-zinc-100">{{ str($policy->scopeType())->headline() }}</span>
+                                                <span class="text-xs text-zinc-500 dark:text-zinc-400">
+                                                    @if ($policy->scopeType() === 'tenant')
+                                                        {{ $policy->tenant?->name ?? 'Deleted tenant' }}
+                                                    @elseif ($policy->scopeType() === 'cohort')
+                                                        {{ $policy->cohort_key }}
+                                                    @else
+                                                        all tenants
+                                                    @endif
+                                                </span>
+                                            </div>
+                                        </td>
                                         <td class="px-4 py-3">
                                             <div class="grid gap-1">
                                                 <span class="font-medium text-zinc-950 dark:text-zinc-100">{{ str($policy->platform)->upper() }}</span>
@@ -335,7 +402,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="px-4 py-10 text-center text-sm text-zinc-500 dark:text-zinc-400">
+                                        <td colspan="6" class="px-4 py-10 text-center text-sm text-zinc-500 dark:text-zinc-400">
                                             No app version policies found.
                                         </td>
                                     </tr>

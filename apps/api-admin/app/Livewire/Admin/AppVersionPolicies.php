@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Actions\Admin\SaveMobileAppVersionPolicyAction;
 use App\Models\MobileAppVersionPolicy;
 use App\Models\SecurityAuditEvent;
+use App\Models\Tenant;
 use App\Models\User;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -29,9 +30,12 @@ final class AppVersionPolicies extends Component
     public ?int $editingPolicyId = null;
 
     /**
-     * @var array{platform: string, minimum_supported_version: string, minimum_recommended_version: string, latest_version: string, blocked_versions: string, ios_store_url: string, android_store_url: string, message: string, support_url: string, force_update: bool, maintenance_enabled: bool, maintenance_message: string, retry_after_seconds: string, allowed_actions: string, logout_allowed: bool, is_active: bool, confirmed: bool}
+     * @var array{scope_type: string, tenant_id: string, cohort_key: string, platform: string, minimum_supported_version: string, minimum_recommended_version: string, latest_version: string, blocked_versions: string, ios_store_url: string, android_store_url: string, message: string, support_url: string, force_update: bool, maintenance_enabled: bool, maintenance_message: string, retry_after_seconds: string, allowed_actions: string, logout_allowed: bool, is_active: bool, confirmed: bool}
      */
     public array $form = [
+        'scope_type' => 'global',
+        'tenant_id' => '',
+        'cohort_key' => '',
         'platform' => 'all',
         'minimum_supported_version' => '1.0.0',
         'minimum_recommended_version' => '',
@@ -61,6 +65,8 @@ final class AppVersionPolicies extends Component
         $policy = MobileAppVersionPolicy::query()
             ->select([
                 'id',
+                'tenant_id',
+                'cohort_key',
                 'platform',
                 'minimum_supported_version',
                 'minimum_recommended_version',
@@ -84,6 +90,9 @@ final class AppVersionPolicies extends Component
 
         $this->editingPolicyId = $policy->id;
         $this->form = [
+            'scope_type' => $policy->scopeType(),
+            'tenant_id' => (string) ($policy->tenant_id ?? ''),
+            'cohort_key' => $policy->cohort_key ?? '',
             'platform' => $policy->platform,
             'minimum_supported_version' => $policy->minimum_supported_version,
             'minimum_recommended_version' => $policy->minimum_recommended_version ?? '',
@@ -126,6 +135,8 @@ final class AppVersionPolicies extends Component
             : MobileAppVersionPolicy::query()
                 ->select([
                     'id',
+                    'tenant_id',
+                    'cohort_key',
                     'platform',
                     'minimum_supported_version',
                     'minimum_recommended_version',
@@ -206,6 +217,8 @@ final class AppVersionPolicies extends Component
                 ->paginate(10)
                 ->withQueryString(),
             'platformOptions' => $this->platformOptions(),
+            'scopeOptions' => $this->scopeOptions(),
+            'tenants' => $this->tenantOptions(),
             'summary' => $this->summary(),
             'impactPreview' => $this->impactPreview(),
             'auditEvents' => $this->auditEvents(),
@@ -218,6 +231,20 @@ final class AppVersionPolicies extends Component
     private function rules(): array
     {
         return [
+            'form.scope_type' => ['required', Rule::in(array_keys($this->scopeOptions()))],
+            'form.tenant_id' => [
+                Rule::requiredIf($this->form['scope_type'] === 'tenant'),
+                'nullable',
+                'integer',
+                Rule::exists('tenants', 'id'),
+            ],
+            'form.cohort_key' => [
+                Rule::requiredIf($this->form['scope_type'] === 'cohort'),
+                'nullable',
+                'string',
+                'max:80',
+                'regex:/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/',
+            ],
             'form.platform' => ['required', Rule::in(array_keys($this->editablePlatformOptions()))],
             'form.minimum_supported_version' => ['required', 'string', 'max:40'],
             'form.minimum_recommended_version' => ['nullable', 'string', 'max:40'],
@@ -255,6 +282,9 @@ final class AppVersionPolicies extends Component
     private function validationAttributes(): array
     {
         return [
+            'form.scope_type' => 'scope',
+            'form.tenant_id' => 'tenant',
+            'form.cohort_key' => 'cohort key',
             'form.platform' => 'platform',
             'form.minimum_supported_version' => 'minimum supported version',
             'form.minimum_recommended_version' => 'minimum recommended version',
@@ -279,6 +309,9 @@ final class AppVersionPolicies extends Component
     {
         $this->editingPolicyId = null;
         $this->form = [
+            'scope_type' => 'global',
+            'tenant_id' => '',
+            'cohort_key' => '',
             'platform' => 'all',
             'minimum_supported_version' => '1.0.0',
             'minimum_recommended_version' => '',
@@ -331,6 +364,30 @@ final class AppVersionPolicies extends Component
     }
 
     /**
+     * @return array<string, string>
+     */
+    private function scopeOptions(): array
+    {
+        return [
+            'global' => 'Global/platform',
+            'tenant' => 'Tenant',
+            'cohort' => 'Cohort',
+        ];
+    }
+
+    /**
+     * @return Collection<int, Tenant>
+     */
+    private function tenantOptions(): Collection
+    {
+        return Tenant::query()
+            ->select(['id', 'public_id', 'name', 'status'])
+            ->orderBy('name')
+            ->limit(100)
+            ->get();
+    }
+
+    /**
      * @return array<int, string>
      */
     private function allowedActionOptions(): array
@@ -368,7 +425,7 @@ final class AppVersionPolicies extends Component
             return [
                 'tone' => 'danger',
                 'headline' => 'Maintenance blocks normal mobile use.',
-                'detail' => 'Clients matching this platform receive the maintenance screen with retry, support, and logout behavior.',
+                'detail' => $this->scopeDescription('receive the maintenance screen with retry, support, and logout behavior.'),
                 'actions' => implode(', ', $actions ?: ['retry', 'support', 'logout']),
             ];
         }
@@ -377,7 +434,7 @@ final class AppVersionPolicies extends Component
             return [
                 'tone' => 'danger',
                 'headline' => 'Force update blocks unsupported clients.',
-                'detail' => 'Clients matching this platform must update before continuing through normal mobile navigation.',
+                'detail' => $this->scopeDescription('must update before continuing through normal mobile navigation.'),
                 'actions' => implode(', ', $actions ?: ['update', 'support', 'logout']),
             ];
         }
@@ -386,7 +443,7 @@ final class AppVersionPolicies extends Component
             return [
                 'tone' => 'neutral',
                 'headline' => 'Inactive policies are ignored by bootstrap.',
-                'detail' => 'The resolver skips this row and falls back to another active platform or global policy.',
+                'detail' => 'The resolver skips this row and falls back to another active tenant, cohort, platform, or global policy.',
                 'actions' => 'none',
             ];
         }
@@ -395,7 +452,7 @@ final class AppVersionPolicies extends Component
             return [
                 'tone' => 'warning',
                 'headline' => 'Older clients receive an optional update prompt.',
-                'detail' => 'Clients below the recommended version remain usable unless they also fall below the minimum supported version.',
+                'detail' => $this->scopeDescription('remain usable below the recommended version unless they also fall below the minimum supported version.'),
                 'actions' => implode(', ', $actions ?: ['continue', 'logout', 'support']),
             ];
         }
@@ -403,9 +460,40 @@ final class AppVersionPolicies extends Component
         return [
             'tone' => 'success',
             'headline' => 'Policy allows normal mobile use.',
-            'detail' => 'Clients below the minimum supported version are blocked; clients at or above it continue normally.',
+            'detail' => $this->scopeDescription('continue normally at or above the minimum supported version.'),
             'actions' => implode(', ', $actions ?: ['continue', 'logout', 'support']),
         ];
+    }
+
+    private function scopeDescription(string $effect): string
+    {
+        return $this->scopeLabel().' clients matching '.$this->form['platform'].' '.$effect;
+    }
+
+    private function scopeLabel(): string
+    {
+        if ($this->form['scope_type'] === 'tenant') {
+            return $this->selectedTenantName();
+        }
+
+        if ($this->form['scope_type'] === 'cohort') {
+            return trim($this->form['cohort_key']) !== '' ? 'Cohort '.$this->form['cohort_key'] : 'Selected cohort';
+        }
+
+        return 'Global/platform';
+    }
+
+    private function selectedTenantName(): string
+    {
+        $tenantId = (int) ($this->form['tenant_id'] ?: 0);
+
+        if ($tenantId === 0) {
+            return 'Selected tenant';
+        }
+
+        $tenant = Tenant::query()->select(['id', 'name'])->find($tenantId);
+
+        return $tenant?->name ?? 'Selected tenant';
     }
 
     /**

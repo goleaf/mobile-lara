@@ -18,6 +18,8 @@ class MobileAppVersionPolicyFactory extends Factory
     public function definition(): array
     {
         return [
+            'tenant_id' => null,
+            'cohort_key' => null,
             'platform' => 'all',
             'minimum_supported_version' => '1.0.0',
             'minimum_recommended_version' => null,

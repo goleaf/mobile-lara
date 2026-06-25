@@ -47,7 +47,7 @@ final class BootstrapController extends Controller
         $permissions = $this->permissions->resolve($user, $tenantContext);
         $features = $this->features->resolve($user, $tenantContext, $permissions);
         $remoteConfig = $this->config->resolve($user, $tenantContext);
-        $appVersion = $this->versions->resolve($request);
+        $appVersion = $this->versions->resolve($request, $tenantContext);
 
         return MobileApiResponse::success(
             MobileBootstrapPayload::make(

@@ -4,15 +4,23 @@ namespace App\Services\MobileVersion;
 
 use App\Enums\MobileAppVersionState;
 use App\Models\MobileAppVersionPolicy;
+use App\Models\Tenant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 final class MobileAppVersionPolicyResolver
 {
-    public function resolve(Request $request): array
+    /**
+     * @param  array{current_tenant?: array<string, mixed>|null}  $tenantContext
+     * @return array<string, mixed>
+     */
+    public function resolve(Request $request, array $tenantContext = []): array
     {
         $platform = $this->platform($request);
         $reportedVersion = $this->reportedVersion($request);
-        $policy = $this->policy($platform);
+        $tenant = $this->tenantFromContext($tenantContext);
+        $cohortKey = $this->cohortKey($request);
+        $policy = $this->policy($platform, $tenant, $cohortKey);
         $state = $this->state($policy, $reportedVersion);
         $storeUrls = $this->arrayValue($policy?->store_urls) ?: ['ios' => null, 'android' => null];
         $allowedActions = $this->allowedActions($state, $policy);
@@ -44,13 +52,14 @@ final class MobileAppVersionPolicyResolver
             'retry_after' => $policy?->retry_after_seconds,
             'allowed_actions' => $allowedActions,
             'logout_allowed' => $policy?->logout_allowed ?? true,
+            'policy_scope' => $this->policyScope($policy, $tenant, $cohortKey),
             'maintenance' => [
                 'enabled' => $state === MobileAppVersionState::Maintenance,
                 'message' => $policy?->maintenance_message,
                 'support_url' => $policy?->support_url,
                 'retry_after' => $policy?->retry_after_seconds,
             ],
-            'policy_version' => $this->policyVersion($policy, $state, $platform, $reportedVersion),
+            'policy_version' => $this->policyVersion($policy, $state, $platform, $reportedVersion, $cohortKey),
             'policy_source' => $policy instanceof MobileAppVersionPolicy ? 'database_policy' : 'foundation_default',
         ];
     }
@@ -85,14 +94,76 @@ final class MobileAppVersionPolicyResolver
         return is_string($versionCode) && trim($versionCode) !== '' ? trim($versionCode) : null;
     }
 
-    private function policy(string $platform): ?MobileAppVersionPolicy
+    private function cohortKey(Request $request): ?string
+    {
+        $cohort = $request->header('X-Mobile-Cohort')
+            ?: $request->header('X-Mobile-Rollout-Cohort');
+
+        if (! is_string($cohort) || trim($cohort) === '') {
+            return null;
+        }
+
+        $cohort = str($cohort)->lower()->trim()->toString();
+
+        return preg_match('/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/', $cohort) === 1 ? $cohort : null;
+    }
+
+    /**
+     * @param  array{current_tenant?: array<string, mixed>|null}  $tenantContext
+     */
+    private function tenantFromContext(array $tenantContext): ?Tenant
+    {
+        $currentTenant = is_array($tenantContext['current_tenant'] ?? null) ? $tenantContext['current_tenant'] : null;
+        $publicId = is_string($currentTenant['id'] ?? null) ? $currentTenant['id'] : null;
+
+        if ($publicId === null || trim($publicId) === '') {
+            return null;
+        }
+
+        return Tenant::query()
+            ->select(['id', 'public_id', 'name'])
+            ->where('public_id', $publicId)
+            ->first();
+    }
+
+    private function policy(string $platform, ?Tenant $tenant, ?string $cohortKey): ?MobileAppVersionPolicy
     {
         $policies = MobileAppVersionPolicy::query()
             ->activeForPlatform($platform)
             ->get();
 
-        return $policies->firstWhere('platform', $platform)
-            ?? $policies->firstWhere('platform', 'all');
+        if ($tenant instanceof Tenant) {
+            $tenantPolicy = $this->firstPolicy($policies, $platform, $tenant->id, null)
+                ?? $this->firstPolicy($policies, 'all', $tenant->id, null);
+
+            if ($tenantPolicy instanceof MobileAppVersionPolicy) {
+                return $tenantPolicy;
+            }
+        }
+
+        if ($cohortKey !== null) {
+            $cohortPolicy = $this->firstPolicy($policies, $platform, null, $cohortKey)
+                ?? $this->firstPolicy($policies, 'all', null, $cohortKey);
+
+            if ($cohortPolicy instanceof MobileAppVersionPolicy) {
+                return $cohortPolicy;
+            }
+        }
+
+        return $this->firstPolicy($policies, $platform, null, null)
+            ?? $this->firstPolicy($policies, 'all', null, null);
+    }
+
+    /**
+     * @param  Collection<int, MobileAppVersionPolicy>  $policies
+     */
+    private function firstPolicy(Collection $policies, string $platform, ?int $tenantId, ?string $cohortKey): ?MobileAppVersionPolicy
+    {
+        return $policies->first(
+            fn (MobileAppVersionPolicy $policy): bool => $policy->platform === $platform
+                && $policy->tenant_id === $tenantId
+                && $policy->cohort_key === $cohortKey,
+        );
     }
 
     private function state(?MobileAppVersionPolicy $policy, ?string $reportedVersion): MobileAppVersionState
@@ -195,10 +266,36 @@ final class MobileAppVersionPolicyResolver
         return $policy?->message;
     }
 
-    private function policyVersion(?MobileAppVersionPolicy $policy, MobileAppVersionState $state, string $platform, ?string $reportedVersion): string
+    /**
+     * @return array{type: string, platform: string|null, tenant_id: string|null, cohort_key: string|null}
+     */
+    private function policyScope(?MobileAppVersionPolicy $policy, ?Tenant $tenant, ?string $cohortKey): array
+    {
+        if (! $policy instanceof MobileAppVersionPolicy) {
+            return [
+                'type' => 'foundation',
+                'platform' => null,
+                'tenant_id' => null,
+                'cohort_key' => $cohortKey,
+            ];
+        }
+
+        return [
+            'type' => $policy->scopeType(),
+            'platform' => $policy->platform,
+            'tenant_id' => $policy->tenant_id !== null && $tenant instanceof Tenant ? $tenant->public_id : null,
+            'cohort_key' => $policy->cohort_key,
+        ];
+    }
+
+    private function policyVersion(?MobileAppVersionPolicy $policy, MobileAppVersionState $state, string $platform, ?string $reportedVersion, ?string $cohortKey): string
     {
         $payload = json_encode([
             'policy_id' => $policy?->id,
+            'policy_scope' => $policy?->scopeType(),
+            'tenant_id' => $policy?->tenant_id,
+            'cohort_key' => $policy?->cohort_key,
+            'reported_cohort_key' => $cohortKey,
             'updated_at' => $policy?->updated_at?->toIso8601String(),
             'state' => $state->value,
             'platform' => $platform,
