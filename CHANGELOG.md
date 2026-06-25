@@ -221,3 +221,5 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added feature flag plan and device gates with global required-plan/device
   constraints, resolver-enforced blocked states, admin controls, audit
   snapshots, and focused API/bootstrap coverage.
+- Added a fail-closed emergency feature gate so global, tenant, or user
+  emergency-disabled states cannot be bypassed by lower-scope overrides.

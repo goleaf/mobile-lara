@@ -203,6 +203,45 @@ test('device gates block enabled features on unsupported platforms', function ()
         ->assertJsonPath('data.features.native_camera.device_constraints.platforms.0', 'android');
 });
 
+test('emergency feature gates cannot be bypassed by tenant or user overrides', function (): void {
+    $user = User::factory()->create([
+        'email' => 'feature-emergency@example.com',
+        'password' => 'password-secret',
+    ]);
+    $tenant = Tenant::factory()->create();
+
+    TenantUser::factory()->for($tenant)->for($user)->current()->role(TenantUserRole::TenantAdmin)->create();
+    MobileFeatureFlag::factory()->create([
+        'key' => 'records',
+        'name' => 'Records',
+        'default_state' => MobileFeatureState::EmergencyDisabled,
+        'reason' => 'incident_response',
+        'message' => 'Records are temporarily paused.',
+    ]);
+    TenantFeatureOverride::factory()->for($tenant)->create([
+        'feature_key' => 'records',
+        'state' => MobileFeatureState::Visible,
+        'reason' => 'tenant_enabled',
+    ]);
+    UserFeatureOverride::factory()->for($tenant)->for($user)->create([
+        'feature_key' => 'records',
+        'state' => MobileFeatureState::Visible,
+        'reason' => 'user_preview',
+    ]);
+
+    $accessToken = mobileFeatureAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->getJson('/api/v1/mobile/features')
+        ->assertOk()
+        ->assertJsonPath('data.features.records.state', 'emergency_disabled')
+        ->assertJsonPath('data.features.records.enabled', false)
+        ->assertJsonPath('data.features.records.source', 'emergency_gate')
+        ->assertJsonPath('data.features.records.reason', 'incident_response')
+        ->assertJsonPath('data.features.records.message', 'Records are temporarily paused.')
+        ->assertJsonPath('data.features.records.next_action', 'contact_support');
+});
+
 function mobileFeatureAccessToken($test, User $user): string
 {
     return $test->postJson('/api/v1/mobile/auth/login', [

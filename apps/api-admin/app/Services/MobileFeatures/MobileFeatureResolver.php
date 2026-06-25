@@ -168,12 +168,24 @@ final class MobileFeatureResolver
     ): array {
         $resolved = $this->baseFeature($key, $flag);
 
+        if ($this->isEmergencyDisabled($resolved)) {
+            return $this->applyEmergencyGate($resolved);
+        }
+
         if ($tenantOverride instanceof TenantFeatureOverride) {
             $resolved = $this->applyOverride($resolved, $tenantOverride->state, $tenantOverride->reason, $tenantOverride->message, $tenantOverride->offline_behavior, 'tenant_override');
+
+            if ($this->isEmergencyDisabled($resolved)) {
+                return $this->applyEmergencyGate($resolved);
+            }
         }
 
         if ($userOverride instanceof UserFeatureOverride) {
             $resolved = $this->applyOverride($resolved, $userOverride->state, $userOverride->reason, $userOverride->message, $userOverride->offline_behavior, 'user_override');
+
+            if ($this->isEmergencyDisabled($resolved)) {
+                return $this->applyEmergencyGate($resolved);
+            }
         }
 
         $resolved = $this->applyPlanGate($resolved, $planKey);
@@ -204,6 +216,33 @@ final class MobileFeatureResolver
             deviceConstraints: $this->deviceConstraints($flag?->device_constraints),
             offlineBehavior: $flag?->offline_behavior ?? $default['offline_behavior'],
             source: $flag instanceof MobileFeatureFlag ? 'global_default' : 'foundation_default',
+        );
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     */
+    private function isEmergencyDisabled(array $payload): bool
+    {
+        return ($payload['state'] ?? null) === MobileFeatureState::EmergencyDisabled->value;
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    private function applyEmergencyGate(array $payload): array
+    {
+        return $this->payload(
+            state: MobileFeatureState::EmergencyDisabled,
+            reason: is_string($payload['reason'] ?? null) ? $payload['reason'] : 'emergency_disabled',
+            message: is_string($payload['message'] ?? null) ? $payload['message'] : 'This feature is temporarily unavailable.',
+            minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
+            requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
+            offlineBehavior: (string) $payload['offline_behavior'],
+            source: 'emergency_gate',
+            nextAction: 'contact_support',
         );
     }
 

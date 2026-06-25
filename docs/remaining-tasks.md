@@ -182,9 +182,9 @@ before implementation scope is added.
   workspace switcher: admin tenant management screens, invitations, tenant
   settings policy, tenant-scoped resource middleware, and tenant-local cache
   partition verification.
-- Complete admin role/permission management, feature-flag cohort,
-  maintenance, and emergency gates, subscription state, notification policy,
-  sync policy, and audit foundations.
+- Complete admin role/permission management, feature-flag cohort and
+  maintenance gates, subscription state, notification policy, sync policy, and
+  audit foundations.
 - Rewire existing mobile-local screens so server-trusted behavior comes from
   API/bootstrap state instead of local placeholders.
 - Run formatting, tests, route verification, builds, and NativePHP validation

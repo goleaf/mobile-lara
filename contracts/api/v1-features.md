@@ -8,9 +8,10 @@ The admin panel manages audited global feature defaults and tenant-scoped
 overrides with mobile impact previews. It also manages membership-safe
 user-scoped overrides with audit-history restore. Minimum app-version gates are
 enforced for otherwise-enabled features, and global flags can require plan keys
-or device constraints before a feature remains enabled. Cohort gates, emergency
-controls, richer billing plan authority, and mobile-local feature cache
-integration remain pending.
+or device constraints before a feature remains enabled. Emergency-disabled
+states fail closed before lower-scope overrides can re-enable a feature. Cohort
+gates, maintenance controls, richer billing plan authority, and mobile-local
+feature cache integration remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps important mobile capabilities feature-controlled by Admin/API.
@@ -204,15 +205,16 @@ Allowed states include `hidden`, `visible`, `disabled`, `blocked`, `beta`,
 
 The current implementation resolves user override, tenant override, then global
 default, with plan, device, permission, and minimum-app-version gates applied
-before mobile receives the final state. If an otherwise-enabled feature is not
-included in the resolved `plan_key`, the state becomes `blocked` with
-`next_action` set to `upgrade_plan`. If the current device platform or device
-ID does not match `device_constraints`, the state becomes `blocked` with
-`next_action` set to `use_supported_device`. If an otherwise-enabled feature
-has a `minimum_app_version` above the reported app version, the resolved state
-becomes `update_required` with `next_action` set to `update_app`. Future slices
-must add safety and maintenance rules, cohort rules, emergency blocks, richer
-billing plan authority, and richer offline limitations.
+before mobile receives the final state. Emergency-disabled states at the global,
+tenant, or user level fail closed with `next_action` set to `contact_support`.
+If an otherwise-enabled feature is not included in the resolved `plan_key`, the
+state becomes `blocked` with `next_action` set to `upgrade_plan`. If the current
+device platform or device ID does not match `device_constraints`, the state
+becomes `blocked` with `next_action` set to `use_supported_device`. If an
+otherwise-enabled feature has a `minimum_app_version` above the reported app
+version, the resolved state becomes `update_required` with `next_action` set to
+`update_app`. Future slices must add safety and maintenance rules, cohort rules,
+richer billing plan authority, and richer offline limitations.
 
 ## Offline Behavior
 
@@ -253,5 +255,5 @@ cd apps/api-admin && php artisan test --compact --filter=AdminUserFeatureOverrid
 ```
 
 Future Phase 8 coverage should add stale-cache behavior, cohort gates,
-emergency disablement, richer billing plan authority, and no raw flag layers in
-API responses beyond resolved mobile-safe outcomes.
+maintenance gates, richer billing plan authority, and no raw flag layers in API
+responses beyond resolved mobile-safe outcomes.
