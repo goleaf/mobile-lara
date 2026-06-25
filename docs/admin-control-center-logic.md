@@ -21,6 +21,12 @@ shell states must coordinate welcome, authenticated, locked, offline, maintenanc
 switching, sync-in-progress, permission-blocked, and feature-disabled behavior
 before implementation.
 
+Mobile Dashboard Logic is defined in `mobile-dashboard-logic.md`:
+dashboard content must resolve current user context, current tenant, enabled
+feature shortcuts, sync/offline status, unread notifications, recent
+activity, announcements, and quick actions through API-safe rules before
+implementation.
+
 ## Control Center Statement
 
 The Admin Control Center is the operational control surface for the SaaS.

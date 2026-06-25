@@ -56,6 +56,12 @@ shell states must coordinate welcome, authenticated, locked, offline, maintenanc
 switching, sync-in-progress, permission-blocked, and feature-disabled behavior
 before implementation.
 
+Mobile Dashboard Logic is defined in `../../docs/mobile-dashboard-logic.md`:
+dashboard content must resolve current user context, current tenant, enabled
+feature shortcuts, sync/offline status, unread notifications, recent
+activity, announcements, and quick actions through API-safe rules before
+implementation.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

@@ -37,6 +37,12 @@ shell states must coordinate welcome, authenticated, locked, offline, maintenanc
 switching, sync-in-progress, permission-blocked, and feature-disabled behavior
 before implementation.
 
+Mobile Dashboard Logic is defined in `mobile-dashboard-logic.md`:
+dashboard content must resolve current user context, current tenant, enabled
+feature shortcuts, sync/offline status, unread notifications, recent
+activity, announcements, and quick actions through API-safe rules before
+implementation.
+
 Roles define authority and visibility. The [SaaS Value Map](saas-value-map.md) defines product value. A stakeholder may receive value from a feature without receiving direct control over it; for example, a tenant business benefits from reports and offline sync, while the tenant admin or support team may be the role that actually sees the management surface.
 
 Roles also depend on [Two-System Boundary Logic](two-system-boundary.md). Admin/API enforces role authority, while mobile only renders API-derived capability state and account-state restrictions.

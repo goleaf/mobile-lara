@@ -11,6 +11,12 @@ shell states must coordinate welcome, authenticated, locked, offline, maintenanc
 switching, sync-in-progress, permission-blocked, and feature-disabled behavior
 before implementation.
 
+Mobile Dashboard Logic is defined in `mobile-dashboard-logic.md`:
+dashboard content must resolve current user context, current tenant, enabled
+feature shortcuts, sync/offline status, unread notifications, recent
+activity, announcements, and quick actions through API-safe rules before
+implementation.
+
 ## Architecture Statement
 
 Mobile Lara is documentation-first because the product has two systems, tenant boundaries, offline behavior, feature control, mobile-local state, NativePHP capabilities, billing effects, support expectations, reports, audit needs, and security concerns.

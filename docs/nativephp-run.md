@@ -29,6 +29,12 @@ shell states must coordinate welcome, authenticated, locked, offline, maintenanc
 switching, sync-in-progress, permission-blocked, and feature-disabled behavior
 before implementation.
 
+Mobile Dashboard Logic is defined in `mobile-dashboard-logic.md`:
+dashboard content must resolve current user context, current tenant, enabled
+feature shortcuts, sync/offline status, unread notifications, recent
+activity, announcements, and quick actions through API-safe rules before
+implementation.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.

@@ -22,6 +22,8 @@ Mobile client responsibilities are defined in `docs/mobile-client-responsibiliti
 
 Mobile app shell logic is defined in `docs/mobile-app-shell-logic.md`: welcome, authenticated, locked, offline, maintenance, forced update, tenant switching, sync-in-progress, permission-blocked, and feature-disabled states must be coordinated by the NativePHP client without bypassing API authority.
 
+Mobile dashboard logic is defined in `docs/mobile-dashboard-logic.md`: current user context, current tenant, enabled feature shortcuts, sync status, offline status, unread notifications, recent activity, important announcements, and quick actions must resolve through permissions, feature flags, remote config, tenant status, offline state, and subscription status before implementation.
+
 API-first principles are defined in `docs/api-first-principles.md`: mobile communicates only with API, API responses are predictable, every mobile feature has a clear API purpose, API returns operating context, errors are mobile-friendly, sync and conflict behavior are first-class, and tenant boundaries are protected server-side.
 
 Documentation-first architecture is defined in `docs/documentation-first-architecture.md`: every feature must be documented before implementation, every admin control must document its mobile effect, every mobile screen must document its API dependency, every sync behavior must document offline and online behavior, every permission must document who controls it, and every risk must be recorded before coding.
@@ -70,6 +72,7 @@ Use these docs before changing the product direction:
 - `docs/admin-api-responsibilities.md`
 - `docs/mobile-client-responsibilities.md`
 - `docs/mobile-app-shell-logic.md`
+- `docs/mobile-dashboard-logic.md`
 - `docs/admin-control-center-logic.md`
 - `docs/feature-flag-logic.md`
 - `docs/remote-configuration-logic.md`
@@ -91,6 +94,7 @@ Use these docs before changing the product direction:
 - Mobile-client responsibility decisions must follow `docs/mobile-client-responsibilities.md`.
 - Mobile UX decisions must follow `docs/mobile-ux-principles.md`.
 - Mobile app shell decisions must follow `docs/mobile-app-shell-logic.md`.
+- Mobile dashboard decisions must follow `docs/mobile-dashboard-logic.md`.
 - Admin Control Center decisions must follow `docs/admin-control-center-logic.md`.
 - Feature flag decisions must follow `docs/feature-flag-logic.md`.
 - Remote configuration decisions must follow `docs/remote-configuration-logic.md`.
@@ -112,6 +116,7 @@ Use these docs before changing the product direction:
 - Any mobile UX, secure local session, cache, offline action, NativePHP capability, navigation, permissions UX, sync display, draft, local feedback, or feature-visibility concern must map to `docs/mobile-client-responsibilities.md`.
 - Any NativePHP mobile UX, navigation, simple screen, loading/offline state, thumb-friendly control, minimum-typing flow, fast action, secure session, or native permission prompt must map to `docs/mobile-ux-principles.md`.
 - Any welcome, authenticated, locked, offline, maintenance, forced update, tenant switching, sync-in-progress, permission-blocked, or feature-disabled shell behavior must map to `docs/mobile-app-shell-logic.md`.
+- Any mobile dashboard content, feature shortcut, sync/offline summary, notification count, recent activity, announcement, or quick action must map to `docs/mobile-dashboard-logic.md`.
 - Any admin control for tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, or support must map to `docs/admin-control-center-logic.md`.
 - Any important mobile feature flag must map to `docs/feature-flag-logic.md`, including priority, disabled mobile state, rollout, impact, plan limit, support, audit, and offline behavior.
 - Any remote-configurable behavior must map to `docs/remote-configuration-logic.md`, including allowed config type, scope, default, override behavior, mobile caching, offline behavior, validation, fallback, support, audit, and rollback.

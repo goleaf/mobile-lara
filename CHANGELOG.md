@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Mobile Dashboard Logic documentation for current user context, current
+  tenant, enabled feature shortcuts, sync/offline status, unread notifications,
+  recent activity, announcements, quick actions, and state-based dashboard
+  changes.
 - Added Mobile App Shell Logic documentation for welcome, authenticated,
   locked, offline, maintenance, forced update, tenant switching,
   sync-in-progress, permission-blocked, and feature-disabled NativePHP shell
