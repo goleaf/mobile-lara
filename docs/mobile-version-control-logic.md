@@ -39,6 +39,10 @@ Use this document with [Two-System Boundary Logic](two-system-boundary.md):
 Admin/API decides version safety, while mobile reports build context and
 presents update, limited-mode, maintenance, deprecated, or blocked states.
 
+Use this document with [Admin Control Center Logic](admin-control-center-logic.md):
+app version, maintenance mode, and force-update policy must be controlled as
+scoped, authorized, auditable admin decisions with clear mobile/API outcomes.
+
 Use this document with [Mobile Client Responsibilities](mobile-client-responsibilities.md):
 mobile owns the update, maintenance, limited-mode, blocked, deprecated,
 store-link, local draft protection, and support-guidance experience, but it

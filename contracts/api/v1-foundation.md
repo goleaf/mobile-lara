@@ -52,6 +52,12 @@ the response shape mobile can consume for UX, local session, cache, offline,
 sync, feedback, and feature-visibility responsibilities before domain
 contracts expand.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this foundation should keep future
+tenant, user, role, permission, feature, config, version, maintenance, sync,
+notification, report, billing, and support controls scoped, authorized,
+auditable, and mobile-safe before domain contracts expand.
+
 Remote Configuration Logic is defined in
 `../../docs/remote-configuration-logic.md`. Future bootstrap and config
 contracts should return resolved mobile-safe config values, config version,

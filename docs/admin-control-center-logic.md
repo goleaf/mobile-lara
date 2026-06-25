@@ -1,6 +1,6 @@
 # Admin Control Center Logic
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This document defines the logic of the Mobile Lara Admin Control Center. It explains how admins should control tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, and support. It is documentation only and does not define database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.
 
@@ -31,6 +31,29 @@ The control center does not make mobile independent. It makes mobile governed.
 7. **Control fails closed** - If a control cannot be evaluated safely, mobile should receive blocked, disabled, retry-later, maintenance, or contact-support behavior.
 8. **Control is tenant-safe** - No control may leak another tenant's users, data, reports, billing, support, notifications, or sync state.
 9. **Control is documented first** - Every control must document mobile effect, API dependency, permission owner, sync/offline impact, risks, and support meaning before implementation.
+
+## Admin Control Ownership Contract
+
+Every Admin Control Center planning decision should name the control area, control scope, mobile effect, API outcome, support meaning, audit expectation, and rollback path before implementation planning.
+
+| Control area | Admin control principle | Required mobile/API outcome |
+| --- | --- | --- |
+| Tenants | Admins control tenant lifecycle, status, isolation posture, settings, plan relationship, support tier, and tenant-scoped feature availability. | Tenant context, active/limited/suspended/maintenance state, allowed tenant choices, tenant-safe messages, and tenant-scoped feature/config/sync/report limits. |
+| Users | Admins control invitation, activation, suspension, reactivation, recovery, profile/account state, and device/user association. | Account state, profile context, invited/suspended/recovery/pre-login behavior, session/device outcomes, and safe support context. |
+| Roles | Admins control least-privilege role bundles, assignment rules, tenant manager scope, support boundaries, and billing boundaries. | Role-derived capability state, navigation visibility, denied/allowed outcomes, and no mobile-side role authority. |
+| Permissions | Admins control granular abilities, grant/revoke rules, approval requirements, denied states, high-risk reason capture, and audit expectations. | Allowed, denied, blocked, approval-required, or support-contact states through API; offline replay rechecks permission state. |
+| Mobile features | Admins control enablement, disablement, rollout, rollback, plan/role/version/device/cohort gates, and emergency disablement. | Visible, hidden, disabled, blocked, deprecated, update-required, beta, emergency-disabled, or offline-limited feature states. |
+| Remote config | Admins control safe runtime values, scope, version, defaults, compatibility, tenant overrides, rollback, and invalid-config behavior. | Resolved config copy, config version, freshness, fallback state, UI copy/limits, sync/offline rules, and support-safe explanations. |
+| App versions | Admins control supported, recommended, deprecated, blocked, internal-only, minimum version, compatibility, and API contract assumptions. | Update prompt, warning, limited mode, blocked mode, release/store guidance, stale-client errors, or normal operation. |
+| Maintenance mode | Admins control platform, tenant, feature, API, sync, or notification maintenance state, schedule, affected operations, messages, and rollback. | Maintenance banner, limited mode, blocked action, retry-later state, safe offline policy, and support/contact path. |
+| Force update | Admins control hard, soft, phased, tenant-scoped, platform-specific, feature-specific, and version-specific update requirements. | Required update, recommended update, deprecated warning, app-store/deployment instructions, and old-version protection. |
+| Sync behavior | Admins control offline eligibility, queueable actions, replay windows, retry limits, stale thresholds, conflict modes, and policy blocks. | Offline, draft, pending, synced, conflict, failed, blocked, stale, retry-later, or replay behavior with API-owned decisions. |
+| Notifications | Admins control templates, channels, targeting, quiet hours, priority, escalation, suppression, and delivery visibility. | Device registration requirements, notification inbox/display state, safe local history, and tenant/role/feature/billing/version-safe targeting outcomes. |
+| Reports | Admins control report definitions, scopes, aggregates, exports, dashboard visibility, and operational metrics. | Personal/workflow summaries only when API allows them, export limits, freshness, and no cross-tenant leaks. |
+| Billing | Admins control plans, quotas, entitlements, trials, renewals, restrictions, failed-payment outcomes, billing contacts, and support tier. | Allowed, blocked, quota-warning, entitlement-limited, contact-admin, contact-support, or upgrade/contact-sales states. |
+| Support | Admins control case state, safe diagnostics, escalation, support role visibility, recovery actions, retry guidance, and config-refresh guidance. | Support request flow, diagnostic submission, case status, recovery guidance, safe context, and audit-visible support actions. |
+
+This contract is intentionally principle-level. It does not create admin panels, routes, controllers, Livewire components, Filament resources, policies, jobs, services, database fields, migrations, provider integrations, or application logic.
 
 ## Control Map
 

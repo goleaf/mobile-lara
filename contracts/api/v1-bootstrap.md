@@ -55,6 +55,12 @@ Mobile Client Responsibilities are defined in
 operating context mobile uses for navigation, cache freshness, sync display,
 feature visibility, local feedback, and safe startup recovery.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must resolve tenant,
+user, role, permission, feature, config, version, maintenance, sync,
+notification, report, billing, and support controls into scoped, authorized,
+auditable, mobile-safe API outcomes.
+
 ## Purpose
 
 Bootstrap gives the mobile client one resolved operating context after login,

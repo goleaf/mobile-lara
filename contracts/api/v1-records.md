@@ -51,6 +51,12 @@ Mobile Client Responsibilities are defined in
 record UX, local cache, local drafts, offline action preparation, sync status
 display, validation feedback, and API-derived feature visibility.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep record
+feature availability, permissions, sync policy, conflict outcomes, report
+visibility, support context, and tenant boundaries scoped, authorized,
+auditable, and exposed to mobile only as resolved API outcomes.
+
 ## Purpose
 
 Records endpoints provide tenant-scoped content authority for list, detail,

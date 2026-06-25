@@ -49,6 +49,12 @@ Mobile Client Responsibilities are defined in
 context display, tenant-switch UX where allowed, cache labels, navigation
 state, and local feedback without giving mobile tenant authority.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep tenant
+lifecycle, status, isolation, membership, feature availability, billing,
+support, report, and sync controls scoped, authorized, auditable, and exposed
+to mobile only as resolved API outcomes.
+
 ## Purpose
 
 Tenancy endpoints keep tenant authority on the Admin/API system. Mobile may

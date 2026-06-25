@@ -51,6 +51,11 @@ mobile-safe entitlement feedback, quota warnings, contact-admin/support prompts,
 feature visibility, navigation limits, and local blocked-state messages without
 giving mobile billing authority.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep billing,
+plan, quota, entitlement, support-tier, and failed-payment controls scoped,
+authorized, auditable, and exposed to mobile only as resolved API outcomes.
+
 ## Purpose
 
 Billing endpoints expose mobile-safe plan and subscription state. Admin/API

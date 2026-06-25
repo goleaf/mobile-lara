@@ -51,6 +51,12 @@ notification permission UX, push-token registration feedback, inbox
 presentation, unread status, local display state, and feature-gated
 notification visibility.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep
+notification templates, channels, targeting, quiet hours, priority, escalation,
+suppression, and delivery visibility scoped, authorized, auditable, and exposed
+to mobile only as resolved API outcomes.
+
 ## Purpose
 
 Notification endpoints manage notification preferences, push token

@@ -50,6 +50,12 @@ Mobile Client Responsibilities are defined in
 help UX, local feedback, safe diagnostic submission, support status display,
 sync/config/version context presentation, and recovery guidance.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep support
+case state, diagnostics, escalation, recovery, support visibility, and user
+guidance controls scoped, authorized, auditable, and exposed to mobile only as
+resolved API outcomes.
+
 ## Purpose
 
 Support endpoints let mobile users create tickets, view tickets, add messages,

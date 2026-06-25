@@ -47,6 +47,12 @@ Mobile Client Responsibilities are defined in
 API-derived feature visibility, disabled/blocked/deprecated/update-required
 feedback, navigation shaping, cache freshness, and offline-limited messaging.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep feature
+enablement, disablement, rollout, rollback, plan limits, emergency blocks,
+and disabled mobile states scoped, authorized, auditable, and exposed to mobile
+only as resolved API outcomes.
+
 ## Purpose
 
 Feature endpoints expose resolved mobile-safe feature outcomes. Mobile never

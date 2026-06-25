@@ -51,6 +51,12 @@ diagnostic presentation, safe device/context collection, submission feedback,
 support guidance, sync/config/version evidence display, and privacy-safe local
 review.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep diagnostic
+collection, support visibility, privacy boundaries, recovery guidance, and
+case-context controls scoped, authorized, auditable, and exposed to mobile only
+as resolved API outcomes.
+
 ## Purpose
 
 Diagnostics endpoints let mobile share privacy-safe troubleshooting context

@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Admin Control Center Logic with a control ownership contract for
+  tenants, users, roles, permissions, mobile features, remote config, app
+  versions, maintenance mode, force update, sync behavior, notifications,
+  reports, billing, and support.
 - Clarified Documentation-First Architecture with a documentation-first contract
   for pre-implementation feature decisions, admin mobile effects, mobile screen
   API dependencies, sync online/offline behavior, permission ownership, and

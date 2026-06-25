@@ -50,6 +50,12 @@ config cache, freshness display, safe fallback feedback, feature presentation,
 permission-purpose copy, and sync/navigation tuning without giving mobile
 global configuration authority.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep remote
+config, defaults, tenant overrides, rollback, invalid-config behavior, support
+meaning, and mobile-safe presentation controls scoped, authorized, auditable,
+and exposed to mobile only as resolved API outcomes.
+
 ## Purpose
 
 Remote config endpoints expose validated, resolved, mobile-safe runtime values.

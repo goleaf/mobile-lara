@@ -50,6 +50,12 @@ Mobile Client Responsibilities are defined in
 actions, pending queues, sync status display, conflict presentation, retry
 feedback, stale-state warnings, and local draft recovery.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep offline
+eligibility, queueable actions, replay windows, retry limits, conflict modes,
+stale thresholds, maintenance blocks, and policy decisions scoped, authorized,
+auditable, and exposed to mobile only as resolved API outcomes.
+
 ## Purpose
 
 Sync endpoints let the mobile client replay queued local intents and pull

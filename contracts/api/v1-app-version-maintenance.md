@@ -51,6 +51,12 @@ Mobile Client Responsibilities are defined in
 prompts, maintenance UX, limited-mode navigation, local draft protection,
 blocked-state feedback, store-link presentation, and support guidance.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep app
+version, maintenance mode, force update, store-link, update-message, and
+stale-client controls scoped, authorized, auditable, and exposed to mobile
+only as resolved API outcomes.
+
 ## Purpose
 
 App-version and maintenance endpoints tell mobile whether the current build can

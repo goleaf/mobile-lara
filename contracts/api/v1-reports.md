@@ -51,6 +51,12 @@ mobile-safe report summaries, loading/empty/error states, cache freshness,
 navigation visibility, and local feedback without giving mobile report or
 export authority.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep report
+definitions, scopes, aggregates, exports, dashboard visibility, operational
+metrics, and cross-tenant safeguards scoped, authorized, auditable, and exposed
+to mobile only as resolved API outcomes.
+
 ## Purpose
 
 Reports endpoints expose only permission-safe tenant and user report summaries

@@ -49,6 +49,11 @@ Mobile Client Responsibilities are defined in
 local session UX, login/logout feedback, guest/pre-login navigation, and
 API-derived account-state visibility without giving mobile auth authority.
 
+Admin Control Center Logic is defined in
+`../../docs/admin-control-center-logic.md`: this contract must keep identity,
+session, user-state, device, support, and security controls scoped,
+authorized, auditable, and exposed to mobile only as resolved API outcomes.
+
 ## Purpose
 
 Auth endpoints make the Admin/API system authoritative for mobile identity,
