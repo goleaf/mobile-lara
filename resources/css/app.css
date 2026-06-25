@@ -24,7 +24,7 @@
 
 @layer base {
     :root {
-        color-scheme: light;
+        color-scheme: light dark;
     }
 
     html {

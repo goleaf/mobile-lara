@@ -1,7 +1,3 @@
-<x-slot:header>
-    <x-mobile.page-header eyebrow="Diagnostics" title="Debug" description="Local mobile stack snapshot." />
-</x-slot:header>
-
 <section class="safe-x safe-pb flex min-h-full flex-col gap-3 py-6">
     @foreach ([
         'Laravel' => app()->version(),
@@ -15,7 +11,3 @@
         </div>
     @endforeach
 </section>
-
-<x-slot:bottomNavigation>
-    <x-mobile.bottom-navigation />
-</x-slot:bottomNavigation>

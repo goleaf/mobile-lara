@@ -13,7 +13,7 @@
                 href="{{ $backHref }}"
                 wire:navigate
                 aria-label="{{ $backLabel }}"
-                class="grid size-10 shrink-0 place-items-center rounded-lg border border-app-line bg-app-surface text-app-ink shadow-sm transition hover:bg-app-bg"
+                class="grid size-10 shrink-0 place-items-center rounded-lg border border-app-line bg-app-surface text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
             >
                 <span aria-hidden="true" class="text-lg leading-none">&lsaquo;</span>
             </a>
@@ -21,13 +21,13 @@
 
         <div class="min-w-0">
             @if ($eyebrow)
-                <p class="text-sm font-medium text-app-muted">{{ $eyebrow }}</p>
+                <p class="text-sm font-medium text-app-muted dark:text-zinc-400">{{ $eyebrow }}</p>
             @endif
 
-            <h1 class="truncate text-xl font-semibold tracking-normal text-app-ink">{{ $title }}</h1>
+            <h1 class="truncate text-xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">{{ $title }}</h1>
 
             @if ($description)
-                <p class="mt-1 line-clamp-2 text-sm leading-5 text-app-muted">{{ $description }}</p>
+                <p class="mt-1 line-clamp-2 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $description }}</p>
             @endif
         </div>
     </div>

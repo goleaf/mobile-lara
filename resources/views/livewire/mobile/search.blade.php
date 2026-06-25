@@ -1,27 +1,42 @@
-<x-slot:header>
-    <x-mobile.page-header eyebrow="Explore" title="Search" description="Find routes and app sections." />
-</x-slot:header>
-
 <section class="safe-x safe-pb flex min-h-full flex-col gap-5 py-6">
-    <label class="block">
-        <span class="text-sm font-medium text-app-ink">Search</span>
-        <input
+    <form wire:submit="search" class="grid gap-3">
+        <x-mobile.input
+            name="query"
+            label="Search"
             type="search"
             placeholder="Dashboard, profile, settings"
-            class="mt-2 min-h-12 w-full rounded-lg border border-app-line bg-white px-3 text-base text-app-ink outline-none focus:border-app-accent"
-        >
-    </label>
+            wire:model.live.debounce.250ms="query"
+        />
 
-    <div class="grid grid-cols-2 gap-3">
-        @foreach (['Dashboard', 'Profile', 'Settings', 'Debug'] as $result)
-            <div wire:key="search-result-{{ $result }}" class="rounded-lg border border-app-line bg-app-surface p-4 shadow-sm">
-                <p class="text-base font-semibold text-app-ink">{{ $result }}</p>
-                <p class="mt-1 text-sm text-app-muted">Mobile route</p>
+        <x-mobile.submit-button target="search" loading-label="Searching..." variant="secondary">
+            Search
+        </x-mobile.submit-button>
+    </form>
+
+    <x-mobile.loading-state target="query, search, retrySearch" message="Searching mobile routes..." />
+
+    <x-mobile.page-skeleton wire:loading.delay wire:target="query, search, retrySearch" :cards="2" />
+
+    <div wire:loading.remove wire:target="query, search, retrySearch" class="contents">
+        @if ($hasNetworkError)
+            <x-mobile.network-error-state retry-action="retrySearch" />
+        @elseif (count($results) === 0)
+            <x-mobile.empty-state title="No routes found" description="Try a different search term or clear the search field.">
+                <x-slot:action>
+                    <x-mobile.retry-button wire:click="retrySearch" target="retrySearch">
+                        Retry search
+                    </x-mobile.retry-button>
+                </x-slot:action>
+            </x-mobile.empty-state>
+        @else
+            <div class="grid grid-cols-2 gap-3">
+                @foreach ($results as $result)
+                    <a wire:key="search-result-{{ $result['route'] }}" href="{{ route($result['route']) }}" wire:navigate class="rounded-lg border border-app-line bg-app-surface p-4 shadow-sm transition hover:bg-app-bg dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none dark:hover:bg-zinc-800">
+                        <p class="text-base font-semibold text-app-ink dark:text-zinc-100">{{ $result['title'] }}</p>
+                        <p class="mt-1 text-sm text-app-muted dark:text-zinc-400">{{ $result['description'] }}</p>
+                    </a>
+                @endforeach
             </div>
-        @endforeach
+        @endif
     </div>
 </section>
-
-<x-slot:bottomNavigation>
-    <x-mobile.bottom-navigation />
-</x-slot:bottomNavigation>

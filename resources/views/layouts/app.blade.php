@@ -3,24 +3,23 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-        <meta name="color-scheme" content="light">
+        <meta name="color-scheme" content="light dark">
+        <link rel="icon" href="{{ asset('icon.png') }}" type="image/png">
 
-        <title>{{ $title ?? trim($__env->yieldContent('title', config('app.name'))) }}</title>
+        @php
+            $pageTitle = $title ?? trim($__env->yieldContent('title', config('app.name')));
+        @endphp
+
+        <title>{{ $pageTitle }}</title>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
-    <body class="min-h-dvh overflow-hidden bg-app-bg text-app-ink antialiased">
-        <div class="mx-auto grid min-h-dvh w-full max-w-md grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden bg-app-bg shadow-[0_0_0_1px_var(--color-app-line)]">
-            @if (isset($header) || $__env->hasSection('header'))
-                <header class="safe-x safe-pt z-20 border-b border-app-line bg-app-surface/95 pb-3 backdrop-blur">
-                    @isset($header)
-                        {{ $header }}
-                    @else
-                        @yield('header')
-                    @endisset
-                </header>
-            @endif
+    <body class="min-h-dvh overflow-hidden bg-app-bg text-app-ink antialiased dark:bg-zinc-950 dark:text-zinc-100">
+        <div class="mx-auto grid min-h-dvh w-full max-w-md grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden bg-app-bg shadow-[0_0_0_1px_var(--color-app-line)] dark:bg-zinc-950 dark:shadow-[0_0_0_1px_#27272a]">
+            <header class="safe-x safe-pt z-20 border-b border-app-line bg-app-surface/95 pb-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/95">
+                <x-mobile.app-header :title="$pageTitle" />
+            </header>
 
             <main id="mobile-app-content" class="min-h-0 overflow-y-auto overscroll-contain">
                 @isset($slot)
@@ -30,18 +29,12 @@
                 @endisset
             </main>
 
-            @if (isset($bottomNavigation) || $__env->hasSection('bottomNavigation'))
-                <nav
-                    aria-label="Primary"
-                    class="safe-x safe-pb z-20 border-t border-app-line bg-app-surface/95 pt-3 backdrop-blur"
-                >
-                    @isset($bottomNavigation)
-                        {{ $bottomNavigation }}
-                    @else
-                        @yield('bottomNavigation')
-                    @endisset
-                </nav>
-            @endif
+            <nav
+                aria-label="Primary tabs"
+                class="safe-x safe-pb z-20 border-t border-app-line bg-app-surface/95 pt-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/95"
+            >
+                <x-mobile.bottom-navigation />
+            </nav>
         </div>
 
         <aside

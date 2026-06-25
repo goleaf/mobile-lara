@@ -1,7 +1,3 @@
-<x-slot:header>
-    <x-mobile.page-header eyebrow="Mobile Lara" title="Welcome" description="Start with a clean mobile workspace." />
-</x-slot:header>
-
 <section class="safe-x safe-pb flex min-h-full flex-col justify-between gap-8 py-6">
     <div class="space-y-5">
         <div class="rounded-lg border border-app-line bg-app-surface p-5 shadow-sm">
