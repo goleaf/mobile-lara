@@ -150,7 +150,7 @@ Status values:
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, audited global feature flag controls, audited global remote config controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 69 tests / 529 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, app version controls, remote config resolution, app version policy, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, and feature flag resolution. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 74 tests / 557 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, remote config resolution, app version policy, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, and feature flag resolution. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -284,9 +284,9 @@ Status values:
 | Feature | Status | Notes |
 | --- | --- | --- |
 | Global remote config | tested | `MobileRemoteConfig` schema/model/factory and resolver coverage exist for mobile-category, non-sensitive global config sections. |
-| Tenant remote config | tested | `TenantRemoteConfigOverride` schema/model/factory and resolver coverage exist for tenant overrides that merge above global config. |
-| Admin remote config UI | tested | `/admin/mobile/config` manages audited global mobile config defaults with JSON-object validation, impact preview, create/update actions, dashboard/nav entry points, and restore from audit snapshots. Tenant override UI remains pending. |
-| Config validation and audit | tested | Resolver excludes sensitive global config and the admin UI validates JSON objects, requires mobile-effect confirmation, records before/after audit metadata, and restores prior snapshots. Publish workflows and tenant override audit remain pending. |
+| Tenant remote config | tested | `TenantRemoteConfigOverride` schema/model/factory, resolver coverage, and `/admin/mobile/tenant-config` audited admin controls exist for tenant overrides that merge above global config. |
+| Admin remote config UI | tested | `/admin/mobile/config` manages audited global mobile config defaults and `/admin/mobile/tenant-config` manages tenant overrides with JSON-object validation, impact preview, create/update actions, dashboard/nav entry points, and restore from audit snapshots. |
+| Config validation and audit | tested | Resolver excludes sensitive global config and the admin UI validates JSON objects, requires mobile-effect confirmation, records before/after audit metadata, and restores prior snapshots. Publish workflows remain pending. |
 | Mobile config store/cache | not started | Required after bootstrap exists. |
 | Offline defaults | tested | API/admin returns defaults-used, freshness, compatibility, and fallback metadata; mobile-local stale-cache behavior remains pending. |
 | Config-driven sync/upload/legal/support behavior | tested | Remote config payload resolves `sync`, `uploads`, `legal`, `support`, `dashboard`, and `app_lock` sections for mobile consumption. |
@@ -515,13 +515,13 @@ Status values:
 | Feature | Status | Notes |
 | --- | --- | --- |
 | Central mobile control dashboard | partial | The dashboard shell exists and links to the live feature flag, remote config, and app version controls; broader module controls remain pending. |
-| Module controls | partial | Foundation controls exist for global feature defaults, global remote config, and app versions; tenant/user scoped controls remain pending. |
+| Module controls | partial | Foundation controls exist for global/tenant/user feature states, global/tenant remote config, and app versions; tenant/cohort version controls and broader modules remain pending. |
 | Feature flags and tenant overrides | tested | Global feature defaults, tenant-specific overrides, and user-specific overrides are implemented in the admin UI with mobile effect previews. Advanced rollout gates remain pending. |
-| Remote config | tested | Admin/API has global config schema, resolver, API endpoint, bootstrap integration, and audited admin controls. Tenant override UI and publish workflows remain pending. |
+| Remote config | tested | Admin/API has global and tenant config schema, resolver, API endpoint, bootstrap integration, and audited admin controls. Publish workflows remain pending. |
 | App versions, force update, maintenance | tested | Admin/API has policy schema, resolver, API endpoint, bootstrap integration, and audited admin controls. Tenant/cohort scoping and mobile blocked-state screens remain pending. |
 | Sync/offline/upload limits | not started | Needs sync/config implementation. |
 | Push/support/legal links | not started | Needs notification/support/config implementation. |
-| Mobile effect preview | partial | Implemented for tenant/user feature overrides, remote config, and app-version policy controls; still required for other dangerous control-plane settings. |
+| Mobile effect preview | partial | Implemented for tenant/user feature overrides, global/tenant remote config, and app-version policy controls; still required for other dangerous control-plane settings. |
 
 ## Phase 28 - Mobile Diagnostics
 
@@ -559,7 +559,7 @@ Status values:
 | Check | Status | Notes |
 | --- | --- | --- |
 | API/admin formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/api-admin`. |
-| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 69 tests / 529 assertions. |
+| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 74 tests / 557 assertions. |
 | API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
 | API routes verification | tested | `php artisan route:list --except-vendor` shows 20 app routes including app-version, auth, bootstrap, config, contracts, features, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
@@ -574,8 +574,8 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Complete resource policies, tenant remote config controls, tenant/cohort
-   version controls, plan/version/device feature gates, and audit before broad
+1. Complete resource policies, tenant/cohort version controls,
+   plan/version/device feature gates, and audit before broad
    records/support/billing/reporting expansion.
 2. Replace bootstrap foundation defaults with real subscription, notification,
    and sync policy modules.

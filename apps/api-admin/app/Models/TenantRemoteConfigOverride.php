@@ -49,4 +49,50 @@ final class TenantRemoteConfigOverride extends Model
             ->where('tenant_id', $tenant->id)
             ->orderBy('config_key');
     }
+
+    /**
+     * @param  Builder<TenantRemoteConfigOverride>  $query
+     * @return Builder<TenantRemoteConfigOverride>
+     */
+    public function scopeForAdminIndex(Builder $query): Builder
+    {
+        return $query
+            ->select([
+                'id',
+                'tenant_id',
+                'config_key',
+                'value',
+                'version',
+                'reason',
+                'metadata',
+                'updated_at',
+            ])
+            ->with('tenant:id,name,public_id,status')
+            ->orderByDesc('updated_at');
+    }
+
+    /**
+     * @param  Builder<TenantRemoteConfigOverride>  $query
+     * @return Builder<TenantRemoteConfigOverride>
+     */
+    public function scopeMatchingAdminSearch(Builder $query, string $search): Builder
+    {
+        $search = trim($search);
+
+        if ($search === '') {
+            return $query;
+        }
+
+        return $query->where(function (Builder $query) use ($search): void {
+            $query
+                ->where('config_key', 'like', '%'.$search.'%')
+                ->orWhere('reason', 'like', '%'.$search.'%')
+                ->orWhere('version', 'like', '%'.$search.'%')
+                ->orWhereHas('tenant', function (Builder $query) use ($search): void {
+                    $query
+                        ->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('public_id', 'like', '%'.$search.'%');
+                });
+        });
+    }
 }

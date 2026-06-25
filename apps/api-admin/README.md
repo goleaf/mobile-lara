@@ -216,6 +216,9 @@ Implemented foundation:
 - `/admin/mobile/config` is protected by session auth and platform-admin
   access, and manages audited global mobile remote config defaults with JSON
   validation, impact preview, and audit-history restore.
+- `/admin/mobile/tenant-config` is protected by session auth and platform-admin
+  access, and manages audited tenant remote config overrides with JSON
+  validation, impact preview, and audit-history restore.
 - `/admin/mobile/app-versions` is protected by session auth and platform-admin
   access, and manages audited global/platform mobile version policies with
   confirmation, impact preview, and audit-history restore.
@@ -227,6 +230,9 @@ Implemented foundation:
   overrides and writes before/after audit metadata to `security_audit_events`.
 - `App\Actions\Admin\SaveMobileRemoteConfigAction` persists global config
   defaults and writes before/after audit metadata to `security_audit_events`.
+- `App\Actions\Admin\SaveTenantRemoteConfigOverrideAction` persists tenant
+  config overrides and writes before/after audit metadata to
+  `security_audit_events`.
 - `App\Actions\Admin\SaveMobileAppVersionPolicyAction` persists version
   policies and writes before/after audit metadata to `security_audit_events`.
 - `App\Support\Api\MobileApiResponse` centralizes success and error envelopes.
@@ -238,17 +244,16 @@ Implemented foundation:
 - Reusable admin Blade components exist for section headings and status badges.
 - Pest tests cover the dashboard route, root redirect, feature flag admin
   controls, tenant and user feature override controls, remote config admin
-  controls, app version admin controls, remote config resolution, app version
-  policy, success envelope, error envelope, contract catalogue, and contract
-  Markdown file coverage.
+  controls, tenant remote config controls, app version admin controls, remote
+  config resolution, app version policy, success envelope, error envelope,
+  contract catalogue, and contract Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   resource policies, and broader control-plane audit.
-- Tenant remote config override UI, app version tenant/cohort/version-range
-  scoping, plan/version/device feature gates, sync, notifications,
-  records/content, support, billing, and reports.
+- App version tenant/cohort/version-range scoping, plan/version/device feature
+  gates, sync, notifications, records/content, support, billing, and reports.
 - Protected domain routes for records/content, sync, notifications, support,
   billing, reports, diagnostics, and feature/config/version policies.
 

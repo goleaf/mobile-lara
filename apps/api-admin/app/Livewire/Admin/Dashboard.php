@@ -53,9 +53,16 @@ final class Dashboard extends Component
             [
                 'label' => 'Remote config',
                 'status' => 'Live',
-                'detail' => 'Global mobile defaults with JSON validation, audit, impact preview, and rollback.',
+                'detail' => 'Global and tenant mobile defaults with JSON validation, audit, impact preview, and rollback.',
                 'tone' => 'success',
                 'route' => 'admin.mobile.config',
+            ],
+            [
+                'label' => 'Tenant config',
+                'status' => 'Live',
+                'detail' => 'Tenant-specific remote config merged above global defaults.',
+                'tone' => 'success',
+                'route' => 'admin.mobile.tenant-config',
             ],
             [
                 'label' => 'App versions',
