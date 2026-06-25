@@ -14,13 +14,22 @@ test('dashboard renders loading empty network and retry surfaces', function (): 
         ->assertSee('No dashboard data')
         ->call('refreshDashboard')
         ->assertSet('hasDashboardContent', true)
-        ->assertSee('Ready');
+        ->assertSee('Welcome back')
+        ->assertSee('Quick stats')
+        ->assertSee('Recent activity')
+        ->assertSee('Quick actions')
+        ->assertSee('Sync status')
+        ->assertSee('Offline status')
+        ->assertSee('Notification preview')
+        ->assertSee('Pending sync')
+        ->assertSee('Background sync prepared');
 
     Livewire::test(Dashboard::class)
         ->set('hasNetworkError', true)
         ->assertSee('Connection problem')
         ->call('refreshDashboard')
-        ->assertSet('hasNetworkError', false);
+        ->assertSet('hasNetworkError', false)
+        ->assertSet('isOffline', false);
 });
 
 test('profile renders submit spinner empty network and retry surfaces', function (): void {

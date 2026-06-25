@@ -4,6 +4,7 @@ use App\Livewire\Mobile\AccountDeletion;
 use App\Livewire\Mobile\AppUnlock;
 use App\Livewire\Mobile\ConsentAcceptance;
 use App\Livewire\Mobile\ConsentHistory;
+use App\Livewire\Mobile\Create;
 use App\Livewire\Mobile\Dashboard;
 use App\Livewire\Mobile\Debug;
 use App\Livewire\Mobile\EmailVerification;
@@ -68,6 +69,7 @@ test('protected mobile routes redirect guests to login', function (string $route
     'pin change' => 'mobile.pin.change',
     'pin remove' => 'mobile.pin.remove',
     'dashboard' => 'mobile.dashboard',
+    'create' => 'mobile.create',
     'profile' => 'mobile.profile',
     'settings' => 'mobile.settings',
     'sessions' => 'mobile.sessions',
@@ -92,6 +94,7 @@ test('protected mobile routes render for authenticated users', function (string 
     'pin change' => ['mobile.pin.change', PinChange::class, 'Change PIN'],
     'pin remove' => ['mobile.pin.remove', PinRemove::class, 'Remove PIN'],
     'dashboard' => ['mobile.dashboard', Dashboard::class, 'Dashboard'],
+    'create' => ['mobile.create', Create::class, 'Create'],
     'profile' => ['mobile.profile', Profile::class, 'Profile'],
     'settings' => ['mobile.settings', Settings::class, 'Settings'],
     'sessions' => ['mobile.sessions', Sessions::class, 'Sessions'],
@@ -123,6 +126,11 @@ test('mobile routes render the shared livewire app shell', function (): void {
         ->assertSee('aria-label="Primary tabs"', false)
         ->assertSee('aria-current="page"', false)
         ->assertSee('wire:key="mobile-tab-mobile.dashboard"', false)
+        ->assertSee('wire:key="mobile-tab-mobile.search"', false)
+        ->assertSee('wire:key="mobile-tab-mobile.create"', false)
+        ->assertSee('wire:key="mobile-tab-mobile.notifications"', false)
+        ->assertSee('wire:key="mobile-tab-mobile.profile"', false)
+        ->assertDontSee('wire:key="mobile-tab-mobile.settings"', false)
         ->assertSee('safe-pt', false)
         ->assertSee('safe-pb', false);
 });

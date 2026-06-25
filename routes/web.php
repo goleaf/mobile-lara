@@ -4,6 +4,7 @@ use App\Livewire\Mobile\AccountDeletion;
 use App\Livewire\Mobile\AppUnlock;
 use App\Livewire\Mobile\ConsentAcceptance;
 use App\Livewire\Mobile\ConsentHistory;
+use App\Livewire\Mobile\Create;
 use App\Livewire\Mobile\Dashboard;
 use App\Livewire\Mobile\Debug;
 use App\Livewire\Mobile\EmailVerification;
@@ -50,6 +51,7 @@ Route::middleware(['web'])
 
             Route::middleware(['mobile.unlock'])->group(function (): void {
                 Route::livewire('/dashboard', Dashboard::class)->name('dashboard');
+                Route::livewire('/create', Create::class)->name('create');
                 Route::livewire('/profile', Profile::class)->name('profile');
                 Route::livewire('/settings', Settings::class)->name('settings');
                 Route::livewire('/sessions', Sessions::class)->name('sessions');

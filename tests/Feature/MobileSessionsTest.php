@@ -2,10 +2,10 @@
 
 use App\Livewire\Mobile\Login;
 use App\Livewire\Mobile\Sessions;
+use App\Models\User;
 use App\Services\MobileAuth\AccessTokenService;
 use App\Services\MobileAuth\AppUnlockStateService;
 use App\Services\MobileAuth\MobileSessionService;
-use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\Livewire;

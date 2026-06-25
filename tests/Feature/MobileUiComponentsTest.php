@@ -45,6 +45,10 @@ test('mobile ui components render expected markup', function (string $template, 
         '<x-mobile.app-header title="Dashboard" />',
         ['Dashboard', 'aria-label="Notifications"', 'aria-label="Profile"', 'dark:bg-zinc-900'],
     ],
+    'bottom navigation' => [
+        '<x-mobile.bottom-navigation />',
+        ['Dashboard', 'Search', 'Create', 'Notifications', 'Profile', 'mobile-tab-mobile.create'],
+    ],
     'input' => [
         '<x-mobile.input name="email" label="Email" wire:model.live="email" />',
         ['name="email"', 'Email', 'wire:model.live="email"', 'aria-invalid="false"', 'dark:bg-zinc-950'],
