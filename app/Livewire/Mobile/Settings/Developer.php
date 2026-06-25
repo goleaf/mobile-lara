@@ -63,6 +63,12 @@ final class Developer extends SettingsSectionPage
             'badge' => 'Scan',
         ],
         [
+            'label' => 'Scan history',
+            'description' => 'Review saved QR and barcode scans stored locally on this device.',
+            'route' => 'mobile.scan-history',
+            'badge' => 'Local',
+        ],
+        [
             'label' => 'Location check-in',
             'description' => 'Check NativePHP geolocation permissions and capture a current location payload.',
             'route' => 'mobile.location.check-in',

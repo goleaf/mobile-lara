@@ -4,10 +4,13 @@ namespace App\Providers;
 
 use App\Contracts\MobileAuth\MobileTokenStore;
 use App\Contracts\MobileLocal\MobileNetworkState;
+use App\Contracts\Native\LocalNotificationDriver;
 use App\Services\MobileAuth\NativeSecureMobileTokenStore;
 use App\Services\MobileAuth\SessionMobileTokenStore;
 use App\Services\MobileLocal\MobileLocalDatabase;
 use App\Services\MobileLocal\NativeMobileNetworkState;
+use App\Services\Native\LocalNotifications\NativePhpLocalNotificationDriver;
+use App\Services\Native\LocalNotifications\PlaceholderLocalNotificationDriver;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
 
@@ -27,6 +30,17 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(MobileNetworkState::class, NativeMobileNetworkState::class);
+
+        $this->app->bind(LocalNotificationDriver::class, function () {
+            $driver = (string) config('mobile_notifications.driver', 'auto');
+
+            return match ($driver) {
+                'auto' => $this->localNotificationAutoDriver(),
+                'native', 'nativephp' => $this->app->make(NativePhpLocalNotificationDriver::class),
+                'placeholder', 'local' => $this->app->make(PlaceholderLocalNotificationDriver::class),
+                default => throw new InvalidArgumentException('Unsupported local notification driver.'),
+            };
+        });
     }
 
     /**
@@ -35,5 +49,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot(MobileLocalDatabase $mobileLocalDatabase): void
     {
         $mobileLocalDatabase->ensureFileExists();
+    }
+
+    private function localNotificationAutoDriver(): LocalNotificationDriver
+    {
+        $nativeDriver = $this->app->make(NativePhpLocalNotificationDriver::class);
+
+        if ($nativeDriver->pluginIsInstalled()) {
+            return $nativeDriver;
+        }
+
+        return $this->app->make(PlaceholderLocalNotificationDriver::class);
     }
 }

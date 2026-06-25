@@ -28,6 +28,7 @@ use App\Livewire\Mobile\PrivacyPolicy;
 use App\Livewire\Mobile\Profile;
 use App\Livewire\Mobile\Register;
 use App\Livewire\Mobile\ResetPassword;
+use App\Livewire\Mobile\ScanHistory;
 use App\Livewire\Mobile\ScannerDemo;
 use App\Livewire\Mobile\Search;
 use App\Livewire\Mobile\Sessions;
@@ -115,6 +116,7 @@ test('protected mobile routes redirect guests to login', function (string $route
     'voice notes' => 'mobile.voice-notes',
     'files' => 'mobile.files',
     'scanner' => 'mobile.scanner',
+    'scan history' => 'mobile.scan-history',
     'location check-in' => 'mobile.location.check-in',
     'check-ins index' => 'mobile.check-ins.index',
     'check-ins create' => 'mobile.check-ins.create',
@@ -160,6 +162,7 @@ test('protected mobile routes render for authenticated users', function (string 
     'voice notes' => ['mobile.voice-notes', VoiceNotes::class, 'Voice notes'],
     'files' => ['mobile.files', FileManager::class, 'File manager'],
     'scanner' => ['mobile.scanner', ScannerDemo::class, 'QR/barcode scanner'],
+    'scan history' => ['mobile.scan-history', ScanHistory::class, 'Scan history'],
     'location check-in' => ['mobile.location.check-in', LocationCheckIn::class, 'Location check-in'],
     'check-ins index' => ['mobile.check-ins.index', CheckInHistory::class, 'Check-in history'],
     'check-ins create' => ['mobile.check-ins.create', CheckInCreate::class, 'Create check-in'],

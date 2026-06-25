@@ -29,6 +29,7 @@ use App\Livewire\Mobile\PrivacyPolicy;
 use App\Livewire\Mobile\Profile;
 use App\Livewire\Mobile\Register;
 use App\Livewire\Mobile\ResetPassword;
+use App\Livewire\Mobile\ScanHistory;
 use App\Livewire\Mobile\ScannerDemo;
 use App\Livewire\Mobile\Search;
 use App\Livewire\Mobile\Sessions;
@@ -99,6 +100,7 @@ Route::middleware(['web'])
                 Route::livewire('/voice-notes', VoiceNotes::class)->name('voice-notes');
                 Route::livewire('/files', FileManager::class)->name('files');
                 Route::livewire('/scanner', ScannerDemo::class)->name('scanner');
+                Route::livewire('/scan-history', ScanHistory::class)->name('scan-history');
                 Route::livewire('/location-check-in', LocationCheckIn::class)->name('location.check-in');
                 Route::livewire('/check-ins', CheckInHistory::class)->name('check-ins.index');
                 Route::livewire('/check-ins/create', CheckInCreate::class)->name('check-ins.create');

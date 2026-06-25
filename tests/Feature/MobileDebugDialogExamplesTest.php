@@ -22,6 +22,7 @@ test('debug screen renders native dialog examples', function (): void {
         ->assertSeeLivewire(NetworkStatus::class)
         ->assertSee('Database path placeholder')
         ->assertSee('Queue status placeholder')
+        ->assertSee('Local notification driver')
         ->assertSee('Native tests')
         ->assertSee('Test dialogs')
         ->assertSee('Test storage')
@@ -132,11 +133,6 @@ test('debug native test buttons report browser fallback state', function (string
         'cameraStatus',
         'Native camera is unavailable in this browser runtime.',
     ],
-    'notifications' => [
-        'testNotificationsExample',
-        'notificationStatus',
-        'Native notification APIs are unavailable in this browser runtime.',
-    ],
     'flashlight' => [
         'testFlashlightExample',
         'flashlightStatus',
@@ -153,6 +149,15 @@ test('debug native test buttons report browser fallback state', function (string
         'Haptic feedback is unavailable outside NativePHP runtime.',
     ],
 ]);
+
+test('debug notification test uses the local notification abstraction', function (): void {
+    $component = Livewire::test(Debug::class)
+        ->call('testNotificationsExample');
+
+    expect($component->instance()->notificationStatus)
+        ->toBeString()
+        ->not->toBe('');
+});
 
 test('debug native event callbacks update pending camera and notification statuses', function (): void {
     Livewire::test(Debug::class)

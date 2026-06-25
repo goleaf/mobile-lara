@@ -53,6 +53,8 @@ test('settings section pages include connected and placeholder entries', functio
         ->assertSee(route('mobile.files'), false)
         ->assertSee('QR/barcode scanner')
         ->assertSee(route('mobile.scanner'), false)
+        ->assertSee('Scan history')
+        ->assertSee(route('mobile.scan-history'), false)
         ->assertSee('Location check-in')
         ->assertSee(route('mobile.location.check-in'), false)
         ->assertSee('Check-in history')

@@ -6,6 +6,7 @@ use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Livewire\Concerns\DispatchesToasts;
 use App\Services\Native\BrowserService;
 use App\Services\Native\DeviceService;
+use App\Services\Native\LocalNotifications\LocalNotificationService;
 use App\Services\Native\NativeDialogService;
 use App\Services\Native\ShareService;
 use Composer\InstalledVersions;
@@ -21,7 +22,6 @@ use Native\Mobile\Events\Camera\PhotoCancelled;
 use Native\Mobile\Events\Camera\PhotoTaken;
 use Native\Mobile\Events\PushNotification\TokenGenerated;
 use Native\Mobile\Facades\Camera;
-use Native\Mobile\PushNotifications;
 use Native\Mobile\SecureStorage;
 
 #[Title('Developer Debug')]
@@ -71,13 +71,22 @@ class Debug extends Component
 
     private ShareService $shares;
 
-    public function boot(NativeDialogService $dialogs, MobileNetworkState $networkState, DeviceService $devices, BrowserService $browsers, ShareService $shares): void
-    {
+    private LocalNotificationService $localNotifications;
+
+    public function boot(
+        NativeDialogService $dialogs,
+        MobileNetworkState $networkState,
+        DeviceService $devices,
+        BrowserService $browsers,
+        ShareService $shares,
+        LocalNotificationService $localNotifications,
+    ): void {
         $this->dialogs = $dialogs;
         $this->networkState = $networkState;
         $this->devices = $devices;
         $this->browsers = $browsers;
         $this->shares = $shares;
+        $this->localNotifications = $localNotifications;
     }
 
     public function showAlertExample(): void
@@ -248,26 +257,22 @@ class Debug extends Component
 
     public function testNotificationsExample(): void
     {
-        if (! $this->nativeBridgeIsAvailable()) {
-            $this->notificationStatus = 'Native notification APIs are unavailable in this browser runtime.';
-            $this->toastInfo($this->notificationStatus, 'Notifications fallback active');
+        $testId = 'debug-notifications-'.Str::uuid()->toString();
+        $result = $this->localNotifications->testNotification($testId);
+
+        $notification = $result['notification'] ?? null;
+        $this->pendingNotificationTestId = is_array($notification) && is_string($notification['id'] ?? null)
+            ? $notification['id']
+            : $testId;
+        $this->notificationStatus = (string) $result['message'];
+
+        if (($result['success'] ?? false) === true) {
+            $this->toastSuccess($this->notificationStatus, 'Notifications OK');
 
             return;
         }
 
-        $pushNotifications = new PushNotifications;
-        $permissionStatus = $pushNotifications->checkPermission() ?: 'unknown';
-        $token = $pushNotifications->getToken();
-        $testId = 'debug-notifications-'.Str::uuid()->toString();
-
-        $this->pendingNotificationTestId = $testId;
-        $pushNotifications->enroll()->id($testId)->remember()->enroll();
-
-        $this->notificationStatus = $token === null
-            ? "Push permission requested. Current status: {$permissionStatus}. No token yet."
-            : 'Push permission requested. Current status: '.$permissionStatus.'. Token: '.$this->shortToken($token).'.';
-
-        $this->toastInfo($this->notificationStatus, 'Notifications requested');
+        $this->toastWarning($this->notificationStatus, 'Notifications fallback active');
     }
 
     public function testFlashlightExample(): void
@@ -459,6 +464,7 @@ class Debug extends Component
     {
         $networkStatus = $this->networkState->status();
         $deviceSnapshot = $this->devices->snapshot();
+        $notificationCapabilities = $this->localNotifications->capabilities();
 
         return [
             [
@@ -540,6 +546,13 @@ class Debug extends Component
                 'key' => 'queue-status',
                 'label' => 'Queue status placeholder',
                 'value' => $this->queueStatus(),
+            ],
+            [
+                'key' => 'local-notification-driver',
+                'label' => 'Local notification driver',
+                'value' => $notificationCapabilities['native']
+                    ? "NativePHP ({$notificationCapabilities['driver']})"
+                    : "Placeholder ({$notificationCapabilities['driver']})",
             ],
         ];
     }

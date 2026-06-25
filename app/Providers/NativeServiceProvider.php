@@ -70,6 +70,20 @@ class NativeServiceProvider extends ServiceProvider
             MobileSplashscreenServiceProvider::class,
             InAppUpdateServiceProvider::class,
             InAppReviewsServiceProvider::class,
+            ...$this->optionalLocalNotificationProviders(),
         ];
+    }
+
+    /**
+     * @return array<int, class-string<ServiceProvider>>
+     */
+    private function optionalLocalNotificationProviders(): array
+    {
+        return array_values(array_filter(
+            (array) config('mobile_notifications.native.providers', []),
+            static fn (mixed $provider): bool => is_string($provider)
+                && class_exists($provider)
+                && is_subclass_of($provider, ServiceProvider::class),
+        ));
     }
 }

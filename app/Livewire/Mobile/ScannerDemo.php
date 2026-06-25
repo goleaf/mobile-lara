@@ -3,8 +3,11 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Models\MobileLocalScanHistory;
+use App\Services\MobileLocal\ScanHistoryRepository;
 use App\Services\Native\ScannerService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -42,9 +45,12 @@ class ScannerDemo extends Component
 
     private ScannerService $scanners;
 
-    public function boot(ScannerService $scanners): void
+    private ScanHistoryRepository $scanHistoryRepository;
+
+    public function boot(ScannerService $scanners, ScanHistoryRepository $scanHistoryRepository): void
     {
         $this->scanners = $scanners;
+        $this->scanHistoryRepository = $scanHistoryRepository;
     }
 
     public function startSingleScan(): void
@@ -107,6 +113,8 @@ class ScannerDemo extends Component
         $this->latestFormat = $scanResult['format'];
         $this->latestScannedAt = $scanResult['scanned_at'];
         $this->scanError = null;
+
+        $this->recordPersistentScan($scanResult['format'], $scanResult['data']);
 
         array_unshift($this->scanHistory, [
             'key' => Str::uuid()->toString(),
@@ -223,6 +231,22 @@ class ScannerDemo extends Component
         $prompt = trim($this->prompt);
 
         return $prompt !== '' ? $prompt : 'Scan QR code or barcode';
+    }
+
+    private function recordPersistentScan(string $scanType, string $rawValue): void
+    {
+        try {
+            $this->scanHistoryRepository->record(
+                scanType: $scanType,
+                rawValue: $rawValue,
+                actionResult: $this->pendingScanMode === 'continuous'
+                    ? 'Captured from continuous scanner session.'
+                    : 'Captured from single scanner session.',
+                status: MobileLocalScanHistory::STATUS_CAPTURED,
+            );
+        } catch (QueryException) {
+            $this->toastWarning('Scan was captured, but local scan history storage is unavailable.', 'History unavailable');
+        }
     }
 
     /**
