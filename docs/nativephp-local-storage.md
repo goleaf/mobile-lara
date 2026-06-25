@@ -67,6 +67,13 @@ Admin/API before API access or mobile UI visibility; permissions interact
 with feature flags as separate gates; suspended users and suspended tenants
 fail closed without bypassing tenant isolation.
 
+Audit Logic is defined in `audit-logic.md`:
+admin actions, security events, support activity, mobile activity summaries,
+API decisions, sync outcomes, and compliance-relevant changes must produce
+protected audit history that answers who did what, where it applied, why it
+happened, what changed, and how tenant-safe support or compliance review can
+understand it.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.

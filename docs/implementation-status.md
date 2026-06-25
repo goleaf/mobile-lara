@@ -97,6 +97,13 @@ Admin/API before API access or mobile UI visibility; permissions interact
 with feature flags as separate gates; suspended users and suspended tenants
 fail closed without bypassing tenant isolation.
 
+Audit Logic is defined in `audit-logic.md`:
+admin actions, security events, support activity, mobile activity summaries,
+API decisions, sync outcomes, and compliance-relevant changes must produce
+protected audit history that answers who did what, where it applied, why it
+happened, what changed, and how tenant-safe support or compliance review can
+understand it.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

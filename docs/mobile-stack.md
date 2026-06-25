@@ -72,6 +72,13 @@ Admin/API before API access or mobile UI visibility; permissions interact
 with feature flags as separate gates; suspended users and suspended tenants
 fail closed without bypassing tenant isolation.
 
+Audit Logic is defined in `audit-logic.md`:
+admin actions, security events, support activity, mobile activity summaries,
+API decisions, sync outcomes, and compliance-relevant changes must produce
+protected audit history that answers who did what, where it applied, why it
+happened, what changed, and how tenant-safe support or compliance review can
+understand it.
+
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.

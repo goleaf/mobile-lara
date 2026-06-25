@@ -18,11 +18,19 @@ Principles](product-principles.md), [Two-System Boundary Logic](two-system-bound
 Responsibilities](mobile-client-responsibilities.md), [API-First Principles](api-first-principles.md),
 [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md),
 [Authentication Principles](authentication-principles.md), [Mobile App Lock
-Principles](mobile-app-lock-principles.md), [Admin Control Center Logic](admin-control-center-logic.md),
-[Admin Safety Principles](admin-safety-principles.md), and [SaaS Value Map](saas-value-map.md):
+Principles](mobile-app-lock-principles.md), [Audit Logic](audit-logic.md),
+[Admin Control Center Logic](admin-control-center-logic.md), [Admin Safety
+Principles](admin-safety-principles.md), and [SaaS Value Map](saas-value-map.md):
 roles describe responsibility, permissions describe allowed actions, feature
 flags describe product availability, and account/tenant state can deny access
 even when a role or permission would otherwise allow it.
+
+Audit Logic is defined in `audit-logic.md`:
+admin actions, security events, support activity, mobile activity summaries,
+API decisions, sync outcomes, and compliance-relevant changes must produce
+protected audit history that answers who did what, where it applied, why it
+happened, what changed, and how tenant-safe support or compliance review can
+understand it.
 
 ## Access Statement
 

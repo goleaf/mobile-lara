@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Audit Logic documentation for audited admin actions, security events,
+  support and compliance history, mobile activity representation, audit
+  questions, and protected audit data principles.
 - Added Role And Permission Logic documentation for platform-level,
   tenant-level, admin-user, and mobile-user permissions, API access, mobile UI
   visibility, feature flag interaction, and suspended user or tenant behavior.

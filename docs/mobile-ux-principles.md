@@ -43,6 +43,13 @@ Admin/API before API access or mobile UI visibility; permissions interact
 with feature flags as separate gates; suspended users and suspended tenants
 fail closed without bypassing tenant isolation.
 
+Audit Logic is defined in `audit-logic.md`:
+admin actions, security events, support activity, mobile activity summaries,
+API decisions, sync outcomes, and compliance-relevant changes must produce
+protected audit history that answers who did what, where it applied, why it
+happened, what changed, and how tenant-safe support or compliance review can
+understand it.
+
 Updated: 2026-06-26
 
 This document defines mobile UX principles for the Mobile Lara NativePHP client. It explains mobile-first navigation, simple screens, clear loading states, clear offline states, thumb-friendly controls, minimum typing, fast actions, feature visibility based on admin rules, secure session behavior, and permission education before native permission prompts. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, or application logic.
