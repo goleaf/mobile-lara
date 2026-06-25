@@ -35,6 +35,13 @@ visibility boundaries, privacy-by-default behavior, and mobile diagnostics
 privacy limits must protect users and tenants without turning mobile cache,
 support views, or audit history into uncontrolled data exposure.
 
+Tenant Lifecycle Logic is defined in `tenant-lifecycle-logic.md`:
+tenant creation, onboarding, trial, active, suspended, archived,
+billing-blocked, deletion/requested deletion, and restore states must be
+Admin/API-owned lifecycle decisions that mobile presents as safe,
+tenant-scoped, billing-aware, supportable states without inventing local
+tenant authority.
+
 ## Permission Statement
 
 Mobile permissions should be requested only when the user understands the purpose and the feature is actually available.

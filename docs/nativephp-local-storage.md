@@ -81,6 +81,13 @@ visibility boundaries, privacy-by-default behavior, and mobile diagnostics
 privacy limits must protect users and tenants without turning mobile cache,
 support views, or audit history into uncontrolled data exposure.
 
+Tenant Lifecycle Logic is defined in `tenant-lifecycle-logic.md`:
+tenant creation, onboarding, trial, active, suspended, archived,
+billing-blocked, deletion/requested deletion, and restore states must be
+Admin/API-owned lifecycle decisions that mobile presents as safe,
+tenant-scoped, billing-aware, supportable states without inventing local
+tenant authority.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.

@@ -20,12 +20,19 @@ Principles](api-first-principles.md), [Authentication Principles](authentication
 [Mobile App Lock Principles](mobile-app-lock-principles.md), [Mobile Settings
 Logic](mobile-settings-logic.md), [Mobile Permission Logic](mobile-permission-logic.md),
 [Audit Logic](audit-logic.md), [Admin Safety Principles](admin-safety-principles.md),
-[Documentation-First Architecture](documentation-first-architecture.md),
+[Tenant Lifecycle Logic](tenant-lifecycle-logic.md), [Documentation-First Architecture](documentation-first-architecture.md),
 [NativePHP Local Storage](nativephp-local-storage.md), and [API v1 Diagnostics
 Contract](../contracts/api/v1-diagnostics.md): privacy is the boundary that
 keeps SaaS control, mobile convenience, support visibility, diagnostics,
 exports, deletion, audit history, and offline behavior from becoming uncontrolled
 data exposure.
+
+Tenant Lifecycle Logic is defined in `tenant-lifecycle-logic.md`:
+tenant creation, onboarding, trial, active, suspended, archived,
+billing-blocked, deletion/requested deletion, and restore states must be
+Admin/API-owned lifecycle decisions that mobile presents as safe,
+tenant-scoped, billing-aware, supportable states without inventing local
+tenant authority.
 
 ## Privacy Statement
 

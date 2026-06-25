@@ -63,6 +63,13 @@ visibility boundaries, privacy-by-default behavior, and mobile diagnostics
 privacy limits must protect users and tenants without turning mobile cache,
 support views, or audit history into uncontrolled data exposure.
 
+Tenant Lifecycle Logic is defined in `tenant-lifecycle-logic.md`:
+tenant creation, onboarding, trial, active, suspended, archived,
+billing-blocked, deletion/requested deletion, and restore states must be
+Admin/API-owned lifecycle decisions that mobile presents as safe,
+tenant-scoped, billing-aware, supportable states without inventing local
+tenant authority.
+
 ## API-First Statement
 
 Mobile Lara is API-first because the mobile client must communicate with the SaaS control plane only through the API.

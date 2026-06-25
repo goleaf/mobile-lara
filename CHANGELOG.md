@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Tenant Lifecycle Logic documentation for tenant creation, onboarding,
+  trial, active, suspended, archived, billing-blocked, deletion/requested
+  deletion, restore, and mobile-visible tenant state behavior.
 - Added Data Privacy Principles documentation for tenant isolation, least
   privilege, secure local mobile data, secure native storage, exports,
   deletion, support access, admin visibility, privacy-by-default behavior, and
