@@ -136,3 +136,7 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added the API/admin feature flag control page for audited global mobile
   defaults, including admin navigation, search, create/update validation, and
   focused Livewire coverage.
+- Added the API/admin remote config foundation with global defaults,
+  tenant-scoped overrides, resolved `/config` API output, bootstrap
+  integration, freshness metadata, deterministic config versions, and focused
+  contract coverage.

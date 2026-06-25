@@ -91,16 +91,16 @@ before implementation scope is added.
 
 - Decide when to remove or rewire the root Laravel app now that
   `apps/api-admin` and `apps/mobile-client` both exist as Laravel apps.
-- Replace the remaining mobile bootstrap foundation defaults with real config,
-  version, subscription, notification, and sync policy modules.
+- Replace the remaining mobile bootstrap foundation defaults with real version,
+  subscription, notification, and sync policy modules.
 - Complete tenancy beyond the foundation tenant list/switch API and mobile
   workspace switcher: admin tenant management screens, invitations, tenant
   settings policy, tenant-scoped resource middleware, and tenant-local cache
   partition verification.
 - Complete admin role/permission management, resource policies, feature-flag
   tenant/user override controls, impact previews, plan-version-device gates,
-  remote config, app version policy, maintenance mode, subscription state,
-  notification policy, sync policy, and audit foundations.
+  remote config admin UI/audit/rollback, app version policy, maintenance mode,
+  subscription state, notification policy, sync policy, and audit foundations.
 - Rewire existing mobile-local screens so server-trusted behavior comes from
   API/bootstrap state instead of local placeholders.
 - Run formatting, tests, route verification, builds, and NativePHP validation

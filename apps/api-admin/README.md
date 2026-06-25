@@ -135,8 +135,11 @@ Implemented foundation:
 - `GET /api/v1/mobile/bootstrap` returns the first authenticated mobile
   operating context with real user, device-session, current tenant, and
   available tenant data, role-derived permission payloads, resolved feature
-  flags, and explicit foundation defaults for pending config, subscription,
-  notification, and sync modules.
+  flags, resolved remote config, and explicit foundation defaults for pending
+  subscription, notification, and sync modules.
+- `GET /api/v1/mobile/config` returns resolved mobile-safe remote config with
+  tenant context, freshness metadata, compatibility state, and deterministic
+  config version metadata.
 - `GET /api/v1/mobile/features` returns resolved mobile-safe feature outcomes
   for the current user and tenant through the standard response envelope.
 - `GET /api/v1/mobile/tenants` returns the authenticated user's tenant context.
@@ -150,6 +153,10 @@ Implemented foundation:
 - `App\Services\MobileFeatures\MobileFeatureResolver` resolves user override,
   tenant override, global default, and permission-gate outcomes into
   mobile-safe feature states.
+- `mobile_remote_configs` and `tenant_remote_config_overrides` provide the
+  first remote config data model.
+- `App\Services\MobileConfig\MobileRemoteConfigResolver` merges foundation,
+  global, and tenant config into resolved mobile-safe config payloads.
 - `GET /admin/login` renders the admin login form.
 - `POST /admin/login` authenticates platform-admin users.
 - `POST /admin/logout` invalidates the admin session.
@@ -166,15 +173,16 @@ Implemented foundation:
 - Blade layouts exist for admin, auth, and dashboard surfaces.
 - Reusable admin Blade components exist for section headings and status badges.
 - Pest tests cover the dashboard route, root redirect, feature flag admin
-  controls, success envelope, error envelope, contract catalogue, and contract
-  Markdown file coverage.
+  controls, remote config resolution, success envelope, error envelope,
+  contract catalogue, and contract Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   resource policies, and broader control-plane audit.
-- Tenant/user feature override UI, feature impact previews, remote config, app
-  versions, sync, notifications, records/content, support, billing, and reports.
+- Tenant/user feature override UI, feature impact previews, remote config admin
+  UI/audit/rollback, app versions, sync, notifications, records/content,
+  support, billing, and reports.
 - Protected domain routes for records/content, sync, notifications, support,
   billing, reports, diagnostics, and feature/config/version policies.
 

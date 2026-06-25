@@ -2,7 +2,11 @@
 
 Updated: 2026-06-26
 
-Status: documented. Endpoint is planned for Phase 9.
+Status: partially implemented. `GET /api/v1/mobile/config` returns resolved
+foundation, global, and tenant-scoped mobile config with freshness,
+compatibility, fallback, and deterministic version metadata. Admin management
+UI, publish/audit workflows, rollback, plan/version/feature gates, and mobile
+local cache integration remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 lets admins adjust safe mobile behavior without turning the mobile app into a
@@ -77,7 +81,7 @@ Remote config endpoints expose validated, resolved, mobile-safe runtime values.
 Remote config can tune enabled behavior but cannot grant permissions, bypass
 billing, bypass tenant status, or bypass mobile version policy.
 
-## Planned Route
+## Implemented Route
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -90,6 +94,12 @@ The response returns `config`, `config_version`, `freshness`, `compatibility`,
 
 Config may cover sync intervals, upload limits, dashboard widgets, legal links,
 support links, notification presentation, app lock behavior, and messages.
+
+The current implementation resolves section-level config for `app_lock`,
+`dashboard`, `legal`, `support`, `sync`, and `uploads`. Global config records
+override foundation defaults, tenant overrides merge on top of the current
+tenant context, and sensitive global config records are excluded from mobile
+resolution.
 
 ## Gates
 
@@ -110,5 +120,18 @@ override, and retirement.
 
 ## Tests
 
-Phase 9 should verify validation, resolved-only payloads, config versioning,
-fallback behavior, and stale mobile cache metadata.
+Automated coverage:
+
+- `apps/api-admin/tests/Feature/MobileRemoteConfigResolutionTest.php`
+- `apps/api-admin/tests/Feature/MobileBootstrapApiTest.php`
+
+Fresh checks:
+
+```bash
+cd apps/api-admin && php artisan test --compact --filter=MobileRemoteConfigResolutionTest
+cd apps/api-admin && php artisan test --compact --filter=MobileBootstrapApiTest
+```
+
+Future Phase 9 coverage should add admin validation/audit workflows, rollback,
+mobile stale-cache behavior, plan/version/feature gate interactions, and
+invalid config failure modes.

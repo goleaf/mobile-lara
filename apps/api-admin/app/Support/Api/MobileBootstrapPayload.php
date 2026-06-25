@@ -13,6 +13,7 @@ final class MobileBootstrapPayload
      * @param  array{current_tenant?: array<string, mixed>|null, available_tenants?: array<int, array<string, mixed>>}  $tenantContext
      * @param  array<string, mixed>  $permissions
      * @param  array<string, mixed>  $features
+     * @param  array<string, mixed>  $remoteConfig
      * @return array<string, mixed>
      */
     public static function make(
@@ -22,6 +23,7 @@ final class MobileBootstrapPayload
         array $tenantContext = [],
         array $permissions = [],
         array $features = [],
+        array $remoteConfig = [],
     ): array {
         $now = CarbonImmutable::now();
 
@@ -32,11 +34,7 @@ final class MobileBootstrapPayload
             'available_tenants' => $tenantContext['available_tenants'] ?? [],
             'permissions' => $permissions,
             'features' => $features ?: self::foundationFeatures($now),
-            'remote_config' => [
-                'version' => 'foundation-1',
-                'freshness' => 'server_fresh',
-                'values' => self::remoteConfig(),
-            ],
+            'remote_config' => $remoteConfig ?: self::foundationRemoteConfig($now),
             'app_version' => self::appVersion($request),
             'maintenance' => [
                 'enabled' => false,
@@ -69,14 +67,14 @@ final class MobileBootstrapPayload
     /**
      * @return array<string, mixed>
      */
-    public static function meta(): array
+    public static function meta(array $features = [], array $remoteConfig = []): array
     {
         $now = CarbonImmutable::now();
 
         return [
             'bootstrap_version' => 'foundation-1',
-            'config_version' => 'foundation-1',
-            'features_version' => 'foundation-1',
+            'config_version' => is_string($remoteConfig['config_version'] ?? null) ? $remoteConfig['config_version'] : 'remote-config-foundation-1',
+            'features_version' => is_string($features['version'] ?? null) ? $features['version'] : 'foundation-1',
             'sync_cursor' => null,
             'issued_at' => $now->toIso8601String(),
             'fresh_until' => $now->addMinutes(15)->toIso8601String(),
@@ -126,6 +124,34 @@ final class MobileBootstrapPayload
             'state' => $state,
             'enabled' => in_array($state, ['visible', 'enabled'], true),
             'reason' => $reason,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function foundationRemoteConfig(CarbonImmutable $now): array
+    {
+        return [
+            'version' => 'remote-config-foundation-1',
+            'config_version' => 'remote-config-foundation-1',
+            'freshness' => [
+                'state' => 'server_fresh',
+                'issued_at' => $now->toIso8601String(),
+                'fresh_until' => $now->addMinutes(15)->toIso8601String(),
+            ],
+            'compatibility' => [
+                'status' => 'compatible',
+                'minimum_app_version' => null,
+                'incompatible_keys' => [],
+            ],
+            'defaults_used' => array_keys(self::remoteConfig()),
+            'values' => self::remoteConfig(),
+            'support_context' => [
+                'source' => 'foundation_default',
+                'global_config_count' => 0,
+                'tenant_override_count' => 0,
+            ],
         ];
     }
 
