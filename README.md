@@ -6,6 +6,8 @@ The product is positioned as a tenant-based SaaS control center with an API-firs
 
 The core principle is strict: Admin/API controls business authority; mobile never bypasses the API; every feature is controllable; tenant isolation, security, documentation, and modular expansion are default requirements.
 
+The role model is explicit: platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user each have different responsibilities, visibility, and control boundaries.
+
 The product solves a common business problem: mobile teams need a simple app, but the organization needs tenant-safe control over permissions, billing, feature availability, app versions, support, notifications, reports, and sync behavior without publishing a new mobile build for every policy change.
 
 The product is split into two cooperating systems:
@@ -49,6 +51,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/product-vision.md](docs/product-vision.md) | Plain-language product vision, users, problem, technology choice, and SaaS scale logic. |
 | [docs/product-positioning.md](docs/product-positioning.md) | Product positioning as SaaS control center, mobile client platform, API-first system, offline-capable system, feature-controlled platform, and tenant-based product. |
 | [docs/product-principles.md](docs/product-principles.md) | Core product principles for admin control, API-first mobile behavior, feature control, tenant isolation, offline use, security, documentation, and modular expansion. |
+| [docs/user-roles.md](docs/user-roles.md) | Main logical user roles, responsibilities, limitations, visibility, and control boundaries. |
 | [docs/saas-mobile-admin-platform.md](docs/saas-mobile-admin-platform.md) | Canonical product and system concept. |
 | [docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md](docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md) | ADR for the two-system architecture. |
 | [docs/mobile-stack.md](docs/mobile-stack.md) | Stack, package, and boundary notes. |
@@ -74,6 +77,7 @@ The repository currently contains mobile-client surfaces and local-mobile infras
 
 - Use Eloquent and Laravel resources for API-facing data. Do not use raw SQL strings.
 - Apply [core product principles](docs/product-principles.md) before feature implementation.
+- Apply [target user roles](docs/user-roles.md) before designing permissions, visibility, support, billing, or mobile access.
 - Keep admin business rules on the server. Mobile UI state is never an authorization boundary.
 - Let admin settings control mobile behavior because mobile state may be stale, offline, copied between devices, or running an old app version.
 - Position the product as both admin control center and mobile workforce/client platform; avoid web-only or mobile-only thinking.

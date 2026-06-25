@@ -48,6 +48,23 @@ All product and system design should follow [Core Product Principles](product-pr
 9. Documentation comes before implementation.
 10. Feature expansion is modular.
 
+## Target User Roles
+
+The logical role model lives in [Target User Roles](user-roles.md). The main roles are:
+
+- Platform owner.
+- Super admin.
+- Tenant admin.
+- Tenant manager.
+- Support agent.
+- Billing manager.
+- Mobile user.
+- Invited user.
+- Suspended user.
+- Guest/pre-login user.
+
+These roles define who can see and control platform policy, tenant settings, billing, support, mobile workflows, invitations, suspension recovery, and pre-login flows.
+
 ## System Split
 
 ### Admin/API System

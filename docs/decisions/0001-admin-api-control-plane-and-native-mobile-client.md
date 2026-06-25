@@ -20,6 +20,8 @@ The product positioning is deliberately combined: SaaS control center, mobile wo
 
 The architecture must also satisfy [Core Product Principles](../product-principles.md): admin authority, API-first mobile communication, feature control, tenant isolation, useful offline behavior, secure defaults, simple mobile UX, documentation-first decisions, and modular expansion.
 
+The target role model is defined in [Target User Roles](../user-roles.md). The architecture must keep platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user boundaries distinct.
+
 ## Decision
 
 Use a two-system architecture:
@@ -82,6 +84,7 @@ The mobile client would be implemented as a fully native iOS/Android application
 - Documentation and future implementation should treat local mobile data as cache, draft, queue, or confirmed server copy depending on sync state.
 - NativePHP + Livewire remains the chosen mobile approach until a future ADR demonstrates that native-only or another mobile stack is worth the extra operational cost.
 - Future architecture changes should preserve the core principles unless a newer ADR explicitly supersedes them.
+- Role and account-state boundaries should be treated as authorization requirements, not UI preferences.
 
 ## Implementation Boundary
 

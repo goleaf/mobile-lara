@@ -15,6 +15,8 @@ It also supports the [Product Positioning](product-positioning.md): SaaS control
 
 Stack decisions must preserve [Core Product Principles](product-principles.md): admin authority, API-first mobile communication, tenant isolation, secure defaults, simple mobile UX, documentation-first changes, and modular feature expansion.
 
+Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
+
 ## Current Package Baseline
 
 | Package / tool | Version | Product role |
@@ -44,6 +46,7 @@ The Admin/API system should be implemented as the SaaS control plane:
 - Server-side authorization for every tenant, user, device, feature, billing, and support action.
 - Eloquent resources or JSON:API style resources for mobile-facing payloads.
 - Audit logs for admin changes and sensitive mobile-originated events.
+- Role-aware dashboards and APIs that expose only the context each role should see.
 
 ### Mobile Client System
 
@@ -56,6 +59,7 @@ The Mobile client system should be implemented as the managed edge client:
 - Secure storage for tokens and secrets.
 - API-only communication with the Admin/API system.
 - Offline-first UX that shows freshness, pending actions, and conflicts.
+- Role-derived capability state from the API, not local role assumptions.
 
 ## Stack Decisions
 

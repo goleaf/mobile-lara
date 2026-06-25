@@ -10,6 +10,8 @@ It also supports the [Product Positioning](product-positioning.md): NativePHP tu
 
 Native build and release work must follow [Core Product Principles](product-principles.md): admin controls version and feature policy, the mobile client never bypasses the API, app behavior is feature-controlled, security is default, and mobile UX stays simple.
 
+Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
+
 ## Current Placeholders
 
 | Setting | Value |
@@ -179,6 +181,7 @@ Also verify product policy before a real mobile release:
 - API boot config exists for the target app version.
 - Remote config and feature flags are compatible with the build.
 - Blocked/deprecated version policy is tested.
+- Guest, invited, suspended, and mobile user states are covered in release expectations.
 - Native permission copy matches enabled features.
 - Core product principles are still satisfied for every enabled mobile feature.
 - Support runbook knows the release version.
@@ -203,6 +206,7 @@ Before production distribution, the project needs:
 - Product vision: [Product Vision](product-vision.md)
 - Product positioning: [Product Positioning](product-positioning.md)
 - Core product principles: [Core Product Principles](product-principles.md)
+- Target user roles: [Target User Roles](user-roles.md)
 - NativePHP installation: https://nativephp.com/docs/mobile/3/getting-started/installation
 - NativePHP command reference: https://nativephp.com/docs/mobile/3/getting-started/commands
 - NativePHP app icons: https://nativephp.com/docs/mobile/3/the-basics/app-icon

@@ -12,6 +12,8 @@ The product is stronger than a normal web app because it reaches mobile workers 
 
 The positioning depends on [Core Product Principles](product-principles.md): admin authority, API-first mobile behavior, feature control, tenant isolation, useful offline behavior, secure defaults, simple mobile UX, documentation-first decisions, and modular expansion.
 
+It also depends on [Target User Roles](user-roles.md): each role has a different responsibility, visibility boundary, and control surface.
+
 ## Six Product Angles
 
 ### SaaS Control Center
@@ -159,9 +161,10 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 5. Features are controlled by policy before they appear as screens.
 6. Tenants are the primary commercial and security boundary.
 7. Secure-by-default is part of the product position, not a separate hardening phase.
-8. Web-only is insufficient for mobile work.
-9. Mobile-only is insufficient for SaaS governance.
-10. Product positioning should guide every future modular feature slice.
+8. Role boundaries determine who can see or control each surface.
+9. Web-only is insufficient for mobile work.
+10. Mobile-only is insufficient for SaaS governance.
+11. Product positioning should guide every future modular feature slice.
 
 ## Risks
 

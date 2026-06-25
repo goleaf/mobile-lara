@@ -15,6 +15,8 @@ It also supports the [Product Positioning](product-positioning.md): the admin UI
 
 UI decisions must follow [Core Product Principles](product-principles.md): admin controls policy, mobile never presents local state as server authority, disabled features are clear, tenant scope is visible where relevant, secure defaults are not hidden behind UI-only affordances, and mobile UX stays simple.
 
+UI decisions must also follow [Target User Roles](user-roles.md): each role should see the controls, diagnostics, billing context, support context, tenant scope, or pre-login state that matches its job.
+
 ## Shared Principles
 
 - Keep UI in Livewire + Blade.
@@ -32,6 +34,8 @@ The mobile client should be calm, direct, and explicit about sync state.
 
 Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.
 
+Guest/pre-login, invited, and suspended states should have minimal, clear screens that never expose tenant data or normal mobile workflows.
+
 - Prefer `<x-mobile.*>` Blade components over repeated markup.
 - Keep mobile tap targets at `min-h-12` or larger.
 - Use `gap-*` for sibling spacing instead of stacked margins.
@@ -46,6 +50,8 @@ Mobile users should not need to understand tenant billing, feature rollout, supp
 The admin panel should be dense, searchable, and audit-friendly.
 
 Admin users include SaaS owners, platform operators, tenant admins, support, billing, release, and security/compliance roles. The UI should make scope and consequence obvious before a setting changes mobile behavior.
+
+The admin UI should distinguish platform owner, super admin, tenant admin, tenant manager, support agent, and billing manager actions instead of presenting one generic admin surface.
 
 - Optimize for repeated operations, not landing-page presentation.
 - Use tables, filters, tabs, segmented controls, and clear state badges.

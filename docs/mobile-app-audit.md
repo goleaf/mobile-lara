@@ -19,6 +19,8 @@ The product positioning is a tenant-based SaaS control center plus an API-first,
 
 The audit standard is [Core Product Principles](product-principles.md). Current and future features should be judged by whether admin controls them, mobile uses the API, feature state is controllable, tenant isolation is explicit, offline behavior is useful and bounded, security is default, mobile UX is simple, documentation exists, and expansion is modular.
 
+The role standard is [Target User Roles](user-roles.md). Audits should verify platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user visibility separately.
+
 ## Product Vision Audit
 
 | Vision question | Product answer |
@@ -127,6 +129,19 @@ If one of those perspectives is missing, the feature is not yet product-ready.
 | Documentation-first development | Are docs/ADRs updated before implementation? |
 | Modular feature expansion | Does the feature expand as a complete admin/API/mobile/support/audit slice? |
 
+## Role Boundary Audit
+
+| Role boundary | Audit question |
+| --- | --- |
+| Platform owner vs super admin | Are business ownership decisions separated from operational administration? |
+| Tenant admin vs tenant manager | Can managers perform day-to-day work without tenant-wide authority? |
+| Support agent | Is support access case-scoped and limited to safe diagnostics? |
+| Billing manager | Is billing authority separated from tenant workflow control? |
+| Mobile user | Does mobile show only API-granted capabilities? |
+| Invited user | Is access blocked until activation is complete? |
+| Suspended user | Does suspension override previous role permissions? |
+| Guest/pre-login user | Are only public/authentication flows visible? |
+
 ## API Audit Principles
 
 Boost documentation confirms Laravel's API routes are stateless and Laravel supports API backends for mobile apps. Future API work should use:
@@ -198,6 +213,7 @@ php artisan native:plugin:validate
 - [Product Vision](product-vision.md)
 - [Product Positioning](product-positioning.md)
 - [Core Product Principles](product-principles.md)
+- [Target User Roles](user-roles.md)
 - [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md)
 - Laravel Boost application info and documentation search.
 - Laravel API routing, authentication, resources, and JSON testing documentation.

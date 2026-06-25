@@ -10,6 +10,8 @@ Position the product as a tenant-based SaaS control center with an API-first, fe
 
 Core product principles: Admin/API controls business authority, mobile never bypasses API, every feature can be enabled or disabled, tenant isolation is mandatory, offline-first is used only where useful, security is default, communication is API-first, mobile UX stays simple, documentation comes before implementation, and features expand as modular slices.
 
+Target user roles are defined in `docs/user-roles.md`: platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user. Treat invited/suspended/pre-login as access states that override normal role permissions.
+
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
 2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
 
@@ -38,6 +40,7 @@ Use these docs before changing the product direction:
 - `docs/product-vision.md`
 - `docs/product-positioning.md`
 - `docs/product-principles.md`
+- `docs/user-roles.md`
 - `docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md`
 - `docs/mobile-stack.md`
 - `docs/nativephp-local-storage.md`
@@ -55,6 +58,7 @@ Use these docs before changing the product direction:
 - Every replayable mobile write must be idempotent at the API boundary.
 - Any feature must define admin behavior, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior before implementation.
 - Any feature must pass the core principles checklist in `docs/product-principles.md`.
+- Any feature that changes visibility or control must map behavior to the role model in `docs/user-roles.md`.
 
 </project-product-contract>
 

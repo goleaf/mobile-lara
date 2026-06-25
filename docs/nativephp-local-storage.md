@@ -10,6 +10,8 @@ It also supports the [Product Positioning](product-positioning.md): Mobile Lara 
 
 The storage rules follow [Core Product Principles](product-principles.md): mobile never bypasses the API, offline-first is used only where useful, tenant isolation remains server-enforced, and secure defaults keep secrets out of local SQLite.
 
+Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
+
 ## Product Role
 
 The mobile client may use local SQLite for:
@@ -44,6 +46,7 @@ The product boundary is:
 - The API accepts, rejects, transforms, or marks queued work as conflicted.
 - Support users can inspect safe sync context when local and server state diverge.
 - Documentation defines offline behavior before local storage expands into a new module.
+- Suspended users cannot replay new local work as trusted actions until the API reauthorizes them.
 
 This keeps offline-first behavior scalable: more tenants and devices can work locally without multiplying trusted client-side rules.
 

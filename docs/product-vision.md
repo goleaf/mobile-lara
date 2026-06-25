@@ -27,6 +27,8 @@ See [Product Positioning](product-positioning.md) for the full positioning model
 
 The vision is governed by [Core Product Principles](product-principles.md). In short: Admin/API controls business authority; mobile never bypasses the API; every feature is controllable; tenant isolation is mandatory; offline-first is used where it helps; security is default; communication is API-first; mobile UX stays simple; documentation precedes implementation; and new capabilities expand as modular feature slices.
 
+The target role model is defined in [Target User Roles](user-roles.md). Role boundaries explain who can own, operate, manage, support, bill, use, join, recover, or preview the product.
+
 ## Problem The System Solves
 
 Organizations that rely on mobile work usually face the same problem: the people doing the work need a simple app, but the business needs centralized control.
@@ -49,10 +51,12 @@ Admin users are people who manage the SaaS product, tenant operations, mobile be
 
 | Admin user | Primary job |
 | --- | --- |
-| SaaS owner | Sets platform defaults, global feature strategy, version policy, billing model, and operating rules. |
+| Platform owner | Sets platform defaults, global feature strategy, version policy, billing model, and operating rules. |
+| Super admin | Operates the platform with broad administrative authority under owner policy. |
 | Platform operator | Monitors health, incidents, app versions, sync behavior, device state, and rollout progress. |
 | Tenant owner | Manages one organization, its users, plan, enabled modules, and tenant-level settings. |
 | Tenant admin | Handles day-to-day team membership, roles, permissions, notifications, and local operating settings. |
+| Tenant manager | Manages assigned teams and day-to-day workflows inside tenant limits. |
 | Support user | Investigates tickets, sync conflicts, device state, recent config changes, and safe diagnostics. |
 | Billing operator | Manages plan state, entitlements, quotas, invoices, and account restrictions. |
 | Product or release manager | Rolls out features, controls app-version gates, reviews adoption, and reverses risky changes. |
@@ -73,6 +77,8 @@ Mobile users need:
 - No exposure to tenant billing, rollout mechanics, feature-flag complexity, or admin configuration internals.
 
 Mobile users should experience policy as clear product behavior, not as admin machinery.
+
+Guest/pre-login, invited, and suspended users are not normal mobile users. They are restricted states with limited visibility and control, described in [Target User Roles](user-roles.md).
 
 ## Why The System Needs Both Admin/API And Mobile Client
 

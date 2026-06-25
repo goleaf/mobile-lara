@@ -10,6 +10,8 @@ Mobile Lara is a tenant-based SaaS control center with an API-first, feature-con
 
 Every future feature should satisfy these principles before implementation begins.
 
+The role model in [Target User Roles](user-roles.md) defines who can see and control product surfaces. Role boundaries are part of every principle below.
+
 ## 1. Admin Controls Everything
 
 Admin controls every business-sensitive mobile capability.
@@ -55,6 +57,8 @@ Tenant isolation is the primary SaaS trust boundary.
 Every admin action, API request, mobile boot payload, report, support case, notification, sync decision, and audit event must be scoped to the correct tenant. Mobile-provided tenant IDs are claims to verify, not authority to trust.
 
 Tenant isolation also applies to product operations. Support users, billing operators, tenant admins, and platform operators should only see the tenant context their role allows.
+
+Invited, suspended, and guest/pre-login states override normal role access.
 
 Product rule: no feature is complete until tenant scope is explicit and enforced by the Admin/API system.
 
@@ -144,6 +148,7 @@ Before a future feature is implemented, answer:
 | Question | Required answer |
 | --- | --- |
 | Who controls it? | Admin/API owns the business decision. |
+| Which roles see it? | Visibility and control map to `docs/user-roles.md`. |
 | Can mobile bypass it? | No; mobile uses the API contract. |
 | Can it be disabled? | Yes; behavior is defined for disabled state. |
 | Is tenant scope clear? | Yes; scope is server-enforced. |
