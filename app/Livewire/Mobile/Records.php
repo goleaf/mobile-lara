@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -62,6 +63,15 @@ class Records extends Component
      */
     public array $tagFilterSlugs = [];
 
+    /**
+     * @var list<int|string>
+     */
+    public array $selectedRecordIds = [];
+
+    public string $bulkStatus = MobileLocalRecord::STATUS_ACTIVE;
+
+    public string $bulkCategoryId = '';
+
     private RecordRepository $records;
 
     private TagRepository $tagRepository;
@@ -82,17 +92,25 @@ class Records extends Component
     public function setFilter(string $filter): void
     {
         $this->filter = $this->validFilter($filter);
+        $this->clearSelection();
     }
 
     public function clearSearch(): void
     {
         $this->search = '';
+        $this->clearSelection();
+    }
+
+    public function updatedSearch(): void
+    {
+        $this->clearSelection();
     }
 
     public function clearTagFilter(): void
     {
         $this->tagFilterNames = [];
         $this->tagFilterSlugs = [];
+        $this->clearSelection();
     }
 
     public function refreshRecords(): void
@@ -111,6 +129,7 @@ class Records extends Component
         $this->tagFilterSlugs = $slugs === []
             ? collect($this->tagFilterNames)->map(fn (string $tag): string => $this->tagRepository->slugFor($tag))->values()->all()
             : $this->tagRepository->normalizeSlugs($slugs);
+        $this->clearSelection();
     }
 
     public function archiveRecord(int $recordId): void
@@ -173,6 +192,125 @@ class Records extends Component
         $this->toastSuccess('Record deleted locally.', 'Record deleted');
     }
 
+    public function selectAllVisible(): void
+    {
+        try {
+            $this->selectedRecordIds = $this->records->ids(
+                limit: $this->limit,
+                status: $this->statusFilter(),
+                search: $this->searchFilter(),
+                archived: $this->archivedFilter(),
+                tagSlugs: $this->tagFilterSlugs,
+            );
+        } catch (QueryException) {
+            $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Selection unavailable');
+        }
+    }
+
+    public function clearSelection(): void
+    {
+        $this->selectedRecordIds = [];
+        $this->resetValidation(['bulkStatus', 'bulkCategoryId']);
+    }
+
+    public function archiveSelected(): void
+    {
+        $selectedIds = $this->selectedIds();
+
+        if ($selectedIds === []) {
+            $this->toastWarning('Select at least one record first.', 'Archive unavailable');
+
+            return;
+        }
+
+        try {
+            $count = $this->records->archiveSelected($selectedIds);
+        } catch (QueryException) {
+            $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Archive unavailable');
+
+            return;
+        }
+
+        $this->clearSelection();
+        $this->toastSuccess("Archived {$count} selected records locally.", 'Records archived');
+    }
+
+    public function deleteSelected(): void
+    {
+        $selectedIds = $this->selectedIds();
+
+        if ($selectedIds === []) {
+            $this->toastWarning('Select at least one record first.', 'Delete unavailable');
+
+            return;
+        }
+
+        try {
+            $count = $this->records->deleteSelected($selectedIds);
+        } catch (QueryException) {
+            $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Delete unavailable');
+
+            return;
+        }
+
+        $this->clearSelection();
+        $this->toastSuccess("Deleted {$count} selected records locally.", 'Records deleted');
+    }
+
+    public function changeSelectedStatus(): void
+    {
+        $this->validate([
+            'bulkStatus' => ['required', Rule::in(MobileLocalRecord::STATUSES)],
+        ]);
+
+        $selectedIds = $this->selectedIds();
+
+        if ($selectedIds === []) {
+            $this->toastWarning('Select at least one record first.', 'Status unchanged');
+
+            return;
+        }
+
+        try {
+            $count = $this->records->changeSelectedStatus($selectedIds, $this->bulkStatus);
+        } catch (QueryException) {
+            $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Status unchanged');
+
+            return;
+        }
+
+        $label = $this->records->statusOptions()[$this->bulkStatus] ?? 'selected status';
+        $this->clearSelection();
+        $this->toastSuccess("Changed {$count} selected records to {$label}.", 'Status changed');
+    }
+
+    public function changeSelectedCategory(): void
+    {
+        $this->validate([
+            'bulkCategoryId' => ['nullable', 'integer', 'min:0'],
+        ]);
+
+        $selectedIds = $this->selectedIds();
+
+        if ($selectedIds === []) {
+            $this->toastWarning('Select at least one record first.', 'Category unchanged');
+
+            return;
+        }
+
+        try {
+            $categoryId = $this->bulkCategoryId === '' ? null : (int) $this->bulkCategoryId;
+            $count = $this->records->changeSelectedCategory($selectedIds, $categoryId);
+        } catch (QueryException) {
+            $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Category unchanged');
+
+            return;
+        }
+
+        $this->clearSelection();
+        $this->toastSuccess("Changed category on {$count} selected records.", 'Category changed');
+    }
+
     public function render(): View
     {
         try {
@@ -200,10 +338,16 @@ class Records extends Component
         }
 
         return view('livewire.mobile.records', [
+            'allVisibleSelected' => $this->allVisibleSelected($records),
+            'bulkCategoryOptions' => ['' => 'No category'] + $this->records->categoryOptions(),
+            'bulkStatusOptions' => $this->records->statusOptions(),
             'filters' => $this->filters($stats),
+            'hasSelection' => $this->selectedCount() > 0,
             'metrics' => $this->metrics($stats),
             'records' => $records,
             'recordsCount' => $records->count(),
+            'selectedCount' => $this->selectedCount(),
+            'selectedRecordKeys' => array_fill_keys($this->selectedIds(), true),
             'storageAvailable' => $storageAvailable,
             'tagFilterContext' => $this->tagPickerContext(),
             'tagFilterValues' => $this->tagFilterNames,
@@ -276,5 +420,42 @@ class Records extends Component
     private function tagPickerContext(): string
     {
         return 'records-filter';
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function selectedIds(): array
+    {
+        return collect($this->selectedRecordIds)
+            ->map(fn (mixed $recordId): int => (int) $recordId)
+            ->filter(fn (int $recordId): bool => $recordId > 0)
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    private function selectedCount(): int
+    {
+        return count($this->selectedIds());
+    }
+
+    /**
+     * @param  Collection<int, MobileLocalRecord>  $records
+     */
+    private function allVisibleSelected(Collection $records): bool
+    {
+        $visibleIds = $records
+            ->pluck('id')
+            ->map(fn (mixed $recordId): int => (int) $recordId)
+            ->values();
+
+        if ($visibleIds->isEmpty()) {
+            return false;
+        }
+
+        $selectedIds = collect($this->selectedIds());
+
+        return $visibleIds->every(fn (int $recordId): bool => $selectedIds->contains($recordId));
     }
 }

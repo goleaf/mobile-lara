@@ -38,6 +38,14 @@ class MobileLocalCategory extends Model
     protected $table = 'categories';
 
     /**
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'color' => '#64748b',
+        'sort_order' => 0,
+    ];
+
+    /**
      * @return HasMany<MobileLocalRecord, $this>
      */
     public function records(): HasMany

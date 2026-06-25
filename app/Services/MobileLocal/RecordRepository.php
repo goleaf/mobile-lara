@@ -166,6 +166,111 @@ final class RecordRepository
         return (bool) $record->delete();
     }
 
+    /**
+     * @param  list<string>  $tagSlugs
+     * @return list<int>
+     */
+    public function ids(
+        int $limit = 30,
+        ?string $status = null,
+        ?string $search = null,
+        ?bool $archived = false,
+        array $tagSlugs = [],
+    ): array {
+        $this->mobileLocalDatabase->ensureFileExists();
+
+        return $this->filteredQuery($status, $search, $archived, $tagSlugs)
+            ->select(['id'])
+            ->orderByDesc('updated_at')
+            ->orderByDesc('id')
+            ->limit($this->boundedLimit($limit))
+            ->pluck('id')
+            ->map(fn (mixed $recordId): int => (int) $recordId)
+            ->values()
+            ->all();
+    }
+
+    /**
+     * @param  list<int>  $recordIds
+     */
+    public function archiveSelected(array $recordIds): int
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+        $recordIds = $this->normalizeRecordIds($recordIds);
+
+        if ($recordIds === []) {
+            return 0;
+        }
+
+        return MobileLocalRecord::query()
+            ->whereKey($recordIds)
+            ->update([
+                'archived_at' => CarbonImmutable::now(),
+                'sync_status' => MobileLocalRecord::SYNC_PENDING,
+            ]);
+    }
+
+    /**
+     * @param  list<int>  $recordIds
+     */
+    public function deleteSelected(array $recordIds): int
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+        $recordIds = $this->normalizeRecordIds($recordIds);
+
+        if ($recordIds === []) {
+            return 0;
+        }
+
+        MobileLocalRecord::query()
+            ->whereKey($recordIds)
+            ->update(['sync_status' => MobileLocalRecord::SYNC_PENDING]);
+
+        return MobileLocalRecord::query()
+            ->whereKey($recordIds)
+            ->delete();
+    }
+
+    /**
+     * @param  list<int>  $recordIds
+     */
+    public function changeSelectedStatus(array $recordIds, string $status): int
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+        $recordIds = $this->normalizeRecordIds($recordIds);
+
+        if ($recordIds === []) {
+            return 0;
+        }
+
+        return MobileLocalRecord::query()
+            ->whereKey($recordIds)
+            ->update([
+                'status' => $this->validStatus($status),
+                'sync_status' => MobileLocalRecord::SYNC_PENDING,
+            ]);
+    }
+
+    /**
+     * @param  list<int>  $recordIds
+     */
+    public function changeSelectedCategory(array $recordIds, ?int $categoryId): int
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+        $recordIds = $this->normalizeRecordIds($recordIds);
+
+        if ($recordIds === []) {
+            return 0;
+        }
+
+        return MobileLocalRecord::query()
+            ->whereKey($recordIds)
+            ->update([
+                'category_id' => $this->normalizeId($categoryId),
+                'sync_status' => MobileLocalRecord::SYNC_PENDING,
+            ]);
+    }
+
     public function validStatus(string $status): string
     {
         return in_array($status, MobileLocalRecord::STATUSES, true)
@@ -269,6 +374,20 @@ final class RecordRepository
     private function normalizeId(?int $id): ?int
     {
         return is_int($id) && $id > 0 ? $id : null;
+    }
+
+    /**
+     * @param  list<int>  $recordIds
+     * @return list<int>
+     */
+    private function normalizeRecordIds(array $recordIds): array
+    {
+        return collect($recordIds)
+            ->map(fn (mixed $recordId): int => (int) $recordId)
+            ->filter(fn (int $recordId): bool => $recordId > 0)
+            ->unique()
+            ->values()
+            ->all();
     }
 
     private function normalizeDueAt(CarbonInterface|string|null $dueAt): ?CarbonImmutable

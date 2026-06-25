@@ -9,6 +9,7 @@ use App\Livewire\Mobile\RecordNotes;
 use App\Livewire\Mobile\Records;
 use App\Livewire\Mobile\TagPicker;
 use App\Models\MobileLocalActivityLog;
+use App\Models\MobileLocalCategory;
 use App\Models\MobileLocalMediaItem;
 use App\Models\MobileLocalRecord;
 use App\Models\MobileLocalTag;
@@ -214,6 +215,104 @@ test('records screen filters by selected tag picker slugs', function (): void {
         ->assertSee('Support desk record');
 
     expect($field->tagModels->pluck('slug')->all())->toBe(['field']);
+});
+
+test('record repository bulk updates selected local records', function (): void {
+    $repository = app(RecordRepository::class);
+    $category = MobileLocalCategory::factory()->create([
+        'label' => 'Bulk category',
+        'slug' => 'bulk-category',
+        'color' => '#059669',
+    ]);
+
+    $records = MobileLocalRecord::factory()->count(3)->active()->create([
+        'category_id' => null,
+    ]);
+
+    expect($repository->changeSelectedStatus($records->take(2)->modelKeys(), MobileLocalRecord::STATUS_REVIEW))->toBe(2)
+        ->and(MobileLocalRecord::query()->forStatus(MobileLocalRecord::STATUS_REVIEW)->count())->toBe(2)
+        ->and($repository->changeSelectedCategory($records->take(2)->modelKeys(), $category->id))->toBe(2)
+        ->and(MobileLocalRecord::query()->forCategory($category->id)->count())->toBe(2)
+        ->and($repository->archiveSelected($records->take(2)->modelKeys()))->toBe(2)
+        ->and(MobileLocalRecord::query()->archivedRecords()->count())->toBe(2)
+        ->and($repository->deleteSelected([$records->first()->id]))->toBe(1)
+        ->and(MobileLocalRecord::withTrashed()->find($records->first()->id)?->trashed())->toBeTrue();
+});
+
+test('records screen supports bulk select all clear status category archive and delete actions', function (): void {
+    $category = MobileLocalCategory::factory()->create([
+        'label' => 'Bulk destination',
+        'slug' => 'bulk-destination',
+        'color' => '#2563eb',
+    ]);
+
+    $first = MobileLocalRecord::factory()->active()->create([
+        'title' => 'Bulk first record',
+        'category_id' => null,
+        'updated_at' => CarbonImmutable::now()->subMinutes(2),
+    ]);
+
+    $second = MobileLocalRecord::factory()->active()->create([
+        'title' => 'Bulk second record',
+        'category_id' => null,
+        'updated_at' => CarbonImmutable::now()->subMinute(),
+    ]);
+
+    $third = MobileLocalRecord::factory()->active()->create([
+        'title' => 'Bulk third record',
+        'category_id' => null,
+        'updated_at' => CarbonImmutable::now(),
+    ]);
+
+    $component = Livewire::test(Records::class)
+        ->assertSee('Select all')
+        ->call('selectAllVisible')
+        ->assertSee('Bulk actions')
+        ->assertSee('3 selected');
+
+    expect(collect($component->get('selectedRecordIds'))->map(fn (mixed $recordId): int => (int) $recordId)->sort()->values()->all())
+        ->toBe([$first->id, $second->id, $third->id]);
+
+    $component
+        ->call('clearSelection')
+        ->assertSet('selectedRecordIds', [])
+        ->set('selectedRecordIds', [$first->id, $second->id])
+        ->set('bulkStatus', MobileLocalRecord::STATUS_REVIEW)
+        ->call('changeSelectedStatus')
+        ->assertHasNoErrors()
+        ->assertSet('selectedRecordIds', [])
+        ->assertDispatched('mobile-toast');
+
+    expect($first->fresh()?->status)->toBe(MobileLocalRecord::STATUS_REVIEW)
+        ->and($second->fresh()?->status)->toBe(MobileLocalRecord::STATUS_REVIEW)
+        ->and($third->fresh()?->status)->toBe(MobileLocalRecord::STATUS_ACTIVE);
+
+    $component
+        ->set('selectedRecordIds', [$first->id, $second->id])
+        ->set('bulkCategoryId', (string) $category->id)
+        ->call('changeSelectedCategory')
+        ->assertHasNoErrors()
+        ->assertSet('selectedRecordIds', []);
+
+    expect($first->fresh()?->category_id)->toBe($category->id)
+        ->and($second->fresh()?->category_id)->toBe($category->id)
+        ->and($third->fresh()?->category_id)->not->toBe($category->id);
+
+    $component
+        ->call('selectAllVisible')
+        ->call('archiveSelected')
+        ->assertSet('selectedRecordIds', []);
+
+    expect(MobileLocalRecord::query()->archivedRecords()->count())->toBe(3);
+
+    $component
+        ->call('setFilter', 'archived')
+        ->call('selectAllVisible')
+        ->call('deleteSelected')
+        ->assertSet('selectedRecordIds', []);
+
+    expect(MobileLocalRecord::query()->count())->toBe(0)
+        ->and(MobileLocalRecord::withTrashed()->count())->toBe(3);
 });
 
 test('tag picker searches creates selects and removes local tags', function (): void {

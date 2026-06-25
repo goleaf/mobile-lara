@@ -1,5 +1,9 @@
-<section class="safe-x safe-pb flex min-h-full flex-col gap-5 py-6">
-    <x-mobile.loading-state target="refreshRecords,setFilter,archiveRecord,restoreRecord,deleteRecord,search,clearSearch,clearTagFilter" message="Updating records..." />
+<section @class([
+    'safe-x flex min-h-full flex-col gap-5 pt-6',
+    'pb-56' => $hasSelection,
+    'safe-pb pb-6' => ! $hasSelection,
+])>
+    <x-mobile.loading-state target="refreshRecords,setFilter,archiveRecord,restoreRecord,deleteRecord,selectAllVisible,archiveSelected,deleteSelected,changeSelectedStatus,changeSelectedCategory,clearSelection,search,clearSearch,clearTagFilter" message="Updating records..." />
 
     <x-mobile.page-header
         title="Records"
@@ -121,24 +125,60 @@
         </x-mobile.card>
 
         <x-mobile.card title="Records table" description="Newest local changes first.">
+            <x-slot:action>
+                <div class="flex flex-wrap justify-end gap-2">
+                    @if ($selectedCount > 0)
+                        <x-mobile.badge variant="accent" size="sm">
+                            {{ $selectedCount }} selected
+                        </x-mobile.badge>
+                    @endif
+
+                    <x-mobile.button
+                        wire:click="selectAllVisible"
+                        wire:loading.attr="disabled"
+                        wire:target="selectAllVisible"
+                        variant="secondary"
+                        size="sm"
+                    >
+                        {{ $allVisibleSelected ? 'All selected' : 'Select all' }}
+                    </x-mobile.button>
+                </div>
+            </x-slot:action>
+
             <div class="grid gap-3">
                 @forelse ($records as $record)
                     <article
                         wire:key="record-row-{{ $record->id }}"
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        @class([
+                            'grid gap-3 rounded-lg border p-4 transition',
+                            'border-app-accent bg-app-accent/10 dark:border-emerald-400/50 dark:bg-emerald-400/10' => $selectedRecordKeys[$record->id] ?? false,
+                            'border-app-line bg-app-bg dark:border-zinc-800 dark:bg-zinc-950' => ! ($selectedRecordKeys[$record->id] ?? false),
+                        ])
                     >
                         <div class="flex items-start justify-between gap-4">
-                            <div class="min-w-0">
-                                <a
-                                    href="{{ route('mobile.records.show', $record) }}"
-                                    wire:navigate
-                                    class="block break-words text-base font-semibold text-app-ink underline-offset-4 hover:underline dark:text-zinc-100"
-                                >
-                                    {{ $record->title }}
-                                </a>
-                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
-                                    Updated {{ $record->updated_at?->diffForHumans() ?? 'time unknown' }}
-                                </p>
+                            <div class="flex min-w-0 items-start gap-3">
+                                <label class="flex size-10 shrink-0 items-center justify-center rounded-lg border border-app-line bg-app-surface dark:border-zinc-700 dark:bg-zinc-900">
+                                    <input
+                                        type="checkbox"
+                                        value="{{ $record->id }}"
+                                        wire:model.live="selectedRecordIds"
+                                        class="size-5 rounded border-app-line text-app-accent focus:ring-app-accent/30 dark:border-zinc-700 dark:bg-zinc-950"
+                                    >
+                                    <span class="sr-only">Select {{ $record->title }}</span>
+                                </label>
+
+                                <div class="min-w-0">
+                                    <a
+                                        href="{{ route('mobile.records.show', $record) }}"
+                                        wire:navigate
+                                        class="block break-words text-base font-semibold text-app-ink underline-offset-4 hover:underline dark:text-zinc-100"
+                                    >
+                                        {{ $record->title }}
+                                    </a>
+                                    <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                        Updated {{ $record->updated_at?->diffForHumans() ?? 'time unknown' }}
+                                    </p>
+                                </div>
                             </div>
 
                             <div class="flex shrink-0 flex-col items-end gap-2">
@@ -262,5 +302,95 @@
                 </x-mobile.button>
             </x-slot:footer>
         </x-mobile.card>
+
+        @if ($hasSelection)
+            <div class="fixed inset-x-0 bottom-0 z-40 border-t border-app-line bg-app-surface/95 shadow-2xl backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95">
+                <div class="safe-x mx-auto grid max-w-3xl gap-3 px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">Bulk actions</p>
+                            <p class="text-xs font-medium text-app-muted dark:text-zinc-400">{{ $selectedCount }} selected</p>
+                        </div>
+
+                        <x-mobile.button wire:click="clearSelection" variant="ghost" size="sm">
+                            Clear
+                        </x-mobile.button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <x-mobile.button
+                            wire:click="archiveSelected"
+                            wire:loading.attr="disabled"
+                            wire:target="archiveSelected"
+                            variant="secondary"
+                            size="sm"
+                            full
+                        >
+                            Archive selected
+                        </x-mobile.button>
+
+                        <x-mobile.button
+                            wire:click="deleteSelected"
+                            wire:confirm="Delete selected records from local storage?"
+                            wire:loading.attr="disabled"
+                            wire:target="deleteSelected"
+                            variant="danger"
+                            size="sm"
+                            full
+                        >
+                            Delete selected
+                        </x-mobile.button>
+                    </div>
+
+                    <div class="grid gap-2 sm:grid-cols-2">
+                        <div class="grid gap-2 sm:grid-cols-[1fr_auto]">
+                            <label class="sr-only" for="bulkStatus">Change status</label>
+                            <select
+                                id="bulkStatus"
+                                wire:model.live="bulkStatus"
+                                class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+                            >
+                                @foreach ($bulkStatusOptions as $statusValue => $statusLabel)
+                                    <option value="{{ $statusValue }}">{{ $statusLabel }}</option>
+                                @endforeach
+                            </select>
+
+                            <x-mobile.button
+                                wire:click="changeSelectedStatus"
+                                wire:loading.attr="disabled"
+                                wire:target="changeSelectedStatus"
+                                variant="accent"
+                                size="sm"
+                            >
+                                Change status
+                            </x-mobile.button>
+                        </div>
+
+                        <div class="grid gap-2 sm:grid-cols-[1fr_auto]">
+                            <label class="sr-only" for="bulkCategoryId">Change category</label>
+                            <select
+                                id="bulkCategoryId"
+                                wire:model.live="bulkCategoryId"
+                                class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+                            >
+                                @foreach ($bulkCategoryOptions as $categoryValue => $categoryLabel)
+                                    <option value="{{ $categoryValue }}">{{ $categoryLabel }}</option>
+                                @endforeach
+                            </select>
+
+                            <x-mobile.button
+                                wire:click="changeSelectedCategory"
+                                wire:loading.attr="disabled"
+                                wire:target="changeSelectedCategory"
+                                variant="secondary"
+                                size="sm"
+                            >
+                                Change category
+                            </x-mobile.button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     @endif
 </section>
