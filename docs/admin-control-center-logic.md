@@ -8,6 +8,8 @@ Use this document with [Documentation-First Architecture](documentation-first-ar
 
 Use [Feature Flag Logic](feature-flag-logic.md) whenever a control changes important mobile feature availability, rollout, disabled states, plan limits, or user-level access.
 
+Use [Remote Configuration Logic](remote-configuration-logic.md) whenever a control changes safe runtime mobile behavior, config defaults, tenant overrides, mobile caching, offline behavior, or invalid-config fallback.
+
 ## Control Center Statement
 
 The Admin Control Center is the operational control surface for the SaaS.
@@ -115,6 +117,7 @@ Admin control of remote config lets the platform adjust mobile behavior safely.
 Principles:
 
 - Remote config should be scoped, versioned, compatible, defaulted, and reversible.
+- Remote config should follow [Remote Configuration Logic](remote-configuration-logic.md): only safe runtime behavior is configurable, tenant overrides stay inside global/plan/permission/version/safety limits, and missing or invalid config fails safely.
 - Config can control copy, limits, workflow options, offline eligibility, sync rules, native permission purpose text, maintenance messages, or support instructions.
 - Config should not become hidden business logic.
 - Config changes that alter product behavior should be auditable and support-visible.

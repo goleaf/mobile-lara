@@ -21,6 +21,8 @@ Stack decisions must preserve [Admin Control Center Logic](admin-control-center-
 
 Stack decisions must preserve [Feature Flag Logic](feature-flag-logic.md). Important mobile feature availability must remain resolved by Admin/API from global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, and offline decisions.
 
+Stack decisions must preserve [Remote Configuration Logic](remote-configuration-logic.md). Runtime-configurable behavior must remain scoped, versioned, validated, API-delivered, safely cached, tenant-aware, and fallback-safe.
+
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
@@ -97,6 +99,7 @@ The Mobile client system should be implemented as the managed edge client:
 - Keep stack expansion mobile-safe: UX, local session, cache, queues, NativePHP plugins, navigation, permissions UX, sync display, drafts, feedback, and feature visibility must remain local execution concerns.
 - Keep stack expansion control-safe: admin controls must have scope, authorized role, mobile effect, API context, audit expectation, support explanation, offline behavior, and risk boundary before implementation.
 - Keep stack expansion flag-safe: features must define priority, disabled mobile state, rollout, admin impact, plan limit, support, audit, offline behavior, and retirement before implementation.
+- Keep stack expansion config-safe: remote config must define type, default, scope, override, compatibility, mobile cache, offline behavior, invalid-config fallback, support, audit, rollback, and retirement before implementation.
 
 ## Why NativePHP + Livewire
 

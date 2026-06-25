@@ -25,6 +25,8 @@ The Admin Control Center standard is [Admin Control Center Logic](admin-control-
 
 The Feature Flag Logic standard is [Feature Flag Logic](feature-flag-logic.md). Audits should verify that important mobile features have documented flag purpose, priority, disabled mobile states, admin impact, safe rollout, plan limits, support visibility, audit expectations, and offline behavior.
 
+The Remote Configuration Logic standard is [Remote Configuration Logic](remote-configuration-logic.md). Audits should verify that runtime-configurable mobile behavior has allowed config type, defaults, scope, tenant overrides, mobile receive/cache rules, offline behavior, invalid-config fallback, admin safety, support visibility, audit expectations, and rollback.
+
 The role standard is [Target User Roles](user-roles.md). Audits should verify platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user visibility separately.
 
 The value standard is [SaaS Value Map](saas-value-map.md). Audits should verify that platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive clear value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags without receiving inappropriate visibility or authority.
@@ -103,6 +105,19 @@ If a future feature only satisfies the web/admin side or only the mobile side, i
 | What rollout path applies? | Is rollout internal, pilot, cohort, plan-limited, tenant-limited, general availability, rollback, or emergency-disabled? |
 | What plan limit applies? | Does plan entitlement define the ceiling while flags decide exposure inside that ceiling? |
 | What happens offline? | Does replay recheck current flag, plan, permission, version, tenant, maintenance, and emergency state before acceptance? |
+
+## Remote Configuration Logic Audit
+
+| Remote config question | Audit lens |
+| --- | --- |
+| What is configurable? | Is the config limited to safe runtime behavior such as copy, limits, workflow options, offline/sync behavior, native permission wording, support guidance, notification presentation, version messaging, or tenant presentation? |
+| What must not be config? | Does config avoid authorization, billing authority, tenant authority, permission grants, secrets, provider internals, and undocumented business logic? |
+| How does mobile receive it? | Does API return resolved values, config version, freshness, compatibility, fallback, and safe next-action state? |
+| What can mobile cache? | Is only resolved mobile-safe config cached with version and freshness metadata? |
+| What happens offline? | Does mobile use last-known config only for safe behavior and refresh before protected replay? |
+| How do tenant overrides work? | Do tenant-specific values override global defaults only inside platform, plan, permission, feature, version, and safety limits? |
+| How do admins change it? | Are owner, validation, preview/staging, reason, audit, support visibility, rollback, and affected scope documented? |
+| What if config is missing or invalid? | Does mobile use safe defaults or fail closed without exposing internals? |
 
 ## SaaS Value Map Audit
 
@@ -231,6 +246,7 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Documentation-first governance | Every future slice must document feature behavior, admin mobile effect, mobile API dependency, sync behavior, permission owner, risks, and acceptance criteria before implementation. |
 | Admin Control Center governance | Every future admin slice must define control area, authorized role, scope, mobile effect, API context, audit expectation, support meaning, offline behavior, risk, and non-goals before implementation. |
 | Feature flag governance | Every future important mobile feature must define flag priority, disabled mobile states, admin impact, rollout path, plan limits, support meaning, audit expectation, offline behavior, and non-goals before implementation. |
+| Remote config governance | Every future runtime-configurable behavior must define config type, default, scope, tenant override, mobile cache, offline behavior, invalid-config fallback, safe admin change, support, audit, rollback, and non-goals before implementation. |
 | SaaS value governance | Every future slice must prove stakeholder value and connect that value to admin control, mobile access, offline sync, notifications, reports, security, or feature flags. |
 | API-first governance | Every future slice must define API purpose, operating context, predictable responses, mobile-friendly errors, sync/conflict behavior, and tenant-boundary protection before endpoint design. |
 | Admin/API responsibility governance | Every future slice must identify which control-plane responsibility owns tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |
