@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Mobile Permission Logic documentation for pre-permission education,
+  camera, microphone, location, notifications, files, scanner, biometrics,
+  secure storage, disabled-feature prompts, denied-permission recovery,
+  feature flag effects, and settings status.
 - Added Mobile Settings Logic documentation for account, tenant, security,
   notifications, sync, appearance, permissions, storage, support, legal, and
   diagnostics sections, including local control, Admin/API authority, and

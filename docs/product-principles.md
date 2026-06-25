@@ -43,6 +43,13 @@ appearance, permissions, storage, support, legal, and diagnostics must
 separate local device control from Admin/API authority and define
 offline-disabled behavior before implementation.
 
+Mobile Permission Logic is defined in `mobile-permission-logic.md`:
+native permission requests for camera, microphone, location, notifications,
+files, scanner, biometrics, and secure storage must explain purpose before
+prompting, respect feature flags and API authority, avoid disabled-feature
+prompts, support denied-permission recovery, and show status in settings before
+implementation.
+
 ## Principles Contract
 
 | Principle | Product rule | Feature behavior |

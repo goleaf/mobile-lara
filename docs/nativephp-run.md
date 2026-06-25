@@ -41,6 +41,13 @@ appearance, permissions, storage, support, legal, and diagnostics must
 separate local device control from Admin/API authority and define
 offline-disabled behavior before implementation.
 
+Mobile Permission Logic is defined in `mobile-permission-logic.md`:
+native permission requests for camera, microphone, location, notifications,
+files, scanner, biometrics, and secure storage must explain purpose before
+prompting, respect feature flags and API authority, avoid disabled-feature
+prompts, support denied-permission recovery, and show status in settings before
+implementation.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.

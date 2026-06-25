@@ -68,6 +68,13 @@ appearance, permissions, storage, support, legal, and diagnostics must
 separate local device control from Admin/API authority and define
 offline-disabled behavior before implementation.
 
+Mobile Permission Logic is defined in `../../docs/mobile-permission-logic.md`:
+native permission requests for camera, microphone, location, notifications,
+files, scanner, biometrics, and secure storage must explain purpose before
+prompting, respect feature flags and API authority, avoid disabled-feature
+prompts, support denied-permission recovery, and show status in settings before
+implementation.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

@@ -41,6 +41,13 @@ appearance, permissions, storage, support, legal, and diagnostics must
 separate local device control from Admin/API authority and define
 offline-disabled behavior before implementation.
 
+Mobile Permission Logic is defined in `mobile-permission-logic.md`:
+native permission requests for camera, microphone, location, notifications,
+files, scanner, biometrics, and secure storage must explain purpose before
+prompting, respect feature flags and API authority, avoid disabled-feature
+prompts, support denied-permission recovery, and show status in settings before
+implementation.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.

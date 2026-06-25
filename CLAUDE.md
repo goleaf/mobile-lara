@@ -26,6 +26,8 @@ Mobile dashboard logic is defined in `docs/mobile-dashboard-logic.md`: current u
 
 Mobile settings logic is defined in `docs/mobile-settings-logic.md`: account, tenant, security, notifications, sync, appearance, permissions, storage, support, legal, and diagnostics settings must separate local device control, Admin/API authority, and offline-disabled behavior before implementation.
 
+Mobile permission logic is defined in `docs/mobile-permission-logic.md`: camera, microphone, location, notifications, files, scanner, biometrics, and secure-storage behavior must explain purpose before prompting, respect feature flags and API authority, avoid disabled-feature prompts, support denied-permission recovery, and show status in settings before implementation.
+
 API-first principles are defined in `docs/api-first-principles.md`: mobile communicates only with API, API responses are predictable, every mobile feature has a clear API purpose, API returns operating context, errors are mobile-friendly, sync and conflict behavior are first-class, and tenant boundaries are protected server-side.
 
 Documentation-first architecture is defined in `docs/documentation-first-architecture.md`: every feature must be documented before implementation, every admin control must document its mobile effect, every mobile screen must document its API dependency, every sync behavior must document offline and online behavior, every permission must document who controls it, and every risk must be recorded before coding.
@@ -76,6 +78,7 @@ Use these docs before changing the product direction:
 - `docs/mobile-app-shell-logic.md`
 - `docs/mobile-dashboard-logic.md`
 - `docs/mobile-settings-logic.md`
+- `docs/mobile-permission-logic.md`
 - `docs/admin-control-center-logic.md`
 - `docs/feature-flag-logic.md`
 - `docs/remote-configuration-logic.md`
@@ -99,6 +102,7 @@ Use these docs before changing the product direction:
 - Mobile app shell decisions must follow `docs/mobile-app-shell-logic.md`.
 - Mobile dashboard decisions must follow `docs/mobile-dashboard-logic.md`.
 - Mobile settings decisions must follow `docs/mobile-settings-logic.md`.
+- Mobile permission decisions must follow `docs/mobile-permission-logic.md`.
 - Admin Control Center decisions must follow `docs/admin-control-center-logic.md`.
 - Feature flag decisions must follow `docs/feature-flag-logic.md`.
 - Remote configuration decisions must follow `docs/remote-configuration-logic.md`.
@@ -122,6 +126,7 @@ Use these docs before changing the product direction:
 - Any welcome, authenticated, locked, offline, maintenance, forced update, tenant switching, sync-in-progress, permission-blocked, or feature-disabled shell behavior must map to `docs/mobile-app-shell-logic.md`.
 - Any mobile dashboard content, feature shortcut, sync/offline summary, notification count, recent activity, announcement, or quick action must map to `docs/mobile-dashboard-logic.md`.
 - Any mobile settings group, local preference, device permission recovery, account setting, tenant setting, security setting, notification setting, sync setting, appearance setting, storage setting, support setting, legal setting, diagnostic setting, or offline-disabled setting behavior must map to `docs/mobile-settings-logic.md`.
+- Any native permission prompt, camera, microphone, location, notifications, files, scanner, biometrics, secure-storage, denied-permission recovery, disabled-feature permission, or permission-status setting behavior must map to `docs/mobile-permission-logic.md`.
 - Any admin control for tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, or support must map to `docs/admin-control-center-logic.md`.
 - Any important mobile feature flag must map to `docs/feature-flag-logic.md`, including priority, disabled mobile state, rollout, impact, plan limit, support, audit, and offline behavior.
 - Any remote-configurable behavior must map to `docs/remote-configuration-logic.md`, including allowed config type, scope, default, override behavior, mobile caching, offline behavior, validation, fallback, support, audit, and rollback.

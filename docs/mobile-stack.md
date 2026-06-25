@@ -46,6 +46,13 @@ appearance, permissions, storage, support, legal, and diagnostics must
 separate local device control from Admin/API authority and define
 offline-disabled behavior before implementation.
 
+Mobile Permission Logic is defined in `mobile-permission-logic.md`:
+native permission requests for camera, microphone, location, notifications,
+files, scanner, biometrics, and secure storage must explain purpose before
+prompting, respect feature flags and API authority, avoid disabled-feature
+prompts, support denied-permission recovery, and show status in settings before
+implementation.
+
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
