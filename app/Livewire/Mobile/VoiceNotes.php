@@ -277,7 +277,7 @@ class VoiceNotes extends Component
         try {
             return $this->audioRecordings->recentVoiceNotes();
         } catch (Throwable) {
-            return MobileLocalMediaItem::newCollection();
+            return new Collection;
         }
     }
 

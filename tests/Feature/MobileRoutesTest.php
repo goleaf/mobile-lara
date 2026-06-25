@@ -40,6 +40,7 @@ use App\Livewire\Mobile\Settings\Support as SettingsSupport;
 use App\Livewire\Mobile\Settings\Sync as SettingsSync;
 use App\Livewire\Mobile\TermsOfService;
 use App\Livewire\Mobile\ToastCenter;
+use App\Livewire\Mobile\VoiceNotes;
 use App\Livewire\Mobile\Welcome;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -107,6 +108,7 @@ test('protected mobile routes redirect guests to login', function (string $route
     'search' => 'mobile.search',
     'media capture' => 'mobile.media.capture',
     'media gallery' => 'mobile.media.gallery',
+    'voice notes' => 'mobile.voice-notes',
     'files' => 'mobile.files',
     'debug' => 'mobile.debug',
 ]);
@@ -147,6 +149,7 @@ test('protected mobile routes render for authenticated users', function (string 
     'search' => ['mobile.search', Search::class, 'Search'],
     'media capture' => ['mobile.media.capture', MediaCapture::class, 'Media capture'],
     'media gallery' => ['mobile.media.gallery', MediaGallery::class, 'Media gallery'],
+    'voice notes' => ['mobile.voice-notes', VoiceNotes::class, 'Voice notes'],
     'files' => ['mobile.files', FileManager::class, 'File manager'],
     'debug' => ['mobile.debug', Debug::class, 'Debug'],
 ]);

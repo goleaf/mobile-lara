@@ -47,6 +47,8 @@ test('settings section pages include connected and placeholder entries', functio
         ->assertSee(route('mobile.media.capture'), false)
         ->assertSee('Media gallery')
         ->assertSee(route('mobile.media.gallery'), false)
+        ->assertSee('Voice notes')
+        ->assertSee(route('mobile.voice-notes'), false)
         ->assertSee('File manager')
         ->assertSee(route('mobile.files'), false)
         ->assertSee('Tailwind check')
