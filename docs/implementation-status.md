@@ -60,12 +60,12 @@ Status values:
 | Requested monorepo paths | `apps/api-admin` and `apps/mobile-client` are now separate Laravel applications. |
 | API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status` and `GET /api/v1/mobile/contracts`. |
 | Mobile routes | 52 `mobile.*` Livewire routes exist in both the root transition app and `apps/mobile-client/routes/web.php`. |
-| Active database | Default SQLite contains only framework tables and `users`; no SaaS control-plane schema exists yet. |
+| Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, and security audit events. Tenant/control-plane domain schema remains pending. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
-| Admin/API system | `apps/api-admin` contains a Laravel 13 app, Livewire dashboard shell, shared API response envelope, first mobile status endpoint, and public contract catalogue endpoint. Auth, tenancy, and SaaS modules remain pending. |
+| Admin/API system | `apps/api-admin` contains a Laravel 13 app, Livewire dashboard shell, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, and mobile auth/token/session endpoints. Admin auth, tenancy, and SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, and the contract catalogue. |
+| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, contract catalogue, and mobile auth. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -128,7 +128,7 @@ Status values:
 | API contract documentation directory | tested | `contracts/api/README.md` defines envelope standards and links every v1 contract file; API/admin tests verify catalogued documents exist. |
 | Versioned response envelope | tested | Shared responder and `GET /api/v1/mobile/status` test cover `success`, `data`, `error`, `meta`, and `next_action` shape. |
 | Contract catalogue endpoint | tested | `GET /api/v1/mobile/contracts` returns the public v1 contract catalogue through the standard success envelope. |
-| Auth contract | documented | `v1-auth.md` defines planned auth/session/profile routes and gates; endpoints are not implemented. |
+| Auth contract | tested | `v1-auth.md` defines implemented auth/session/profile routes and the contract catalogue marks auth implemented. |
 | Bootstrap contract | documented | `v1-bootstrap.md` defines required payload and cache behavior; endpoint is not implemented. |
 | Tenancy contract | documented | `v1-tenancy.md` defines tenant list/switch behavior; endpoints are not implemented. |
 | Features contract | documented | `v1-features.md` defines resolved feature states and gates; endpoint is not implemented. |
@@ -146,16 +146,16 @@ Status values:
 
 | Feature | Admin/API Status | Mobile Status | Notes |
 | --- | --- | --- | --- |
-| Admin authentication | not started | n/a | No admin auth surface exists. |
-| API authentication | not started | partial | Mobile token services exist locally, but no API token authority exists. |
-| Access tokens | not started | partial | Mobile storage and placeholder services exist. |
-| Refresh tokens | not started | partial | Mobile refresh service exists without server endpoint. |
-| Logout | not started | partial | Mobile logout UX/services exist. |
-| Logout all devices | not started | partial | Mobile session screens exist; server authority is missing. |
-| Current user endpoint | not started | not started | Required for bootstrap/profile. |
-| Profile update endpoint | not started | partial | Mobile edit profile exists; API endpoint missing. |
-| Device/session logic | not started | partial | Mobile session display exists; server device trust missing. |
-| Security audit events | not started | partial | Local activity logs exist; server audit truth missing. |
+| Admin authentication | not started | n/a | Admin web/session login surface is still pending. |
+| API authentication | tested | partial | API/admin mobile auth endpoints exist; mobile client still needs API-client integration. |
+| Access tokens | tested | partial | API/admin stores only hashed access tokens and protects routes through `mobile.auth`; mobile secure-storage integration remains local-only. |
+| Refresh tokens | tested | partial | API/admin refresh endpoint rotates refresh/access tokens; mobile API service integration remains pending. |
+| Logout | tested | partial | API/admin logout revokes the current device session; mobile logout must call the endpoint. |
+| Logout all devices | tested | partial | API/admin logout-all revokes active mobile sessions; mobile sessions screen must call the endpoint. |
+| Current user endpoint | tested | not started | `GET /api/v1/mobile/auth/user` exists; mobile client integration is pending. |
+| Profile update endpoint | tested | partial | `PATCH /api/v1/mobile/auth/profile` exists; mobile edit profile still uses local state. |
+| Device/session logic | tested | partial | API/admin device sessions are persisted, last-seen tracked, and revocable; tenant/device trust policy remains pending. |
+| Security audit events | tested | partial | API/admin writes auth audit events; broader admin/control-plane audit remains pending. |
 
 ## Phase 6 - Tenancy
 

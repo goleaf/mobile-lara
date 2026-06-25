@@ -106,7 +106,7 @@ Success response:
   "meta": {
     "api_version": "v1",
     "contract_count": 14,
-    "next_contract": "v1-auth",
+    "next_contract": "v1-bootstrap",
     "server_time": "2026-06-25T00:00:00Z"
   }
 }
@@ -139,7 +139,7 @@ Implemented error responses use this shape:
   permissions, subscription state, notifications, or sync settings.
 - The contract catalogue is public because it exposes only documentation
   metadata and planned route names.
-- The next control-plane implementation contract is `v1-auth.md`.
+- The next control-plane implementation contract is `v1-bootstrap.md`.
 
 ## Verification
 

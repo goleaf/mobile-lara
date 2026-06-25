@@ -47,3 +47,7 @@ All notable changes to Mobile Lara will be documented in this file.
   features, remote config, app version/maintenance, records, sync,
   notifications, support, billing, reports, and diagnostics, plus an
   implemented contract catalogue endpoint at `GET /api/v1/mobile/contracts`.
+- Implemented the API/admin mobile authentication foundation with registration,
+  login, refresh-token rotation, logout, logout-all-devices, current-user, and
+  profile endpoints, hashed token persistence, device sessions, validation
+  envelopes, and security audit events.

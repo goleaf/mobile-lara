@@ -15,7 +15,7 @@ final class ContractIndexController extends Controller
 
         return MobileApiResponse::success($catalogue, [
             'contract_count' => count($catalogue['contracts']),
-            'next_contract' => 'v1-auth',
+            'next_contract' => 'v1-bootstrap',
         ]);
     }
 }

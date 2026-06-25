@@ -2,7 +2,7 @@
 
 Updated: 2026-06-25
 
-Status: documented. Endpoints are planned for Phase 5.
+Status: implemented for the API/admin mobile token foundation.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps identity and session authority in Admin/API while mobile presents a
@@ -23,7 +23,7 @@ sessions, devices, profile state, token refresh, logout, and security audit.
 The mobile client may store tokens securely and present auth state, but it does
 not decide account validity, tenant access, or session revocation.
 
-## Planned Routes
+## Implemented Routes
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -69,7 +69,16 @@ by revocation require local logout and token deletion.
 Login, refresh rotation, logout, logout-all, profile update, failed login,
 revoked session use, and suspicious device changes are audit events.
 
-## Tests
+## Verification
 
-Phase 5 should add feature tests for each endpoint, token rotation,
-revocation, profile validation, and mobile-safe error envelopes.
+Automated coverage in `apps/api-admin`:
+
+- `tests/Feature/MobileAuthApiTest.php`
+- `tests/Feature/MobileTokenAuthenticatorTest.php`
+
+Fresh checks for this phase:
+
+```bash
+php artisan test --compact --filter=MobileAuthApiTest
+php artisan test --compact --filter=MobileTokenAuthenticatorTest
+```

@@ -49,14 +49,14 @@ final class MobileContractRegistry
                 self::route('GET', '/status', 'implemented', 'public'),
                 self::route('GET', '/contracts', 'implemented', 'public'),
             ]),
-            self::group('auth', 'v1-auth.md', 'documented', 'Mobile account, token, session, and profile authority.', [
-                self::route('POST', '/auth/login', 'planned', 'public'),
-                self::route('POST', '/auth/register', 'planned', 'public'),
-                self::route('POST', '/auth/refresh', 'planned', 'refresh-token'),
-                self::route('POST', '/auth/logout', 'planned', 'mobile-token'),
-                self::route('POST', '/auth/logout-all', 'planned', 'mobile-token'),
-                self::route('GET', '/auth/user', 'planned', 'mobile-token'),
-                self::route('PATCH', '/auth/profile', 'planned', 'mobile-token'),
+            self::group('auth', 'v1-auth.md', 'implemented', 'Mobile account, token, session, and profile authority.', [
+                self::route('POST', '/auth/login', 'implemented', 'public'),
+                self::route('POST', '/auth/register', 'implemented', 'public'),
+                self::route('POST', '/auth/refresh', 'implemented', 'refresh-token'),
+                self::route('POST', '/auth/logout', 'implemented', 'mobile-token'),
+                self::route('POST', '/auth/logout-all', 'implemented', 'mobile-token'),
+                self::route('GET', '/auth/user', 'implemented', 'mobile-token'),
+                self::route('PATCH', '/auth/profile', 'implemented', 'mobile-token'),
             ]),
             self::group('bootstrap', 'v1-bootstrap.md', 'documented', 'Single mobile operating context after login, app start, tenant switch, and manual refresh.', [
                 self::route('GET', '/bootstrap', 'planned', 'mobile-token'),

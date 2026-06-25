@@ -54,6 +54,8 @@ through app-version policy before old mobile clients lose support.
   `GET /api/v1/mobile/status` endpoint, implemented
   `GET /api/v1/mobile/contracts` catalogue endpoint, and the shared
   success/error envelope.
+- [v1-auth.md](v1-auth.md) defines the implemented mobile auth, registration,
+  refresh, logout, logout-all, current-user, and profile endpoints.
 
 ## Documented v1 Contract Groups
 

@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Mobile\Auth\CurrentUserController;
+use App\Http\Controllers\Api\V1\Mobile\Auth\LoginController;
+use App\Http\Controllers\Api\V1\Mobile\Auth\LogoutAllDevicesController;
+use App\Http\Controllers\Api\V1\Mobile\Auth\LogoutController;
+use App\Http\Controllers\Api\V1\Mobile\Auth\ProfileController;
+use App\Http\Controllers\Api\V1\Mobile\Auth\RefreshTokenController;
+use App\Http\Controllers\Api\V1\Mobile\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\Mobile\ContractIndexController;
 use App\Http\Controllers\Api\V1\Mobile\StatusController;
 use Illuminate\Support\Facades\Route;
@@ -12,5 +19,20 @@ Route::prefix('v1')
             ->group(function (): void {
                 Route::get('/status', StatusController::class)->name('status');
                 Route::get('/contracts', ContractIndexController::class)->name('contracts.index');
+
+                Route::prefix('auth')
+                    ->name('auth.')
+                    ->group(function (): void {
+                        Route::post('/login', LoginController::class)->name('login');
+                        Route::post('/register', RegisterController::class)->name('register');
+                        Route::post('/refresh', RefreshTokenController::class)->name('refresh');
+
+                        Route::middleware('mobile.auth')->group(function (): void {
+                            Route::post('/logout', LogoutController::class)->name('logout');
+                            Route::post('/logout-all', LogoutAllDevicesController::class)->name('logout-all');
+                            Route::get('/user', CurrentUserController::class)->name('user');
+                            Route::patch('/profile', ProfileController::class)->name('profile');
+                        });
+                    });
             });
     });

@@ -51,11 +51,11 @@ must resolve minimum supported versions, optional updates, forced updates,
 maintenance mode, store links, update messages, and outdated-client protection
 into mobile-safe API outcomes.
 
-## Current Phase 4 State
+## Current Phase 5 State
 
 This directory is now a Laravel 13 application with a Livewire admin dashboard
 shell, the first versioned mobile API route, and a public mobile contract
-catalogue.
+catalogue. It also has the first mobile API authentication foundation.
 
 Implemented foundation:
 
@@ -63,9 +63,20 @@ Implemented foundation:
 - `/` redirects to `/admin/dashboard`.
 - `GET /api/v1/mobile/status` returns the standard mobile success envelope.
 - `GET /api/v1/mobile/contracts` returns the v1 mobile contract catalogue.
+- `POST /api/v1/mobile/auth/register` creates a mobile user, device session,
+  access token, refresh token, and audit event.
+- `POST /api/v1/mobile/auth/login` creates a revocable mobile token set.
+- `POST /api/v1/mobile/auth/refresh` rotates refresh/access tokens.
+- `POST /api/v1/mobile/auth/logout` revokes the current device session.
+- `POST /api/v1/mobile/auth/logout-all` revokes all active mobile sessions for
+  the current user.
+- `GET /api/v1/mobile/auth/user` returns current user/session context.
+- `PATCH /api/v1/mobile/auth/profile` updates allowed profile fields.
 - `App\Support\Api\MobileApiResponse` centralizes success and error envelopes.
 - `App\Support\Api\MobileContractRegistry` centralizes documented contract
   groups and planned routes.
+- Mobile access and refresh tokens are stored only as SHA-256 hashes.
+- `security_audit_events` records mobile auth/security actions.
 - Blade layouts exist for admin, auth, and dashboard surfaces.
 - Reusable admin Blade components exist for section headings and status badges.
 - Pest tests cover the dashboard route, root redirect, success envelope, error
