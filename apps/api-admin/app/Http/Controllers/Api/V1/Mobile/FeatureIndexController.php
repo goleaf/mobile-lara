@@ -38,12 +38,13 @@ final class FeatureIndexController extends Controller
 
         $tenantContext = $this->tenants->resolve($user);
         $permissions = $this->permissions->resolve($user, $tenantContext);
-        $features = $this->features->resolve($user, $tenantContext, $permissions);
+        $features = $this->features->resolve($user, $tenantContext, $permissions, $request);
 
         return MobileApiResponse::success([
             'features' => $features['items'],
             'tenant_id' => $features['tenant_id'],
             'version' => $features['version'],
+            'reported_app_version' => $features['reported_app_version'],
             'resolved_at' => $features['resolved_at'],
         ], [
             'features_version' => $features['version'],

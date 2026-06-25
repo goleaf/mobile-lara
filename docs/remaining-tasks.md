@@ -150,7 +150,7 @@ before implementation scope is added.
   settings policy, tenant-scoped resource middleware, and tenant-local cache
   partition verification.
 - Complete admin role/permission management, resource policies, feature-flag
-  plan-version-device gates, app-version range scoping, subscription state,
+  plan/device gates, app-version range scoping, subscription state,
   notification policy, sync policy, and audit foundations.
 - Rewire existing mobile-local screens so server-trusted behavior comes from
   API/bootstrap state instead of local placeholders.

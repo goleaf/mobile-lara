@@ -108,6 +108,38 @@ test('user feature overrides win over tenant overrides and global defaults', fun
         ->assertJsonPath('data.features.reports.reason', 'user_removed_from_rollout');
 });
 
+test('enabled features require the configured minimum app version', function (): void {
+    $user = User::factory()->create([
+        'email' => 'feature-version@example.com',
+        'password' => 'password-secret',
+    ]);
+    $tenant = Tenant::factory()->create();
+
+    TenantUser::factory()->for($tenant)->for($user)->current()->role(TenantUserRole::TenantAdmin)->create();
+    MobileFeatureFlag::factory()->create([
+        'key' => 'records',
+        'name' => 'Records',
+        'default_state' => MobileFeatureState::Visible,
+        'minimum_app_version' => '2.0.0',
+        'message' => 'Records require the latest mobile app.',
+    ]);
+
+    $accessToken = mobileFeatureAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->withHeaders([
+            'X-Mobile-App-Version' => '1.5.0',
+        ])
+        ->getJson('/api/v1/mobile/features')
+        ->assertOk()
+        ->assertJsonPath('data.reported_app_version', '1.5.0')
+        ->assertJsonPath('data.features.records.state', 'update_required')
+        ->assertJsonPath('data.features.records.enabled', false)
+        ->assertJsonPath('data.features.records.source', 'app_version_gate')
+        ->assertJsonPath('data.features.records.minimum_app_version', '2.0.0')
+        ->assertJsonPath('data.features.records.next_action', 'update_app');
+});
+
 function mobileFeatureAccessToken($test, User $user): string
 {
     return $test->postJson('/api/v1/mobile/auth/login', [

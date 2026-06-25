@@ -45,7 +45,7 @@ final class BootstrapController extends Controller
 
         $tenantContext = $this->tenants->resolve($user);
         $permissions = $this->permissions->resolve($user, $tenantContext);
-        $features = $this->features->resolve($user, $tenantContext, $permissions);
+        $features = $this->features->resolve($user, $tenantContext, $permissions, $request);
         $remoteConfig = $this->config->resolve($user, $tenantContext);
         $appVersion = $this->versions->resolve($request, $tenantContext);
 

@@ -205,8 +205,8 @@ Implemented foundation:
 - `mobile_feature_flags`, `tenant_feature_overrides`, and
   `user_feature_overrides` provide the first feature flag data model.
 - `App\Services\MobileFeatures\MobileFeatureResolver` resolves user override,
-  tenant override, global default, and permission-gate outcomes into
-  mobile-safe feature states.
+  tenant override, global default, permission-gate, and minimum-app-version
+  outcomes into mobile-safe feature states.
 - `mobile_remote_configs` and `tenant_remote_config_overrides` provide the
   first remote config data model.
 - `App\Services\MobileConfig\MobileRemoteConfigResolver` merges foundation,
@@ -262,14 +262,15 @@ Implemented foundation:
 - Pest tests cover the dashboard route, root redirect, feature flag admin
   controls, tenant and user feature override controls, remote config admin
   controls, tenant remote config controls, app version admin controls, remote
-  config resolution, tenant/cohort app version policy, success envelope, error
-  envelope, contract catalogue, and contract Markdown file coverage.
+  config resolution, feature app-version gates, tenant/cohort app version
+  policy, success envelope, error envelope, contract catalogue, and contract
+  Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   resource policies, and broader control-plane audit.
-- App-version range scoping, plan/version/device feature gates, sync,
+- App-version range scoping, plan/device feature gates, sync,
   notifications, records/content, support, billing, and reports.
 - Protected domain routes for records/content, sync, notifications, support,
   billing, reports, diagnostics, and feature/config/version policies.

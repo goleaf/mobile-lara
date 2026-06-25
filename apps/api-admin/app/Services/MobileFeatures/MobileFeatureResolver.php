@@ -3,6 +3,7 @@
 namespace App\Services\MobileFeatures;
 
 use App\Enums\MobileFeatureState;
+use App\Models\MobileDeviceSession;
 use App\Models\MobileFeatureFlag;
 use App\Models\Tenant;
 use App\Models\TenantFeatureOverride;
@@ -10,6 +11,7 @@ use App\Models\User;
 use App\Models\UserFeatureOverride;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 final class MobileFeatureResolver
@@ -47,16 +49,18 @@ final class MobileFeatureResolver
      * @param  array<string, mixed>  $permissions
      * @return array<string, mixed>
      */
-    public function resolve(User $user, array $tenantContext, array $permissions): array
+    public function resolve(User $user, array $tenantContext, array $permissions, ?Request $request = null): array
     {
         $tenant = $this->tenantFromContext($tenantContext);
         $globalFlags = $this->globalFlags();
         $tenantOverrides = $tenant instanceof Tenant ? $this->tenantOverrides($tenant) : new Collection;
         $userOverrides = $tenant instanceof Tenant ? $this->userOverrides($tenant, $user) : new Collection;
         $keys = $this->featureKeys($globalFlags, $tenantOverrides, $userOverrides);
+        $reportedVersion = $this->reportedVersion($request);
 
         return [
             'version' => 'feature-flags-foundation-1',
+            'reported_app_version' => $reportedVersion,
             'resolved_at' => CarbonImmutable::now()->toIso8601String(),
             'tenant_id' => $tenant?->public_id,
             'items' => collect($keys)
@@ -67,6 +71,7 @@ final class MobileFeatureResolver
                         $tenantOverrides->get($key),
                         $userOverrides->get($key),
                         $permissions,
+                        $reportedVersion,
                     ),
                 ])
                 ->all(),
@@ -151,6 +156,7 @@ final class MobileFeatureResolver
         ?TenantFeatureOverride $tenantOverride,
         ?UserFeatureOverride $userOverride,
         array $permissions,
+        ?string $reportedVersion,
     ): array {
         $resolved = $this->baseFeature($key, $flag);
 
@@ -162,7 +168,9 @@ final class MobileFeatureResolver
             $resolved = $this->applyOverride($resolved, $userOverride->state, $userOverride->reason, $userOverride->message, $userOverride->offline_behavior, 'user_override');
         }
 
-        return $this->applyPermissionGate($key, $resolved, $permissions);
+        $resolved = $this->applyPermissionGate($key, $resolved, $permissions);
+
+        return $this->applyVersionGate($resolved, $reportedVersion);
     }
 
     /**
@@ -235,6 +243,59 @@ final class MobileFeatureResolver
             source: 'permission_gate',
             nextAction: 'contact_admin',
         );
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    private function applyVersionGate(array $payload, ?string $reportedVersion): array
+    {
+        $minimumAppVersion = is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null;
+
+        if ($payload['enabled'] !== true || $minimumAppVersion === null || trim($minimumAppVersion) === '') {
+            return $payload;
+        }
+
+        if (! $this->isVersionBelowMinimum($reportedVersion, $minimumAppVersion)) {
+            return $payload;
+        }
+
+        return $this->payload(
+            state: MobileFeatureState::UpdateRequired,
+            reason: 'minimum_app_version_required',
+            message: is_string($payload['message'] ?? null) ? $payload['message'] : 'Update the app to use this feature.',
+            minimumAppVersion: $minimumAppVersion,
+            offlineBehavior: (string) $payload['offline_behavior'],
+            source: 'app_version_gate',
+            nextAction: 'update_app',
+        );
+    }
+
+    private function reportedVersion(?Request $request): ?string
+    {
+        $version = $request?->header('X-Mobile-App-Version');
+
+        if (is_string($version) && trim($version) !== '') {
+            return trim($version);
+        }
+
+        $session = $request?->attributes->get('mobile_device_session');
+
+        if (! $session instanceof MobileDeviceSession) {
+            return null;
+        }
+
+        return is_string($session->app_version) && trim($session->app_version) !== '' ? $session->app_version : null;
+    }
+
+    private function isVersionBelowMinimum(?string $reportedVersion, string $minimumAppVersion): bool
+    {
+        if ($reportedVersion === null || trim($reportedVersion) === '') {
+            return true;
+        }
+
+        return version_compare($reportedVersion, $minimumAppVersion, '<');
     }
 
     /**

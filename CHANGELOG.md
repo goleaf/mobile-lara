@@ -166,6 +166,9 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added the API/admin feature flag control page for audited global mobile
   defaults, including admin navigation, search, create/update validation, and
   focused Livewire coverage.
+- Enforced feature minimum app-version gates so otherwise-enabled mobile
+  features return `update_required` with an `update_app` action when the
+  reported app build is too old.
 - Added the API/admin tenant feature override control page with tenant-scoped
   feature states, mobile impact preview, audited create/update, dashboard
   navigation, and restore-from-audit coverage.

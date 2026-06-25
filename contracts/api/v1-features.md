@@ -6,9 +6,9 @@ Status: partially implemented. `GET /api/v1/mobile/features` returns resolved
 global, tenant, and user feature outcomes for the current tenant/user context.
 The admin panel manages audited global feature defaults and tenant-scoped
 overrides with mobile impact previews. It also manages membership-safe
-user-scoped overrides with audit-history restore. Plan/version/device/cohort
-gates, emergency controls, and mobile-local feature cache integration remain
-pending.
+user-scoped overrides with audit-history restore. Minimum app-version gates are
+enforced for otherwise-enabled features. Plan/device/cohort gates, emergency
+controls, and mobile-local feature cache integration remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps important mobile capabilities feature-controlled by Admin/API.
@@ -156,16 +156,22 @@ The response returns `features`, keyed by feature code. Each feature includes
 `state`, `visible`, `enabled`, `reason`, `next_action`, `minimum_app_version`,
 `offline_behavior`, and optional `message`.
 
+The top-level payload also includes `reported_app_version` when the client
+reports it through `X-Mobile-App-Version` or the authenticated device session
+has a stored version from login/register.
+
 Allowed states include `hidden`, `visible`, `disabled`, `blocked`, `beta`,
 `deprecated`, `update_required`, `offline_limited`, and `emergency_disabled`.
 
 ## Gates
 
 The current implementation resolves user override, tenant override, then global
-default, with a permission gate applied before mobile receives the final state.
-Future slices must add safety and maintenance rules, plan limits, app-version
-and device rules, cohort rules, emergency blocks, and richer offline
-limitations.
+default, with permission and minimum-app-version gates applied before mobile
+receives the final state. If an otherwise-enabled feature has a
+`minimum_app_version` above the reported app version, the resolved state becomes
+`update_required` with `next_action` set to `update_app`. Future slices must add
+safety and maintenance rules, plan limits, device rules, cohort rules,
+emergency blocks, and richer offline limitations.
 
 ## Offline Behavior
 
@@ -205,6 +211,6 @@ cd apps/api-admin && php artisan test --compact --filter=AdminTenantFeatureOverr
 cd apps/api-admin && php artisan test --compact --filter=AdminUserFeatureOverridesTest
 ```
 
-Future Phase 8 coverage should add stale-cache behavior, plan/version/device
-gates, emergency disablement, and no raw flag layers in API responses beyond
+Future Phase 8 coverage should add stale-cache behavior, plan/device gates,
+cohort gates, emergency disablement, and no raw flag layers in API responses beyond
 resolved mobile-safe outcomes.
