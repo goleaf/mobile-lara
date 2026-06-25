@@ -5,9 +5,10 @@ Updated: 2026-06-26
 Status: partially implemented. `GET /api/v1/mobile/features` returns resolved
 global, tenant, and user feature outcomes for the current tenant/user context.
 The admin panel manages audited global feature defaults and tenant-scoped
-overrides with mobile impact previews. User scoped override screens,
-plan/version/device/cohort gates, emergency controls, and mobile-local feature
-cache integration remain pending.
+overrides with mobile impact previews. It also manages membership-safe
+user-scoped overrides with audit-history restore. Plan/version/device/cohort
+gates, emergency controls, and mobile-local feature cache integration remain
+pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps important mobile capabilities feature-controlled by Admin/API.
@@ -161,7 +162,10 @@ The current admin implementation writes `admin_mobile_feature_flag_created` and
 for global default changes. Tenant override controls write
 `admin_tenant_feature_override_created`, `admin_tenant_feature_override_updated`,
 and `admin_tenant_feature_override_restored` events with before/after
-tenant-scoped metadata.
+tenant-scoped metadata. User override controls write
+`admin_user_feature_override_created`, `admin_user_feature_override_updated`,
+and `admin_user_feature_override_restored` events with before/after
+user-scoped metadata.
 
 ## Tests
 
@@ -170,6 +174,7 @@ Automated coverage:
 - `apps/api-admin/tests/Feature/MobileFeatureFlagResolutionTest.php`
 - `apps/api-admin/tests/Feature/AdminFeatureFlagsTest.php`
 - `apps/api-admin/tests/Feature/AdminTenantFeatureOverridesTest.php`
+- `apps/api-admin/tests/Feature/AdminUserFeatureOverridesTest.php`
 
 Fresh checks:
 
@@ -177,8 +182,9 @@ Fresh checks:
 cd apps/api-admin && php artisan test --compact --filter=MobileFeatureFlagResolutionTest
 cd apps/api-admin && php artisan test --compact --filter=AdminFeatureFlagsTest
 cd apps/api-admin && php artisan test --compact --filter=AdminTenantFeatureOverridesTest
+cd apps/api-admin && php artisan test --compact --filter=AdminUserFeatureOverridesTest
 ```
 
-Future Phase 8 coverage should add stale-cache behavior, tenant/user override
-admin screens, plan/version/device gates, emergency disablement, and no raw
-flag layers in API responses beyond resolved mobile-safe outcomes.
+Future Phase 8 coverage should add stale-cache behavior, plan/version/device
+gates, emergency disablement, and no raw flag layers in API responses beyond
+resolved mobile-safe outcomes.

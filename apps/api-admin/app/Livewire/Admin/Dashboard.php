@@ -39,9 +39,16 @@ final class Dashboard extends Component
             [
                 'label' => 'Feature overrides',
                 'status' => 'Live',
-                'detail' => 'Tenant-scoped feature decisions resolved above global defaults.',
+                'detail' => 'Tenant and user feature decisions resolved above global defaults.',
                 'tone' => 'success',
                 'route' => 'admin.mobile.feature-overrides',
+            ],
+            [
+                'label' => 'User overrides',
+                'status' => 'Live',
+                'detail' => 'User-specific feature decisions resolved above tenant overrides.',
+                'tone' => 'success',
+                'route' => 'admin.mobile.user-feature-overrides',
             ],
             [
                 'label' => 'Remote config',

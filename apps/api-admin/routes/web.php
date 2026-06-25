@@ -7,6 +7,7 @@ use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\FeatureFlags;
 use App\Livewire\Admin\RemoteConfigs;
 use App\Livewire\Admin\TenantFeatureOverrides;
+use App\Livewire\Admin\UserFeatureOverrides;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])
@@ -26,6 +27,7 @@ Route::middleware(['web'])
                     Route::livewire('/dashboard', Dashboard::class)->name('dashboard');
                     Route::livewire('/mobile/features', FeatureFlags::class)->name('mobile.features');
                     Route::livewire('/mobile/feature-overrides', TenantFeatureOverrides::class)->name('mobile.feature-overrides');
+                    Route::livewire('/mobile/user-feature-overrides', UserFeatureOverrides::class)->name('mobile.user-feature-overrides');
                     Route::livewire('/mobile/config', RemoteConfigs::class)->name('mobile.config');
                     Route::livewire('/mobile/app-versions', AppVersionPolicies::class)->name('mobile.app-versions');
                     Route::post('/logout', LogoutController::class)->name('logout');
