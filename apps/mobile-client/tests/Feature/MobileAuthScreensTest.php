@@ -6,8 +6,12 @@ use App\Livewire\Mobile\Login;
 use App\Livewire\Mobile\Register;
 use App\Livewire\Mobile\ResetPassword;
 use App\Models\User;
+use App\Services\MobileLocal\MobileLocalDatabase;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 
@@ -16,14 +20,43 @@ uses(LazilyRefreshDatabase::class);
 beforeEach(function (): void {
     $this->startSession();
 
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-06-25 12:00:00'));
+
+    $this->mobileLocalDatabasePath = storage_path('framework/testing/mobile-auth-screens.sqlite');
+
+    File::ensureDirectoryExists(dirname($this->mobileLocalDatabasePath));
+
+    if (File::exists($this->mobileLocalDatabasePath)) {
+        File::delete($this->mobileLocalDatabasePath);
+    }
+
     config([
+        'database.connections.mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
         'mobile_auth.api.base_url' => 'https://api-admin.example.test/api/v1/mobile',
         'mobile_auth.storage.driver' => 'session',
         'mobile_auth.storage.session_key' => 'testing.mobile_auth.screen_tokens',
         'mobile_auth.storage.revoked_session_key' => 'testing.mobile_auth.screen_revoked_tokens',
     ]);
 
+    app(MobileLocalDatabase::class)->ensureFileExists();
+
+    Artisan::call('migrate', [
+        '--database' => 'mobile_local',
+        '--path' => 'database/migrations/mobile-local',
+        '--force' => true,
+    ]);
+
     Http::preventStrayRequests();
+});
+
+afterEach(function (): void {
+    CarbonImmutable::setTestNow();
+
+    if (File::exists($this->mobileLocalDatabasePath)) {
+        File::delete($this->mobileLocalDatabasePath);
+    }
 });
 
 test('login validates required credentials', function (): void {
@@ -46,6 +79,7 @@ test('login accepts valid credentials and signs the user in', function (): void 
             accessToken: 'screen-login-access-token',
             refreshToken: 'screen-login-refresh-token',
         )),
+        'https://api-admin.example.test/api/v1/mobile/bootstrap' => Http::response(mobileAuthScreensBootstrapEnvelope()),
     ]);
 
     $component = Livewire::test(Login::class);
@@ -78,6 +112,8 @@ test('login accepts valid credentials and signs the user in', function (): void 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/login'
         && $request['email'] === 'person@example.com'
         && $request['password'] === 'password');
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/bootstrap'
+        && $request->hasHeader('Authorization', 'Bearer screen-login-access-token'));
 });
 
 test('login rejects invalid credentials', function (): void {
@@ -133,6 +169,7 @@ test('register accepts valid account details', function (): void {
             accessToken: 'screen-register-access-token',
             refreshToken: 'screen-register-refresh-token',
         ), 201),
+        'https://api-admin.example.test/api/v1/mobile/bootstrap' => Http::response(mobileAuthScreensBootstrapEnvelope()),
     ]);
 
     $component = Livewire::test(Register::class);
@@ -169,6 +206,8 @@ test('register accepts valid account details', function (): void {
         && $request['name'] === 'Mobile User'
         && $request['email'] === 'mobile@example.com'
         && $request['password_confirmation'] === 'password');
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/bootstrap'
+        && $request->hasHeader('Authorization', 'Bearer screen-register-access-token'));
 });
 
 test('register validates email and password confirmation in real time', function (): void {
@@ -304,6 +343,35 @@ function mobileAuthScreensEnvelope(
         ],
         'meta' => [
             'api_version' => 'v1',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileAuthScreensBootstrapEnvelope(): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => null,
+            'available_tenants' => [],
+            'permissions' => ['status' => 'not_configured', 'roles' => [], 'abilities' => []],
+            'features' => ['version' => 'foundation-1', 'items' => []],
+            'remote_config' => ['version' => 'foundation-1', 'values' => []],
+            'app_version' => ['status' => 'supported'],
+            'maintenance' => ['enabled' => false],
+            'subscription' => ['status' => 'active'],
+            'notification_preferences' => ['in_app_enabled' => true],
+            'sync' => ['enabled' => false],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'foundation-1',
             'server_time' => '2026-06-25T12:00:00+00:00',
         ],
     ];

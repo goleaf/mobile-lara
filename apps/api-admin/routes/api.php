@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Mobile\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Mobile\Auth\ProfileController;
 use App\Http\Controllers\Api\V1\Mobile\Auth\RefreshTokenController;
 use App\Http\Controllers\Api\V1\Mobile\Auth\RegisterController;
+use App\Http\Controllers\Api\V1\Mobile\BootstrapController;
 use App\Http\Controllers\Api\V1\Mobile\ContractIndexController;
 use App\Http\Controllers\Api\V1\Mobile\StatusController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ Route::prefix('v1')
             ->group(function (): void {
                 Route::get('/status', StatusController::class)->name('status');
                 Route::get('/contracts', ContractIndexController::class)->name('contracts.index');
+                Route::middleware('mobile.auth')->get('/bootstrap', BootstrapController::class)->name('bootstrap');
 
                 Route::prefix('auth')
                     ->name('auth.')

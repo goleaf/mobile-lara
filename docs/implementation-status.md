@@ -89,14 +89,14 @@ Status values:
 | --- | --- |
 | Root application | A Laravel 13 + Livewire 4 + NativePHP Mobile app remains at the repository root as a transition mirror. |
 | Requested monorepo paths | `apps/api-admin` and `apps/mobile-client` are now separate Laravel applications. |
-| API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status` and `GET /api/v1/mobile/contracts`. |
+| API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status`, `GET /api/v1/mobile/contracts`, auth endpoints, and authenticated `GET /api/v1/mobile/bootstrap`. |
 | Mobile routes | 52 `mobile.*` Livewire routes exist in both the root transition app and `apps/mobile-client/routes/web.php`. |
 | Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, and security audit events. Tenant/control-plane domain schema remains pending. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, and mobile auth/token/session endpoints. Tenancy and SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/mobile-client` now also has focused API auth service coverage. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, contract catalogue, and mobile auth. |
+| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/mobile-client` now also has focused API auth and bootstrap service coverage. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, contract catalogue, mobile auth, and bootstrap. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -160,7 +160,7 @@ Status values:
 | Versioned response envelope | tested | Shared responder and `GET /api/v1/mobile/status` test cover `success`, `data`, `error`, `meta`, and `next_action` shape. |
 | Contract catalogue endpoint | tested | `GET /api/v1/mobile/contracts` returns the public v1 contract catalogue through the standard success envelope. |
 | Auth contract | tested | `v1-auth.md` defines implemented auth/session/profile routes and the contract catalogue marks auth implemented. |
-| Bootstrap contract | documented | `v1-bootstrap.md` defines required payload and cache behavior; endpoint is not implemented. |
+| Bootstrap contract | tested | `v1-bootstrap.md` defines required payload and cache behavior; API/admin serves the foundation endpoint and mobile client caches it locally. |
 | Tenancy contract | documented | `v1-tenancy.md` defines tenant list/switch behavior; endpoints are not implemented. |
 | Features contract | documented | `v1-features.md` defines resolved feature states and gates; endpoint is not implemented. |
 | Remote config contract | documented | `v1-remote-config.md` defines receive/cache/offline/fallback rules; endpoint is not implemented. |
@@ -241,19 +241,19 @@ Status values:
 
 | Payload Item | Status | Notes |
 | --- | --- | --- |
-| Authenticated user | not started | No endpoint. |
-| Current tenant | not started | No tenant implementation. |
-| Available tenants | not started | No tenant implementation. |
-| Permissions | not started | No role/permission implementation. |
-| Feature flags | not started | No feature implementation. |
-| Remote config | not started | No config implementation. |
-| App version rules | not started | No version policy implementation. |
-| Maintenance mode | not started | No maintenance policy implementation. |
-| Subscription status | not started | No billing implementation. |
-| Notification preferences | not started | No API notification preferences. |
-| Sync settings | not started | No server sync settings. |
-| Unread notification count | partial | Local notification count exists; API count missing. |
-| Mobile bootstrap service/cache | not started | Required after endpoint exists. |
+| Authenticated user | tested | Bootstrap returns the authenticated API user from the mobile token. |
+| Current tenant | partial | Bootstrap returns `null` until tenant schema and tenant switch logic exist. |
+| Available tenants | partial | Bootstrap returns an empty list until tenant memberships exist. |
+| Permissions | partial | Bootstrap returns explicit `not_configured` roles/abilities until the permission system exists. |
+| Feature flags | partial | Bootstrap returns foundation feature states with disabled/offline-limited reasons for pending server modules and visible native capability hints. |
+| Remote config | partial | Bootstrap returns foundation config defaults for dashboard, sync, uploads, support, legal, and app lock behavior. |
+| App version rules | partial | Bootstrap echoes reported app version context and returns supported/no-update defaults until version policy exists. |
+| Maintenance mode | partial | Bootstrap returns maintenance disabled until maintenance policy exists. |
+| Subscription status | partial | Bootstrap returns active foundation subscription status until billing exists. |
+| Notification preferences | partial | Bootstrap returns in-app enabled/push pending defaults until notification API exists. |
+| Sync settings | partial | Bootstrap returns sync disabled with local offline queue allowed until server sync endpoints exist. |
+| Unread notification count | partial | Bootstrap returns `0` until server notifications exist. |
+| Mobile bootstrap service/cache | tested | `MobileBootstrapService` calls `GET /bootstrap` with the stored access token and caches the envelope in mobile-local settings; login/register refresh it after authentication. |
 
 ## Phase 11 - App Version, Force Update, And Maintenance Mode
 
@@ -520,12 +520,10 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Connect Phase 5 and Phase 10 by adding the first mobile bootstrap endpoint
-   and calling it after login/register/tenant changes because it becomes the
-   control point for tenancy, permissions, features, config, version rules,
-   subscription status, notifications, and sync policy.
-2. Implement tenancy, roles, feature flags, remote config, version/maintenance,
+1. Implement tenancy, roles, feature flags, remote config, version/maintenance,
    and audit before broad records/support/billing/reporting expansion.
+2. Replace bootstrap foundation defaults with real tenant, permission, feature,
+   config, version, subscription, notification, and sync policy modules.
 3. Migrate existing mobile-local features behind API-derived policy instead of
    letting local screens remain standalone authority.
 

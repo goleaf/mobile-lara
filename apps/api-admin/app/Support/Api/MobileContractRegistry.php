@@ -58,8 +58,8 @@ final class MobileContractRegistry
                 self::route('GET', '/auth/user', 'implemented', 'mobile-token'),
                 self::route('PATCH', '/auth/profile', 'implemented', 'mobile-token'),
             ]),
-            self::group('bootstrap', 'v1-bootstrap.md', 'documented', 'Single mobile operating context after login, app start, tenant switch, and manual refresh.', [
-                self::route('GET', '/bootstrap', 'planned', 'mobile-token'),
+            self::group('bootstrap', 'v1-bootstrap.md', 'implemented', 'Single mobile operating context after login, app start, tenant switch, and manual refresh.', [
+                self::route('GET', '/bootstrap', 'implemented', 'mobile-token'),
             ]),
             self::group('tenancy', 'v1-tenancy.md', 'documented', 'Tenant context, tenant switching, invitations, and tenant lifecycle effects.', [
                 self::route('GET', '/tenants', 'planned', 'mobile-token'),

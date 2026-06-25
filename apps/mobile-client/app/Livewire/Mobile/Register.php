@@ -5,6 +5,7 @@ namespace App\Livewire\Mobile;
 use App\Services\MobileApi\MobileApiException;
 use App\Services\MobileAuth\MobileApiSessionBridge;
 use App\Services\MobileAuth\MobileAuthApiService;
+use App\Services\MobileBootstrap\MobileBootstrapService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Validation\ValidationException;
@@ -41,10 +42,16 @@ class Register extends Component
 
     protected MobileApiSessionBridge $apiSessions;
 
-    public function boot(MobileAuthApiService $authApi, MobileApiSessionBridge $apiSessions): void
-    {
+    protected MobileBootstrapService $bootstrap;
+
+    public function boot(
+        MobileAuthApiService $authApi,
+        MobileApiSessionBridge $apiSessions,
+        MobileBootstrapService $bootstrap,
+    ): void {
         $this->authApi = $authApi;
         $this->apiSessions = $apiSessions;
+        $this->bootstrap = $bootstrap;
     }
 
     /**
@@ -81,6 +88,7 @@ class Register extends Component
                 passwordConfirmation: $this->password_confirmation,
             );
             $this->apiSessions->start($envelope);
+            $this->bootstrap->refresh();
         } catch (MobileApiException $exception) {
             $this->showToast($exception->getMessage(), 'error');
 

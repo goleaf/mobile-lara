@@ -87,6 +87,27 @@ final class SettingsRepository
         return $this->setSyncSettings(array_replace($currentSettings, $settings));
     }
 
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    public function cacheBootstrapContext(array $context, ?CarbonInterface $cachedAt = null): MobileLocalSetting
+    {
+        return $this->update([
+            'bootstrap_context' => $context,
+            'bootstrap_cached_at' => $cachedAt ?: CarbonImmutable::now(),
+        ]);
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function bootstrapContext(): ?array
+    {
+        $context = $this->get()->bootstrap_context;
+
+        return is_array($context) ? $context : null;
+    }
+
     public function setBiometricEnabled(bool $enabled): MobileLocalSetting
     {
         return $this->update(['biometric_enabled' => $enabled]);
@@ -129,6 +150,8 @@ final class SettingsRepository
             'language',
             'notification_preferences',
             'sync_settings',
+            'bootstrap_context',
+            'bootstrap_cached_at',
             'biometric_enabled',
             'pin_enabled',
             'last_sync_at',

@@ -5,6 +5,7 @@ namespace App\Livewire\Mobile;
 use App\Services\MobileApi\MobileApiException;
 use App\Services\MobileAuth\MobileApiSessionBridge;
 use App\Services\MobileAuth\MobileAuthApiService;
+use App\Services\MobileBootstrap\MobileBootstrapService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
@@ -34,12 +35,16 @@ class Login extends Component
 
     protected MobileApiSessionBridge $apiSessions;
 
+    protected MobileBootstrapService $bootstrap;
+
     public function boot(
         MobileAuthApiService $authApi,
         MobileApiSessionBridge $apiSessions,
+        MobileBootstrapService $bootstrap,
     ): void {
         $this->authApi = $authApi;
         $this->apiSessions = $apiSessions;
+        $this->bootstrap = $bootstrap;
     }
 
     /**
@@ -69,6 +74,7 @@ class Login extends Component
         try {
             $envelope = $this->authApi->login($this->email, $this->password);
             $this->apiSessions->start($envelope, $this->remember);
+            $this->bootstrap->refresh();
         } catch (MobileApiException $exception) {
             $this->showToast($exception->getMessage(), 'error');
 

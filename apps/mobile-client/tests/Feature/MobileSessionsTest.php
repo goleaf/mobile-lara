@@ -6,9 +6,12 @@ use App\Models\User;
 use App\Services\MobileAuth\AccessTokenService;
 use App\Services\MobileAuth\AppUnlockStateService;
 use App\Services\MobileAuth\MobileSessionService;
+use App\Services\MobileLocal\MobileLocalDatabase;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 
@@ -19,7 +22,18 @@ beforeEach(function (): void {
 
     CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-06-25 12:00:00'));
 
+    $this->mobileLocalDatabasePath = storage_path('framework/testing/mobile-sessions.sqlite');
+
+    File::ensureDirectoryExists(dirname($this->mobileLocalDatabasePath));
+
+    if (File::exists($this->mobileLocalDatabasePath)) {
+        File::delete($this->mobileLocalDatabasePath);
+    }
+
     config([
+        'database.connections.mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
         'mobile_auth.storage.driver' => 'session',
         'mobile_auth.api.base_url' => 'https://api-admin.example.test/api/v1/mobile',
         'mobile_auth.storage.session_key' => 'testing.mobile_auth.tokens',
@@ -34,11 +48,23 @@ beforeEach(function (): void {
         config('mobile_auth.storage.revoked_session_key'),
     ]);
 
+    app(MobileLocalDatabase::class)->ensureFileExists();
+
+    Artisan::call('migrate', [
+        '--database' => 'mobile_local',
+        '--path' => 'database/migrations/mobile-local',
+        '--force' => true,
+    ]);
+
     Http::preventStrayRequests();
 });
 
 afterEach(function (): void {
     CarbonImmutable::setTestNow();
+
+    if (File::exists($this->mobileLocalDatabasePath)) {
+        File::delete($this->mobileLocalDatabasePath);
+    }
 });
 
 test('sessions page renders current device details and remote api placeholder', function (): void {
@@ -71,6 +97,7 @@ test('mobile login records the last login time for the sessions page', function 
             accessToken: 'sessions-login-access-token',
             refreshToken: 'sessions-login-refresh-token',
         )),
+        'https://api-admin.example.test/api/v1/mobile/bootstrap' => Http::response(mobileSessionsBootstrapEnvelope()),
     ]);
 
     Livewire::test(Login::class)
@@ -186,6 +213,35 @@ function mobileSessionsAuthEnvelope(
         ],
         'meta' => [
             'api_version' => 'v1',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileSessionsBootstrapEnvelope(): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => null,
+            'available_tenants' => [],
+            'permissions' => ['status' => 'not_configured', 'roles' => [], 'abilities' => []],
+            'features' => ['version' => 'foundation-1', 'items' => []],
+            'remote_config' => ['version' => 'foundation-1', 'values' => []],
+            'app_version' => ['status' => 'supported'],
+            'maintenance' => ['enabled' => false],
+            'subscription' => ['status' => 'active'],
+            'notification_preferences' => ['in_app_enabled' => true],
+            'sync' => ['enabled' => false],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'foundation-1',
             'server_time' => '2026-06-25T12:00:00+00:00',
         ],
     ];

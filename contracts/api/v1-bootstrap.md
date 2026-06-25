@@ -2,7 +2,9 @@
 
 Updated: 2026-06-26
 
-Status: documented. Endpoint is planned for Phase 10.
+Status: implemented as the Phase 10 foundation endpoint. Domain-specific
+tenant, permission, feature, config, billing, notification, and sync modules
+still need to replace the explicit foundation defaults.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract is
 the main API path for turning central SaaS control into mobile operating
@@ -59,7 +61,7 @@ Bootstrap gives the mobile client one resolved operating context after login,
 app start, tenant switch, and manual refresh. It must expose decisions, not raw
 admin configuration layers.
 
-## Planned Route
+## Implemented Route
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -81,6 +83,11 @@ The response must include:
 - `notification_preferences`
 - `sync`
 - `unread_notification_count`
+
+The current foundation implementation returns real authenticated user and
+device-session context, then returns explicit empty, disabled, pending, or
+not-configured states for modules whose authoritative Admin/API data models are
+not implemented yet. Mobile must treat those states as fail-closed outcomes.
 
 ## Metadata
 
@@ -106,5 +113,14 @@ access, forced update, maintenance block, and suspicious device context.
 
 ## Tests
 
-Phase 10 should verify response shape, tenant isolation, hidden raw config
-layers, stale-client states, and fail-closed behavior.
+Automated coverage:
+
+- `apps/api-admin/tests/Feature/MobileBootstrapApiTest.php`
+- `apps/mobile-client/tests/Feature/MobileBootstrapServiceTest.php`
+
+Fresh checks:
+
+```bash
+cd apps/api-admin && php artisan test --compact --filter=MobileBootstrapApiTest
+cd apps/mobile-client && php artisan test --compact --filter=MobileBootstrapServiceTest
+```

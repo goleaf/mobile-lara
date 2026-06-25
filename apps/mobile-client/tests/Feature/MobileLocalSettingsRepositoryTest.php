@@ -87,6 +87,11 @@ test('settings repository updates all local settings fields', function (): void 
             'auto_sync_enabled' => false,
             'wifi_only' => true,
         ],
+        'bootstrap_context' => [
+            'success' => true,
+            'data' => ['features' => ['version' => 'foundation-1']],
+        ],
+        'bootstrap_cached_at' => CarbonImmutable::parse('2026-06-25 13:30:00'),
         'biometric_enabled' => true,
         'pin_enabled' => true,
         'last_sync_at' => CarbonImmutable::parse('2026-06-25 13:45:00'),
@@ -102,6 +107,11 @@ test('settings repository updates all local settings fields', function (): void 
             'auto_sync_enabled' => false,
             'wifi_only' => true,
         ])
+        ->and($settings->bootstrap_context)->toBe([
+            'success' => true,
+            'data' => ['features' => ['version' => 'foundation-1']],
+        ])
+        ->and($settings->bootstrap_cached_at?->toDateTimeString())->toBe('2026-06-25 13:30:00')
         ->and($settings->biometric_enabled)->toBeTrue()
         ->and($settings->pin_enabled)->toBeTrue()
         ->and($settings->last_sync_at?->toDateTimeString())->toBe('2026-06-25 13:45:00')
@@ -115,6 +125,7 @@ test('settings repository exposes focused mutators for mobile settings', functio
     $repository->setLanguage('ru');
     $repository->mergeNotificationPreferences(['email_enabled' => true]);
     $repository->mergeSyncSettings(['wifi_only' => true]);
+    $repository->cacheBootstrapContext(['success' => true, 'data' => ['user' => ['id' => 1]]]);
     $repository->setBiometricEnabled(true);
     $repository->setPinEnabled(true);
 
@@ -130,6 +141,8 @@ test('settings repository exposes focused mutators for mobile settings', functio
             'auto_sync_enabled' => true,
             'wifi_only' => true,
         ])
+        ->and($settings->bootstrap_context)->toBe(['success' => true, 'data' => ['user' => ['id' => 1]]])
+        ->and($settings->bootstrap_cached_at?->equalTo(CarbonImmutable::now()))->toBeTrue()
         ->and($settings->biometric_enabled)->toBeTrue()
         ->and($settings->pin_enabled)->toBeTrue()
         ->and($settings->last_sync_at?->equalTo(CarbonImmutable::now()))->toBeTrue();
