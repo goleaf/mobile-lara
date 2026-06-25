@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Mobile App Lock Principles documentation for lock timing,
+  sensitive-area confirmation, biometric unlock, PIN unlock, repeated failed
+  unlock handling, logout behavior, admin-disabled biometrics, and offline
+  cached-data protection.
 - Added Authentication Principles documentation for API-only mobile login,
   secure token handling, refresh sessions, logout, logout-all-devices, tenant
   selection after login, session expiry, offline authenticated behavior, and

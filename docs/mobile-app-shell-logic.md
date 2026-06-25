@@ -31,6 +31,13 @@ use secure storage; refresh, logout, logout-all-devices, tenant selection,
 session expiry, offline already-authenticated behavior, and server revocation
 must preserve Admin/API authority before implementation.
 
+Mobile App Lock Principles are defined in `mobile-app-lock-principles.md`:
+the mobile client must lock on security-sensitive lifecycle, timeout,
+account, tenant, offline-cache, and admin-policy conditions; require
+confirmation for sensitive areas; use biometric or PIN unlock only as local
+protection; handle failed attempts, logout, admin-disabled biometrics, and
+offline cached data without bypassing Admin/API authority.
+
 ## Shell Statement
 
 The NativePHP mobile shell is the first product layer a mobile user experiences.

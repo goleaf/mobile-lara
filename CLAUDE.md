@@ -30,6 +30,8 @@ Mobile permission logic is defined in `docs/mobile-permission-logic.md`: camera,
 
 Authentication principles are defined in `docs/authentication-principles.md`: mobile login must happen through the API only; access and refresh tokens must use secure storage; refresh, logout, logout-all-devices, tenant selection, session expiry, offline already-authenticated behavior, and server revocation must preserve Admin/API authority before implementation.
 
+Mobile app lock principles are defined in `docs/mobile-app-lock-principles.md`: local biometric or PIN unlock protects private cached data, sensitive areas, offline drafts, and app resume behavior, but never replaces API login, authorization, tenant access, billing authority, feature authority, or server revocation.
+
 API-first principles are defined in `docs/api-first-principles.md`: mobile communicates only with API, API responses are predictable, every mobile feature has a clear API purpose, API returns operating context, errors are mobile-friendly, sync and conflict behavior are first-class, and tenant boundaries are protected server-side.
 
 Documentation-first architecture is defined in `docs/documentation-first-architecture.md`: every feature must be documented before implementation, every admin control must document its mobile effect, every mobile screen must document its API dependency, every sync behavior must document offline and online behavior, every permission must document who controls it, and every risk must be recorded before coding.
@@ -82,6 +84,7 @@ Use these docs before changing the product direction:
 - `docs/mobile-settings-logic.md`
 - `docs/mobile-permission-logic.md`
 - `docs/authentication-principles.md`
+- `docs/mobile-app-lock-principles.md`
 - `docs/admin-control-center-logic.md`
 - `docs/feature-flag-logic.md`
 - `docs/remote-configuration-logic.md`
@@ -107,6 +110,7 @@ Use these docs before changing the product direction:
 - Mobile settings decisions must follow `docs/mobile-settings-logic.md`.
 - Mobile permission decisions must follow `docs/mobile-permission-logic.md`.
 - Authentication decisions must follow `docs/authentication-principles.md`.
+- Mobile app lock decisions must follow `docs/mobile-app-lock-principles.md`.
 - Admin Control Center decisions must follow `docs/admin-control-center-logic.md`.
 - Feature flag decisions must follow `docs/feature-flag-logic.md`.
 - Remote configuration decisions must follow `docs/remote-configuration-logic.md`.
@@ -132,6 +136,7 @@ Use these docs before changing the product direction:
 - Any mobile settings group, local preference, device permission recovery, account setting, tenant setting, security setting, notification setting, sync setting, appearance setting, storage setting, support setting, legal setting, diagnostic setting, or offline-disabled setting behavior must map to `docs/mobile-settings-logic.md`.
 - Any native permission prompt, camera, microphone, location, notifications, files, scanner, biometrics, secure-storage, denied-permission recovery, disabled-feature permission, or permission-status setting behavior must map to `docs/mobile-permission-logic.md`.
 - Any mobile login, token storage, refresh session, logout, logout-all-devices, tenant selection after login, session expiry, offline already-authenticated state, or server-revoked access behavior must map to `docs/authentication-principles.md`.
+- Any app lock, biometric unlock, PIN unlock, sensitive-area confirmation, failed unlock attempt, logout cleanup, admin-disabled biometric, or offline cached-data protection behavior must map to `docs/mobile-app-lock-principles.md`.
 - Any admin control for tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, or support must map to `docs/admin-control-center-logic.md`.
 - Any important mobile feature flag must map to `docs/feature-flag-logic.md`, including priority, disabled mobile state, rollout, impact, plan limit, support, audit, and offline behavior.
 - Any remote-configurable behavior must map to `docs/remote-configuration-logic.md`, including allowed config type, scope, default, override behavior, mobile caching, offline behavior, validation, fallback, support, audit, and rollback.

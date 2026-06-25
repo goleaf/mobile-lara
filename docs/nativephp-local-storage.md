@@ -54,6 +54,13 @@ use secure storage; refresh, logout, logout-all-devices, tenant selection,
 session expiry, offline already-authenticated behavior, and server revocation
 must preserve Admin/API authority before implementation.
 
+Mobile App Lock Principles are defined in `mobile-app-lock-principles.md`:
+the mobile client must lock on security-sensitive lifecycle, timeout,
+account, tenant, offline-cache, and admin-policy conditions; require
+confirmation for sensitive areas; use biometric or PIN unlock only as local
+protection; handle failed attempts, logout, admin-disabled biometrics, and
+offline cached data without bypassing Admin/API authority.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.

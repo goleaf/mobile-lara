@@ -8,6 +8,13 @@ Use this document with [Product Vision](product-vision.md), [Product Positioning
 
 Authentication Principles are defined in [Authentication Principles](authentication-principles.md): mobile login must happen through the API only; access and refresh tokens must use secure storage; refresh, logout, logout-all-devices, tenant selection, session expiry, offline already-authenticated behavior, and server revocation must preserve Admin/API authority before implementation.
 
+Mobile App Lock Principles are defined in `mobile-app-lock-principles.md`:
+the mobile client must lock on security-sensitive lifecycle, timeout,
+account, tenant, offline-cache, and admin-policy conditions; require
+confirmation for sensitive areas; use biometric or PIN unlock only as local
+protection; handle failed attempts, logout, admin-disabled biometrics, and
+offline cached data without bypassing Admin/API authority.
+
 ## Permission Statement
 
 Mobile permissions should be requested only when the user understands the purpose and the feature is actually available.

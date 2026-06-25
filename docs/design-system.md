@@ -84,6 +84,13 @@ use secure storage; refresh, logout, logout-all-devices, tenant selection,
 session expiry, offline already-authenticated behavior, and server revocation
 must preserve Admin/API authority before implementation.
 
+Mobile App Lock Principles are defined in `mobile-app-lock-principles.md`:
+the mobile client must lock on security-sensitive lifecycle, timeout,
+account, tenant, offline-cache, and admin-policy conditions; require
+confirmation for sensitive areas; use biometric or PIN unlock only as local
+protection; handle failed attempts, logout, admin-disabled biometrics, and
+offline cached data without bypassing Admin/API authority.
+
 The mobile client should be calm, direct, and explicit about sync state.
 
 Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.

@@ -91,6 +91,13 @@ use secure storage; refresh, logout, logout-all-devices, tenant selection,
 session expiry, offline already-authenticated behavior, and server revocation
 must preserve Admin/API authority before implementation.
 
+Mobile App Lock Principles are defined in `../../docs/mobile-app-lock-principles.md`:
+the mobile client must lock on security-sensitive lifecycle, timeout,
+account, tenant, offline-cache, and admin-policy conditions; require
+confirmation for sensitive areas; use biometric or PIN unlock only as local
+protection; handle failed attempts, logout, admin-disabled biometrics, and
+offline cached data without bypassing Admin/API authority.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep billing,
 plan, quota, entitlement, support-tier, and failed-payment controls scoped,
