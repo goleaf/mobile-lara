@@ -18,6 +18,12 @@ priority, disabled mobile state, admin impact, rollout path, plan limits,
 support meaning, audit expectation, and offline behavior before code is
 written.
 
+Remote Configuration Logic is defined in `docs/remote-configuration-logic.md`.
+Future implementation work must map remote-configurable behavior to documented
+scope, safe defaults, override rules, mobile caching, offline behavior,
+validation, fallback, support visibility, audit, and rollback before code is
+written.
+
 Status values:
 
 - `not started` - No durable implementation exists yet.
@@ -52,6 +58,7 @@ Status values:
 | Root README and product docs | documented | Root docs define the product, boundaries, stack, and audit baseline. |
 | Admin Control Center logic | documented | Control principles exist for tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance, force update, sync, notifications, reports, billing, and support. |
 | Feature Flag Logic | documented | Feature flag principles exist for important mobile features, global/tenant/user priority, disabled states, admin impact, rollout safety, and plan limits. |
+| Remote Configuration Logic | documented | Remote config principles exist for configurable behavior, mobile receive/cache rules, offline behavior, tenant overrides, safe admin changes, fallback, and invalid config handling. |
 | Root monorepo structure | partial | `apps/api-admin` is implemented as a Laravel app; `apps/mobile-client` still needs the root mobile app migration. |
 | `apps/api-admin` | tested | Laravel app, Livewire dashboard route, versioned API route, shared responder, tests, and frontend build exist. |
 | `apps/mobile-client` | partial | Path and boundary README exist; existing root mobile app migration is pending. |
@@ -105,7 +112,7 @@ Status values:
 | Auth contract | documented | Product behavior is documented; endpoints are not implemented. |
 | Bootstrap contract | documented | Required payload is documented; endpoint is not implemented. |
 | Features contract | documented | Resolution rules are documented; endpoint is not implemented. |
-| Remote config contract | documented | Product rules exist; endpoint/schema are not implemented. |
+| Remote config contract | documented | Remote Configuration Logic defines receive/cache/offline/fallback rules; endpoint/schema are not implemented. |
 | Notifications contract | documented | Product rules exist; API is not implemented. |
 | Records/content contract | partial | Mobile-local records exist; server API contract is missing. |
 | Sync contract | partial | Mobile queue/replay worker exists; server sync contract is missing. |
@@ -169,12 +176,12 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Global remote config | not started | Required server authority. |
-| Tenant remote config | not started | Required for tenant variation. |
+| Global remote config | not started | Required server authority; Remote Configuration Logic defines safe defaults, versioning, validation, and rollback expectations. |
+| Tenant remote config | not started | Required for tenant variation inside global, plan, permission, feature, version, and safety boundaries. |
 | Admin remote config UI | not started | Admin shell exists; remote config screens are not implemented yet. |
 | Config validation and audit | not started | Required for sensitive controls. |
 | Mobile config store/cache | not started | Required after bootstrap exists. |
-| Offline defaults | documented | Needs implementation against API payloads. |
+| Offline defaults | documented | Remote Configuration Logic defines last-known context, safe bundled defaults, freshness labeling, and fail-closed behavior; implementation against API payloads is pending. |
 | Config-driven sync/upload/legal/support behavior | partial | Some local config files exist; remote config is missing. |
 
 ## Phase 10 - Mobile Bootstrap

@@ -28,6 +28,12 @@ API/Admin implementation must resolve global, tenant, plan, role, permission,
 user, app-version, device, cohort, maintenance, and emergency feature decisions
 into API outcomes before mobile uses them.
 
+Remote Configuration Logic is defined in
+`../../docs/remote-configuration-logic.md`. Future API/Admin implementation
+must validate, scope, version, audit, and safely expose resolved mobile config
+without letting config become authorization, billing, tenant, or permission
+authority.
+
 ## Current Phase 2 State
 
 This directory is now a Laravel 13 application with a Livewire admin dashboard

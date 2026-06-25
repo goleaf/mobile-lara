@@ -22,6 +22,10 @@ The product contract remains unchanged:
   mobile features resolve global, tenant, plan, role, permission, user,
   app-version, device, cohort, maintenance, and emergency decisions into
   mobile-safe states.
+- Remote Configuration Logic in `../docs/remote-configuration-logic.md`
+  defines how safe runtime mobile behavior is remotely configured, delivered
+  through API, cached locally, handled offline, overridden per tenant, and
+  failed closed when missing or invalid.
 - Mobile owns local execution, NativePHP capability UX, cache, drafts, queues,
   sync display, and API-derived feature visibility.
 - Mobile never reads the admin database directly. Server-trusted behavior must

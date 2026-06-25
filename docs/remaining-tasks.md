@@ -17,6 +17,11 @@ implementation work must map important mobile features to documented global,
 tenant, plan, role, permission, user, app-version, device, cohort,
 maintenance, emergency, disabled-state, rollout, and plan-limit decisions.
 
+Remote Configuration Logic is defined in `docs/remote-configuration-logic.md`.
+Remaining runtime-config work must map configurable behavior to documented
+scope, safe defaults, mobile caching, offline behavior, validation, fallback,
+support visibility, audit, and rollback.
+
 ## Active Implementation Work
 
 - Move from the current root Laravel mobile app to the requested monorepo shape

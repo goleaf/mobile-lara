@@ -18,6 +18,8 @@ It depends on [Admin Control Center Logic](admin-control-center-logic.md): admin
 
 It depends on [Feature Flag Logic](feature-flag-logic.md): feature-controlled positioning stays useful only when important mobile features have predictable priority, disabled states, admin impact, rollout safety, and plan-limit behavior.
 
+It depends on [Remote Configuration Logic](remote-configuration-logic.md): config-driven positioning stays useful only when runtime behavior is safe to configure, versioned, scoped, cached carefully, tenant-aware, validated, and fallback-safe.
+
 It also depends on [Target User Roles](user-roles.md): each role has a different responsibility, visibility boundary, and control surface.
 
 It is made measurable by the [SaaS Value Map](saas-value-map.md): each positioning angle must create clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.
@@ -52,6 +54,8 @@ The detailed control-plane responsibility map lives in [Admin/API Responsibiliti
 The detailed admin control model lives in [Admin Control Center Logic](admin-control-center-logic.md).
 
 The detailed feature-control model lives in [Feature Flag Logic](feature-flag-logic.md).
+
+The detailed remote-config model lives in [Remote Configuration Logic](remote-configuration-logic.md).
 
 ### Mobile Workforce And Client Platform
 
@@ -115,6 +119,8 @@ Feature control includes:
 - Emergency disablement and rollback.
 
 A feature is not product-ready until it has admin control, API enforcement, mobile presentation, offline behavior where relevant, support visibility, and audit context.
+
+Remote configuration complements feature control by tuning safe runtime behavior for allowed features without granting authority, changing billing, or redefining permissions.
 
 ### Tenant-Based Product
 
@@ -195,15 +201,16 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 8. Documentation-first architecture records feature behavior, admin mobile effects, screen API dependencies, sync behavior, permission ownership, and risks before coding.
 9. Admin Control Center logic records who can control tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, and support before coding.
 10. Feature Flag Logic records how important mobile features resolve scope, priority, disabled states, rollout, impact, plan limits, support, and offline behavior before coding.
-11. Role boundaries determine who can see or control each surface.
-12. Stakeholder value determines why a feature exists and which outcome it should prove.
-13. Web-only is insufficient for mobile work.
-14. Mobile-only is insufficient for SaaS governance.
-15. Product positioning should guide every future modular feature slice.
-16. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
-17. API-first principles decide the purpose, predictability, context, error, sync/conflict, and tenant-scope expectations for mobile/API behavior.
-18. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
-19. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
+11. Remote Configuration Logic records what can be configured, how mobile receives and caches config, offline behavior, tenant overrides, safe admin changes, and fallback behavior before coding.
+12. Role boundaries determine who can see or control each surface.
+13. Stakeholder value determines why a feature exists and which outcome it should prove.
+14. Web-only is insufficient for mobile work.
+15. Mobile-only is insufficient for SaaS governance.
+16. Product positioning should guide every future modular feature slice.
+17. Two-system boundary rules decide whether a behavior belongs in Admin/API, mobile, local cache, or API-only execution.
+18. API-first principles decide the purpose, predictability, context, error, sync/conflict, and tenant-scope expectations for mobile/API behavior.
+19. Admin/API responsibility rules decide which control-plane owner must govern tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
+20. Mobile-client responsibility rules decide which local experience owner should present UX, session, cache, offline, NativePHP, navigation, permissions, sync, draft, feedback, or feature-visibility behavior.
 
 ## Risks
 
@@ -213,6 +220,7 @@ Mobile Lara is positioned as the middle path that keeps the web/admin strengths 
 | Admin grows into generic CRM/admin software | Keep admin focused on controlling mobile behavior, tenants, support, billing, reports, and sync. |
 | Admin Control Center scope becomes vague | Use the control-center checklist before planning tenant, user, role, permission, feature, config, version, maintenance, force-update, sync, notification, report, billing, or support controls. |
 | Feature flags become hidden product logic | Use Feature Flag Logic to define scope, priority, mobile state, admin impact, rollout, plan limits, support, audit, and retirement. |
+| Remote config becomes hidden product logic | Use Remote Configuration Logic to define safe config types, scope, defaults, overrides, caching, offline behavior, validation, fallback, support, audit, and rollback. |
 | Mobile grows into an independent app | Keep mobile API-driven and policy-controlled. |
 | Offline features undermine authority | Treat local writes as intents and reconcile through the API. |
 | Tenant flexibility becomes custom code | Prefer tenant config, feature flags, entitlements, and versioned API contracts. |

@@ -14,6 +14,11 @@ that exposes feature availability should return resolved mobile-safe states
 rather than raw global, tenant, user, plan, version, device, cohort,
 maintenance, or emergency flag internals.
 
+Remote Configuration Logic lives in
+`../../docs/remote-configuration-logic.md`. Every contract that exposes config
+should return resolved values, config version, freshness/compatibility metadata,
+and safe fallback/error behavior rather than raw admin config layers.
+
 ## Versioning
 
 Mobile contracts are grouped by API version. The first implementation target is:

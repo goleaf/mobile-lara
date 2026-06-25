@@ -28,6 +28,8 @@ Admin Control Center logic is defined in `docs/admin-control-center-logic.md`: a
 
 Feature flag logic is defined in `docs/feature-flag-logic.md`: important mobile features are controlled by global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, and emergency decisions that resolve into mobile-safe API outcomes.
 
+Remote configuration logic is defined in `docs/remote-configuration-logic.md`: safe runtime mobile behavior is controlled by versioned, scoped, validated config that mobile receives through API, caches carefully, and treats as non-authoritative when stale or invalid.
+
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
 2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
 
@@ -65,6 +67,7 @@ Use these docs before changing the product direction:
 - `docs/mobile-client-responsibilities.md`
 - `docs/admin-control-center-logic.md`
 - `docs/feature-flag-logic.md`
+- `docs/remote-configuration-logic.md`
 - `docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md`
 - `docs/mobile-stack.md`
 - `docs/nativephp-local-storage.md`
@@ -82,6 +85,7 @@ Use these docs before changing the product direction:
 - Mobile-client responsibility decisions must follow `docs/mobile-client-responsibilities.md`.
 - Admin Control Center decisions must follow `docs/admin-control-center-logic.md`.
 - Feature flag decisions must follow `docs/feature-flag-logic.md`.
+- Remote configuration decisions must follow `docs/remote-configuration-logic.md`.
 - Admin settings control mobile feature availability because mobile state can be stale, offline, copied between devices, or running an old app version.
 - API-first means admin decisions become enforceable mobile behavior through versioned server contracts.
 - Local SQLite stores cache, drafts, and queued intents, not trusted server facts.
@@ -98,6 +102,7 @@ Use these docs before changing the product direction:
 - Any mobile UX, secure local session, cache, offline action, NativePHP capability, navigation, permissions UX, sync display, draft, local feedback, or feature-visibility concern must map to `docs/mobile-client-responsibilities.md`.
 - Any admin control for tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, or support must map to `docs/admin-control-center-logic.md`.
 - Any important mobile feature flag must map to `docs/feature-flag-logic.md`, including priority, disabled mobile state, rollout, impact, plan limit, support, audit, and offline behavior.
+- Any remote-configurable behavior must map to `docs/remote-configuration-logic.md`, including allowed config type, scope, default, override behavior, mobile caching, offline behavior, validation, fallback, support, audit, and rollback.
 
 </project-product-contract>
 

@@ -13,6 +13,11 @@ Scripts must also respect Feature Flag Logic in
 resolved mobile-safe feature states and avoid creating hidden feature authority
 outside the documented Admin/API path.
 
+Scripts must also respect Remote Configuration Logic in
+`../docs/remote-configuration-logic.md`: any future helper should verify
+documented config contracts, freshness, fallback, and invalid-config behavior
+without creating runtime authority outside Admin/API.
+
 Do not add custom verification scripts when a normal project command already
 proves the behavior. Prefer the real commands:
 

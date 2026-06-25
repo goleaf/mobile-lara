@@ -28,6 +28,11 @@ Feature Flag Logic in `../../docs/feature-flag-logic.md` defines the mobile
 states the client should receive from API: hidden, visible, disabled, blocked,
 beta, deprecated, update-required, offline-limited, or emergency-disabled.
 
+Remote Configuration Logic in `../../docs/remote-configuration-logic.md`
+defines how the client receives resolved config, caches it with version and
+freshness state, behaves offline, and falls back or fails closed when config is
+missing or invalid.
+
 ## Current Phase 1 State
 
 The existing mobile implementation still lives at the repository root. It

@@ -24,6 +24,8 @@ The Admin Control Center model is explicit: admins control tenants, users, roles
 
 The feature flag model is explicit: important mobile features are controlled by global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, and emergency decisions that resolve into mobile-safe states through the API.
 
+The remote configuration model is explicit: Admin/API controls safe runtime mobile behavior through versioned, scoped, validated config that mobile receives through API, caches carefully, and treats as non-authoritative when stale or invalid.
+
 The product solves a common business problem: mobile teams need a simple app, but the organization needs tenant-safe control over permissions, billing, feature availability, app versions, support, notifications, reports, and sync behavior without publishing a new mobile build for every policy change.
 
 The product is split into two cooperating systems:
@@ -76,6 +78,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/mobile-client-responsibilities.md](docs/mobile-client-responsibilities.md) | Mobile-client responsibility map for UX, secure local session, cache, offline actions, NativePHP capabilities, navigation, permissions UX, sync display, drafts, feedback, and feature visibility. |
 | [docs/admin-control-center-logic.md](docs/admin-control-center-logic.md) | Admin Control Center logic for tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, and support controls. |
 | [docs/feature-flag-logic.md](docs/feature-flag-logic.md) | Feature flag logic for important mobile features, global/tenant/user priority, disabled mobile states, admin impact, safe rollout, and plan limits. |
+| [docs/remote-configuration-logic.md](docs/remote-configuration-logic.md) | Remote configuration logic for configurable behavior, mobile receive/cache rules, offline behavior, tenant overrides, safe admin changes, and missing/invalid config. |
 | [docs/saas-mobile-admin-platform.md](docs/saas-mobile-admin-platform.md) | Canonical product and system concept. |
 | [docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md](docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md) | ADR for the two-system architecture. |
 | [docs/mobile-stack.md](docs/mobile-stack.md) | Stack, package, and boundary notes. |
@@ -114,6 +117,7 @@ The repository currently contains mobile-client surfaces and local-mobile infras
 - Apply [mobile-client responsibilities](docs/mobile-client-responsibilities.md) before planning mobile UX, secure local session, local cache, offline actions, NativePHP capability use, navigation, mobile permissions UX, sync status, drafts, local feedback, or feature visibility.
 - Apply [Admin Control Center logic](docs/admin-control-center-logic.md) before planning admin controls, remote config, app-version policy, maintenance, force update, sync policy, notifications, reports, billing, or support workflows.
 - Apply [feature flag logic](docs/feature-flag-logic.md) before planning important mobile features, flag priority, disabled mobile states, rollout, rollback, or plan-limited access.
+- Apply [remote configuration logic](docs/remote-configuration-logic.md) before planning runtime-configurable mobile behavior, config caching, offline config use, tenant-specific overrides, safe admin config changes, or missing/invalid config handling.
 - Keep admin business rules on the server. Mobile UI state is never an authorization boundary.
 - Let admin settings control mobile behavior because mobile state may be stale, offline, copied between devices, or running an old app version.
 - Position the product as both admin control center and mobile workforce/client platform; avoid web-only or mobile-only thinking.

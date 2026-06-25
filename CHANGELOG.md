@@ -18,6 +18,9 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added Feature Flag Logic documentation for global, tenant, plan, role,
   permission, user, app-version, device, cohort, maintenance, and emergency
   feature decisions.
+- Added Remote Configuration Logic documentation for configurable behavior,
+  mobile receive/cache rules, offline behavior, tenant overrides, safe admin
+  changes, and missing or invalid config handling.
 - Scaffolded `apps/api-admin` as a Laravel 13 API/admin app with Livewire,
   Blade, Tailwind, a versioned mobile status endpoint, shared mobile API
   response envelopes, focused Pest coverage, and verified frontend build.
