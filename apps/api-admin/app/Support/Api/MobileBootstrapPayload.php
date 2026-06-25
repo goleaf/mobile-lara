@@ -11,10 +11,16 @@ final class MobileBootstrapPayload
 {
     /**
      * @param  array{current_tenant?: array<string, mixed>|null, available_tenants?: array<int, array<string, mixed>>}  $tenantContext
+     * @param  array<string, mixed>  $permissions
      * @return array<string, mixed>
      */
-    public static function make(User $user, MobileDeviceSession $session, Request $request, array $tenantContext = []): array
-    {
+    public static function make(
+        User $user,
+        MobileDeviceSession $session,
+        Request $request,
+        array $tenantContext = [],
+        array $permissions = [],
+    ): array {
         $now = CarbonImmutable::now();
 
         return [
@@ -22,12 +28,7 @@ final class MobileBootstrapPayload
             'device_session' => MobileAuthPayload::session($session),
             'current_tenant' => $tenantContext['current_tenant'] ?? null,
             'available_tenants' => $tenantContext['available_tenants'] ?? [],
-            'permissions' => [
-                'status' => 'not_configured',
-                'roles' => [],
-                'abilities' => [],
-                'source' => 'phase_10_foundation',
-            ],
+            'permissions' => $permissions,
             'features' => [
                 'version' => 'foundation-1',
                 'resolved_at' => $now->toIso8601String(),

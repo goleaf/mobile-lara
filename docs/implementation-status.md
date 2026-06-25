@@ -101,7 +101,7 @@ Status values:
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, contract catalogue, mobile auth, bootstrap, and tenant context switching. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 31 tests / 297 assertions covering admin routing, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, and role-derived mobile permission payloads. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -210,12 +210,12 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Role definitions | documented | Product role model exists; implementation missing. |
-| Permission definitions | documented | Permission ownership rules exist; implementation missing. |
-| Policies for API/admin | not started | Required before protected actions. |
-| Protected admin routes | not started | Dashboard route exists; authentication, authorization, and policy protection are not implemented yet. |
-| Protected API routes | not started | API routes are missing. |
-| Mobile permission payload | not started | Bootstrap endpoint must provide this. |
+| Role definitions | partial | Product role model exists and `TenantUserRole` now drives the mobile permission registry; admin role-management screens remain pending. |
+| Permission definitions | partial | `MobilePermission` defines the foundation mobile ability registry for bootstrap; database-backed permission grants and admin management remain pending. |
+| Policies for API/admin | not started | Required before protected resource actions. |
+| Protected admin routes | tested | `/admin/dashboard` is protected by session auth and platform-admin middleware; resource-level admin policies remain pending. |
+| Protected API routes | partial | Auth, bootstrap, tenant list/switch, and profile routes are mobile-token protected; resource permission middleware/policies remain pending. |
+| Mobile permission payload | tested | Bootstrap returns nested role-derived ability state for the current active tenant and fails closed for invited/suspended memberships. |
 | Mobile permission-aware UI | partial | Permission settings/center exists for NativePHP device permissions, not SaaS permissions. |
 
 ## Phase 8 - Feature Flags
@@ -249,7 +249,7 @@ Status values:
 | Authenticated user | tested | Bootstrap returns the authenticated API user from the mobile token. |
 | Current tenant | tested | Bootstrap returns the resolved current tenant from active switchable tenant memberships when one exists. |
 | Available tenants | tested | Bootstrap returns available tenant memberships with public tenant IDs, role summaries, switchable state, current state, and disabled reasons. |
-| Permissions | partial | Bootstrap returns explicit `not_configured` roles/abilities until the permission system exists. |
+| Permissions | tested | Bootstrap returns a role-derived permission payload with nested ability booleans, granted ability list, available role summaries, and `no_active_tenant` fail-closed state when no active tenant is available. |
 | Feature flags | partial | Bootstrap returns foundation feature states with disabled/offline-limited reasons for pending server modules and visible native capability hints. |
 | Remote config | partial | Bootstrap returns foundation config defaults for dashboard, sync, uploads, support, legal, and app lock behavior. |
 | App version rules | partial | Bootstrap echoes reported app version context and returns supported/no-update defaults until version policy exists. |
@@ -510,9 +510,9 @@ Status values:
 | Check | Status | Notes |
 | --- | --- | --- |
 | API/admin formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/api-admin`. |
-| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin`. |
+| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 31 tests / 297 assertions. |
 | API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
-| API routes verification | tested | `php artisan route:list --except-vendor` shows status and contracts routes. |
+| API routes verification | tested | `php artisan route:list --except-vendor` shows 17 app routes including auth, bootstrap, contracts, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
 | Mobile formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/mobile-client`. |
 | Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 431 tests / 3427 assertions. |
@@ -525,11 +525,11 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Implement roles, permissions, feature flags, remote config,
+1. Complete resource policies, feature flags, remote config,
    version/maintenance, and audit before broad records/support/billing/reporting
    expansion.
-2. Replace bootstrap foundation defaults with real permission, feature, config,
-   version, subscription, notification, and sync policy modules.
+2. Replace bootstrap foundation defaults with real feature, config, version,
+   subscription, notification, and sync policy modules.
 3. Migrate existing mobile-local features behind API-derived policy instead of
    letting local screens remain standalone authority.
 

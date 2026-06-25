@@ -119,3 +119,6 @@ All notable changes to Mobile Lara will be documented in this file.
   context, an authenticated tenant API service, workspace settings UI, manual
   context refresh, tenant switching through API/admin, and focused coverage for
   routes, settings, API calls, and cache refresh behavior.
+- Added the API/admin mobile permission foundation with a role-derived ability
+  registry, nested bootstrap permission payloads, fail-closed invited/suspended
+  membership behavior, and focused bootstrap permission coverage.
