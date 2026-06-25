@@ -50,6 +50,13 @@ protected audit history that answers who did what, where it applied, why it
 happened, what changed, and how tenant-safe support or compliance review can
 understand it.
 
+Data Privacy Principles are defined in `data-privacy-principles.md`:
+tenant isolation, least privilege, secure local mobile data, secure native
+storage, export and deletion boundaries, support access limits, admin
+visibility boundaries, privacy-by-default behavior, and mobile diagnostics
+privacy limits must protect users and tenants without turning mobile cache,
+support views, or audit history into uncontrolled data exposure.
+
 Updated: 2026-06-26
 
 This document defines mobile UX principles for the Mobile Lara NativePHP client. It explains mobile-first navigation, simple screens, clear loading states, clear offline states, thumb-friendly controls, minimum typing, fast actions, feature visibility based on admin rules, secure session behavior, and permission education before native permission prompts. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, or application logic.

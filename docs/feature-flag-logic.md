@@ -56,6 +56,13 @@ protected audit history that answers who did what, where it applied, why it
 happened, what changed, and how tenant-safe support or compliance review can
 understand it.
 
+Data Privacy Principles are defined in `data-privacy-principles.md`:
+tenant isolation, least privilege, secure local mobile data, secure native
+storage, export and deletion boundaries, support access limits, admin
+visibility boundaries, privacy-by-default behavior, and mobile diagnostics
+privacy limits must protect users and tenants without turning mobile cache,
+support views, or audit history into uncontrolled data exposure.
+
 ## Feature Flag Statement
 
 Every important mobile feature should be controlled by feature flags because mobile clients can be stale, offline, version-fragmented, tenant-specific, plan-limited, or in phased rollout.

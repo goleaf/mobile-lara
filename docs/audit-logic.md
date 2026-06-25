@@ -21,10 +21,18 @@ Principles](api-first-principles.md), [Authentication Principles](authentication
 [Mobile App Lock Principles](mobile-app-lock-principles.md), [Feature Flag
 Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md),
 [Mobile Version Control Logic](mobile-version-control-logic.md), [Admin Safety
-Principles](admin-safety-principles.md), and [Documentation-First Architecture](documentation-first-architecture.md):
+Principles](admin-safety-principles.md), [Data Privacy Principles](data-privacy-principles.md),
+and [Documentation-First Architecture](documentation-first-architecture.md):
 audit history is the accountability layer for Admin/API authority, security
 events, mobile activity summaries, support investigations, compliance review,
-and tenant-safe operational transparency.
+data privacy, and tenant-safe operational transparency.
+
+Data Privacy Principles are defined in `data-privacy-principles.md`:
+tenant isolation, least privilege, secure local mobile data, secure native
+storage, export and deletion boundaries, support access limits, admin
+visibility boundaries, privacy-by-default behavior, and mobile diagnostics
+privacy limits must protect users and tenants without turning mobile cache,
+support views, or audit history into uncontrolled data exposure.
 
 ## Audit Statement
 

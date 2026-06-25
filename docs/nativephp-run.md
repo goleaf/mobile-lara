@@ -74,6 +74,13 @@ protected audit history that answers who did what, where it applied, why it
 happened, what changed, and how tenant-safe support or compliance review can
 understand it.
 
+Data Privacy Principles are defined in `data-privacy-principles.md`:
+tenant isolation, least privilege, secure local mobile data, secure native
+storage, export and deletion boundaries, support access limits, admin
+visibility boundaries, privacy-by-default behavior, and mobile diagnostics
+privacy limits must protect users and tenants without turning mobile cache,
+support views, or audit history into uncontrolled data exposure.
+
 Native builds must also honor [Target User Roles](user-roles.md): mobile screens, pre-login flows, invitation flows, suspension handling, and support diagnostics should reflect the account state returned by the API.
 
 Native releases must also honor the [SaaS Value Map](saas-value-map.md): each build should preserve platform-owner rollout control, tenant-business mobile continuity, tenant-admin governance, mobile-worker simplicity, support diagnosability, and billing/operations entitlement clarity.

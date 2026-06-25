@@ -21,6 +21,13 @@ protected audit history that answers who did what, where it applied, why it
 happened, what changed, and how tenant-safe support or compliance review can
 understand it.
 
+Data Privacy Principles are defined in `docs/data-privacy-principles.md`:
+tenant isolation, least privilege, secure local mobile data, secure native
+storage, export and deletion boundaries, support access limits, admin
+visibility boundaries, privacy-by-default behavior, and mobile diagnostics
+privacy limits must protect users and tenants without turning mobile cache,
+support views, or audit history into uncontrolled data exposure.
+
 The SaaS value map is defined in `docs/saas-value-map.md`: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
 The two-system boundary is defined in `docs/two-system-boundary.md`: Admin/API owns SaaS authority and mobile owns local execution, native capability use, cache, drafts, queues, and state presentation.
@@ -85,6 +92,7 @@ Use these docs before changing the product direction:
 - `docs/user-roles.md`
 - `docs/role-permission-logic.md`
 - `docs/audit-logic.md`
+- `docs/data-privacy-principles.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -113,6 +121,7 @@ Use these docs before changing the product direction:
 - Documentation-first architecture decisions must follow `docs/documentation-first-architecture.md`.
 - Role and permission decisions must follow `docs/role-permission-logic.md`.
 - Audit decisions must follow `docs/audit-logic.md`.
+- Data privacy decisions must follow `docs/data-privacy-principles.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -140,6 +149,7 @@ Use these docs before changing the product direction:
 - Any feature that changes visibility or control must map behavior to the role model in `docs/user-roles.md`.
 - Any platform-level permission, tenant-level permission, admin-user permission, mobile-user permission, API access rule, mobile UI visibility rule, feature-flag access interaction, suspended-user behavior, or suspended-tenant behavior must map to `docs/role-permission-logic.md`.
 - Any admin action, security event, support activity, mobile activity summary, API decision, sync outcome, compliance-relevant change, audit history view, or audit export must map to `docs/audit-logic.md`.
+- Any tenant isolation, least privilege, local mobile data, secure native storage, export, deletion, support access, admin visibility, privacy-default, diagnostics, or private data movement behavior must map to `docs/data-privacy-principles.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.

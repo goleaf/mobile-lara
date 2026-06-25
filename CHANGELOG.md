@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Data Privacy Principles documentation for tenant isolation, least
+  privilege, secure local mobile data, secure native storage, exports,
+  deletion, support access, admin visibility, privacy-by-default behavior, and
+  mobile diagnostics privacy limits.
 - Added Audit Logic documentation for audited admin actions, security events,
   support and compliance history, mobile activity representation, audit
   questions, and protected audit data principles.
