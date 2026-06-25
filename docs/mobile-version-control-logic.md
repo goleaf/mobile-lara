@@ -21,6 +21,11 @@ policy reaches mobile only through predictable API responses that include
 version rules, update state, maintenance state, user-safe errors, and
 tenant-safe context.
 
+Use this document with [Documentation-First Architecture](documentation-first-architecture.md):
+version rules, optional updates, forced updates, maintenance mode, outdated
+responses, store links, update messages, support context, audit expectations,
+rollback, and old-version risks must be documented before implementation.
+
 Use this document with [Target User Roles](user-roles.md): version prompts,
 maintenance access, internal-only access, support visibility, and suspended or
 guest behavior must follow role and account-state boundaries.

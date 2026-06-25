@@ -23,6 +23,12 @@ API-First Principles are defined in
 response envelopes, error semantics, operating-context conventions, and
 tenant-safe API behavior before domain contracts expand.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: foundation behavior must
+document response purpose, future mobile dependency, API consistency risk,
+permission assumptions, and implementation boundaries before domain contracts
+expand.
+
 Target User Roles are defined in `../../docs/user-roles.md`: foundation
 contracts must keep role and account-state context explicit before domain
 endpoints depend on it.

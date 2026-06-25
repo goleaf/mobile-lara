@@ -21,6 +21,12 @@ API-First Principles are defined in
 preferences, inbox state, delivery feedback, mobile errors, and tenant-safe
 notification visibility API-shaped and predictable.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: notification behavior must
+document admin mobile effect, device permission UX, API dependency, offline
+display expectations, permission owner, delivery/support risks, and audit needs
+before implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: notification
 preferences, delivery state, and device registration must respect role and
 account-state visibility.

@@ -19,6 +19,12 @@ API-First Principles are defined in
 feature purpose, availability states, context, mobile-friendly disabled
 messages, version constraints, and tenant-safe outcomes through API only.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: feature behavior must
+document purpose, admin mobile effect, mobile screen dependency, online/offline
+availability, permission owner, rollout risk, and rollback before
+implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: feature outcomes
 must resolve role and account-state access into mobile-safe states.
 

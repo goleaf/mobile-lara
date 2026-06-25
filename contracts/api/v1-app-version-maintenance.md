@@ -21,6 +21,12 @@ API-First Principles are defined in
 version, update, maintenance, stale-client, store-link, support, and
 tenant-safe response states through API only.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: app-version and maintenance
+behavior must document mobile effect, screen dependency, online/offline limits,
+permission or role control, support/audit needs, and rollout risks before
+implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: version and
 maintenance outcomes must respect platform, tenant, support, mobile, invited,
 suspended, and guest/pre-login boundaries.

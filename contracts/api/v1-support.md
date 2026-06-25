@@ -21,6 +21,12 @@ API-First Principles are defined in
 diagnostic submission, ticket state, error handling, sync/config/version
 context, and tenant-safe support visibility API-defined.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: support behavior must
+document mobile help flow, admin/support control, API dependency, diagnostic
+online/offline behavior, permission owner, privacy risk, and audit needs before
+implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: support flows must
 separate support-agent controls from tenant, billing, mobile, invited,
 suspended, and guest/pre-login experiences.

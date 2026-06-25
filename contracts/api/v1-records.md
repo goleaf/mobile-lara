@@ -21,6 +21,12 @@ API-First Principles are defined in
 purpose, predictable mobile-safe shapes, friendly validation/permission errors,
 sync/conflict behavior, and tenant-boundary protection.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: record behavior must document
+feature purpose, admin/mobile ownership, mobile screen dependency, offline and
+online sync behavior, permission owner, support/audit expectations, and risks
+before implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: record access must
 resolve tenant admin, tenant manager, mobile user, support, invited, suspended,
 and guest/pre-login boundaries server-side.

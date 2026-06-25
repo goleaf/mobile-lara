@@ -21,6 +21,12 @@ API-First Principles are defined in
 config version, freshness, compatibility, fallback state, mobile-friendly
 errors, and tenant-safe context instead of raw config authority.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: remote config behavior must
+document admin change intent, mobile effect, API dependency, cache/offline
+fallback, permission ownership, invalid-config risk, support, audit, and
+rollback before implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: config outcomes
 may vary presentation by role or account state, but must not grant authority.
 

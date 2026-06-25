@@ -22,6 +22,12 @@ operating context for user, tenant, permissions, feature flags, config, version
 rules, sync policy, notification policy, support state, and entitlement
 outcomes.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: bootstrap context must
+document its feature purpose, admin mobile effects, mobile screen dependencies,
+online/offline freshness behavior, permission owners, and risks before
+implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: bootstrap context
 must return role-derived capability state and account-state limits as
 mobile-safe outcomes.

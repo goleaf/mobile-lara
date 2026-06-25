@@ -1,6 +1,6 @@
 # Documentation-First Architecture
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This document defines documentation-first architecture principles for Mobile Lara. It explains how product ideas, admin controls, mobile screens, API dependencies, sync behavior, permissions, and risks must be documented before implementation. It is documentation only and does not define endpoints, routes, database fields, migrations, controllers, Livewire components, resources, policies, jobs, services, NativePHP plugins, or application logic.
 
@@ -26,6 +26,21 @@ Documentation-first does not mean writing long documents for their own sake. It 
 8. **Document enough to test later** - Documentation should produce clear acceptance criteria for future implementation and tests.
 9. **Document changes as the product changes** - If implementation discovers a different product truth, update docs before treating the change as accepted.
 10. **Document boundaries, not just features** - The most important docs describe what the system must not do.
+
+## Documentation-First Contract
+
+Every feature planning decision should prove that documentation exists before implementation starts.
+
+| Documentation area | Required principle | Prevents |
+| --- | --- | --- |
+| Feature decision | Every feature must document stakeholder value, roles, ownership, API purpose, tenant boundary, feature/config/version relationship, mobile states, offline/sync behavior, support/reporting/audit expectations, risks, and non-goals before implementation. | Screen-first features, hidden authority, accidental billing effects, unclear support paths, and code that invents product rules. |
+| Admin control effect | Every admin control must document what it changes, who controls it, which scope applies, what mobile receives, how mobile changes, how rollback/support/audit work, and what can go wrong. | Admin toggles that surprise mobile users, support teams, billing users, or tenant admins. |
+| Mobile screen dependency | Every mobile screen must document its API dependency, required context, permission/capability state, feature/config/version state, user actions needing server confirmation, error states, and offline states. | Mobile screens that look complete while missing API authority, permission state, or failure behavior. |
+| Sync behavior | Every sync behavior must document offline cache/draft/queue limits and online replay, idempotency, re-checks, retry, accepted, rejected, stale, out-of-policy, conflict, failed, support, and reporting outcomes. | Offline queues that become trusted truth, vague retry behavior, and unsupported conflict handling. |
+| Permission ownership | Every permission must document who controls it, where it applies, what mobile capability state it creates, which API actions it affects, denied/account states, audit needs, and support explanation. | Permissions treated as UI labels instead of server-owned authority. |
+| Risk record | Every meaningful risk must be recorded with owner, affected surface, mitigation status, unresolved decision, and coding gate before implementation. | Security, tenant, billing, sync, NativePHP, support, reporting, audit, rollout, and user-confusion risks found too late. |
+
+This contract is intentionally principle-level. It does not create features, controls, screens, endpoints, routes, fields, database tables, migrations, controllers, Livewire components, resources, policies, jobs, services, NativePHP plugins, provider integrations, tests, or application logic.
 
 ## Every Feature Must Be Documented Before Implementation
 

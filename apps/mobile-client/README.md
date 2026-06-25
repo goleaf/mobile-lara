@@ -22,6 +22,12 @@ through API, consumes predictable context and response states, shows
 mobile-friendly errors, replays offline work through sync/conflict contracts,
 and treats tenant boundaries as server-protected.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: this app must not add mobile
+screens, NativePHP flows, cache/offline behavior, sync display, permissions UX,
+or feature visibility until API dependency, admin effect, online/offline
+behavior, permission owner, and risk are documented.
+
 Target User Roles are defined in `../../docs/user-roles.md`: this app must show
 mobile, invited, suspended, and guest/pre-login states as API-derived UX, not
 local permission authority.

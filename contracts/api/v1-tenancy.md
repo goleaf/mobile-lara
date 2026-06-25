@@ -21,6 +21,11 @@ API-First Principles are defined in
 switching context, response shape, errors, and offline replay checks
 server-resolved and tenant-safe.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: tenancy behavior must
+document tenant authority, mobile effect, API dependency, offline/online tenant
+context, permission ownership, and tenant-boundary risks before implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: tenant access and
 tenant switching must resolve platform, tenant, invited, suspended, and
 guest/pre-login boundaries server-side.

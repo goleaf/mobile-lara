@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Documentation-First Architecture with a documentation-first contract
+  for pre-implementation feature decisions, admin mobile effects, mobile screen
+  API dependencies, sync online/offline behavior, permission ownership, and
+  risk records.
 - Clarified API-First Principles with an API-first contract for API-only mobile
   communication, predictable responses, explicit mobile-feature API purpose,
   permissions/feature/config/version/user context, mobile-friendly errors,
@@ -88,3 +92,6 @@ All notable changes to Mobile Lara will be documented in this file.
 - Rewired mobile login, register, profile update, profile logout, sessions
   logout, and sessions logout-all Livewire flows to the mobile auth API service
   while keeping local Laravel sessions presentation-only.
+- Implemented the first mobile bootstrap endpoint and mobile bootstrap service,
+  returning authenticated user/device context plus explicit foundation defaults
+  for pending SaaS modules and caching the envelope in mobile-local settings.

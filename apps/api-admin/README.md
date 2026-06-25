@@ -20,6 +20,12 @@ through predictable API contracts that return user context, permissions,
 feature flags, config, version rules, mobile-friendly errors, sync/conflict
 outcomes, and tenant-safe responses.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: this app must not add admin
+controls, API behavior, permissions, sync/conflict decisions, or mobile effects
+until feature purpose, mobile impact, API dependency, permission ownership, and
+risk are documented.
+
 Target User Roles are defined in `../../docs/user-roles.md`: this app must map
 each admin, support, billing, tenant, mobile, invited, suspended, and
 guest/pre-login responsibility to server-side authority and visibility.

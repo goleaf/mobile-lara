@@ -21,6 +21,12 @@ API-First Principles are defined in
 idempotency, replay outcomes, conflicts, retry states, mobile errors, and
 tenant re-checks first-class API behavior.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: sync behavior must document
+offline cache/draft/queue rules, online replay, idempotency, accepted/rejected
+outcomes, conflicts, permission owners, support/reporting visibility, and
+risks before implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: sync replay,
 conflict visibility, and offline state must follow role and account-state
 boundaries.

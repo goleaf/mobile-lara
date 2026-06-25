@@ -21,6 +21,12 @@ API-First Principles are defined in
 entitlement, quota, plan-impact, feature-visibility, mobile-error, and
 tenant-safe billing outcomes without exposing billing authority.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: billing behavior must
+document mobile entitlement effect, API dependency, online/offline limits,
+permission owner, support explanation, audit expectations, and commercial risks
+before implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: billing outcomes
 must distinguish billing manager authority, tenant admin visibility, support
 context, and mobile entitlement messages.

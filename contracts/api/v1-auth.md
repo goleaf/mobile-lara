@@ -21,6 +21,11 @@ API-First Principles are defined in
 session behavior API-only, predictable, mobile-friendly, sync-safe where
 relevant, and tenant-scoped.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: identity and session behavior
+must document feature purpose, mobile effect, API dependency, permission owner,
+offline/session recovery behavior, and risks before implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: auth outcomes must
 distinguish admin, tenant, support, billing, mobile, invited, suspended, and
 guest/pre-login states without exposing raw authority.

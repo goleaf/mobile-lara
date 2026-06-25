@@ -20,6 +20,11 @@ may verify API-purpose, response-shape, context, mobile-error, sync/conflict,
 and tenant-boundary documentation, but must not create endpoint, route,
 controller, database, or runtime behavior.
 
+Documentation-First Architecture is defined in
+`../docs/documentation-first-architecture.md`: scripts may verify feature,
+admin-control, mobile-screen, sync, permission, and risk documentation gates,
+but must not create implementation logic or hidden product authority.
+
 Target User Roles are defined in `../docs/user-roles.md`: scripts may verify
 role documentation coverage and role-scoped outcomes, but must not create role,
 permission, guard, or policy logic.

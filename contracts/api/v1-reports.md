@@ -21,6 +21,12 @@ API-First Principles are defined in
 report purpose, scoped summaries, freshness metadata, mobile-friendly errors,
 and tenant-safe visibility without exposing report/export authority.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: report behavior must document
+stakeholder purpose, mobile screen dependency, API context, cache/freshness
+behavior, permission owner, export boundary, privacy risks, and audit needs
+before implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: report summaries
 must respect platform, tenant, manager, support, billing, mobile, and blocked
 account-state visibility.

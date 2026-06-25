@@ -21,6 +21,12 @@ API-First Principles are defined in
 submission, redaction results, support next actions, mobile-friendly errors,
 and tenant-safe visibility API-defined.
 
+Documentation-First Architecture is defined in
+`../../docs/documentation-first-architecture.md`: diagnostics behavior must
+document mobile collection purpose, API dependency, online/offline submission,
+permission owner, privacy/security risks, support visibility, and audit needs
+before implementation.
+
 Target User Roles are defined in `../../docs/user-roles.md`: diagnostics must
 separate support-agent visibility from tenant, billing, mobile, invited,
 suspended, and guest/pre-login visibility.
