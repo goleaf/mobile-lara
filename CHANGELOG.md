@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Clarified Mobile Client Responsibilities with a mobile ownership contract for
+  mobile UX, secure local session, cache, offline actions, NativePHP device
+  features, navigation, permissions UX, sync status display, local drafts,
+  local user feedback, and admin-rule-based feature visibility.
 - Clarified Admin/API Responsibilities with a responsibility ownership contract
   for tenant management, users and permissions, admin panel, API contracts,
   feature control, remote configuration, mobile version rules, notifications,
@@ -77,3 +81,6 @@ All notable changes to Mobile Lara will be documented in this file.
   URL/timeouts, standard JSON/error handling, device context payloads,
   secure-token-store persistence, and focused coverage for login, register,
   refresh, current user, profile update, logout, and logout-all calls.
+- Rewired mobile login, register, profile update, profile logout, sessions
+  logout, and sessions logout-all Livewire flows to the mobile auth API service
+  while keeping local Laravel sessions presentation-only.

@@ -4,6 +4,9 @@ namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
 use App\Models\User;
+use App\Services\MobileApi\MobileApiException;
+use App\Services\MobileAuth\MobileApiSessionBridge;
+use App\Services\MobileAuth\MobileAuthApiService;
 use App\Services\MobileProfile\AvatarStorageService;
 use App\Services\MobileProfile\NativeAvatarSourceService;
 use Illuminate\Contracts\View\View;
@@ -65,10 +68,20 @@ final class EditProfile extends Component
 
     protected NativeAvatarSourceService $nativeAvatars;
 
-    public function boot(AvatarStorageService $avatarStorage, NativeAvatarSourceService $nativeAvatars): void
-    {
+    protected MobileAuthApiService $authApi;
+
+    protected MobileApiSessionBridge $apiSessions;
+
+    public function boot(
+        AvatarStorageService $avatarStorage,
+        NativeAvatarSourceService $nativeAvatars,
+        MobileAuthApiService $authApi,
+        MobileApiSessionBridge $apiSessions,
+    ): void {
         $this->avatarStorage = $avatarStorage;
         $this->nativeAvatars = $nativeAvatars;
+        $this->authApi = $authApi;
+        $this->apiSessions = $apiSessions;
     }
 
     public function mount(): void
@@ -145,6 +158,8 @@ final class EditProfile extends Component
             $user->save();
         }
 
+        $syncedWithApi = $this->syncProfileWithApi();
+
         $this->savedAvatarPath = $avatarPath;
         $this->savedAvatarUrl = $this->avatarStorage->url($avatarPath);
         $this->avatar = null;
@@ -153,9 +168,10 @@ final class EditProfile extends Component
             ? 'Avatar saved to the mobile profile.'
             : $this->nativeAvatarStatus;
 
+        $location = $syncedWithApi ? 'with API.' : 'locally.';
         $this->successMessage = $avatarChanged
-            ? 'Profile details and avatar saved locally.'
-            : 'Profile details saved locally.';
+            ? "Profile details and avatar saved {$location}"
+            : "Profile details saved {$location}";
         $this->toastSuccess($this->successMessage, 'Profile saved');
     }
 
@@ -419,5 +435,23 @@ final class EditProfile extends Component
             ->implode('');
 
         $this->avatarInitials = $initials === '' ? 'ML' : $initials;
+    }
+
+    private function syncProfileWithApi(): bool
+    {
+        try {
+            $envelope = $this->authApi->updateProfile([
+                'name' => $this->name,
+            ]);
+            $this->apiSessions->syncUser($envelope);
+
+            return true;
+        } catch (MobileApiException $exception) {
+            if ($exception->mobileCode !== 'missing_access_token') {
+                $this->toastWarning('Profile saved locally and will need API retry when the session is healthy.', 'Profile sync pending');
+            }
+
+            return false;
+        }
     }
 }

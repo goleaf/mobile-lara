@@ -3,6 +3,8 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Services\MobileApi\MobileApiException;
+use App\Services\MobileAuth\MobileAuthApiService;
 use App\Services\MobileAuth\MobileSessionService;
 use App\Services\MobileProfile\AvatarStorageService;
 use App\Services\Native\ShareService;
@@ -39,13 +41,20 @@ class Profile extends Component
 
     protected MobileSessionService $mobileSessions;
 
+    protected MobileAuthApiService $authApi;
+
     protected AvatarStorageService $avatarStorage;
 
     protected ShareService $shares;
 
-    public function boot(MobileSessionService $mobileSessions, AvatarStorageService $avatarStorage, ShareService $shares): void
-    {
+    public function boot(
+        MobileSessionService $mobileSessions,
+        MobileAuthApiService $authApi,
+        AvatarStorageService $avatarStorage,
+        ShareService $shares,
+    ): void {
         $this->mobileSessions = $mobileSessions;
+        $this->authApi = $authApi;
         $this->avatarStorage = $avatarStorage;
         $this->shares = $shares;
     }
@@ -113,6 +122,11 @@ class Profile extends Component
 
     public function logout(): void
     {
+        try {
+            $this->authApi->logout();
+        } catch (MobileApiException) {
+        }
+
         $this->mobileSessions->logoutCurrentSession();
 
         $this->redirect(route('mobile.login'), true);

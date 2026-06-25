@@ -36,6 +36,12 @@ management, users and permissions, admin panel, API contracts, feature control,
 remote configuration, mobile version rules, notifications, billing, support,
 reports, audit, conflicts, and security before implementation grows.
 
+Mobile Client Responsibilities are defined in
+`docs/mobile-client-responsibilities.md`. Status is tracked against mobile UX,
+secure local session, cache, offline actions, NativePHP device features,
+navigation, permissions UX, sync display, drafts, feedback, and feature
+visibility before implementation grows.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,
@@ -131,7 +137,7 @@ Status values:
 | Tailwind mobile styling | tested | Tailwind v4/SCSS entrypoint and mobile design tokens build through Vite in `apps/mobile-client`. |
 | Mobile-first layout and safe-area shell | tested | Shared layout, mobile components, safe-area shell, and bottom navigation are covered by feature tests. |
 | Welcome screen | tested | `Mobile\Welcome` route and view exist in `apps/mobile-client`. |
-| Auth screens | tested | Login, register, password reset, verification, PIN, unlock, and consent screens exist; API auth service integration exists, while the Livewire forms still need to consume it instead of local-only session auth. |
+| Auth screens | tested | Login, register, profile update, profile logout, sessions logout, and sessions logout-all now consume the mobile auth API service; password reset and email verification remain local validation placeholders until API endpoints are documented and implemented. |
 | Dashboard | tested | `Mobile\Dashboard` exists and renders in `apps/mobile-client`; Admin/API bootstrap integration is missing. |
 | Bottom navigation | tested | `<x-mobile.bottom-navigation>` exists and is covered by shell tests; feature-gated navigation is not API-controlled yet. |
 | Settings | tested | Settings index and sections exist; remote config/tenant policy are not integrated. |
@@ -166,13 +172,13 @@ Status values:
 | Feature | Admin/API Status | Mobile Status | Notes |
 | --- | --- | --- | --- |
 | Admin authentication | tested | n/a | Admin login/logout exists for `is_platform_admin` users and dashboard access is protected. |
-| API authentication | tested | tested | API/admin mobile auth endpoints exist; mobile client has a tested API client/auth service for login, register, current user, profile update, logout, logout-all, and refresh. |
+| API authentication | tested | tested | API/admin mobile auth endpoints exist; mobile client has a tested API client/auth service and Livewire login/register screens now authenticate through it. |
 | Access tokens | tested | tested | API/admin stores only hashed access tokens and protects routes through `mobile.auth`; mobile stores received access tokens through `MobileTokenStore` using NativePHP secure storage by default and session fallback for tests/development. |
 | Refresh tokens | tested | tested | API/admin refresh endpoint rotates refresh/access tokens; mobile service sends the stored refresh token and replaces the local token set. |
-| Logout | tested | tested | API/admin logout revokes the current device session; mobile service calls the endpoint and clears local tokens. |
-| Logout all devices | tested | tested | API/admin logout-all revokes active mobile sessions; mobile service calls the endpoint and clears local tokens. |
+| Logout | tested | tested | API/admin logout revokes the current device session; mobile profile/sessions screens call the endpoint and clear local session/token state. |
+| Logout all devices | tested | tested | API/admin logout-all revokes active mobile sessions; mobile sessions screen calls the endpoint and clears local session/token state. |
 | Current user endpoint | tested | tested | `GET /api/v1/mobile/auth/user` exists and the mobile service calls it with a bearer token. |
-| Profile update endpoint | tested | tested | `PATCH /api/v1/mobile/auth/profile` exists and the mobile service calls it with allowed profile attributes; the edit-profile Livewire screen still needs to be rewired. |
+| Profile update endpoint | tested | tested | `PATCH /api/v1/mobile/auth/profile` exists and the edit-profile Livewire screen syncs the profile name through it when a valid access token exists. Avatar storage remains local until a media/upload API slice. |
 | Device/session logic | tested | tested | API/admin device sessions are persisted, last-seen tracked, and revocable; mobile auth service sends a stable device context from the client session. Tenant/device trust policy remains pending. |
 | Security audit events | tested | partial | API/admin writes auth audit events; broader admin/control-plane audit remains pending. |
 
@@ -508,11 +514,10 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Connect Phase 5 and Phase 10 by rewiring the mobile Livewire auth/profile/session
-   screens to `MobileAuthApiService` and adding the first mobile bootstrap
-   endpoint because it becomes the control point for tenancy, permissions,
-   features, config, version rules, subscription status, notifications, and
-   sync policy.
+1. Connect Phase 5 and Phase 10 by adding the first mobile bootstrap endpoint
+   and calling it after login/register/tenant changes because it becomes the
+   control point for tenancy, permissions, features, config, version rules,
+   subscription status, notifications, and sync policy.
 2. Implement tenancy, roles, feature flags, remote config, version/maintenance,
    and audit before broad records/support/billing/reporting expansion.
 3. Migrate existing mobile-local features behind API-derived policy instead of

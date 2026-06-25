@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Mobile;
 
+use App\Services\MobileApi\MobileApiException;
+use App\Services\MobileAuth\MobileAuthApiService;
 use App\Services\MobileAuth\MobileSessionService;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Title;
@@ -18,16 +20,32 @@ class Sessions extends Component
 
     protected MobileSessionService $mobileSessions;
 
-    public function boot(MobileSessionService $mobileSessions): void
+    protected MobileAuthApiService $authApi;
+
+    public function boot(MobileSessionService $mobileSessions, MobileAuthApiService $authApi): void
     {
         $this->mobileSessions = $mobileSessions;
+        $this->authApi = $authApi;
     }
 
     public function logout(): void
     {
-        $this->mobileSessions->logoutCurrentSession();
+        try {
+            $this->authApi->logout();
+        } catch (MobileApiException) {
+        }
 
-        $this->redirect(route('mobile.login'), true);
+        $this->finishLocalLogout();
+    }
+
+    public function logoutAllDevices(): void
+    {
+        try {
+            $this->authApi->logoutAllDevices();
+        } catch (MobileApiException) {
+        }
+
+        $this->finishLocalLogout();
     }
 
     public function retryRemoteSessions(): void
@@ -43,5 +61,12 @@ class Sessions extends Component
             'currentSession' => $this->mobileSessions->currentDeviceSession(),
             'remoteSessions' => $this->mobileSessions->remoteDeviceSessions(),
         ]);
+    }
+
+    private function finishLocalLogout(): void
+    {
+        $this->mobileSessions->logoutCurrentSession();
+
+        $this->redirect(route('mobile.login'), true);
     }
 }

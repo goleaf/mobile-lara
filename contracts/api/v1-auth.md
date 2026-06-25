@@ -97,9 +97,16 @@ this contract:
 - Returned access and refresh tokens are stored through `MobileTokenStore`, so
   NativePHP secure storage remains the default token home and the session
   adapter remains available for tests and safe development fallback.
+- Login and register Livewire screens consume the service, store API tokens,
+  and create a local presentation-only Laravel session from the API user
+  payload so existing mobile route protection remains usable.
+- Profile and sessions logout actions call the API service before clearing
+  local session/token state; sessions also exposes logout-all-devices.
+- Edit profile syncs the account name through `PATCH /auth/profile` when a
+  valid access token exists.
 
-The Livewire auth/profile/session screens still need to consume this service in
-a later Phase 5 slice.
+Password reset and email verification screens remain local validation
+placeholders until those API routes are documented and implemented.
 
 ## Audit
 

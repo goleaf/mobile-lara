@@ -38,6 +38,12 @@ control-plane responsibility owner for tenant, user, permission, API, feature,
 config, version, notification, billing, support, report, audit, conflict, or
 security behavior before implementation scope is added.
 
+Mobile Client Responsibilities are defined in
+`docs/mobile-client-responsibilities.md`. Remaining work must name the mobile
+responsibility owner for UX, secure local session, cache, offline action,
+NativePHP capability, navigation, permissions UX, sync display, draft,
+feedback, or feature visibility before implementation scope is added.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Remaining implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,
@@ -66,9 +72,10 @@ rollback, and old-version protection.
   `apps/api-admin` and `apps/mobile-client` both exist as Laravel apps.
 - Implement mobile bootstrap as the first real control-plane endpoint after the
   foundation status, contract catalogue, and mobile auth routes.
-- Rewire `apps/mobile-client` login, register, profile, logout, and sessions
-  Livewire screens to the tested mobile auth API service instead of local-only
-  Laravel session behavior.
+- Implement the first mobile bootstrap endpoint and call it after
+  login/register/logout-sensitive state changes so mobile receives tenant,
+  permission, feature, config, version, subscription, notification, and sync
+  policy from Admin/API.
 - Add tenancy, roles, permissions, feature flags, remote config, app version
   policy, maintenance mode, subscription state, notification policy, sync
   policy, and audit foundations.

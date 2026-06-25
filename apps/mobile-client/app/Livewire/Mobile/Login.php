@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Mobile;
 
-use App\Services\MobileAuth\MobileSessionService;
+use App\Services\MobileApi\MobileApiException;
+use App\Services\MobileAuth\MobileApiSessionBridge;
+use App\Services\MobileAuth\MobileAuthApiService;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
@@ -29,11 +30,16 @@ class Login extends Component
 
     public string $toastVariant = 'success';
 
-    protected MobileSessionService $mobileSessions;
+    protected MobileAuthApiService $authApi;
 
-    public function boot(MobileSessionService $mobileSessions): void
-    {
-        $this->mobileSessions = $mobileSessions;
+    protected MobileApiSessionBridge $apiSessions;
+
+    public function boot(
+        MobileAuthApiService $authApi,
+        MobileApiSessionBridge $apiSessions,
+    ): void {
+        $this->authApi = $authApi;
+        $this->apiSessions = $apiSessions;
     }
 
     /**
@@ -60,21 +66,18 @@ class Login extends Component
             throw $exception;
         }
 
-        if (! Auth::attempt([
-            'email' => $this->email,
-            'password' => $this->password,
-        ], $this->remember)) {
-            $this->showToast('These credentials do not match our records.', 'error');
+        try {
+            $envelope = $this->authApi->login($this->email, $this->password);
+            $this->apiSessions->start($envelope, $this->remember);
+        } catch (MobileApiException $exception) {
+            $this->showToast($exception->getMessage(), 'error');
 
             throw ValidationException::withMessages([
-                'email' => 'These credentials do not match our records.',
+                'email' => $exception->getMessage(),
             ]);
         }
 
-        session()->regenerate();
-
         $this->reset('password');
-        $this->mobileSessions->recordLogin();
 
         $this->status = 'Signed in.';
         $this->showToast($this->status, 'success');

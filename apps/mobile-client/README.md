@@ -36,6 +36,13 @@ responsibility outcomes through API and must not duplicate tenant, permission,
 billing, feature, config, version, notification, support, report, audit,
 conflict, or security authority locally.
 
+Mobile Client Responsibilities are defined in
+`../../docs/mobile-client-responsibilities.md`: this app owns the mobile
+experience, secure local session presentation, local cache, offline actions,
+NativePHP device-feature UX, navigation, permissions UX, sync display, local
+drafts, user feedback, and API-derived feature visibility while tenant,
+billing, permission, and global configuration authority stay in Admin/API.
+
 ## Product Role
 
 This system owns local execution:
@@ -105,6 +112,13 @@ Implemented foundation:
   tests or safe development fallback.
 - `MobileDeviceContext` sends stable device id, device name, platform, and app
   version metadata with auth requests.
+- Login and register Livewire screens call the API service, then create a
+  local presentation-only Laravel session from the API user payload.
+- Profile logout and sessions logout/logout-all call the API service before
+  clearing local session/token state.
+- Edit profile syncs the account name through `PATCH /auth/profile` when a
+  valid access token exists; avatar storage remains local until a media/upload
+  API slice.
 
 Fresh verification:
 
@@ -126,6 +140,6 @@ The repository root app remains temporarily as a transition mirror. Future
 mobile work should target `apps/mobile-client` unless a cleanup task explicitly
 removes or rewires the root app.
 
-Next auth work is to rewire the Livewire login, register, profile, logout, and
-sessions screens to this service, then call mobile bootstrap after successful
-authentication.
+Next auth work is to call mobile bootstrap after successful authentication and
+store the returned tenant, permission, feature, config, version, subscription,
+notification, and sync policy context.

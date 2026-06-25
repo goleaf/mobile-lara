@@ -7,9 +7,24 @@ use App\Livewire\Mobile\Register;
 use App\Livewire\Mobile\ResetPassword;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 
 uses(LazilyRefreshDatabase::class);
+
+beforeEach(function (): void {
+    $this->startSession();
+
+    config([
+        'mobile_auth.api.base_url' => 'https://api-admin.example.test/api/v1/mobile',
+        'mobile_auth.storage.driver' => 'session',
+        'mobile_auth.storage.session_key' => 'testing.mobile_auth.screen_tokens',
+        'mobile_auth.storage.revoked_session_key' => 'testing.mobile_auth.screen_revoked_tokens',
+    ]);
+
+    Http::preventStrayRequests();
+});
 
 test('login validates required credentials', function (): void {
     Livewire::test(Login::class)
@@ -23,8 +38,14 @@ test('login validates required credentials', function (): void {
 });
 
 test('login accepts valid credentials and signs the user in', function (): void {
-    $user = User::factory()->create([
-        'email' => 'person@example.com',
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/login' => Http::response(mobileAuthScreensEnvelope(
+            userId: 123,
+            name: 'Person Mobile',
+            email: 'person@example.com',
+            accessToken: 'screen-login-access-token',
+            refreshToken: 'screen-login-refresh-token',
+        )),
     ]);
 
     $component = Livewire::test(Login::class);
@@ -48,12 +69,29 @@ test('login accepts valid credentials and signs the user in', function (): void 
         ->assertSet('toastMessage', 'Signed in.')
         ->assertSet('toastVariant', 'success');
 
+    $user = User::query()->where('email', 'person@example.com')->firstOrFail();
+
+    expect($user->name)->toBe('Person Mobile');
+
     $this->assertAuthenticatedAs($user);
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/login'
+        && $request['email'] === 'person@example.com'
+        && $request['password'] === 'password');
 });
 
 test('login rejects invalid credentials', function (): void {
-    User::factory()->create([
-        'email' => 'person@example.com',
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/login' => Http::response([
+            'success' => false,
+            'error' => [
+                'code' => 'invalid_credentials',
+                'message' => 'The provided mobile credentials are invalid.',
+                'category' => 'unauthenticated',
+                'next_action' => 'check_credentials',
+            ],
+            'meta' => ['api_version' => 'v1'],
+        ], 401),
     ]);
 
     Livewire::test(Login::class)
@@ -61,7 +99,7 @@ test('login rejects invalid credentials', function (): void {
         ->set('password', 'wrong-password')
         ->call('login')
         ->assertHasErrors('email')
-        ->assertSet('toastMessage', 'These credentials do not match our records.')
+        ->assertSet('toastMessage', 'The provided mobile credentials are invalid.')
         ->assertSet('toastVariant', 'error');
 
     $this->assertGuest();
@@ -87,6 +125,16 @@ test('register validates account fields', function (): void {
 });
 
 test('register accepts valid account details', function (): void {
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/register' => Http::response(mobileAuthScreensEnvelope(
+            userId: 456,
+            name: 'Mobile User',
+            email: 'mobile@example.com',
+            accessToken: 'screen-register-access-token',
+            refreshToken: 'screen-register-refresh-token',
+        ), 201),
+    ]);
+
     $component = Livewire::test(Register::class);
 
     expect($component->instance()->canSubmit())->toBeFalse();
@@ -104,11 +152,23 @@ test('register accepts valid account details', function (): void {
     $component
         ->call('register')
         ->assertHasNoErrors()
+        ->assertRedirect(route('mobile.dashboard'))
         ->assertSet('password', '')
         ->assertSet('password_confirmation', '')
-        ->assertSet('status', 'Account details validated.')
-        ->assertSet('toastMessage', 'Account details validated.')
+        ->assertSet('status', 'Account created.')
+        ->assertSet('toastMessage', 'Account created.')
         ->assertSet('toastVariant', 'success');
+
+    $user = User::query()->where('email', 'mobile@example.com')->firstOrFail();
+
+    expect($user->name)->toBe('Mobile User');
+
+    $this->assertAuthenticatedAs($user);
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/register'
+        && $request['name'] === 'Mobile User'
+        && $request['email'] === 'mobile@example.com'
+        && $request['password_confirmation'] === 'password');
 });
 
 test('register validates email and password confirmation in real time', function (): void {
@@ -208,3 +268,43 @@ test('email verification validates email before continuing', function (): void {
         ->assertHasNoErrors()
         ->assertSet('status', 'Verification email details validated.');
 });
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileAuthScreensEnvelope(
+    string|int $userId,
+    string $name,
+    string $email,
+    string $accessToken,
+    string $refreshToken,
+): array {
+    return [
+        'success' => true,
+        'data' => [
+            'user' => [
+                'id' => $userId,
+                'name' => $name,
+                'email' => $email,
+                'email_verified_at' => '2026-06-25T12:00:00+00:00',
+            ],
+            'session' => [
+                'id' => 321,
+                'device_id' => 'screen-device-id',
+                'status' => 'active',
+            ],
+            'tokens' => [
+                'token_type' => 'Bearer',
+                'access_token' => $accessToken,
+                'refresh_token' => $refreshToken,
+                'access_token_expires_at' => '2026-06-25T12:15:00+00:00',
+                'refresh_token_expires_at' => '2026-07-25T12:00:00+00:00',
+            ],
+            'next_bootstrap_required' => true,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}

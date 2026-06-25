@@ -8,7 +8,9 @@ use App\Services\MobileAuth\AppUnlockStateService;
 use App\Services\MobileAuth\MobileSessionService;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Http\Client\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
@@ -20,9 +22,12 @@ beforeEach(function (): void {
 
     config([
         'mobile_auth.storage.driver' => 'session',
+        'mobile_auth.api.base_url' => 'https://api-admin.example.test/api/v1/mobile',
         'mobile_auth.storage.session_key' => 'testing.mobile_auth.tokens',
         'mobile_auth.storage.revoked_session_key' => 'testing.mobile_auth.revoked_tokens',
     ]);
+
+    Http::preventStrayRequests();
 });
 
 test('profile page renders authenticated account overview and shortcuts', function (): void {
@@ -163,6 +168,52 @@ test('edit profile screen removes a saved avatar on save', function (): void {
     Storage::disk('public')->assertMissing('avatars/current.jpg');
 });
 
+test('edit profile syncs account name through api when access token exists', function (): void {
+    Storage::fake('public');
+
+    $user = User::factory()->create([
+        'name' => 'Taylor Mobile',
+        'email' => 'taylor@example.test',
+    ]);
+
+    app(AccessTokenService::class)->put('profile-update-access-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response([
+            'success' => true,
+            'data' => [
+                'user' => [
+                    'id' => 123,
+                    'name' => 'API Updated Person',
+                    'email' => 'taylor@example.test',
+                    'email_verified_at' => '2026-06-25T12:00:00+00:00',
+                ],
+                'session' => ['id' => 99, 'status' => 'active'],
+                'next_bootstrap_required' => true,
+            ],
+            'meta' => ['api_version' => 'v1'],
+        ]),
+    ]);
+
+    Livewire::actingAs($user)
+        ->test(EditProfile::class)
+        ->set('name', 'API Updated Person')
+        ->call('saveProfile')
+        ->assertSet('successMessage', 'Profile details saved with API.')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'success'
+                && ($params['title'] ?? null) === 'Profile saved'
+                && ($params['message'] ?? null) === 'Profile details saved with API.';
+        });
+
+    expect($user->refresh()->name)->toBe('API Updated Person');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
+        && $request->hasHeader('Authorization', 'Bearer profile-update-access-token')
+        && $request['name'] === 'API Updated Person');
+});
+
 test('native camera photo can be previewed and saved as avatar', function (): void {
     Storage::fake('public');
 
@@ -252,6 +303,14 @@ test('profile logout redirects and clears local mobile state', function (): void
     app(AppUnlockStateService::class)->unlock();
     app(AccessTokenService::class)->put('profile-logout-access-token', CarbonImmutable::now()->addMinutes(15));
 
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/logout' => Http::response([
+            'success' => true,
+            'data' => ['revoked' => true],
+            'meta' => ['api_version' => 'v1'],
+        ]),
+    ]);
+
     session()->put(
         MobileSessionService::LAST_LOGIN_AT_SESSION_KEY,
         CarbonImmutable::now()->toIso8601String(),
@@ -266,4 +325,7 @@ test('profile logout redirects and clears local mobile state', function (): void
         ->and(app(AppUnlockStateService::class)->isUnlocked())->toBeFalse();
 
     $this->assertGuest();
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/logout'
+        && $request->hasHeader('Authorization', 'Bearer profile-logout-access-token'));
 });

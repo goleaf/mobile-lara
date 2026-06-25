@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Mobile;
 
+use App\Services\MobileApi\MobileApiException;
+use App\Services\MobileAuth\MobileApiSessionBridge;
+use App\Services\MobileAuth\MobileAuthApiService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Validation\ValidationException;
@@ -34,6 +37,16 @@ class Register extends Component
 
     public string $toastVariant = 'success';
 
+    protected MobileAuthApiService $authApi;
+
+    protected MobileApiSessionBridge $apiSessions;
+
+    public function boot(MobileAuthApiService $authApi, MobileApiSessionBridge $apiSessions): void
+    {
+        $this->authApi = $authApi;
+        $this->apiSessions = $apiSessions;
+    }
+
     /**
      * @return array<string, list<mixed>>
      */
@@ -60,10 +73,27 @@ class Register extends Component
             throw $exception;
         }
 
+        try {
+            $envelope = $this->authApi->register(
+                name: $this->name,
+                email: $this->email,
+                password: $this->password,
+                passwordConfirmation: $this->password_confirmation,
+            );
+            $this->apiSessions->start($envelope);
+        } catch (MobileApiException $exception) {
+            $this->showToast($exception->getMessage(), 'error');
+
+            throw ValidationException::withMessages([
+                'email' => $exception->getMessage(),
+            ]);
+        }
+
         $this->reset('password', 'password_confirmation');
 
-        $this->status = 'Account details validated.';
+        $this->status = 'Account created.';
         $this->showToast($this->status, 'success');
+        $this->redirect(route('mobile.dashboard'), navigate: true);
     }
 
     public function updated(string $propertyName): void
