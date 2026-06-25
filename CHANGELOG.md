@@ -10,6 +10,9 @@ All notable changes to Mobile Lara will be documented in this file.
   tenant admin, tenant manager, support agent, billing manager, mobile user,
   invited user, suspended user, and guest/pre-login user responsibilities,
   limits, visibility, and control boundaries stay explicit.
+- Added Target User Roles decision rules for account-state precedence,
+  tenant-scoped visibility, platform exceptions, mobile API-derived capability,
+  and job-scoped support/billing access.
 - Clarified Core Product Principles documentation so admin authority, API-only
   mobile behavior, feature control, tenant isolation, useful offline behavior,
   secure defaults, API-first communication, simple mobile UX, documentation-first

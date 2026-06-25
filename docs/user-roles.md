@@ -70,6 +70,16 @@ Roles also depend on [Mobile Client Responsibilities](mobile-client-responsibili
 | Suspended user | Uses allowed recovery or support paths to resolve account, security, billing, tenant, or policy issues. | Cannot access normal admin/API/mobile workflows, sync new trusted writes, or use cached UI as authority. | Minimal suspension notice, logout/session cleanup, recovery/contact actions, and support-safe next steps. |
 | Guest/pre-login user | Uses public, login, registration, password reset, invitation acceptance, verification, and legal/support entry flows. | Cannot access tenant data, authenticated API responses, device trust state, reports, billing, support history, or feature-enabled app behavior. | Public status, login/register/reset/verify/invitation/legal flows, and safe pre-login support contact information. |
 
+## Role Decision Rules
+
+Role decisions should be resolved as product authority before any screen, endpoint, report, notification, sync action, or support workflow is designed.
+
+- Account state overrides normal role access: suspended users, invited users, and guest/pre-login users receive restricted flows even when a future or previous role exists.
+- Tenant scope overrides convenience: tenant admins, tenant managers, mobile users, support agents, and billing managers may only see cross-tenant data when the Admin/API system returns an explicit audited reason.
+- Platform scope is exceptional: platform owner and super admin abilities should be visible, logged, reversible where possible, and separated from ordinary tenant work.
+- Mobile visibility is an outcome, not a permission source: the NativePHP client displays role-derived capabilities from the API and must not create local authority.
+- Support and billing access are job-scoped: those roles see enough context to solve the support or billing problem without becoming broad tenant administrators.
+
 ## Platform Owner
 
 The platform owner is the highest business authority for the SaaS.
