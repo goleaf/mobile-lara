@@ -57,6 +57,8 @@ The control-plane responsibility rules are defined in [Admin/API Responsibilitie
 
 The mobile-client responsibility rules are defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Value reaches users safely when mobile UX, secure local session, cache, offline actions, NativePHP features, navigation, permissions UX, sync display, drafts, feedback, and feature visibility are local execution responsibilities rather than authority.
 
+The mobile UX rules are defined in [Mobile UX Principles](mobile-ux-principles.md). Value reaches mobile users when navigation is mobile-first, screens are simple, loading/offline states are clear, controls are thumb-friendly, typing is minimized, actions are fast, sessions are secure, features follow admin rules, and native permission prompts are explained first.
+
 ## Stakeholder Value Summary
 
 | Stakeholder | Primary value | Product proof |

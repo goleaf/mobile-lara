@@ -64,6 +64,8 @@ It is made accountable by [Admin/API Responsibilities](admin-api-responsibilitie
 
 It is made usable by [Mobile Client Responsibilities](mobile-client-responsibilities.md): the managed client must own mobile UX, secure local session, cache, offline actions, NativePHP features, navigation, permissions UX, sync display, drafts, local feedback, and feature visibility without owning SaaS authority.
 
+It is made clear by [Mobile UX Principles](mobile-ux-principles.md): the NativePHP client must translate API authority into mobile-first navigation, simple screens, loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure sessions, feature visibility, and native permission education.
+
 ## Six Product Angles
 
 ### SaaS Control Center

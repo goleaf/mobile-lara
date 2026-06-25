@@ -48,6 +48,11 @@ mobile owns the update, maintenance, limited-mode, blocked, deprecated,
 store-link, local draft protection, and support-guidance experience, but it
 does not own version authority.
 
+Use this document with [Mobile UX Principles](mobile-ux-principles.md):
+outdated, optional-update, forced-update, maintenance, deprecated, blocked,
+store-link, stale-client, and local-draft states should stay clear, simple,
+thumb-friendly, and supportive of secure session behavior.
+
 ## Version Control Statement
 
 Mobile app version control is a control-plane responsibility.

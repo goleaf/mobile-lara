@@ -46,6 +46,11 @@ navigation, permissions UX, sync display, drafts, feedback, and API-derived
 feature visibility in the managed mobile client without moving authority out
 of Admin/API.
 
+Mobile UX Principles are defined in `../docs/mobile-ux-principles.md`: both
+apps must keep NativePHP navigation, simple screens, loading/offline states,
+thumb-friendly controls, minimum typing, fast actions, secure sessions, and
+native permission prompts aligned with API-derived authority.
+
 ## Systems
 
 | Path | Responsibility | Current state |
@@ -78,6 +83,10 @@ The product contract remains unchanged:
   dangerous admin actions are confirmed, audited, impact-previewed,
   mobile-previewed, rollback-aware, and tenant-isolated before they affect
   either app.
+- Mobile UX Principles in `../docs/mobile-ux-principles.md` define how the
+  NativePHP client presents navigation, simple screens, loading/offline states,
+  thumb-friendly controls, fast actions, secure sessions, feature visibility,
+  and native permission education.
 - Mobile owns local execution, NativePHP capability UX, cache, drafts, queues,
   sync display, and API-derived feature visibility.
 - Mobile never reads the admin database directly. Server-trusted behavior must

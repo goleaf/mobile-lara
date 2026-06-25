@@ -73,6 +73,8 @@ The detailed API contract model is defined in [API-First Principles](api-first-p
 
 The detailed mobile-client responsibility model is defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Use it with this boundary document whenever a feature touches mobile UX, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync display, drafts, local feedback, or feature visibility.
 
+The detailed mobile UX model is defined in [Mobile UX Principles](mobile-ux-principles.md). Use it with this boundary document whenever NativePHP navigation, simple screens, loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure sessions, admin-rule-based feature visibility, or native permission prompts need local execution without local authority.
+
 ## System Ownership Summary
 
 | Area | Admin/API owns | Mobile client owns |

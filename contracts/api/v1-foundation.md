@@ -57,6 +57,11 @@ the response shape mobile can consume for UX, local session, cache, offline,
 sync, feedback, and feature-visibility responsibilities before domain
 contracts expand.
 
+Mobile UX Principles are defined in `../../docs/mobile-ux-principles.md`: this
+contract should support mobile-first navigation, simple screens, clear
+loading/offline states, thumb-friendly controls, minimum typing, fast actions,
+secure sessions, feature visibility, and native permission education.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this foundation should keep future
 tenant, user, role, permission, feature, config, version, maintenance, sync,

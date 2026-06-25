@@ -42,6 +42,8 @@ The Admin/API responsibility model is defined in [Admin/API Responsibilities](..
 
 The mobile-client responsibility model is defined in [Mobile Client Responsibilities](../mobile-client-responsibilities.md). The architecture must keep mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, mobile permissions UX, sync status display, local drafts, local user feedback, and feature visibility in the managed client without making them authority.
 
+The mobile UX model is defined in [Mobile UX Principles](../mobile-ux-principles.md). The architecture must keep NativePHP navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure session behavior, feature visibility, and native permission education aligned with API-derived authority.
+
 ## Decision
 
 Use a two-system architecture:
@@ -66,6 +68,8 @@ Future mobile version control implementation must follow [Mobile Version Control
 The Admin/API system must remain the owner of the responsibility areas documented in [Admin/API Responsibilities](../admin-api-responsibilities.md). The mobile client receives outcomes from those responsibilities; it does not duplicate or override them.
 
 The mobile client must remain the owner of the local execution areas documented in [Mobile Client Responsibilities](../mobile-client-responsibilities.md). The Admin/API system controls the policy and canonical outcomes; mobile owns how those outcomes are presented, cached, queued, retried, and explained.
+
+Future NativePHP mobile UX implementation must follow [Mobile UX Principles](../mobile-ux-principles.md) before coding navigation, simple screens, loading/offline states, thumb-friendly controls, minimum-typing flows, fast actions, secure session behavior, feature visibility, or native permission prompts.
 
 This split exists because admin users and mobile users have different jobs. Admin users need tenant-safe operational control, rollout visibility, support context, and auditability. Mobile users need fast workflows, clear state, and native device capabilities without seeing the underlying SaaS machinery.
 

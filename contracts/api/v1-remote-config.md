@@ -55,6 +55,11 @@ config cache, freshness display, safe fallback feedback, feature presentation,
 permission-purpose copy, and sync/navigation tuning without giving mobile
 global configuration authority.
 
+Mobile UX Principles are defined in `../../docs/mobile-ux-principles.md`: this
+contract should support mobile-first navigation, simple screens, clear
+loading/offline states, thumb-friendly controls, minimum typing, fast actions,
+secure sessions, feature visibility, and native permission education.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep remote
 config, defaults, tenant overrides, rollback, invalid-config behavior, support

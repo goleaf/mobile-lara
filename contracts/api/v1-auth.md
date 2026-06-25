@@ -54,6 +54,11 @@ Mobile Client Responsibilities are defined in
 local session UX, login/logout feedback, guest/pre-login navigation, and
 API-derived account-state visibility without giving mobile auth authority.
 
+Mobile UX Principles are defined in `../../docs/mobile-ux-principles.md`: this
+contract should support mobile-first navigation, simple screens, clear
+loading/offline states, thumb-friendly controls, minimum typing, fast actions,
+secure sessions, feature visibility, and native permission education.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep identity,
 session, user-state, device, support, and security controls scoped,

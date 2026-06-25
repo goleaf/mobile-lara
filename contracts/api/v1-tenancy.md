@@ -57,6 +57,11 @@ Mobile Client Responsibilities are defined in
 context display, tenant-switch UX where allowed, cache labels, navigation
 state, and local feedback without giving mobile tenant authority.
 
+Mobile UX Principles are defined in `../../docs/mobile-ux-principles.md`: this
+contract should support mobile-first navigation, simple screens, clear
+loading/offline states, thumb-friendly controls, minimum typing, fast actions,
+secure sessions, feature visibility, and native permission education.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep tenant
 lifecycle, status, isolation, membership, feature availability, billing,

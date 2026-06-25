@@ -58,6 +58,8 @@ Remote configuration logic is detailed in [Remote Configuration Logic](remote-co
 
 Mobile version control logic is detailed in [Mobile Version Control Logic](mobile-version-control-logic.md). Every app-version-sensitive behavior must define minimum supported versions, optional update behavior, forced update behavior, maintenance mode, outdated-client response, store links, update messages, support meaning, audit expectation, and old-version protection before coding.
 
+Mobile UX principles are detailed in [Mobile UX Principles](mobile-ux-principles.md). Every NativePHP mobile workflow must define mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, admin-rule-based feature visibility, secure session behavior, and native permission education before coding.
+
 ## Target User Roles
 
 The logical role model lives in [Target User Roles](user-roles.md). The main roles are:

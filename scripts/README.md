@@ -50,6 +50,11 @@ responsibility coverage, but must not create local UX, session, cache, offline,
 NativePHP, navigation, permission, sync, draft, feedback, or feature-visibility
 logic outside documented contracts.
 
+Mobile UX Principles are defined in `../docs/mobile-ux-principles.md`: scripts
+may verify mobile navigation, loading/offline states, thumb-friendly controls,
+minimum typing, fast actions, secure sessions, feature visibility, and native
+permission education coverage without creating application logic.
+
 Scripts must support the Admin Control Center planning boundary in
 `../docs/admin-control-center-logic.md`: verification should prove documented
 tenant, user, role, permission, feature, config, version, maintenance, force
@@ -77,6 +82,11 @@ Scripts must also respect Admin Safety Principles in
 admin-control documentation for confirmation, audit history, impact preview,
 mobile impact preview, rollback, and tenant isolation without creating
 application logic.
+
+Scripts must also respect Mobile UX Principles in
+`../docs/mobile-ux-principles.md`: any future helper should verify documented
+NativePHP mobile UX contracts without creating screens, components, routes, or
+runtime behavior.
 
 Do not add custom verification scripts when a normal project command already
 proves the behavior. Prefer the real commands:

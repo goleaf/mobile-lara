@@ -27,6 +27,7 @@ The strongest product promise is remote control with local resilience: administr
 | Why NativePHP + Livewire? | The product remains Laravel-first, uses Livewire/Blade for dynamic interfaces without a separate frontend framework, and uses NativePHP for mobile shell and native capability access while still communicating through the API. |
 | What makes it scalable SaaS? | Tenant isolation, API-first contracts, feature flags, remote config, mobile-version policy, idempotent sync, support visibility, billing entitlements, modular expansion, and documentation-first planning let many tenants, devices, roles, versions, and feature states operate from one control plane. |
 | How does admin safety protect the vision? | [Admin Safety Principles](admin-safety-principles.md) require dangerous admin actions to be confirmed, audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated before they affect users. |
+| How should mobile feel? | [Mobile UX Principles](mobile-ux-principles.md) require mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure session behavior, admin-rule-based feature visibility, and native permission education. |
 
 This contract is the product north star. Future documentation may add detail, but it should not reverse these answers without a new decision record.
 
@@ -63,6 +64,8 @@ The API contract model is defined in [API-First Principles](api-first-principles
 The Admin/API responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Responsibility rules explain how tenant management, users and permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, and security enforcement stay in the control plane.
 
 The mobile-client responsibility model is defined in [Mobile Client Responsibilities](mobile-client-responsibilities.md). Responsibility rules explain how mobile user experience, secure local session, local cache, offline actions, NativePHP device features, mobile navigation, permissions UX, sync status display, drafts, local feedback, and feature visibility stay in the mobile client without becoming SaaS authority.
+
+The mobile UX model is defined in [Mobile UX Principles](mobile-ux-principles.md). UX rules explain how NativePHP navigation, simple screens, loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure sessions, feature visibility, and permission education keep mobile users focused.
 
 ## Problem The System Solves
 

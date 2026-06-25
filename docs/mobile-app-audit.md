@@ -41,6 +41,8 @@ The responsibility standard is [Admin/API Responsibilities](admin-api-responsibi
 
 The mobile responsibility standard is [Mobile Client Responsibilities](mobile-client-responsibilities.md). Audits should verify that mobile UX, secure local session, cache, offline actions, NativePHP device features, navigation, permissions UX, sync display, drafts, local feedback, and feature visibility stay local without owning SaaS authority.
 
+The mobile UX standard is [Mobile UX Principles](mobile-ux-principles.md). Audits should verify mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, admin-rule-based feature visibility, secure session behavior, and native permission education.
+
 ## Product Vision Audit
 
 | Vision question | Product answer |

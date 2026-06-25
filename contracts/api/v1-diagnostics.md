@@ -56,6 +56,11 @@ diagnostic presentation, safe device/context collection, submission feedback,
 support guidance, sync/config/version evidence display, and privacy-safe local
 review.
 
+Mobile UX Principles are defined in `../../docs/mobile-ux-principles.md`: this
+contract should support mobile-first navigation, simple screens, clear
+loading/offline states, thumb-friendly controls, minimum typing, fast actions,
+secure sessions, feature visibility, and native permission education.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep diagnostic
 collection, support visibility, privacy boundaries, recovery guidance, and

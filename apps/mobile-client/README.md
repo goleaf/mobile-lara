@@ -55,6 +55,11 @@ NativePHP device-feature UX, navigation, permissions UX, sync display, local
 drafts, user feedback, and API-derived feature visibility while tenant,
 billing, permission, and global configuration authority stay in Admin/API.
 
+Mobile UX Principles are defined in `../../docs/mobile-ux-principles.md`: this
+app should make NativePHP navigation, simple screens, loading/offline states,
+thumb-friendly controls, minimum typing, fast actions, secure sessions, feature
+visibility, and native permission education feel clear and API-governed.
+
 ## Product Role
 
 This system owns local execution:
@@ -95,6 +100,11 @@ Admin Safety Principles in `../../docs/admin-safety-principles.md` define how
 dangerous admin actions should be confirmed, audited, impact-previewed,
 mobile-previewed, rollback-aware, and tenant-isolated before the mobile client
 receives changed API outcomes.
+
+Mobile UX Principles in `../../docs/mobile-ux-principles.md` define how the
+client presents mobile-first navigation, simple screens, loading/offline
+states, thumb-friendly controls, minimum typing, fast actions, secure session
+behavior, feature visibility, and native permission education.
 
 ## Current Implementation State
 

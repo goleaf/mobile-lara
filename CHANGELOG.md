@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Mobile UX Principles documentation for mobile-first navigation, simple
+  screens, loading/offline states, thumb-friendly controls, minimum typing,
+  fast actions, admin-rule-based feature visibility, secure session behavior,
+  and native permission education.
 - Added Admin Safety Principles documentation for dangerous admin actions,
   confirmations, audit history, impact previews, mobile impact previews,
   rollback, and tenant-isolated changes.

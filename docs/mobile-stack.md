@@ -27,6 +27,8 @@ Stack decisions must preserve [Mobile Version Control Logic](mobile-version-cont
 
 Stack decisions must preserve [Admin Safety Principles](admin-safety-principles.md). Dangerous admin controls, operational packages, providers, scripts, or NativePHP release choices must support confirmation, audit history, impact preview, mobile impact preview, rollback, and tenant-isolated scope.
 
+Stack decisions must preserve [Mobile UX Principles](mobile-ux-principles.md). Packages, NativePHP plugins, local stores, UI helpers, and Livewire patterns should support mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure sessions, feature visibility, and native permission education.
+
 Stack decisions must also preserve the role boundaries in [Target User Roles](user-roles.md). Platform-wide, tenant-scoped, support-scoped, billing-scoped, mobile, invited, suspended, and pre-login access should not collapse into one generic user experience.
 
 Stack decisions must also preserve the [SaaS Value Map](saas-value-map.md). New packages, services, NativePHP plugins, reports, notification channels, or feature-flag mechanisms should map to clear value for platform owner, tenant business, tenant admin, mobile worker/client, support team, or billing/operations team.

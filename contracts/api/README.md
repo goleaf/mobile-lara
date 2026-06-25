@@ -46,6 +46,11 @@ which mobile responsibility consumes the outcome as UX, local session, cache,
 offline action, NativePHP capability, navigation, permission prompt, sync
 status, draft, feedback, or feature visibility.
 
+Mobile UX Principles live in `../../docs/mobile-ux-principles.md`. Every
+contract should return mobile-safe states that support simple NativePHP
+navigation, loading/offline clarity, thumb-friendly actions, secure sessions,
+feature visibility, and native permission education.
+
 Admin Control Center logic lives in `../../docs/admin-control-center-logic.md`.
 Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or

@@ -21,6 +21,11 @@ Use this document with [Admin Safety Principles](admin-safety-principles.md):
 admin authority stays trustworthy only when dangerous controls are confirmed,
 audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated.
 
+Use this document with [Mobile UX Principles](mobile-ux-principles.md): simple
+mobile UX means mobile-first navigation, simple screens, clear loading/offline
+states, thumb-friendly controls, minimum typing, fast actions, secure sessions,
+feature visibility based on admin rules, and native permission education.
+
 ## Principles Contract
 
 | Principle | Product rule | Feature behavior |

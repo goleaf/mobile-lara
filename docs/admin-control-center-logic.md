@@ -14,6 +14,8 @@ Use [Mobile Version Control Logic](mobile-version-control-logic.md) whenever a c
 
 Use [Admin Safety Principles](admin-safety-principles.md) whenever a control is dangerous, broad, destructive, security-sensitive, billing-impacting, mobile-blocking, support-relevant, or tenant-sensitive enough to require confirmation, audit history, impact preview, mobile impact preview, rollback, or strict tenant isolation.
 
+Use [Mobile UX Principles](mobile-ux-principles.md) whenever an admin control changes NativePHP navigation, simple screens, loading/offline states, thumb-friendly actions, secure session states, feature visibility, or native permission education.
+
 ## Control Center Statement
 
 The Admin Control Center is the operational control surface for the SaaS.

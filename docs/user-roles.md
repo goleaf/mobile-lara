@@ -23,6 +23,7 @@ Roles are product boundaries, not only labels.
 - Role and permission decisions must follow [Remote Configuration Logic](remote-configuration-logic.md): role or user presentation config can change safe UX behavior but cannot grant authority, billing access, tenant access, or permissions.
 - Role and permission decisions must follow [Mobile Version Control Logic](mobile-version-control-logic.md): support, release, internal, invited, suspended, and guest states may affect version visibility, update prompts, maintenance access, and blocked old-version behavior without bypassing API authority.
 - Role and permission decisions must follow [Admin Safety Principles](admin-safety-principles.md): dangerous role, permission, support, billing, report, export, suspension, and recovery actions require confirmation, audit history, impact preview, rollback thinking, and tenant-isolated scope.
+- Role and permission decisions must follow [Mobile UX Principles](mobile-ux-principles.md): mobile, invited, suspended, guest, support-assisted, and billing-limited users should see simple navigation, clear blocked/offline/loading states, secure session behavior, and native permission education that matches their account state.
 - Every role must be enforced by the Admin/API system.
 - The mobile client must receive role-derived capability state through the API.
 - Roles should follow least privilege.

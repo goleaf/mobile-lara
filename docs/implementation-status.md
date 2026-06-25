@@ -48,6 +48,12 @@ secure local session, cache, offline actions, NativePHP device features,
 navigation, permissions UX, sync display, drafts, feedback, and feature
 visibility before implementation grows.
 
+Mobile UX Principles are defined in `docs/mobile-ux-principles.md`. Status is
+tracked against mobile-first navigation, simple screens, clear loading/offline
+states, thumb-friendly controls, minimum typing, fast actions, admin-rule-based
+feature visibility, secure session behavior, and native permission education
+before implementation grows.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Future implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

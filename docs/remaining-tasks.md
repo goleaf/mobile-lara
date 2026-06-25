@@ -49,6 +49,12 @@ responsibility owner for UX, secure local session, cache, offline action,
 NativePHP capability, navigation, permissions UX, sync display, draft,
 feedback, or feature visibility before implementation scope is added.
 
+Mobile UX Principles are defined in `docs/mobile-ux-principles.md`. Remaining
+mobile work must map NativePHP navigation, simple screens, clear
+loading/offline states, thumb-friendly controls, minimum typing, fast actions,
+feature visibility, secure sessions, and native permission prompts before
+implementation scope is added.
+
 Admin Control Center logic is defined in
 `docs/admin-control-center-logic.md`. Remaining implementation work must map
 tenant, user, role, permission, mobile feature, remote config, app version,

@@ -56,6 +56,11 @@ Mobile Client Responsibilities are defined in
 prompts, maintenance UX, limited-mode navigation, local draft protection,
 blocked-state feedback, store-link presentation, and support guidance.
 
+Mobile UX Principles are defined in `../../docs/mobile-ux-principles.md`: this
+contract should support mobile-first navigation, simple screens, clear
+loading/offline states, thumb-friendly controls, minimum typing, fast actions,
+secure sessions, feature visibility, and native permission education.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep app
 version, maintenance mode, force update, store-link, update-message, and

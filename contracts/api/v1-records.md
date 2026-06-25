@@ -56,6 +56,11 @@ Mobile Client Responsibilities are defined in
 record UX, local cache, local drafts, offline action preparation, sync status
 display, validation feedback, and API-derived feature visibility.
 
+Mobile UX Principles are defined in `../../docs/mobile-ux-principles.md`: this
+contract should support mobile-first navigation, simple screens, clear
+loading/offline states, thumb-friendly controls, minimum typing, fast actions,
+secure sessions, feature visibility, and native permission education.
+
 Admin Control Center Logic is defined in
 `../../docs/admin-control-center-logic.md`: this contract must keep record
 feature availability, permissions, sync policy, conflict outcomes, report
