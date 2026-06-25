@@ -13,7 +13,8 @@ Scope: package installation and build configuration for the Laravel mobile stack
 | NativePHP Mobile | 3.3.6 | Latest stable version resolved by Composer for the current Laravel/PHP constraints. |
 | Livewire | 4.3.1 | Installed through Composer; Laravel package discovery is active. |
 | Tailwind CSS | 4.3.1 | Installed through npm. |
-| `@tailwindcss/vite` | 4.3.1 | Installed through npm and registered in `vite.config.js`. |
+| `@tailwindcss/postcss` | 4.3.1 | Installed through npm and registered in `postcss.config.mjs`. |
+| `sass-embedded` | 1.100.0 | Installed through npm for the SCSS entrypoint. |
 | Vite | 8.1.0 | Existing frontend build tool. |
 
 ## Configuration Status
@@ -22,11 +23,11 @@ Scope: package installation and build configuration for the Laravel mobile stack
 - `config/nativephp.php` is present and the NativePHP service provider registers the installed mobile plugins.
 - `livewire/livewire` is installed and discovered by Laravel.
 - `config/livewire.php` has been published with Livewire 4 defaults.
-- Tailwind CSS v4 is configured through `@tailwindcss/vite` in `vite.config.js`.
-- `resources/css/app.css` uses Tailwind v4's CSS-first import:
+- Tailwind CSS v4 is configured through `@tailwindcss/postcss` in `postcss.config.mjs` after Sass preprocessing.
+- `resources/css/app.scss` uses Tailwind v4's CSS-first import:
 
-  ```css
-  @import 'tailwindcss';
+  ```scss
+  @import url('tailwindcss');
   ```
 
 - Tailwind source scanning includes Laravel pagination views, compiled Blade views, app Blade views, and app JavaScript files.
@@ -36,7 +37,7 @@ Scope: package installation and build configuration for the Laravel mobile stack
 ```bash
 composer require nativephp/mobile livewire/livewire --update-with-all-dependencies --no-interaction
 php artisan livewire:config --no-interaction
-npm install -D tailwindcss@latest @tailwindcss/vite@latest
+npm install -D tailwindcss@latest @tailwindcss/postcss@latest sass-embedded@latest
 php artisan optimize:clear --no-interaction
 vendor/bin/pint --dirty --format agent
 php artisan native:debug --no-interaction
@@ -53,8 +54,8 @@ composer show livewire/livewire --all
 composer show --locked nativephp/mobile
 composer show --locked livewire/livewire
 npm view tailwindcss version
-npm view @tailwindcss/vite version
-npm ls tailwindcss @tailwindcss/vite vite --depth=0
+npm view @tailwindcss/postcss version
+npm ls tailwindcss @tailwindcss/postcss sass-embedded vite --depth=0
 npm ls vue react @inertiajs/vue3 @inertiajs/react @ionic/core @capacitor/core --depth=0
 ```
 

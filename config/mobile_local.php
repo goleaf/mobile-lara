@@ -26,7 +26,7 @@ return [
     'network' => [
         'fallback_check' => [
             'enabled' => env('NATIVEPHP_NETWORK_FALLBACK_ENABLED', env('APP_ENV') !== 'testing'),
-            'url' => env('NATIVEPHP_NETWORK_FALLBACK_URL', env('APP_URL', 'http://localhost')),
+            'url' => env('NATIVEPHP_NETWORK_FALLBACK_URL', 'https://cp.cloudflare.com/generate_204'),
             'timeout_seconds' => env('NATIVEPHP_NETWORK_FALLBACK_TIMEOUT_SECONDS', 2),
             'connect_timeout_seconds' => env('NATIVEPHP_NETWORK_FALLBACK_CONNECT_TIMEOUT_SECONDS', 1),
         ],

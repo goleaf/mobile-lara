@@ -1,4 +1,4 @@
-<div wire:poll.15s="refreshStatus" class="contents">
+<div wire:poll.15s="refreshStatus">
     @if ($isOffline)
         <section
             role="status"
@@ -19,7 +19,7 @@
                     </div>
 
                     <p class="mt-1 text-sm leading-5 text-amber-900 dark:text-amber-100/80">
-                        NativePHP network status or the fallback check is offline. {{ $connectionTypeLabel }} / {{ $meteredLabel }}.
+                        NativePHP network status or the fallback check is offline. {{ $networkDescription }}.
                     </p>
 
                     @if ($statusMessage)

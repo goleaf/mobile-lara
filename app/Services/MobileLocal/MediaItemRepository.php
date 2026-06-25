@@ -3,6 +3,7 @@
 namespace App\Services\MobileLocal;
 
 use App\Models\MobileLocalMediaItem;
+use App\Models\MobileLocalRecord;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -77,6 +78,20 @@ final class MediaItemRepository
     public function pendingSync(int $limit = 50): Collection
     {
         return $this->recent($limit, syncStatus: MobileLocalMediaItem::SYNC_PENDING);
+    }
+
+    /**
+     * @return Collection<int, MobileLocalMediaItem>
+     */
+    public function forRecord(MobileLocalRecord $record, int $limit = 12): Collection
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+
+        return MobileLocalMediaItem::query()
+            ->galleryOrder()
+            ->forRelatedEntity(MobileLocalRecord::ENTITY_TYPE, $record->getKey())
+            ->limit($this->boundedLimit($limit))
+            ->get();
     }
 
     /**

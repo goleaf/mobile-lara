@@ -134,6 +134,12 @@ class Dashboard extends Component
                 'route' => 'mobile.activity',
             ],
             [
+                'key' => 'records',
+                'label' => 'Records',
+                'description' => 'Manage local-first generic records.',
+                'route' => 'mobile.records.index',
+            ],
+            [
                 'key' => 'notifications',
                 'label' => 'Notifications',
                 'description' => 'Review alerts waiting on this device.',

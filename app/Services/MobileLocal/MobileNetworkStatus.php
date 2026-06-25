@@ -71,8 +71,17 @@ final class MobileNetworkStatus
         };
     }
 
+    public function connectionSummary(): string
+    {
+        if ($this->fallbackCheckUsed && ! $this->nativeStatusAvailable) {
+            return $this->isOnline ? 'Fallback check reachable' : 'Fallback check failed';
+        }
+
+        return $this->connectionTypeLabel().' / '.$this->meteredLabel();
+    }
+
     public function summary(): string
     {
-        return $this->stateLabel().' / '.$this->connectionTypeLabel().' / '.$this->meteredLabel();
+        return $this->stateLabel().' / '.$this->connectionSummary();
     }
 }

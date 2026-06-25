@@ -115,9 +115,18 @@ test('register validates email and password confirmation in real time', function
     Livewire::test(Register::class)
         ->set('email', 'not-an-email')
         ->assertHasErrors(['email' => 'email'])
+        ->set('password', 'short')
+        ->assertHasErrors('password')
         ->set('password', 'password')
         ->set('password_confirmation', 'different')
         ->assertHasErrors(['password_confirmation' => 'same']);
+});
+
+test('register screen omits account helper labels', function (): void {
+    Livewire::test(Register::class)
+        ->assertDontSee('New account')
+        ->assertDontSee('Use a valid email and a secure password.')
+        ->assertDontSee('Use at least 8 characters.');
 });
 
 test('forgot password validates email before continuing', function (): void {

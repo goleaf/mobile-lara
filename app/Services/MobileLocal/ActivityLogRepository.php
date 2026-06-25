@@ -3,6 +3,7 @@
 namespace App\Services\MobileLocal;
 
 use App\Models\MobileLocalActivityLog;
+use App\Models\MobileLocalRecord;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -62,6 +63,20 @@ final class ActivityLogRepository
     public function pendingSync(int $limit = 50): Collection
     {
         return $this->recent($limit, MobileLocalActivityLog::SYNC_PENDING);
+    }
+
+    /**
+     * @return Collection<int, MobileLocalActivityLog>
+     */
+    public function forRecord(MobileLocalRecord $record, int $limit = 12): Collection
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+
+        return MobileLocalActivityLog::query()
+            ->feed()
+            ->forEntity(MobileLocalRecord::ENTITY_TYPE, $record->getKey())
+            ->limit($this->boundedLimit($limit))
+            ->get();
     }
 
     public function markSynced(MobileLocalActivityLog $activityLog): MobileLocalActivityLog

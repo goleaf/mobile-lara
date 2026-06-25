@@ -5,26 +5,72 @@ use App\Services\Native\SystemService;
 use Livewire\Livewire;
 use Native\Mobile\System;
 
-test('permissions settings screen renders platform helpers and recovery links', function (): void {
+test('permissions center screen renders permission rows and platform helpers', function (): void {
     Livewire::test(Permissions::class)
-        ->assertSee('Permission settings')
-        ->assertSee('Platform')
+        ->assertSee('Permissions center')
+        ->assertSee('Native permissions')
         ->assertSee('Browser fallback')
+        ->assertSee('Camera')
+        ->assertSee('Request camera permission')
+        ->assertSee('Microphone')
+        ->assertSee('Request microphone permission')
+        ->assertSee('Location')
+        ->assertSee('Request location permission')
+        ->assertSee('Notifications')
+        ->assertSee('Request notification permission')
+        ->assertSee('Biometrics')
+        ->assertSee('Test biometric prompt')
+        ->assertSee('Storage/files')
+        ->assertSee('Request storage permission')
+        ->assertSee('Network status')
+        ->assertSee('Refresh network status')
+        ->assertSee('Open app settings')
+        ->assertSee('Platform')
         ->assertSee('System::isIos()')
         ->assertSee('System::isAndroid()')
         ->assertSee('System::isMobile()')
-        ->assertSee('Permission recovery')
-        ->assertSee('Camera')
-        ->assertSee('Photos and gallery')
-        ->assertSee('Microphone')
-        ->assertSee('Location')
-        ->assertSee('Notifications')
-        ->assertSee('Biometrics')
-        ->assertSee('Files and storage')
-        ->assertSee('Scanner')
         ->assertSee('Developer debug')
         ->assertSee(route('mobile.debug'), false)
         ->assertSee(route('mobile.settings'), false);
+});
+
+test('permissions center reports browser fallback for permission requests', function (): void {
+    $previousJumpBridgePort = getenv('JUMP_BRIDGE_PORT');
+    putenv('JUMP_BRIDGE_PORT');
+
+    try {
+        config(['nativephp-internal.running' => false]);
+
+        Livewire::test(Permissions::class)
+            ->call('requestPermission', 'camera')
+            ->assertSet('lastPermissionTarget', 'Camera')
+            ->assertSet('lastPermissionStatus', 'Browser fallback')
+            ->assertSet('permissionError', 'Camera permission requests are unavailable in this browser runtime.')
+            ->assertSee('Camera permission requests are unavailable in this browser runtime.')
+            ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+                return $event === 'mobile-toast'
+                    && ($params['type'] ?? null) === 'warning'
+                    && ($params['title'] ?? null) === 'Permission unavailable';
+            });
+    } finally {
+        if ($previousJumpBridgePort !== false) {
+            putenv("JUMP_BRIDGE_PORT={$previousJumpBridgePort}");
+        }
+    }
+});
+
+test('permissions center can refresh network status without a native prompt', function (): void {
+    Livewire::test(Permissions::class)
+        ->call('requestPermission', 'network')
+        ->assertSet('lastPermissionTarget', 'Network status')
+        ->assertSet('lastPermissionStatus', 'Online')
+        ->assertSet('permissionStatus', 'Network status refreshed: Online / Unknown / Unknown.')
+        ->assertSee('Network status refreshed: Online / Unknown / Unknown.')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'success'
+                && ($params['title'] ?? null) === 'Permission request';
+        });
 });
 
 test('permissions settings screen reports browser fallback for app settings', function (): void {

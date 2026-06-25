@@ -21,6 +21,8 @@ final class OfflineBanner extends Component
 
     public string $meteredLabel = 'Unknown';
 
+    public string $networkDescription = 'Unknown';
+
     public int $pendingActionCount = 0;
 
     public bool $storageAvailable = true;
@@ -59,6 +61,7 @@ final class OfflineBanner extends Component
         $this->isOffline = $networkStatus->isOffline();
         $this->connectionTypeLabel = $networkStatus->connectionTypeLabel();
         $this->meteredLabel = $networkStatus->meteredLabel();
+        $this->networkDescription = $networkStatus->connectionSummary();
 
         try {
             $this->pendingActionCount = $this->offlineActions->pendingCount();

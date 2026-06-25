@@ -20,7 +20,7 @@ Scope: inspection only. This document records the current Laravel, frontend, Nat
 - Routing: `routes/web.php` currently exposes only `GET /`.
 - Blade UI: `resources/views/welcome.blade.php`.
 - NativePHP config: `config/nativephp.php`, `nativephp.lock`, `native`, `database/nativephp.sqlite`, and the generated ignored `nativephp/` directory.
-- Frontend tooling: `resources/css/app.css`, `resources/js/app.js`, `vite.config.js`, `package.json`, and `package-lock.json`.
+- Frontend tooling: `resources/css/app.scss`, `resources/js/app.js`, `vite.config.js`, `package.json`, and `package-lock.json`.
 - Database: SQLite app database, default Laravel migrations for users/cache/jobs, factories, and seeders.
 - Tests: default Pest feature/unit tests plus `tests/Feature/NativePhpConfigurationTest.php`.
 - MCP/tooling: `.mcp.json`, `.codex/config.toml`, `.cursor/mcp.json`, `opencode.json`, `.codebase-memory.json`, `.cbmignore`, and `boost.json`.
@@ -33,7 +33,8 @@ Scope: inspection only. This document records the current Laravel, frontend, Nat
 | Laravel Framework | 13.17.0 | Laravel Boost, `php artisan --version`, Composer |
 | Livewire | Not installed | Composer installed package list |
 | Tailwind CSS | 4.3.1 | Laravel Boost, `npm ls tailwindcss` |
-| `@tailwindcss/vite` | 4.3.1 | `npm ls @tailwindcss/vite` |
+| `@tailwindcss/postcss` | 4.3.1 | `npm ls @tailwindcss/postcss` |
+| `sass-embedded` | 1.100.0 | `npm ls sass-embedded` |
 | Vite | 8.1.0 | `npm ls vite` |
 | NativePHP Mobile | 3.3.6 | Composer, `php artisan native:debug` |
 | Embedded NativePHP PHP | 8.5.7 | `php artisan native:debug` |
@@ -174,7 +175,7 @@ php artisan native:plugin:list
 php artisan native:plugin:validate
 composer show --format=json
 composer show livewire/livewire --all
-npm ls tailwindcss @tailwindcss/vite vite --depth=0
+npm ls tailwindcss @tailwindcss/postcss sass-embedded vite --depth=0
 git status --short --branch
 ```
 

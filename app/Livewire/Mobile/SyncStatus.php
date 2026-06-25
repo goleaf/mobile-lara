@@ -108,7 +108,7 @@ final class SyncStatus extends Component
             'storageAvailable' => $storageAvailable,
             'networkLabel' => $isOnline ? 'Online' : 'Offline',
             'networkVariant' => $networkStatus->variant(),
-            'networkDescription' => $networkStatus->connectionTypeLabel().' / '.$networkStatus->meteredLabel(),
+            'networkDescription' => $networkStatus->connectionSummary(),
             'summaryVariant' => $this->summaryVariant($storageAvailable, $pendingActionCount, $failedSyncCount),
             'summaryDescription' => $this->summaryDescription($storageAvailable, $isOnline, $pendingActionCount, $failedSyncCount),
             'pendingActionCount' => $pendingActionCount,

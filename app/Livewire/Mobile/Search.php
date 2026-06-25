@@ -19,6 +19,7 @@ class Search extends Component
     public array $availableResults = [
         ['title' => 'Dashboard', 'route' => 'mobile.dashboard', 'description' => 'Mobile overview'],
         ['title' => 'Profile', 'route' => 'mobile.profile', 'description' => 'Account details'],
+        ['title' => 'Records', 'route' => 'mobile.records.index', 'description' => 'Local-first cached records'],
         ['title' => 'Settings', 'route' => 'mobile.settings', 'description' => 'App preferences'],
         ['title' => 'Debug', 'route' => 'mobile.debug', 'description' => 'Stack diagnostics'],
     ];

@@ -12,10 +12,11 @@
         "memory:status": "codebase-memory-mcp cli index_status '{\"project\":\"Users-andrejprus-Herd-mobile-lara\"}'"
     },
     "devDependencies": {
-        "@tailwindcss/vite": "^4.3.1",
+        "@tailwindcss/postcss": "^4.3.1",
         "codebase-memory-mcp": "0.8.1",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.1",
+        "sass-embedded": "^1.100.0",
         "tailwindcss": "^4.3.1",
         "vite": "^8.0.0"
     }

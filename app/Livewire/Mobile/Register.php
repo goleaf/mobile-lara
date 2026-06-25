@@ -66,9 +66,14 @@ class Register extends Component
         $this->showToast($this->status, 'success');
     }
 
-    public function updated(): void
+    public function updated(string $propertyName): void
     {
         $this->clearFeedback();
+        $this->validateOnly($propertyName);
+
+        if ($propertyName === 'password' && $this->password_confirmation !== '') {
+            $this->validateOnly('password_confirmation');
+        }
     }
 
     #[Computed]

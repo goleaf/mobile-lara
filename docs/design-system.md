@@ -16,7 +16,7 @@ This app uses Blade components and Tailwind utility classes as the mobile design
 
 ## Design Tokens
 
-The base Tailwind v4 theme lives in `resources/css/app.css`.
+The base Tailwind v4 theme lives in `resources/css/app.scss`.
 
 | Purpose | Utility |
 | --- | --- |
@@ -43,7 +43,7 @@ Use compact mobile spacing that fits a single-column app shell.
 | Screen stacks | `flex flex-col gap-5` |
 | Button/icon gap | `gap-2` |
 
-`safe-x`, `safe-pt`, and `safe-pb` are defined in `resources/css/app.css` for mobile safe-area support.
+`safe-x`, `safe-pt`, and `safe-pb` are defined in `resources/css/app.scss` for mobile safe-area support.
 
 ## Rounded Corners
 

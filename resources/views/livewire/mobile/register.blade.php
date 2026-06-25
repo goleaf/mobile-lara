@@ -12,7 +12,7 @@
     <form wire:submit="register" class="grid gap-5">
         <x-mobile.loading-state target="name, email, password, password_confirmation, termsAccepted" message="Checking account details..." />
 
-        <x-mobile.card title="New account" description="Use a valid email and a secure password.">
+        <x-mobile.card>
             <div class="grid gap-4">
                 <x-mobile.input
                     name="name"
@@ -35,7 +35,6 @@
                     label="Password"
                     type="password"
                     autocomplete="new-password"
-                    hint="Use at least 8 characters."
                     wire:model.live.blur="password"
                 />
 

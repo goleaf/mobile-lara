@@ -72,6 +72,7 @@ test('offline banner stays hidden while the app is online', function (): void {
     Livewire::test(OfflineBanner::class)
         ->assertSet('isOffline', false)
         ->assertSee('Network online')
+        ->assertDontSee('class="contents"', false)
         ->assertDontSee('Offline mode');
 });
 
@@ -90,6 +91,25 @@ test('offline banner appears with pending actions count', function (): void {
         ->assertSee('2 pending actions')
         ->assertSee('None / Unknown')
         ->assertSee('Retry Sync');
+});
+
+test('offline banner explains fallback only outages without unknown native labels', function (): void {
+    config([
+        'mobile_local.network.fallback_check.enabled' => true,
+        'mobile_local.network.fallback_check.url' => 'https://connectivity.example.test/health',
+    ]);
+
+    Http::fake([
+        'https://connectivity.example.test/health' => Http::failedConnection(),
+    ]);
+
+    $this->app->instance(MobileNetworkState::class, new NativeMobileNetworkState(new MobileOfflineBannerNullNativeNetwork));
+
+    Livewire::test(OfflineBanner::class)
+        ->assertSet('isOffline', true)
+        ->assertSee('Offline mode')
+        ->assertSee('Fallback check failed')
+        ->assertDontSee('Unknown / Unknown');
 });
 
 test('retry sync stays queued while offline', function (): void {

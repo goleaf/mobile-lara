@@ -26,6 +26,9 @@ use App\Livewire\Mobile\PinCreate;
 use App\Livewire\Mobile\PinRemove;
 use App\Livewire\Mobile\PrivacyPolicy;
 use App\Livewire\Mobile\Profile;
+use App\Livewire\Mobile\RecordCategories;
+use App\Livewire\Mobile\RecordCreate;
+use App\Livewire\Mobile\Records;
 use App\Livewire\Mobile\Register;
 use App\Livewire\Mobile\ResetPassword;
 use App\Livewire\Mobile\ScanHistory;
@@ -115,6 +118,9 @@ test('protected mobile routes redirect guests to login', function (string $route
     'media gallery' => 'mobile.media.gallery',
     'voice notes' => 'mobile.voice-notes',
     'files' => 'mobile.files',
+    'records index' => 'mobile.records.index',
+    'records categories' => 'mobile.records.categories',
+    'records create' => 'mobile.records.create',
     'scanner' => 'mobile.scanner',
     'scan history' => 'mobile.scan-history',
     'location check-in' => 'mobile.location.check-in',
@@ -148,7 +154,7 @@ test('protected mobile routes render for authenticated users', function (string 
     'settings appearance' => ['mobile.settings.appearance', SettingsAppearance::class, 'Appearance settings'],
     'settings storage' => ['mobile.settings.storage', SettingsStorage::class, 'Storage settings'],
     'settings sync' => ['mobile.settings.sync', SettingsSync::class, 'Sync settings'],
-    'settings permissions' => ['mobile.settings.permissions', SettingsPermissions::class, 'Permission settings'],
+    'settings permissions' => ['mobile.settings.permissions', SettingsPermissions::class, 'Permissions center'],
     'settings support' => ['mobile.settings.support', SettingsSupport::class, 'Support settings'],
     'settings legal' => ['mobile.settings.legal', SettingsLegal::class, 'Legal settings'],
     'settings developer' => ['mobile.settings.developer', SettingsDeveloper::class, 'Developer settings'],
@@ -161,6 +167,9 @@ test('protected mobile routes render for authenticated users', function (string 
     'media gallery' => ['mobile.media.gallery', MediaGallery::class, 'Media gallery'],
     'voice notes' => ['mobile.voice-notes', VoiceNotes::class, 'Voice notes'],
     'files' => ['mobile.files', FileManager::class, 'File manager'],
+    'records index' => ['mobile.records.index', Records::class, 'Records'],
+    'records categories' => ['mobile.records.categories', RecordCategories::class, 'Record categories'],
+    'records create' => ['mobile.records.create', RecordCreate::class, 'Create record'],
     'scanner' => ['mobile.scanner', ScannerDemo::class, 'QR/barcode scanner'],
     'scan history' => ['mobile.scan-history', ScanHistory::class, 'Scan history'],
     'location check-in' => ['mobile.location.check-in', LocationCheckIn::class, 'Location check-in'],
@@ -192,6 +201,9 @@ test('mobile routes render the shared livewire app shell', function (): void {
         ->assertSee('aria-label="Profile"', false)
         ->assertSee('aria-label="Primary tabs"', false)
         ->assertSee('aria-current="page"', false)
+        ->assertSee('mobile-shell', false)
+        ->assertSee('mobile-shell-header', false)
+        ->assertSee('mobile-shell-footer', false)
         ->assertSee('wire:key="mobile-tab-mobile.dashboard"', false)
         ->assertSee('wire:key="mobile-tab-mobile.search"', false)
         ->assertSee('wire:key="mobile-tab-mobile.create"', false)
