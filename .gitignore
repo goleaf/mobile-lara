@@ -13,7 +13,13 @@
 /.vscode
 /.zed
 /auth.json
+/build
+/database/nativephp.sqlite
+/dist
+/nativephp/electron/dist
+/nativephp_debug.json
 /node_modules
+/nativephp
 /public/build
 /public/fonts-manifest.dev.json
 /public/hot

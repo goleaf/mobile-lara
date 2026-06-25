@@ -1,0 +1,13 @@
+# Generated Laravel runtime state
+bootstrap/cache/
+storage/framework/
+storage/logs/
+database/*.sqlite
+
+# Frontend and packaged app artifacts
+build/
+dist/
+nativephp/electron/dist/
+node_modules/
+public/build/
+vendor/

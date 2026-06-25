@@ -1,5 +1,11 @@
 {
     "mcpServers": {
+        "codebase-memory-mcp": {
+            "command": "npx",
+            "args": [
+                "codebase-memory-mcp"
+            ]
+        },
         "laravel-boost": {
             "command": "php",
             "args": [

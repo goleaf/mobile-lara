@@ -1,0 +1,6 @@
+{
+    "extra_extensions": {
+        ".blade.php": "php",
+        ".mjs": "javascript"
+    }
+}
