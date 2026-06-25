@@ -25,11 +25,17 @@ test('nativephp mobile is configured for this app', function () {
         ->toMatchArray([
             'version' => '1.0.0',
             'version_code' => '1',
-            'app_id' => 'dev.andrejprus.mobilelara',
+            'app_name' => 'Mobile Lara',
+            'app_id' => 'com.example.mobilelara',
+            'bundle_identifier' => 'com.example.mobilelara',
+            'android_package' => 'com.example.mobilelara',
             'deeplink_scheme' => 'mobilelara',
             'deeplink_host' => 'mobile-lara.test',
             'start_url' => '/',
         ])
+        ->and(config('nativephp.icons.source'))->toBe('public/icon.png')
+        ->and(file_exists(base_path(config('nativephp.icons.source'))))->toBeTrue()
+        ->and(getimagesize(base_path(config('nativephp.icons.source'))))->toMatchArray([1024, 1024])
         ->and(config('nativephp.runtime.mode'))->toBe('persistent')
         ->and(config('nativephp.android.theme.color_primary'))->toBe('#04ABA6')
         ->and(config('nativephp.permissions'))->toHaveKeys([

@@ -30,16 +30,58 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | App ID
+    | App Display Name
     |--------------------------------------------------------------------------
     |
-    | This is the unique ID of your application used by Android to identify
-    | the app package. It is typically written in reverse domain format,
-    | such as "com.nativephp.app".
+    | NativePHP currently uses config('app.name') when writing the native app
+    | display name. This alias documents the intended mobile app name beside
+    | the rest of the NativePHP settings while still falling back to APP_NAME.
     |
     */
 
-    'app_id' => env('NATIVEPHP_APP_ID', 'dev.andrejprus.mobilelara'),
+    'app_name' => env('NATIVEPHP_APP_NAME', env('APP_NAME', 'Mobile Lara')),
+
+    /*
+    |--------------------------------------------------------------------------
+    | App ID
+    |--------------------------------------------------------------------------
+    |
+    | This is the unique ID NativePHP v3 writes into both the iOS bundle
+    | identifier and Android application ID. Replace the placeholder with a
+    | real reverse-domain identifier before publishing.
+    |
+    */
+
+    'app_id' => env('NATIVEPHP_APP_ID', 'com.example.mobilelara'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Platform Identifier Placeholders
+    |--------------------------------------------------------------------------
+    |
+    | NativePHP v3 consumes the unified app_id above for generated native
+    | projects. These aliases keep the intended iOS and Android identifiers
+    | explicit for future platform-specific configuration.
+    |
+    */
+
+    'bundle_identifier' => env('NATIVEPHP_IOS_BUNDLE_IDENTIFIER', env('NATIVEPHP_APP_ID', 'com.example.mobilelara')),
+
+    'android_package' => env('NATIVEPHP_ANDROID_PACKAGE', env('NATIVEPHP_APP_ID', 'com.example.mobilelara')),
+
+    /*
+    |--------------------------------------------------------------------------
+    | App Icon
+    |--------------------------------------------------------------------------
+    |
+    | NativePHP looks for a single 1024x1024 PNG at public/icon.png and uses it
+    | to generate iOS and Android icon sizes during native installation/builds.
+    |
+    */
+
+    'icons' => [
+        'source' => env('NATIVEPHP_APP_ICON', 'public/icon.png'),
+    ],
 
     /*
     |--------------------------------------------------------------------------
