@@ -19,6 +19,8 @@ UI decisions must follow [Documentation-First Architecture](documentation-first-
 
 UI decisions must follow [Admin Control Center Logic](admin-control-center-logic.md): admin controls for tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance, force update, sync, notifications, reports, billing, and support must show scope, consequence, support meaning, and API-derived mobile effect.
 
+UI decisions must follow [Feature Flag Logic](feature-flag-logic.md): feature-controlled surfaces must distinguish hidden, visible, disabled, blocked, beta, deprecated, update-required, offline-limited, and emergency-disabled states without exposing raw flag internals.
+
 UI decisions must also follow [Target User Roles](user-roles.md): each role should see the controls, diagnostics, billing context, support context, tenant scope, or pre-login state that matches its job.
 
 UI decisions must also express the [SaaS Value Map](saas-value-map.md): platform owners need high-level control and risk visibility, tenant admins need scoped management, mobile workers need simple next actions, support needs safe diagnostics, and billing/operations needs entitlement clarity without tenant workflow overreach.
@@ -188,6 +190,10 @@ The SaaS product needs consistent state language.
 | Blocked | App version, device, tenant, billing, or permission policy prevents use. |
 | Deprecated | Current app version or feature path still works but should be upgraded. |
 | Offline | Network is unavailable or fallback connectivity failed. |
+| Beta | Feature is available through controlled rollout. |
+| Update required | Feature cannot run safely on the current app version. |
+| Offline limited | Feature is allowed but restricted while offline. |
+| Emergency disabled | Feature is stopped by Admin/API for safety or incident response. |
 
 Mobile and admin should use the same state names in copy, badges, filters, support tickets, and reports.
 

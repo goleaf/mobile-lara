@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the logical responsibilities of the Admin/API system in Mobile Lara. It explains what the SaaS control plane owns, why it owns it, how that authority relates to the mobile client, and which risks the responsibility model prevents. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, or application logic.
 
-Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), and [Admin Control Center Logic](admin-control-center-logic.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution, admin controls are scoped and auditable, and every feature/control/risk is documented before implementation.
+Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Admin Control Center Logic](admin-control-center-logic.md), and [Feature Flag Logic](feature-flag-logic.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution, admin controls are scoped and auditable, feature flags are resolved server-side, and every feature/control/risk is documented before implementation.
 
 ## Responsibility Statement
 
@@ -114,6 +114,7 @@ Principles:
 - Every feature needs enable, disable, blocked, deprecated, support, report, audit, and rollback thinking.
 - Emergency disablement must be server-authoritative.
 - Feature state should be explainable to support and safe to report.
+- Important mobile features should follow [Feature Flag Logic](feature-flag-logic.md): global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, and offline decisions resolve to mobile-safe states.
 
 Mobile renders feature state; it does not decide feature availability.
 

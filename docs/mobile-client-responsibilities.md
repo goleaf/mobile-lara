@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines the logical responsibilities of the Mobile Lara mobile client. It explains what the NativePHP + Livewire client owns, what it may cache or perform locally, how it should present server-controlled behavior, and which authority it must never claim. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, NativePHP plugins, or application logic.
 
-Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Two-System Boundary Logic](two-system-boundary.md), and [Admin Control Center Logic](admin-control-center-logic.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution and presentation, admin controls define API-derived outcomes, and every mobile screen documents its API dependency before implementation.
+Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin Control Center Logic](admin-control-center-logic.md), and [Feature Flag Logic](feature-flag-logic.md): Admin/API owns authority, API is the trusted contract, mobile owns local execution and presentation, admin controls define API-derived outcomes, feature flags resolve to mobile-safe states, and every mobile screen documents its API dependency before implementation.
 
 ## Responsibility Statement
 
@@ -189,6 +189,7 @@ Principles:
 
 - The app may show, hide, disable, block, deprecate, or require update for features based on API policy.
 - Feature visibility should map back to Admin Control Center controls for tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance, force update, sync behavior, notifications, reports, billing, and support.
+- Feature visibility should map back to Feature Flag Logic states: hidden, visible, disabled, blocked, beta, deprecated, update-required, offline-limited, or emergency-disabled.
 - Feature visibility should consider tenant, role, plan, user, device, app version, cohort, remote config, and offline eligibility as returned by API.
 - Feature-disabled messaging should be clear without exposing raw flag names or billing internals.
 - Emergency-disabled features should fail closed and explain what the user can do next.

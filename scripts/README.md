@@ -8,6 +8,11 @@ tenant, user, role, permission, feature, config, version, maintenance, force
 update, sync, notification, report, billing, and support controls without
 creating undocumented application logic.
 
+Scripts must also respect Feature Flag Logic in
+`../docs/feature-flag-logic.md`: any future verification helper should check
+resolved mobile-safe feature states and avoid creating hidden feature authority
+outside the documented Admin/API path.
+
 Do not add custom verification scripts when a normal project command already
 proves the behavior. Prefer the real commands:
 

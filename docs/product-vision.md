@@ -31,6 +31,8 @@ The documentation standard is defined in [Documentation-First Architecture](docu
 
 The Admin Control Center model is defined in [Admin Control Center Logic](admin-control-center-logic.md). It explains how admins control tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance, force update, sync behavior, notifications, reports, billing, and support.
 
+The feature flag model is defined in [Feature Flag Logic](feature-flag-logic.md). It explains why important mobile features need flags, how global/tenant/user decisions are prioritized, how disabled features appear on mobile, how admins understand impact, and how rollout and plan limits stay safe.
+
 The target role model is defined in [Target User Roles](user-roles.md). Role boundaries explain who can own, operate, manage, support, bill, use, join, recover, or preview the product.
 
 The SaaS value map is defined in [SaaS Value Map](saas-value-map.md). Value boundaries explain why platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team need different outcomes from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
@@ -156,6 +158,7 @@ Scalable SaaS principles:
 - **Tenant isolation** - every admin action, API request, report, support view, notification, and sync decision is scoped.
 - **Config-driven behavior** - feature flags, remote config, app-version policy, notification policy, and sync policy can change without a mobile release.
 - **Control-center governance** - tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, and support are controlled through scoped, authorized, auditable admin operations.
+- **Feature-flag governance** - important mobile features resolve global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, and offline decisions into mobile-safe API states.
 - **API contracts** - mobile clients consume versioned, shaped API responses instead of raw internal models.
 - **API-first purpose** - every mobile feature has a clear API purpose, predictable response shape, mobile-friendly errors, and tenant-safe context.
 - **Entitlement enforcement** - billing and plan rules are enforced server-side and surfaced to mobile as allowed or denied capability.

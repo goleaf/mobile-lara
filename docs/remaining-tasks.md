@@ -12,6 +12,11 @@ tenant, user, role, permission, mobile feature, remote config, app version,
 maintenance, force update, sync, notification, report, billing, and support
 controls to that document before code is written.
 
+Feature Flag Logic is defined in `docs/feature-flag-logic.md`. Remaining
+implementation work must map important mobile features to documented global,
+tenant, plan, role, permission, user, app-version, device, cohort,
+maintenance, emergency, disabled-state, rollout, and plan-limit decisions.
+
 ## Active Implementation Work
 
 - Move from the current root Laravel mobile app to the requested monorepo shape

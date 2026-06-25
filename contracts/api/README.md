@@ -9,6 +9,11 @@ Every contract that exposes tenant, user, role, permission, feature, config,
 version, maintenance, force update, sync, notification, report, billing, or
 support behavior should map the admin control to a mobile-safe API outcome.
 
+Feature Flag Logic lives in `../../docs/feature-flag-logic.md`. Every contract
+that exposes feature availability should return resolved mobile-safe states
+rather than raw global, tenant, user, plan, version, device, cohort,
+maintenance, or emergency flag internals.
+
 ## Versioning
 
 Mobile contracts are grouped by API version. The first implementation target is:

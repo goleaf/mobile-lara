@@ -24,6 +24,10 @@ tenant, user, role, permission, feature, remote config, app version,
 maintenance, force update, sync, notification, report, billing, and support
 state.
 
+Feature Flag Logic in `../../docs/feature-flag-logic.md` defines the mobile
+states the client should receive from API: hidden, visible, disabled, blocked,
+beta, deprecated, update-required, offline-limited, or emergency-disabled.
+
 ## Current Phase 1 State
 
 The existing mobile implementation still lives at the repository root. It

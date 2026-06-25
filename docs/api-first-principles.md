@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines API-first principles for Mobile Lara. It explains how the Admin/API system and NativePHP + Livewire mobile client communicate, what the API must make predictable, how mobile features depend on API purpose, and how API behavior protects tenants, permissions, sync, conflicts, and mobile UX. It is documentation only and does not define endpoints, routes, database fields, migrations, controllers, resources, policies, jobs, services, or application logic.
 
-Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), and [Admin Control Center Logic](admin-control-center-logic.md): Admin/API owns authority, mobile owns local execution, API is the only trusted contract between them, admin controls are scoped and auditable, and API behavior is documented before implementation.
+Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Admin Control Center Logic](admin-control-center-logic.md), and [Feature Flag Logic](feature-flag-logic.md): Admin/API owns authority, mobile owns local execution, API is the only trusted contract between them, admin controls are scoped and auditable, feature flags resolve to mobile-safe states, and API behavior is documented before implementation.
 
 ## API-First Statement
 
@@ -15,6 +15,7 @@ The API is not a convenience layer. It is the contract that turns Admin/API auth
 - It tells mobile who the user is.
 - It tells mobile which tenants, permissions, features, config, version rules, and sync rules apply.
 - It tells mobile which Admin Control Center outcomes apply for tenants, users, roles, permissions, features, config, versions, maintenance, force update, sync, notifications, reports, billing, and support.
+- It tells mobile resolved feature flag outcomes such as hidden, visible, disabled, blocked, beta, deprecated, update-required, offline-limited, or emergency-disabled.
 - It receives mobile reads, writes, support actions, notification registration, and offline replay intents.
 - It returns predictable success, denial, conflict, stale-client, offline-recovery, and user-friendly error states.
 - It protects tenant boundaries even when mobile is stale, offline, copied between devices, or running an old app version.

@@ -4,7 +4,7 @@ Updated: 2026-06-25
 
 This document defines documentation-first architecture principles for Mobile Lara. It explains how product ideas, admin controls, mobile screens, API dependencies, sync behavior, permissions, and risks must be documented before implementation. It is documentation only and does not define endpoints, routes, database fields, migrations, controllers, Livewire components, resources, policies, jobs, services, NativePHP plugins, or application logic.
 
-Use this document with [Core Product Principles](product-principles.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), and [Admin Control Center Logic](admin-control-center-logic.md): documentation is the agreement that prevents authority, API behavior, admin controls, mobile UX, offline behavior, permissions, and risk handling from drifting during implementation.
+Use this document with [Core Product Principles](product-principles.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Admin Control Center Logic](admin-control-center-logic.md), and [Feature Flag Logic](feature-flag-logic.md): documentation is the agreement that prevents authority, API behavior, admin controls, feature flags, mobile UX, offline behavior, permissions, and risk handling from drifting during implementation.
 
 ## Architecture Statement
 
@@ -67,6 +67,8 @@ Every admin control should document:
 Admin controls are product levers. Their mobile effects must be written before those levers exist.
 
 Use [Admin Control Center Logic](admin-control-center-logic.md) as the checklist for tenant, user, role, permission, feature, config, version, maintenance, force-update, sync, notification, report, billing, and support controls.
+
+Use [Feature Flag Logic](feature-flag-logic.md) as the checklist for important mobile feature priority, disabled states, rollout, admin impact, plan limits, support, audit, offline behavior, and retirement.
 
 ## Every Mobile Screen Must Document Its API Dependency
 
@@ -185,6 +187,7 @@ Use this checklist before a feature moves from planning to implementation.
 | Is the feature documented? | The product slice, stakeholder value, user roles, and non-goals are written. |
 | What does Admin/API own? | Control-plane authority and responsibility owner are named. |
 | What Admin Control Center area owns it? | Tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, or support control is named. |
+| What feature flag logic applies? | Global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, disabled state, rollout, and offline behavior are named. |
 | What does mobile own? | Local UX, cache, draft, queue, NativePHP, sync display, feedback, or visibility owner is named. |
 | What is the API purpose? | API context, response states, errors, sync/conflict, and tenant boundary are documented. |
 | What is the admin control's mobile effect? | Mobile visibility, copy, disabled/blocked state, offline behavior, sync behavior, or support prompt is explicit. |

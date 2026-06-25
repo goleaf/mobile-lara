@@ -23,6 +23,11 @@ must map each tenant, user, role, permission, mobile feature, remote config,
 app version, maintenance, force update, sync, notification, report, billing,
 and support control to that document before code is written.
 
+Feature Flag Logic is defined in `../../docs/feature-flag-logic.md`. Future
+API/Admin implementation must resolve global, tenant, plan, role, permission,
+user, app-version, device, cohort, maintenance, and emergency feature decisions
+into API outcomes before mobile uses them.
+
 ## Current Phase 1 State
 
 The directory exists so the monorepo boundary is explicit. The Laravel app,

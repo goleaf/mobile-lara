@@ -14,6 +14,8 @@ The documentation-first architecture standard in [Documentation-First Architectu
 
 The [Admin Control Center Logic](admin-control-center-logic.md) defines how admin authority becomes operational control over tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, and support.
 
+The [Feature Flag Logic](feature-flag-logic.md) defines how important mobile features are controlled, prioritized, disabled, rolled out, plan-limited, audited, supported, and resolved into mobile-safe states.
+
 The role model in [Target User Roles](user-roles.md) defines who can see and control product surfaces. Role boundaries are part of every principle below.
 
 The [SaaS Value Map](saas-value-map.md) defines why each product surface matters. Stakeholder value is part of every principle below: admin control, mobile access, offline sync, notifications, reports, security, and feature flags must create clear value for the right role without leaking authority to the wrong one.
@@ -69,6 +71,8 @@ A feature is not product-ready if it exists only as a screen. It must define:
 - How support can explain its state.
 
 Product rule: every feature ships with enable, disable, rollback, support, and audit thinking.
+
+Use [Feature Flag Logic](feature-flag-logic.md) to define global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, and offline decisions before implementation.
 
 ## 4. Tenant Isolation Is Non-Negotiable
 
@@ -173,6 +177,7 @@ Before a future feature is implemented, answer:
 | --- | --- |
 | Who controls it? | Admin/API owns the business decision. |
 | Which admin control owns it? | Tenant, user, role, permission, feature, config, version, maintenance, force update, sync, notification, report, billing, or support control maps to `docs/admin-control-center-logic.md`. |
+| What is the feature flag logic? | Important mobile features map to `docs/feature-flag-logic.md` for priority, disabled state, rollout, admin impact, plan limit, support, audit, and offline behavior. |
 | Which roles see it? | Visibility and control map to `docs/user-roles.md`. |
 | Who receives value? | Stakeholder value maps to `docs/saas-value-map.md`. |
 | Which system owns it? | Boundary ownership maps to `docs/two-system-boundary.md`. |
@@ -216,6 +221,7 @@ Those belong in future implementation prompts with tests and acceptance criteria
 | Mobile duplicates business logic | Mobile renders server policy and replays work through the API. |
 | Feature flags become unmanaged sprawl | Every feature needs owner, scope, disable behavior, support visibility, and audit trail. |
 | Admin controls become unmanaged sprawl | Use Admin Control Center logic to define scope, role authority, mobile effect, API context, audit, support, offline behavior, and risk. |
+| Feature flags become unmanaged sprawl | Use Feature Flag Logic to define owner, scope, purpose, priority, rollout, mobile state, support meaning, audit, and retirement. |
 | Feature value becomes unclear | Use the SaaS value map to name the stakeholder, outcome, and proof metric before implementation. |
 | Ownership boundary becomes blurry | Use the two-system boundary before deciding where state, authority, cache, queue, or offline behavior belongs. |
 | API behavior becomes accidental | Use the API-first principles before deciding response shape, operating context, mobile errors, sync/conflict, or tenant-scoped responses. |

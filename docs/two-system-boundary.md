@@ -24,6 +24,8 @@ The documentation-first architecture model is defined in [Documentation-First Ar
 
 The Admin Control Center model is defined in [Admin Control Center Logic](admin-control-center-logic.md). Use it with this boundary document whenever admin control touches tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, or support.
 
+The feature flag model is defined in [Feature Flag Logic](feature-flag-logic.md). Use it with this boundary document whenever feature availability depends on global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, or offline decisions.
+
 The detailed control-plane responsibility model is defined in [Admin/API Responsibilities](admin-api-responsibilities.md). Use it with this boundary document whenever a feature touches tenants, users, permissions, admin operations, API contracts, feature control, remote configuration, mobile version rules, notifications, billing, support, reporting, audit history, conflict decisions, or security enforcement.
 
 The detailed API contract model is defined in [API-First Principles](api-first-principles.md). Use it with this boundary document whenever a feature touches mobile/API communication, operating context, predictable responses, mobile-friendly errors, sync replay, conflict logic, version rules, or tenant-scoped responses.
@@ -302,3 +304,5 @@ If the API purpose, response, context, error, sync/conflict, or tenant-boundary 
 If the feature's documentation-first checklist is incomplete, the feature is not ready for implementation planning.
 
 If the Admin Control Center scope, role authority, mobile effect, API context, audit expectation, support meaning, or offline behavior is unclear, the feature is not ready for admin planning.
+
+If feature flag priority, disabled mobile state, rollout path, admin impact, plan-limit behavior, support meaning, audit expectation, or offline behavior is unclear, the feature is not ready for implementation planning.

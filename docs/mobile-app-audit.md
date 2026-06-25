@@ -23,6 +23,8 @@ The documentation-first standard is [Documentation-First Architecture](documenta
 
 The Admin Control Center standard is [Admin Control Center Logic](admin-control-center-logic.md). Audits should verify that tenant, user, role, permission, mobile feature, remote config, app-version, maintenance, force-update, sync, notification, report, billing, and support controls are scoped, authorized, auditable, supportable, API-driven, and tenant-safe.
 
+The Feature Flag Logic standard is [Feature Flag Logic](feature-flag-logic.md). Audits should verify that important mobile features have documented flag purpose, priority, disabled mobile states, admin impact, safe rollout, plan limits, support visibility, audit expectations, and offline behavior.
+
 The role standard is [Target User Roles](user-roles.md). Audits should verify platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user visibility separately.
 
 The value standard is [SaaS Value Map](saas-value-map.md). Audits should verify that platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team receive clear value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags without receiving inappropriate visibility or authority.
@@ -89,6 +91,18 @@ If a future feature only satisfies the web/admin side or only the mobile side, i
 | Reports | Are report definitions, aggregation, exports, dashboards, and visibility scoped by tenant, role, support, billing, and purpose? |
 | Billing | Do plans, quotas, entitlements, trials, renewals, restrictions, failed-payment outcomes, and replay checks map to mobile product states? |
 | Support | Are cases, diagnostics, escalation, recovery actions, support visibility, and config-refresh guidance case-scoped and diagnostic-safe? |
+
+## Feature Flag Logic Audit
+
+| Feature flag question | Audit lens |
+| --- | --- |
+| Why flag it? | Does the feature affect mobile behavior, rollout, tenant variation, plan limits, app versions, NativePHP capability, offline behavior, support, reporting, or risk? |
+| What priority applies? | Do safety, plan, global, tenant, role/permission, user, version/device/cohort, and offline decisions resolve predictably? |
+| What mobile state appears? | Does API resolve hidden, visible, disabled, blocked, beta, deprecated, update-required, offline-limited, or emergency-disabled state? |
+| What is admin impact? | Can admins see affected tenants, users, roles, plans, versions, devices, cohorts, sync, support, reports, billing, audit, and rollback? |
+| What rollout path applies? | Is rollout internal, pilot, cohort, plan-limited, tenant-limited, general availability, rollback, or emergency-disabled? |
+| What plan limit applies? | Does plan entitlement define the ceiling while flags decide exposure inside that ceiling? |
+| What happens offline? | Does replay recheck current flag, plan, permission, version, tenant, maintenance, and emergency state before acceptance? |
 
 ## SaaS Value Map Audit
 
@@ -216,6 +230,7 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Product positioning governance | Future slices must preserve the combined SaaS control center plus mobile platform positioning rather than drifting into web-only or mobile-only work. |
 | Documentation-first governance | Every future slice must document feature behavior, admin mobile effect, mobile API dependency, sync behavior, permission owner, risks, and acceptance criteria before implementation. |
 | Admin Control Center governance | Every future admin slice must define control area, authorized role, scope, mobile effect, API context, audit expectation, support meaning, offline behavior, risk, and non-goals before implementation. |
+| Feature flag governance | Every future important mobile feature must define flag priority, disabled mobile states, admin impact, rollout path, plan limits, support meaning, audit expectation, offline behavior, and non-goals before implementation. |
 | SaaS value governance | Every future slice must prove stakeholder value and connect that value to admin control, mobile access, offline sync, notifications, reports, security, or feature flags. |
 | API-first governance | Every future slice must define API purpose, operating context, predictable responses, mobile-friendly errors, sync/conflict behavior, and tenant-boundary protection before endpoint design. |
 | Admin/API responsibility governance | Every future slice must identify which control-plane responsibility owns tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |

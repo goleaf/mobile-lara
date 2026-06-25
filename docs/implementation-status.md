@@ -12,6 +12,12 @@ tenant, user, role, permission, mobile feature, remote config, app version,
 maintenance, force update, sync, notification, report, billing, and support
 controls to that document before code is written.
 
+Feature Flag Logic is defined in `docs/feature-flag-logic.md`. Future
+implementation work must map important mobile features to documented flag
+priority, disabled mobile state, admin impact, rollout path, plan limits,
+support meaning, audit expectation, and offline behavior before code is
+written.
+
 Status values:
 
 - `not started` - No durable implementation exists yet.
@@ -28,15 +34,15 @@ Status values:
 | Area | Current state |
 | --- | --- |
 | Root application | A Laravel 13 + Livewire 4 + NativePHP Mobile app exists at the repository root. |
-| Requested monorepo paths | `apps/api-admin` and `apps/mobile-client` exist as Phase 1 boundary scaffolds. |
-| API routes | `routes/api.php` is not present yet. |
+| Requested monorepo paths | `apps/api-admin` is now a Laravel API/admin app; `apps/mobile-client` remains a Phase 1 boundary scaffold. |
+| API routes | `apps/api-admin/routes/api.php` exposes the first versioned route at `GET /api/v1/mobile/status`. |
 | Mobile routes | 52 `mobile.*` Livewire routes exist in `routes/web.php`. |
 | Active database | Default SQLite contains only framework tables and `users`; no SaaS control-plane schema exists yet. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist. |
-| Admin/API system | Product responsibilities are documented, but code is not implemented yet. |
-| Contracts directory | `contracts/api` exists with the initial response-envelope contract guidance. |
+| Admin/API system | `apps/api-admin` contains a Laravel 13 app, Livewire dashboard shell, shared API response envelope, and first mobile status endpoint. Auth, tenancy, and SaaS modules remain pending. |
+| Contracts directory | `contracts/api` exists with response-envelope guidance and the first `v1-foundation.md` contract. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | Many mobile/local/NativePHP Pest tests exist. Full-suite verification has not yet been run in this implementation pass. |
+| Tests | Root mobile suite passed in the Phase 1 pass. `apps/api-admin` has focused Pest coverage for admin routing and API envelopes. |
 | Native tooling | Docs record that Xcode, Android Studio, and Gradle were not detected in previous checks. |
 
 ## Phase 1 - Repository Foundation
@@ -45,13 +51,14 @@ Status values:
 | --- | --- | --- |
 | Root README and product docs | documented | Root docs define the product, boundaries, stack, and audit baseline. |
 | Admin Control Center logic | documented | Control principles exist for tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance, force update, sync, notifications, reports, billing, and support. |
-| Root monorepo structure | partial | `apps/api-admin` and `apps/mobile-client` exist as documented boundaries; code migration is pending. |
-| `apps/api-admin` | partial | Path and boundary README exist; Laravel app implementation is pending. |
+| Feature Flag Logic | documented | Feature flag principles exist for important mobile features, global/tenant/user priority, disabled states, admin impact, rollout safety, and plan limits. |
+| Root monorepo structure | partial | `apps/api-admin` is implemented as a Laravel app; `apps/mobile-client` still needs the root mobile app migration. |
+| `apps/api-admin` | tested | Laravel app, Livewire dashboard route, versioned API route, shared responder, tests, and frontend build exist. |
 | `apps/mobile-client` | partial | Path and boundary README exist; existing root mobile app migration is pending. |
 | `docs` | documented | Core docs exist; implementation docs need to track real code as it lands. |
-| `contracts/api` | partial | Directory and response-envelope README exist; individual v1 contracts are pending. |
+| `contracts/api` | partial | Directory, response-envelope README, and `v1-foundation.md` exist; domain-specific v1 contracts are pending. |
 | Root scripts | partial | Directory and guidance exist; no custom wrappers are needed before app split. |
-| Environment examples | partial | Root `.env.example` exists; per-app env examples are not present. |
+| Environment examples | partial | Root `.env.example` and `apps/api-admin/.env.example` exist; mobile-client per-app env is pending. |
 | Documentation structure | partial | Product docs, implementation status, remaining tasks, changelog, app boundary docs, and contract guidance exist. |
 | Git state discipline | partial | Repository is clean and ahead of origin by 2 commits before this implementation pass. |
 
@@ -153,7 +160,7 @@ Status values:
 | Global feature flags | not started | Required server authority. |
 | Tenant feature overrides | not started | Required for SaaS control. |
 | User feature overrides | not started | Required by requested resolution order. |
-| Resolution order user -> tenant -> global | documented | Needs implementation and tests. |
+| Resolution order safety -> plan -> global -> tenant -> role/permission -> user -> version/device/cohort -> offline | documented | Defined in Feature Flag Logic; needs implementation and tests. |
 | Admin feature flag UI | not started | No admin panel exists. |
 | Mobile feature store/cache | not started | Required after bootstrap exists. |
 | Feature-gated mobile navigation/actions | partial | Mobile routes exist; not API/feature controlled yet. |

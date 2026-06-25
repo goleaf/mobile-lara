@@ -15,3 +15,6 @@ All notable changes to Mobile Lara will be documented in this file.
   auditable control of tenants, users, roles, permissions, mobile features,
   remote config, app versions, maintenance, force update, sync, notifications,
   reports, billing, and support.
+- Added Feature Flag Logic documentation for global, tenant, plan, role,
+  permission, user, app-version, device, cohort, maintenance, and emergency
+  feature decisions.

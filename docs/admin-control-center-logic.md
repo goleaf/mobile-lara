@@ -6,6 +6,8 @@ This document defines the logic of the Mobile Lara Admin Control Center. It expl
 
 Use this document with [Documentation-First Architecture](documentation-first-architecture.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Target User Roles](user-roles.md), and [SaaS Value Map](saas-value-map.md): the Admin Control Center is the operational surface for server authority, and mobile receives outcomes through API.
 
+Use [Feature Flag Logic](feature-flag-logic.md) whenever a control changes important mobile feature availability, rollout, disabled states, plan limits, or user-level access.
+
 ## Control Center Statement
 
 The Admin Control Center is the operational control surface for the SaaS.
@@ -100,6 +102,7 @@ Admin control of mobile features defines what capabilities exist for each tenant
 Principles:
 
 - Features can be enabled, disabled, blocked, deprecated, phased, or emergency-disabled.
+- Important mobile features should follow the priority, disabled-state, rollout, impact, and plan-limit rules in [Feature Flag Logic](feature-flag-logic.md).
 - A mobile feature is not ready unless admin control, API purpose, mobile UX, offline behavior, support, audit, and rollback are documented.
 - Feature controls should explain disabled and blocked states for mobile users.
 - Feature rollout should support internal, tenant, cohort, plan, role, version, and device constraints.

@@ -18,6 +18,10 @@ The product contract remains unchanged:
   maintenance, force update, sync, notification, report, billing, and support
   controls are scoped, authorized, audited, and sent to mobile through API
   outcomes.
+- Feature Flag Logic in `../docs/feature-flag-logic.md` defines how important
+  mobile features resolve global, tenant, plan, role, permission, user,
+  app-version, device, cohort, maintenance, and emergency decisions into
+  mobile-safe states.
 - Mobile owns local execution, NativePHP capability UX, cache, drafts, queues,
   sync display, and API-derived feature visibility.
 - Mobile never reads the admin database directly. Server-trusted behavior must

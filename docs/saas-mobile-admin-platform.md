@@ -52,6 +52,8 @@ Documentation-first architecture is detailed in [Documentation-First Architectur
 
 Admin Control Center logic is detailed in [Admin Control Center Logic](admin-control-center-logic.md). Every admin control must define its control area, role authority, scope, mobile effect, API context, audit expectation, support meaning, offline behavior, risk, and implementation boundary before coding.
 
+Feature flag logic is detailed in [Feature Flag Logic](feature-flag-logic.md). Every important mobile feature must define flag purpose, priority, disabled mobile state, admin impact, rollout path, plan-limit behavior, support meaning, audit expectation, and offline behavior before coding.
+
 ## Target User Roles
 
 The logical role model lives in [Target User Roles](user-roles.md). The main roles are:
@@ -116,6 +118,14 @@ The detailed admin-control model lives in [Admin Control Center Logic](admin-con
 The Admin Control Center is the operational surface where authorized roles control tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, and support.
 
 Admin controls should be scoped, authorized, explainable, auditable, reversible where possible, tenant-safe, documented first, and delivered to mobile through API outcomes.
+
+## Feature Flag Logic
+
+The detailed feature-flag model lives in [Feature Flag Logic](feature-flag-logic.md).
+
+Important mobile features should be controlled by feature flags because tenant settings, plan limits, app versions, user cohorts, NativePHP capabilities, offline behavior, support visibility, and rollout risk can differ without requiring a new mobile build.
+
+Feature flags should resolve global, tenant, plan, role, permission, user, app-version, device, cohort, maintenance, emergency, and offline decisions into mobile-safe API states such as hidden, visible, disabled, blocked, beta, deprecated, update-required, offline-limited, or emergency-disabled.
 
 ## Mobile Client Responsibilities
 
@@ -237,6 +247,8 @@ Each feature also needs a mobile responsibility story: which mobile-client respo
 Each feature also needs a documentation story: which docs record the feature, admin control effect on mobile, mobile API dependency, offline/online sync behavior, permission owner, risks, and acceptance criteria before coding.
 
 Each feature also needs an Admin Control Center story: which admin control area owns the behavior, who can change it, what scope applies, what mobile effect appears, what API context changes, what is audited, what support can explain, and what happens offline.
+
+Each feature also needs a feature-flag story: why it needs a flag, which scopes can affect it, how global/tenant/user decisions are prioritized, how disabled mobile states appear, how admins understand impact, how rollout is made safe, and how plan limits apply.
 
 ## Admin Control Logic
 

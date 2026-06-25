@@ -14,6 +14,8 @@ Local storage planning must follow [Documentation-First Architecture](documentat
 
 Local storage planning must follow [Admin Control Center Logic](admin-control-center-logic.md). Admin-controlled sync, offline eligibility, maintenance blocks, force-update effects, tenant status, user suspension, feature availability, billing entitlement, and support visibility define when local cache, drafts, and queues are allowed.
 
+Local storage planning must follow [Feature Flag Logic](feature-flag-logic.md). Feature flags decide whether a mobile workflow is read-only offline, draft-only offline, queueable offline, online-only, disabled, blocked, update-required, or emergency-disabled.
+
 Local storage must also respect [Target User Roles](user-roles.md). Mobile-local cache may reflect the currently authorized mobile user, but invited, suspended, and guest/pre-login states must not retain normal workflow access.
 
 Local storage must also support the [SaaS Value Map](saas-value-map.md). Offline sync creates value for tenant businesses, tenant admins, mobile workers/clients, support teams, and billing/operations only when local work remains cache, draft, or pending intent until the API confirms it.
