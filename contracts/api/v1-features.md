@@ -4,9 +4,10 @@ Updated: 2026-06-26
 
 Status: partially implemented. `GET /api/v1/mobile/features` returns resolved
 global, tenant, and user feature outcomes for the current tenant/user context.
-The admin panel manages audited global feature defaults. Tenant/user scoped
-override screens, plan/version/device/cohort gates, emergency controls, mobile
-effect previews, and mobile-local feature cache integration remain pending.
+The admin panel manages audited global feature defaults and tenant-scoped
+overrides with mobile impact previews. User scoped override screens,
+plan/version/device/cohort gates, emergency controls, and mobile-local feature
+cache integration remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps important mobile capabilities feature-controlled by Admin/API.
@@ -150,7 +151,10 @@ disable, rollout changes, and support-visible denials.
 
 The current admin implementation writes `admin_mobile_feature_flag_created` and
 `admin_mobile_feature_flag_updated` events with before/after feature metadata
-for global default changes.
+for global default changes. Tenant override controls write
+`admin_tenant_feature_override_created`, `admin_tenant_feature_override_updated`,
+and `admin_tenant_feature_override_restored` events with before/after
+tenant-scoped metadata.
 
 ## Tests
 
@@ -158,15 +162,16 @@ Automated coverage:
 
 - `apps/api-admin/tests/Feature/MobileFeatureFlagResolutionTest.php`
 - `apps/api-admin/tests/Feature/AdminFeatureFlagsTest.php`
+- `apps/api-admin/tests/Feature/AdminTenantFeatureOverridesTest.php`
 
 Fresh checks:
 
 ```bash
 cd apps/api-admin && php artisan test --compact --filter=MobileFeatureFlagResolutionTest
 cd apps/api-admin && php artisan test --compact --filter=AdminFeatureFlagsTest
+cd apps/api-admin && php artisan test --compact --filter=AdminTenantFeatureOverridesTest
 ```
 
 Future Phase 8 coverage should add stale-cache behavior, tenant/user override
-admin screens, plan/version/device gates, emergency disablement, impact
-previews, and no raw flag layers in API responses beyond resolved mobile-safe
-outcomes.
+admin screens, plan/version/device gates, emergency disablement, and no raw
+flag layers in API responses beyond resolved mobile-safe outcomes.

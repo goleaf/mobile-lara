@@ -32,9 +32,16 @@ final class Dashboard extends Component
             [
                 'label' => 'Feature flags',
                 'status' => 'Live',
-                'detail' => 'Global defaults with audit-backed changes and mobile-safe resolution.',
+                'detail' => 'Global defaults plus tenant overrides with audit-backed mobile-safe resolution.',
                 'tone' => 'success',
                 'route' => 'admin.mobile.features',
+            ],
+            [
+                'label' => 'Feature overrides',
+                'status' => 'Live',
+                'detail' => 'Tenant-scoped feature decisions resolved above global defaults.',
+                'tone' => 'success',
+                'route' => 'admin.mobile.feature-overrides',
             ],
             [
                 'label' => 'Remote config',
