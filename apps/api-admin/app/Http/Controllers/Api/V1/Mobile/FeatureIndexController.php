@@ -43,6 +43,8 @@ final class FeatureIndexController extends Controller
         return MobileApiResponse::success([
             'features' => $features['items'],
             'tenant_id' => $features['tenant_id'],
+            'plan_key' => $features['plan_key'],
+            'device_context' => $features['device_context'],
             'version' => $features['version'],
             'reported_app_version' => $features['reported_app_version'],
             'resolved_at' => $features['resolved_at'],

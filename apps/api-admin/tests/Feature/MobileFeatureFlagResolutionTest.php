@@ -140,6 +140,69 @@ test('enabled features require the configured minimum app version', function ():
         ->assertJsonPath('data.features.records.next_action', 'update_app');
 });
 
+test('plan gates block enabled features outside the current plan', function (): void {
+    $user = User::factory()->create([
+        'email' => 'feature-plan@example.com',
+        'password' => 'password-secret',
+    ]);
+    $tenant = Tenant::factory()->create();
+
+    TenantUser::factory()->for($tenant)->for($user)->current()->role(TenantUserRole::TenantAdmin)->create();
+    MobileFeatureFlag::factory()->create([
+        'key' => 'records',
+        'name' => 'Records',
+        'default_state' => MobileFeatureState::Visible,
+        'required_plans' => ['enterprise'],
+    ]);
+
+    $accessToken = mobileFeatureAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->getJson('/api/v1/mobile/features')
+        ->assertOk()
+        ->assertJsonPath('data.plan_key', 'foundation')
+        ->assertJsonPath('data.features.records.state', 'blocked')
+        ->assertJsonPath('data.features.records.enabled', false)
+        ->assertJsonPath('data.features.records.source', 'plan_gate')
+        ->assertJsonPath('data.features.records.reason', 'plan_not_included')
+        ->assertJsonPath('data.features.records.next_action', 'upgrade_plan')
+        ->assertJsonPath('data.features.records.required_plans.0', 'enterprise');
+});
+
+test('device gates block enabled features on unsupported platforms', function (): void {
+    $user = User::factory()->create([
+        'email' => 'feature-device@example.com',
+        'password' => 'password-secret',
+    ]);
+    $tenant = Tenant::factory()->create();
+
+    TenantUser::factory()->for($tenant)->for($user)->current()->role(TenantUserRole::TenantAdmin)->create();
+    MobileFeatureFlag::factory()->create([
+        'key' => 'native_camera',
+        'name' => 'Camera',
+        'default_state' => MobileFeatureState::Visible,
+        'device_constraints' => [
+            'platforms' => ['android'],
+        ],
+    ]);
+
+    $accessToken = mobileFeatureAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->withHeaders([
+            'X-Mobile-Platform' => 'ios',
+        ])
+        ->getJson('/api/v1/mobile/features')
+        ->assertOk()
+        ->assertJsonPath('data.device_context.platform', 'ios')
+        ->assertJsonPath('data.features.native_camera.state', 'blocked')
+        ->assertJsonPath('data.features.native_camera.enabled', false)
+        ->assertJsonPath('data.features.native_camera.source', 'device_gate')
+        ->assertJsonPath('data.features.native_camera.reason', 'device_not_supported')
+        ->assertJsonPath('data.features.native_camera.next_action', 'use_supported_device')
+        ->assertJsonPath('data.features.native_camera.device_constraints.platforms.0', 'android');
+});
+
 function mobileFeatureAccessToken($test, User $user): string
 {
     return $test->postJson('/api/v1/mobile/auth/login', [

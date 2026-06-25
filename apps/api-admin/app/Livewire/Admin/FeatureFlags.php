@@ -27,7 +27,7 @@ final class FeatureFlags extends Component
     public ?int $editingFeatureFlagId = null;
 
     /**
-     * @var array{key: string, name: string, default_state: string, reason: string, message: string, minimum_app_version: string, offline_behavior: string}
+     * @var array{key: string, name: string, default_state: string, reason: string, message: string, minimum_app_version: string, required_plans: string, allowed_platforms: string, allowed_device_ids: string, offline_behavior: string}
      */
     public array $form = [
         'key' => '',
@@ -36,6 +36,9 @@ final class FeatureFlags extends Component
         'reason' => '',
         'message' => '',
         'minimum_app_version' => '',
+        'required_plans' => '',
+        'allowed_platforms' => '',
+        'allowed_device_ids' => '',
         'offline_behavior' => 'online_only',
     ];
 
@@ -69,6 +72,8 @@ final class FeatureFlags extends Component
                 'reason',
                 'message',
                 'minimum_app_version',
+                'required_plans',
+                'device_constraints',
                 'offline_behavior',
             ])
             ->findOrFail($featureFlagId);
@@ -83,6 +88,9 @@ final class FeatureFlags extends Component
             'reason' => $featureFlag->reason ?? '',
             'message' => $featureFlag->message ?? '',
             'minimum_app_version' => $featureFlag->minimum_app_version ?? '',
+            'required_plans' => implode(', ', $this->stringList($featureFlag->required_plans)),
+            'allowed_platforms' => implode(', ', $this->stringList($featureFlag->device_constraints['platforms'] ?? [])),
+            'allowed_device_ids' => implode(', ', $this->stringList($featureFlag->device_constraints['device_ids'] ?? [])),
             'offline_behavior' => $featureFlag->offline_behavior,
         ];
 
@@ -101,7 +109,7 @@ final class FeatureFlags extends Component
 
         abort_unless($user instanceof User, 403);
 
-        /** @var array{form: array{key: string, name: string, default_state: string, reason?: string|null, message?: string|null, minimum_app_version?: string|null, offline_behavior: string}} $validated */
+        /** @var array{form: array{key: string, name: string, default_state: string, reason?: string|null, message?: string|null, minimum_app_version?: string|null, required_plans?: string|null, allowed_platforms?: string|null, allowed_device_ids?: string|null, offline_behavior: string}} $validated */
         $validated = $this->validate($this->rules(), attributes: $this->validationAttributes());
 
         $featureFlag = $this->editingFeatureFlagId === null
@@ -115,6 +123,8 @@ final class FeatureFlags extends Component
                     'reason',
                     'message',
                     'minimum_app_version',
+                    'required_plans',
+                    'device_constraints',
                     'offline_behavior',
                     'metadata',
                 ])
@@ -162,6 +172,9 @@ final class FeatureFlags extends Component
             'form.reason' => ['nullable', 'string', 'max:120'],
             'form.message' => ['nullable', 'string', 'max:240'],
             'form.minimum_app_version' => ['nullable', 'string', 'max:40'],
+            'form.required_plans' => ['nullable', 'string', 'max:240'],
+            'form.allowed_platforms' => ['nullable', 'string', 'max:120'],
+            'form.allowed_device_ids' => ['nullable', 'string', 'max:500'],
             'form.offline_behavior' => ['required', Rule::in(array_keys($this->offlineBehaviorOptions()))],
         ];
     }
@@ -178,6 +191,9 @@ final class FeatureFlags extends Component
             'form.reason' => 'reason',
             'form.message' => 'mobile message',
             'form.minimum_app_version' => 'minimum app version',
+            'form.required_plans' => 'required plans',
+            'form.allowed_platforms' => 'allowed platforms',
+            'form.allowed_device_ids' => 'allowed device IDs',
             'form.offline_behavior' => 'offline behavior',
         ];
     }
@@ -192,6 +208,9 @@ final class FeatureFlags extends Component
             'reason' => '',
             'message' => '',
             'minimum_app_version' => '',
+            'required_plans' => '',
+            'allowed_platforms' => '',
+            'allowed_device_ids' => '',
             'offline_behavior' => 'online_only',
         ];
     }
@@ -255,5 +274,43 @@ final class FeatureFlags extends Component
                 ])
                 ->count(),
         ];
+    }
+
+    public function planGateLabel(MobileFeatureFlag $featureFlag): string
+    {
+        $plans = $this->stringList($featureFlag->required_plans);
+
+        return $plans === [] ? 'any plan' : implode(', ', $plans);
+    }
+
+    public function deviceGateLabel(MobileFeatureFlag $featureFlag): string
+    {
+        $constraints = is_array($featureFlag->device_constraints) ? $featureFlag->device_constraints : [];
+        $platforms = $this->stringList($constraints['platforms'] ?? []);
+        $deviceIds = $this->stringList($constraints['device_ids'] ?? []);
+
+        if ($platforms === [] && $deviceIds === []) {
+            return 'any device';
+        }
+
+        return collect([
+            $platforms === [] ? null : 'platforms: '.implode(', ', $platforms),
+            $deviceIds === [] ? null : 'devices: '.implode(', ', $deviceIds),
+        ])->filter()->implode(' / ');
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function stringList(mixed $value): array
+    {
+        $items = is_array($value) ? $value : preg_split('/[\r\n,]+/', (string) $value);
+
+        return collect($items)
+            ->filter(static fn (mixed $item): bool => is_string($item) && trim($item) !== '')
+            ->map(static fn (string $item): string => str($item)->lower()->trim()->toString())
+            ->unique()
+            ->values()
+            ->all();
     }
 }

@@ -45,6 +45,9 @@ test('platform admins can create global feature flags', function (): void {
         ->set('form.default_state', MobileFeatureState::Visible->value)
         ->set('form.reason', 'admin_enabled')
         ->set('form.message', 'Records are available on mobile.')
+        ->set('form.required_plans', 'foundation, enterprise')
+        ->set('form.allowed_platforms', 'ios, android')
+        ->set('form.allowed_device_ids', 'device-a, device-b')
         ->set('form.offline_behavior', 'queueable')
         ->call('save')
         ->assertHasNoErrors()
@@ -54,6 +57,11 @@ test('platform admins can create global feature flags', function (): void {
 
     expect($flag)->not->toBeNull()
         ->and($flag?->default_state)->toBe(MobileFeatureState::Visible)
+        ->and($flag?->required_plans)->toBe(['foundation', 'enterprise'])
+        ->and($flag?->device_constraints)->toBe([
+            'platforms' => ['ios', 'android'],
+            'device_ids' => ['device-a', 'device-b'],
+        ])
         ->and($flag?->offline_behavior)->toBe('queueable')
         ->and(SecurityAuditEvent::query()
             ->where('event', 'admin_mobile_feature_flag_created')

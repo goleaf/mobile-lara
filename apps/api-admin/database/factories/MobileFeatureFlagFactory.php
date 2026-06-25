@@ -27,6 +27,8 @@ class MobileFeatureFlagFactory extends Factory
             'reason' => 'factory_default',
             'message' => null,
             'minimum_app_version' => null,
+            'required_plans' => [],
+            'device_constraints' => [],
             'offline_behavior' => 'online_only',
             'metadata' => [],
         ];

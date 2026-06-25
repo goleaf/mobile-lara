@@ -146,6 +146,47 @@
                 @enderror
             </label>
 
+            <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                Required plans
+                <input
+                    type="text"
+                    wire:model.blur="form.required_plans"
+                    class="h-11 rounded-lg border border-zinc-300 bg-white px-3 text-sm text-zinc-950 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-zinc-400 dark:focus:ring-zinc-800"
+                    autocomplete="off"
+                >
+                @error('form.required_plans')
+                    <span class="text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</span>
+                @enderror
+            </label>
+
+            <div class="grid gap-4 sm:grid-cols-2">
+                <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                    Allowed platforms
+                    <input
+                        type="text"
+                        wire:model.blur="form.allowed_platforms"
+                        class="h-11 rounded-lg border border-zinc-300 bg-white px-3 text-sm text-zinc-950 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-zinc-400 dark:focus:ring-zinc-800"
+                        autocomplete="off"
+                    >
+                    @error('form.allowed_platforms')
+                        <span class="text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</span>
+                    @enderror
+                </label>
+
+                <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                    Allowed devices
+                    <input
+                        type="text"
+                        wire:model.blur="form.allowed_device_ids"
+                        class="h-11 rounded-lg border border-zinc-300 bg-white px-3 text-sm text-zinc-950 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-zinc-400 dark:focus:ring-zinc-800"
+                        autocomplete="off"
+                    >
+                    @error('form.allowed_device_ids')
+                        <span class="text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</span>
+                    @enderror
+                </label>
+            </div>
+
             <button
                 type="submit"
                 class="h-11 rounded-lg bg-zinc-950 px-4 text-sm font-semibold text-white shadow-sm hover:bg-zinc-800 data-loading:pointer-events-none data-loading:opacity-70 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
@@ -195,7 +236,11 @@
                                         {{ str($featureFlag->offline_behavior)->replace('_', ' ')->title() }}
                                     </td>
                                     <td class="max-w-52 px-4 py-3 text-zinc-600 dark:text-zinc-400">
-                                        {{ $featureFlag->reason ?: 'none' }}
+                                        <div class="grid gap-1">
+                                            <span>{{ $featureFlag->reason ?: 'none' }}</span>
+                                            <span class="text-xs text-zinc-500 dark:text-zinc-400">Plans {{ $this->planGateLabel($featureFlag) }}</span>
+                                            <span class="text-xs text-zinc-500 dark:text-zinc-400">Devices {{ $this->deviceGateLabel($featureFlag) }}</span>
+                                        </div>
                                     </td>
                                     <td class="px-4 py-3 text-right">
                                         <button

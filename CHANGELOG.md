@@ -214,3 +214,6 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added app-version range controls so admins can target scoped policies to
   specific reported build ranges, with deterministic resolver precedence,
   audited range snapshots, Livewire validation, and focused coverage.
+- Added feature flag plan and device gates with global required-plan/device
+  constraints, resolver-enforced blocked states, admin controls, audit
+  snapshots, and focused API/bootstrap coverage.

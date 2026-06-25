@@ -12,7 +12,7 @@ final class SaveMobileFeatureFlagAction
     public function __construct(private MobileAuditLogger $audit) {}
 
     /**
-     * @param  array{key: string, name: string, default_state: string, reason?: string|null, message?: string|null, minimum_app_version?: string|null, offline_behavior: string}  $data
+     * @param  array{key: string, name: string, default_state: string, reason?: string|null, message?: string|null, minimum_app_version?: string|null, required_plans?: string|null, allowed_platforms?: string|null, allowed_device_ids?: string|null, offline_behavior: string}  $data
      */
     public function handle(array $data, User $admin, Request $request, ?MobileFeatureFlag $featureFlag = null): MobileFeatureFlag
     {
@@ -26,6 +26,8 @@ final class SaveMobileFeatureFlagAction
             'reason' => $this->nullableString($data['reason'] ?? null),
             'message' => $this->nullableString($data['message'] ?? null),
             'minimum_app_version' => $this->nullableString($data['minimum_app_version'] ?? null),
+            'required_plans' => $this->stringList($data['required_plans'] ?? null),
+            'device_constraints' => $this->deviceConstraints($data),
             'offline_behavior' => $data['offline_behavior'],
             'metadata' => $featureFlag?->metadata ?? [],
         ];
@@ -69,7 +71,44 @@ final class SaveMobileFeatureFlagAction
             'reason' => $featureFlag->reason,
             'message' => $featureFlag->message,
             'minimum_app_version' => $featureFlag->minimum_app_version,
+            'required_plans' => $this->arrayValue($featureFlag->required_plans),
+            'device_constraints' => $this->arrayValue($featureFlag->device_constraints),
             'offline_behavior' => $featureFlag->offline_behavior,
         ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array{platforms?: array<int, string>, device_ids?: array<int, string>}
+     */
+    private function deviceConstraints(array $data): array
+    {
+        return array_filter([
+            'platforms' => $this->stringList($data['allowed_platforms'] ?? null),
+            'device_ids' => $this->stringList($data['allowed_device_ids'] ?? null),
+        ]);
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function stringList(mixed $value): array
+    {
+        $items = is_array($value) ? $value : preg_split('/[\r\n,]+/', (string) $value);
+
+        return collect($items)
+            ->filter(static fn (mixed $item): bool => is_string($item) && trim($item) !== '')
+            ->map(static fn (string $item): string => str($item)->lower()->trim()->toString())
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    /**
+     * @return array<int|string, mixed>
+     */
+    private function arrayValue(mixed $value): array
+    {
+        return is_array($value) ? $value : [];
     }
 }

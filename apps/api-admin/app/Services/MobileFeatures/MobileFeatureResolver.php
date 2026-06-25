@@ -57,10 +57,14 @@ final class MobileFeatureResolver
         $userOverrides = $tenant instanceof Tenant ? $this->userOverrides($tenant, $user) : new Collection;
         $keys = $this->featureKeys($globalFlags, $tenantOverrides, $userOverrides);
         $reportedVersion = $this->reportedVersion($request);
+        $planKey = $this->planKey($tenantContext);
+        $deviceContext = $this->deviceContext($request);
 
         return [
-            'version' => 'feature-flags-foundation-1',
+            'version' => 'feature-flags-foundation-2',
             'reported_app_version' => $reportedVersion,
+            'plan_key' => $planKey,
+            'device_context' => $deviceContext,
             'resolved_at' => CarbonImmutable::now()->toIso8601String(),
             'tenant_id' => $tenant?->public_id,
             'items' => collect($keys)
@@ -72,6 +76,8 @@ final class MobileFeatureResolver
                         $userOverrides->get($key),
                         $permissions,
                         $reportedVersion,
+                        $planKey,
+                        $deviceContext,
                     ),
                 ])
                 ->all(),
@@ -102,7 +108,7 @@ final class MobileFeatureResolver
     private function globalFlags(): Collection
     {
         return MobileFeatureFlag::query()
-            ->select(['id', 'key', 'name', 'default_state', 'reason', 'message', 'minimum_app_version', 'offline_behavior', 'metadata'])
+            ->select(['id', 'key', 'name', 'default_state', 'reason', 'message', 'minimum_app_version', 'required_plans', 'device_constraints', 'offline_behavior', 'metadata'])
             ->get()
             ->keyBy('key');
     }
@@ -157,6 +163,8 @@ final class MobileFeatureResolver
         ?UserFeatureOverride $userOverride,
         array $permissions,
         ?string $reportedVersion,
+        string $planKey,
+        array $deviceContext,
     ): array {
         $resolved = $this->baseFeature($key, $flag);
 
@@ -168,6 +176,8 @@ final class MobileFeatureResolver
             $resolved = $this->applyOverride($resolved, $userOverride->state, $userOverride->reason, $userOverride->message, $userOverride->offline_behavior, 'user_override');
         }
 
+        $resolved = $this->applyPlanGate($resolved, $planKey);
+        $resolved = $this->applyDeviceGate($resolved, $deviceContext);
         $resolved = $this->applyPermissionGate($key, $resolved, $permissions);
 
         return $this->applyVersionGate($resolved, $reportedVersion);
@@ -190,6 +200,8 @@ final class MobileFeatureResolver
             reason: $flag?->reason ?? $default['reason'],
             message: $flag?->message,
             minimumAppVersion: $flag?->minimum_app_version,
+            requiredPlans: $this->stringList($flag?->required_plans),
+            deviceConstraints: $this->deviceConstraints($flag?->device_constraints),
             offlineBehavior: $flag?->offline_behavior ?? $default['offline_behavior'],
             source: $flag instanceof MobileFeatureFlag ? 'global_default' : 'foundation_default',
         );
@@ -212,8 +224,82 @@ final class MobileFeatureResolver
             reason: $reason,
             message: $message,
             minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
+            requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
             offlineBehavior: $offlineBehavior ?: (string) $payload['offline_behavior'],
             source: $source,
+        );
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    private function applyPlanGate(array $payload, string $planKey): array
+    {
+        $requiredPlans = $this->stringList($payload['required_plans'] ?? []);
+
+        if ($payload['enabled'] !== true || $requiredPlans === [] || in_array($planKey, $requiredPlans, true)) {
+            return $payload;
+        }
+
+        return $this->payload(
+            state: MobileFeatureState::Blocked,
+            reason: 'plan_not_included',
+            message: 'This feature is not included in the current plan.',
+            minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
+            requiredPlans: $requiredPlans,
+            deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
+            offlineBehavior: (string) $payload['offline_behavior'],
+            source: 'plan_gate',
+            nextAction: 'upgrade_plan',
+        );
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     * @param  array{platform: string, device_id: string|null}  $deviceContext
+     * @return array<string, mixed>
+     */
+    private function applyDeviceGate(array $payload, array $deviceContext): array
+    {
+        $constraints = $this->deviceConstraints($payload['device_constraints'] ?? []);
+        $platforms = $this->stringList($constraints['platforms'] ?? []);
+        $deviceIds = $this->stringList($constraints['device_ids'] ?? []);
+        $deviceId = is_string($deviceContext['device_id'] ?? null) ? str($deviceContext['device_id'])->lower()->trim()->toString() : null;
+
+        if ($payload['enabled'] !== true || ($platforms === [] && $deviceIds === [])) {
+            return $payload;
+        }
+
+        if ($platforms !== [] && ! in_array($deviceContext['platform'], $platforms, true)) {
+            return $this->deviceBlockedPayload($payload, $constraints);
+        }
+
+        if ($deviceIds !== [] && ($deviceId === null || ! in_array($deviceId, $deviceIds, true))) {
+            return $this->deviceBlockedPayload($payload, $constraints);
+        }
+
+        return $payload;
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     * @param  array<string, array<int, string>>  $constraints
+     * @return array<string, mixed>
+     */
+    private function deviceBlockedPayload(array $payload, array $constraints): array
+    {
+        return $this->payload(
+            state: MobileFeatureState::Blocked,
+            reason: 'device_not_supported',
+            message: 'This feature is not available on this device.',
+            minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
+            requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            deviceConstraints: $constraints,
+            offlineBehavior: (string) $payload['offline_behavior'],
+            source: 'device_gate',
+            nextAction: 'use_supported_device',
         );
     }
 
@@ -239,6 +325,8 @@ final class MobileFeatureResolver
             reason: 'permission_denied',
             message: 'This feature is not available for your current role.',
             minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
+            requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
             offlineBehavior: (string) $payload['offline_behavior'],
             source: 'permission_gate',
             nextAction: 'contact_admin',
@@ -266,6 +354,8 @@ final class MobileFeatureResolver
             reason: 'minimum_app_version_required',
             message: is_string($payload['message'] ?? null) ? $payload['message'] : 'Update the app to use this feature.',
             minimumAppVersion: $minimumAppVersion,
+            requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
             offlineBehavior: (string) $payload['offline_behavior'],
             source: 'app_version_gate',
             nextAction: 'update_app',
@@ -289,6 +379,51 @@ final class MobileFeatureResolver
         return is_string($session->app_version) && trim($session->app_version) !== '' ? $session->app_version : null;
     }
 
+    /**
+     * @param  array{current_tenant?: array<string, mixed>|null}  $tenantContext
+     */
+    private function planKey(array $tenantContext): string
+    {
+        $currentTenant = is_array($tenantContext['current_tenant'] ?? null) ? $tenantContext['current_tenant'] : [];
+        $plan = Arr::get($currentTenant, 'plan')
+            ?? Arr::get($currentTenant, 'subscription.plan')
+            ?? Arr::get($currentTenant, 'billing.plan');
+
+        return $this->normalizedKey($plan) ?? 'foundation';
+    }
+
+    /**
+     * @return array{platform: string, device_id: string|null}
+     */
+    private function deviceContext(?Request $request): array
+    {
+        $session = $request?->attributes->get('mobile_device_session');
+        $platform = $request?->header('X-Mobile-Platform');
+        $deviceId = $request?->header('X-Mobile-Device-Id');
+
+        if ((! is_string($platform) || trim($platform) === '') && $session instanceof MobileDeviceSession) {
+            $platform = $session->platform;
+        }
+
+        if ((! is_string($deviceId) || trim($deviceId) === '') && $session instanceof MobileDeviceSession) {
+            $deviceId = $session->device_id;
+        }
+
+        return [
+            'platform' => $this->normalizedKey($platform) ?? 'unknown',
+            'device_id' => $this->normalizedKey($deviceId),
+        ];
+    }
+
+    private function normalizedKey(mixed $value): ?string
+    {
+        if (! is_string($value) || trim($value) === '') {
+            return null;
+        }
+
+        return str($value)->lower()->trim()->toString();
+    }
+
     private function isVersionBelowMinimum(?string $reportedVersion, string $minimumAppVersion): bool
     {
         if ($reportedVersion === null || trim($reportedVersion) === '') {
@@ -306,6 +441,8 @@ final class MobileFeatureResolver
         ?string $reason,
         ?string $message,
         ?string $minimumAppVersion,
+        array $requiredPlans,
+        array $deviceConstraints,
         string $offlineBehavior,
         string $source,
         ?string $nextAction = null,
@@ -317,6 +454,8 @@ final class MobileFeatureResolver
             'reason' => $reason,
             'next_action' => $nextAction ?? $this->nextAction($state),
             'minimum_app_version' => $minimumAppVersion,
+            'required_plans' => $requiredPlans,
+            'device_constraints' => $deviceConstraints,
             'offline_behavior' => $offlineBehavior,
             'message' => $message,
             'source' => $source,
@@ -336,5 +475,35 @@ final class MobileFeatureResolver
             MobileFeatureState::OfflineLimited => 'continue_limited',
             MobileFeatureState::EmergencyDisabled => 'contact_support',
         };
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function stringList(mixed $value): array
+    {
+        $items = is_array($value) ? $value : preg_split('/[\r\n,]+/', (string) $value);
+
+        return collect($items)
+            ->filter(static fn (mixed $item): bool => is_string($item) && trim($item) !== '')
+            ->map(static fn (string $item): string => str($item)->lower()->trim()->toString())
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    /**
+     * @return array{platforms?: array<int, string>, device_ids?: array<int, string>}
+     */
+    private function deviceConstraints(mixed $value): array
+    {
+        if (! is_array($value)) {
+            return [];
+        }
+
+        return array_filter([
+            'platforms' => $this->stringList($value['platforms'] ?? []),
+            'device_ids' => $this->stringList($value['device_ids'] ?? []),
+        ]);
     }
 }
