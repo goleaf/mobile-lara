@@ -119,15 +119,22 @@ Implemented foundation:
 - `PATCH /api/v1/mobile/auth/profile` updates allowed profile fields.
 - `GET /api/v1/mobile/bootstrap` returns the first authenticated mobile
   operating context with real user, device-session, current tenant, and
-  available tenant data plus role-derived permission payloads and explicit
-  foundation defaults for pending feature, config, subscription, notification,
-  and sync modules.
+  available tenant data, role-derived permission payloads, resolved feature
+  flags, and explicit foundation defaults for pending config, subscription,
+  notification, and sync modules.
+- `GET /api/v1/mobile/features` returns resolved mobile-safe feature outcomes
+  for the current user and tenant through the standard response envelope.
 - `GET /api/v1/mobile/tenants` returns the authenticated user's tenant context.
 - `POST /api/v1/mobile/tenants/current` switches the current tenant after
   membership/lifecycle checks and records a security audit event.
 - `App\Services\MobilePermissions\MobilePermissionResolver` derives nested
   mobile permission state from the current active tenant role and fails closed
   when the user has only invited, suspended, or unavailable memberships.
+- `mobile_feature_flags`, `tenant_feature_overrides`, and
+  `user_feature_overrides` provide the first feature flag data model.
+- `App\Services\MobileFeatures\MobileFeatureResolver` resolves user override,
+  tenant override, global default, and permission-gate outcomes into
+  mobile-safe feature states.
 - `GET /admin/login` renders the admin login form.
 - `POST /admin/login` authenticates platform-admin users.
 - `POST /admin/logout` invalidates the admin session.
@@ -146,8 +153,9 @@ Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   resource policies, and broader control-plane audit.
-- Domain modules for feature flags, remote config, app versions, sync,
-  notifications, records/content, support, billing, and reports.
+- Admin feature-flag management UI, feature audit workflows, remote config,
+  app versions, sync, notifications, records/content, support, billing, and
+  reports.
 - Protected domain routes for records/content, sync, notifications, support,
   billing, reports, diagnostics, and feature/config/version policies.
 

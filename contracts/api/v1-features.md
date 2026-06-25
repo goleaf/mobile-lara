@@ -2,7 +2,11 @@
 
 Updated: 2026-06-26
 
-Status: documented. Endpoint is planned for Phase 8.
+Status: partially implemented. `GET /api/v1/mobile/features` returns resolved
+global, tenant, and user feature outcomes for the current tenant/user context.
+Admin management UI, plan/version/device/cohort gates, emergency controls,
+audited change workflows, and mobile-local feature cache integration remain
+pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps important mobile capabilities feature-controlled by Admin/API.
@@ -76,7 +80,7 @@ Feature endpoints expose resolved mobile-safe feature outcomes. Mobile never
 receives raw global, tenant, user, plan, version, cohort, maintenance, or
 emergency flag internals.
 
-## Planned Route
+## Implemented Route
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -93,9 +97,11 @@ Allowed states include `hidden`, `visible`, `disabled`, `blocked`, `beta`,
 
 ## Gates
 
-Resolution must apply safety and maintenance rules, global defaults, tenant
-overrides, plan limits, role/permission rules, user overrides, app-version and
-device rules, cohort rules, and offline limitations.
+The current implementation resolves user override, tenant override, then global
+default, with a permission gate applied before mobile receives the final state.
+Future slices must add safety and maintenance rules, plan limits, app-version
+and device rules, cohort rules, emergency blocks, and richer offline
+limitations.
 
 ## Offline Behavior
 
@@ -109,5 +115,16 @@ disable, rollout changes, and support-visible denials.
 
 ## Tests
 
-Phase 8 should verify resolution order, disabled mobile states, stale-cache
-behavior, and no raw flag layers in API responses.
+Automated coverage:
+
+- `apps/api-admin/tests/Feature/MobileFeatureFlagResolutionTest.php`
+
+Fresh checks:
+
+```bash
+cd apps/api-admin && php artisan test --compact --filter=MobileFeatureFlagResolutionTest
+```
+
+Future Phase 8 coverage should add stale-cache behavior, admin/audit behavior,
+plan/version/device gates, emergency disablement, and no raw flag layers in
+API responses beyond resolved mobile-safe outcomes.

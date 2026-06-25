@@ -122,3 +122,6 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added the API/admin mobile permission foundation with a role-derived ability
   registry, nested bootstrap permission payloads, fail-closed invited/suspended
   membership behavior, and focused bootstrap permission coverage.
+- Added the API/admin feature flag foundation with global defaults, tenant and
+  user overrides, resolved `/features` API output, bootstrap integration,
+  permission-gated feature states, and focused resolution-order coverage.

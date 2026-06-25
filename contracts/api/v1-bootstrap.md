@@ -3,9 +3,10 @@
 Updated: 2026-06-26
 
 Status: implemented as the Phase 10 foundation endpoint with Phase 7
-role-derived permission payloads. Domain-specific feature, config, billing,
-notification, sync, and full permission-management modules still need to
-replace the remaining explicit foundation defaults.
+role-derived permission payloads and Phase 8 feature-flag resolution.
+Domain-specific config, billing, notification, sync, and full
+permission-management modules still need to replace the remaining explicit
+foundation defaults.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract is
 the main API path for turning central SaaS control into mobile operating
@@ -97,12 +98,12 @@ The response must include:
 - `unread_notification_count`
 
 The current foundation implementation returns real authenticated user,
-device-session, current tenant, available tenant membership context, and a
-server-derived permission payload based on the current active tenant role. It
-still returns explicit disabled or pending states for feature flags, remote
-config, billing, notifications, sync, and version/maintenance modules whose
-authoritative Admin/API data models are not implemented yet. Mobile must treat
-those states as fail-closed outcomes.
+device-session, current tenant, available tenant membership context, a
+server-derived permission payload based on the current active tenant role, and
+resolved feature-flag outcomes. It still returns explicit disabled or pending
+states for remote config, billing, notifications, sync, and
+version/maintenance modules whose authoritative Admin/API data models are not
+implemented yet. Mobile must treat those states as fail-closed outcomes.
 
 `permissions` includes:
 

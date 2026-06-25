@@ -12,6 +12,7 @@ final class MobileBootstrapPayload
     /**
      * @param  array{current_tenant?: array<string, mixed>|null, available_tenants?: array<int, array<string, mixed>>}  $tenantContext
      * @param  array<string, mixed>  $permissions
+     * @param  array<string, mixed>  $features
      * @return array<string, mixed>
      */
     public static function make(
@@ -20,6 +21,7 @@ final class MobileBootstrapPayload
         Request $request,
         array $tenantContext = [],
         array $permissions = [],
+        array $features = [],
     ): array {
         $now = CarbonImmutable::now();
 
@@ -29,11 +31,7 @@ final class MobileBootstrapPayload
             'current_tenant' => $tenantContext['current_tenant'] ?? null,
             'available_tenants' => $tenantContext['available_tenants'] ?? [],
             'permissions' => $permissions,
-            'features' => [
-                'version' => 'foundation-1',
-                'resolved_at' => $now->toIso8601String(),
-                'items' => self::features(),
-            ],
+            'features' => $features ?: self::foundationFeatures($now),
             'remote_config' => [
                 'version' => 'foundation-1',
                 'freshness' => 'server_fresh',
@@ -88,7 +86,19 @@ final class MobileBootstrapPayload
     /**
      * @return array<string, array<string, mixed>>
      */
-    private static function features(): array
+    private static function foundationFeatures(CarbonImmutable $now): array
+    {
+        return [
+            'version' => 'foundation-1',
+            'resolved_at' => $now->toIso8601String(),
+            'items' => self::featureItems(),
+        ];
+    }
+
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    private static function featureItems(): array
     {
         return [
             'records' => self::feature('disabled', 'records_api_pending'),

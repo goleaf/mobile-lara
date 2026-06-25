@@ -47,7 +47,7 @@ test('mobile bootstrap returns the foundation operating context for an authentic
             ->where('data.available_tenants.0.id', $tenant->public_id)
             ->where('data.permissions.status', 'resolved')
             ->where('data.permissions.abilities.records.view', true)
-            ->where('data.features.version', 'foundation-1')
+            ->where('data.features.version', 'feature-flags-foundation-1')
             ->where('data.features.items.records.state', 'disabled')
             ->where('data.features.items.offline_sync.state', 'offline_limited')
             ->where('data.remote_config.values.sync.manual_sync_enabled', false)

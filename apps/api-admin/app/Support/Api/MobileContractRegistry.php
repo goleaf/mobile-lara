@@ -65,8 +65,8 @@ final class MobileContractRegistry
                 self::route('GET', '/tenants', 'implemented', 'mobile-token'),
                 self::route('POST', '/tenants/current', 'implemented', 'mobile-token'),
             ]),
-            self::group('features', 'v1-features.md', 'documented', 'Resolved global, tenant, user, plan, permission, version, device, cohort, maintenance, and emergency feature outcomes.', [
-                self::route('GET', '/features', 'planned', 'mobile-token'),
+            self::group('features', 'v1-features.md', 'partial', 'Resolved global, tenant, user, plan, permission, version, device, cohort, maintenance, and emergency feature outcomes.', [
+                self::route('GET', '/features', 'implemented', 'mobile-token'),
             ]),
             self::group('remote_config', 'v1-remote-config.md', 'documented', 'Resolved mobile-safe config values, freshness, compatibility, and fallback metadata.', [
                 self::route('GET', '/config', 'planned', 'mobile-token'),
