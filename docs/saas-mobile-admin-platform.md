@@ -8,11 +8,21 @@ This document is the canonical product and system concept for Mobile Lara. It de
 
 Mobile Lara is a SaaS control plane for managed NativePHP mobile apps: administrators configure what each tenant and user can do, and the mobile client executes those rules through API-driven, offline-capable workflows.
 
+## Product Vision
+
+The product vision is remote control with local resilience.
+
+Mobile Lara solves the problem of mobile teams needing simple, native-feeling workflows while the business needs centralized control over tenants, roles, permissions, billing, app versions, support, notifications, reports, sync behavior, and feature rollout. The admin/API system gives the organization a safe operating surface. The mobile client gives users a focused app that works through policy and can keep useful local work moving when connectivity is imperfect.
+
+See [Product Vision](product-vision.md) for the plain-language vision, user definitions, technology rationale, and SaaS scale principles.
+
 ## System Split
 
 ### Admin/API System
 
 The Admin/API system is the authoritative backend.
+
+Its users include SaaS owners, platform operators, tenant owners, tenant admins, support users, billing operators, product/release managers, and security or compliance reviewers.
 
 It owns:
 
@@ -28,6 +38,8 @@ The admin panel is built with Livewire and should stay an operational tool, not 
 
 The mobile client is a Laravel + Livewire app running inside NativePHP Mobile.
 
+Its users are the people doing tenant-side or field work. They need simple allowed workflows, clear blocked/offline/pending states, native capabilities when required, and no exposure to admin configuration internals.
+
 It owns:
 
 - Mobile UX and local state presentation.
@@ -36,6 +48,8 @@ It owns:
 - API consumption, conflict surfacing, retry behavior, and local notifications.
 
 The mobile client must not invent tenant rules, billing rules, permissions, or feature availability. It renders the current server policy and gracefully degrades when offline.
+
+The client is controlled by admin settings because mobile state can be stale, offline, copied between devices, or running an old app version. Server policy must stay final for business-sensitive behavior.
 
 ## Product Architecture
 
@@ -165,6 +179,7 @@ The API must be boring, explicit, and versioned.
 
 - Use `routes/api.php` and stateless API middleware for mobile API routes.
 - Use token authentication appropriate for a first-party mobile client.
+- Treat the API as the stable contract between admin authority and mobile execution.
 - Return shaped resources, not raw models.
 - Version responses that mobile clients depend on.
 - Include server time, config version, and sync cursor metadata where relevant.
@@ -233,6 +248,17 @@ Every major feature should be introduced as:
 5. Limited tenant rollout.
 6. General availability.
 7. Report/support readiness.
+
+### SaaS Scalability
+
+The product scales as SaaS by moving variation into tenant-scoped configuration and versioned contracts instead of custom mobile builds:
+
+- Tenant isolation keeps customer data and controls separate.
+- Remote config and feature flags let operators change behavior without a store release.
+- App-version policy controls stale clients before they damage API contracts.
+- Idempotent sync makes offline work replayable.
+- Observability lets operators see adoption, device health, sync failures, notification delivery, support load, and rollout status.
+- Billing entitlements are enforced by the API and presented by mobile as clear capability state.
 
 ## Optimized Product Slices
 

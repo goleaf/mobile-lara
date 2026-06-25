@@ -1,0 +1,177 @@
+# Product Vision
+
+Updated: 2026-06-25
+
+This document defines the product vision for Mobile Lara. It explains the problem, users, system split, admin control model, mobile technology choice, SaaS scalability logic, boundaries, and risks. It is documentation only and does not define database fields, migrations, controllers, components, or application logic.
+
+## Vision Statement
+
+Mobile Lara exists to let businesses operate managed mobile workflows without shipping a new mobile app every time policy, permission, tenant configuration, billing state, support process, or sync behavior changes.
+
+The product is a SaaS control plane plus a managed NativePHP mobile client:
+
+- The Admin/API system decides what is allowed, configured, billable, supported, auditable, and safe.
+- The mobile client gives users a fast, native-feeling, offline-capable app that follows those server decisions.
+
+The strongest product promise is remote control with local resilience: administrators can govern mobile behavior centrally, while mobile users can keep working in real-world conditions where connectivity, device state, and app versions vary.
+
+## Problem The System Solves
+
+Organizations that rely on mobile work usually face the same problem: the people doing the work need a simple app, but the business needs centralized control.
+
+Without a control plane:
+
+- Mobile releases become the only way to change behavior.
+- Features are enabled too broadly or hidden only in the UI.
+- Permissions, tenant limits, and billing entitlements drift across clients.
+- Offline actions become hard to trust after reconnecting.
+- Support teams cannot explain what the user saw, which version they ran, or why sync failed.
+- Old app versions keep calling APIs after the business logic has changed.
+- Operators cannot safely roll out, pause, or reverse mobile features by tenant or cohort.
+
+Mobile Lara solves this by making the backend the business authority and the mobile app the controlled execution surface.
+
+## Admin Users
+
+Admin users are people who manage the SaaS product, tenant operations, mobile behavior, or support process. They do not all have the same permissions.
+
+| Admin user | Primary job |
+| --- | --- |
+| SaaS owner | Sets platform defaults, global feature strategy, version policy, billing model, and operating rules. |
+| Platform operator | Monitors health, incidents, app versions, sync behavior, device state, and rollout progress. |
+| Tenant owner | Manages one organization, its users, plan, enabled modules, and tenant-level settings. |
+| Tenant admin | Handles day-to-day team membership, roles, permissions, notifications, and local operating settings. |
+| Support user | Investigates tickets, sync conflicts, device state, recent config changes, and safe diagnostics. |
+| Billing operator | Manages plan state, entitlements, quotas, invoices, and account restrictions. |
+| Product or release manager | Rolls out features, controls app-version gates, reviews adoption, and reverses risky changes. |
+| Security or compliance reviewer | Reviews audit trails, device trust, tenant isolation, and sensitive setting changes. |
+
+The admin experience should be dense, searchable, scoped, and audit-friendly. It is an operations surface, not a marketing page.
+
+## Mobile Users
+
+Mobile users are the people who perform work through the managed app. They may be frontline staff, field workers, service teams, tenant employees, contractors, customers, or any role that needs mobile access to tenant-controlled workflows.
+
+Mobile users need:
+
+- A simple app that shows only what they can use.
+- Clear feedback when a feature is disabled, blocked, offline, pending, synced, or conflicted.
+- Native capabilities such as camera, files, microphone, network status, local notifications, or device context when a feature requires them.
+- Offline-friendly workflows where local work is allowed.
+- No exposure to tenant billing, rollout mechanics, feature-flag complexity, or admin configuration internals.
+
+Mobile users should experience policy as clear product behavior, not as admin machinery.
+
+## Why The System Needs Both Admin/API And Mobile Client
+
+The product needs two systems because the business problem has two different centers of gravity.
+
+The Admin/API system is the source of truth. It owns tenant isolation, users, roles, permissions, billing entitlements, feature flags, remote config, app-version policy, notifications, reports, support context, audit trails, and sync decisions. Laravel's API surface is the contract that mobile clients consume, and its stateless API routes and token-auth patterns fit mobile-client access.
+
+The mobile client is the user-facing execution layer. It owns the mobile layout, device capabilities, local cache, offline queue, local drafts, pending state, conflict presentation, and native-feeling workflows.
+
+Putting both jobs in one place would create the wrong product:
+
+- If the mobile app owns authority, billing, permissions, tenant safety, and emergency rollback become unreliable.
+- If the admin web app is merely wrapped as mobile, the product loses offline behavior, native capability access, and a focused mobile UX.
+- If both systems use unrelated stacks, implementation cost, testing burden, and product drift increase.
+
+The split gives the product a clean rule: Admin/API decides; mobile executes and explains.
+
+## Why Mobile Must Be Controlled By Admin Settings
+
+The mobile client must be controlled by admin settings because mobile state can be stale, offline, copied across devices, or running an old version.
+
+Admin-controlled mobile behavior protects:
+
+- **Tenant isolation** - a mobile client cannot choose its own tenant scope.
+- **Permissions** - a hidden or disabled mobile button is not authorization.
+- **Billing** - plan limits and entitlements must be enforced by the API, not local UI.
+- **Rollouts** - features need staged release, emergency disablement, and tenant-specific enablement.
+- **App versions** - old clients may need warnings, reduced capability, or hard blocks.
+- **Support** - support teams need to know which config, feature flags, version policy, and sync policy applied.
+- **Security** - device trust, forced logout, and sensitive capability access must remain centrally revocable.
+- **Compliance** - important admin changes need audit context and should not be hidden in client code.
+
+Admin settings should not make the mobile app feel unstable. They should make it predictable: the app receives policy, renders the correct capability state, stores safe local work when allowed, and asks the API to confirm every business-sensitive action.
+
+## Why NativePHP + Livewire Is The Mobile Approach
+
+NativePHP + Livewire is the chosen mobile approach because the product is Laravel-first and needs a native-capable client without creating a second frontend architecture.
+
+NativePHP provides the mobile shell and native bridge:
+
+- It lets a Laravel app run as a mobile application.
+- It gives access to native capability plugins when product slices require them.
+- It keeps native work tied to a Laravel product instead of creating a separate mobile codebase by default.
+
+Livewire provides the interaction model:
+
+- It keeps UI behavior close to Laravel validation, authorization, resources, tests, and server-side rules.
+- It supports dynamic Blade interfaces without introducing React, Vue, Inertia, Ionic, or Capacitor for this product.
+- It allows admin and mobile surfaces to share Laravel conventions while still having different UX.
+
+This approach is not chosen so the mobile app can bypass the API. The mobile client still works through the API for SaaS authority. NativePHP + Livewire is chosen to reduce stack sprawl, keep the product Laravel-native, and ship mobile workflows with native capability access and server-aligned behavior.
+
+## What Makes The Product Scalable As SaaS
+
+The product scales as SaaS when growth is handled through configuration, contracts, isolation, and operations instead of one-off app changes.
+
+Scalable SaaS principles:
+
+- **Tenant isolation** - every admin action, API request, report, support view, notification, and sync decision is scoped.
+- **Config-driven behavior** - feature flags, remote config, app-version policy, notification policy, and sync policy can change without a mobile release.
+- **API contracts** - mobile clients consume versioned, shaped API responses instead of raw internal models.
+- **Entitlement enforcement** - billing and plan rules are enforced server-side and surfaced to mobile as allowed or denied capability.
+- **Idempotent sync** - offline writes replay safely with idempotency keys and explicit conflict handling.
+- **Operational visibility** - admins can observe app adoption, device trust, sync health, notification health, support load, and feature rollout state.
+- **Role separation** - SaaS owners, tenant admins, support, billing, and mobile users each see only the controls or workflows they need.
+- **Progressive rollout** - features can move from internal tenant to limited tenant to general availability with rollback.
+- **Documentation discipline** - product decisions, risks, boundaries, and architecture decisions stay written before implementation.
+
+Scalability here is not only traffic volume. It is the ability to serve many tenants, devices, roles, app versions, feature states, and support cases without losing control or trust.
+
+## Product Principles
+
+1. Admin/API is the source of business authority.
+2. Mobile is a managed local executor, not a policy engine.
+3. Every mobile feature needs admin behavior, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior.
+4. Local data is cache, draft, pending intent, or confirmed server copy depending on sync state.
+5. App behavior should be configurable where safe and versioned where clients depend on contracts.
+6. Support and operations are first-class product surfaces, not afterthoughts.
+7. Billing and permissions are enforced by the API and only presented by mobile.
+8. Native permissions are requested just in time and tied to a clear business purpose.
+9. Rollout and rollback must be easier than publishing a new app build.
+10. Documentation stays ahead of implementation for product-critical decisions.
+
+## Boundaries
+
+This product vision does not create or imply immediate implementation of:
+
+- Database fields.
+- Migrations.
+- API controllers.
+- Livewire components.
+- Policies.
+- Jobs or services.
+- Billing provider integrations.
+- Push provider integrations.
+- Native plugin integrations.
+- Application logic.
+
+Those belong in future implementation slices with explicit acceptance criteria and tests.
+
+## Risks
+
+| Risk | Product response |
+| --- | --- |
+| Admin settings become too complex | Keep controls layered by global, tenant, role, user, device, feature, version, and sync scope. |
+| Mobile users see confusing blocked states | Mobile copy should explain the state without exposing admin internals. |
+| Offline queues are trusted too much | Treat queued writes as intents until the API accepts them. |
+| Feature flags become invisible risk | Require audit and support visibility for behavior-changing settings. |
+| Native permissions feel invasive | Request permissions only when needed and explain the feature purpose. |
+| SaaS scale becomes only a technical concern | Include billing, support, rollout, documentation, and operations in every feature slice. |
+
+## Vision Success Test
+
+The product vision is working when an admin can safely change a mobile capability for a tenant or cohort without publishing a new app build, the mobile app reflects that policy clearly, the API enforces it even for stale clients, offline work reconciles through explicit sync rules, and support can explain the outcome from version, config, audit, and device context.

@@ -9,6 +9,8 @@ This document defines UI principles for the two-system product:
 
 The two interfaces should feel related but serve different jobs. Admin is an operational control plane. Mobile is a resilient task-focused client.
 
+The design system supports the [Product Vision](product-vision.md): admin users need control, visibility, and audit context; mobile users need clear permitted workflows, native-feeling interaction, and honest offline/sync states.
+
 ## Shared Principles
 
 - Keep UI in Livewire + Blade.
@@ -22,6 +24,8 @@ The two interfaces should feel related but serve different jobs. Admin is an ope
 
 The mobile client should be calm, direct, and explicit about sync state.
 
+Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.
+
 - Prefer `<x-mobile.*>` Blade components over repeated markup.
 - Keep mobile tap targets at `min-h-12` or larger.
 - Use `gap-*` for sibling spacing instead of stacked margins.
@@ -34,6 +38,8 @@ The mobile client should be calm, direct, and explicit about sync state.
 ## Admin UX Principles
 
 The admin panel should be dense, searchable, and audit-friendly.
+
+Admin users include SaaS owners, platform operators, tenant admins, support, billing, release, and security/compliance roles. The UI should make scope and consequence obvious before a setting changes mobile behavior.
 
 - Optimize for repeated operations, not landing-page presentation.
 - Use tables, filters, tabs, segmented controls, and clear state badges.

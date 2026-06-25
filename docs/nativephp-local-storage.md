@@ -4,6 +4,8 @@ Updated: 2026-06-25
 
 This document defines how local SQLite should fit into the SaaS mobile + admin product. Local storage exists to make the NativePHP mobile client resilient. It does not replace the Admin/API system as the source of business authority.
 
+The storage vision follows [Product Vision](product-vision.md): the mobile app can keep users productive locally, but admin/API policy remains final.
+
 ## Product Role
 
 The mobile client may use local SQLite for:
@@ -26,6 +28,19 @@ The mobile client must not use local SQLite for:
 - Anything the API must be able to revoke immediately.
 
 Secrets belong in NativePHP secure storage or another approved secure-token store when available.
+
+## Vision Fit
+
+Local storage is valuable because mobile users often work with changing connectivity, device conditions, and interruption-heavy workflows. It is risky when it starts acting like the business authority.
+
+The product boundary is:
+
+- Admin users configure whether offline work is allowed for a tenant, role, feature, app version, or device state.
+- Mobile users can draft, cache, and queue work only inside those allowed boundaries.
+- The API accepts, rejects, transforms, or marks queued work as conflicted.
+- Support users can inspect safe sync context when local and server state diverge.
+
+This keeps offline-first behavior scalable: more tenants and devices can work locally without multiplying trusted client-side rules.
 
 ## Current Configuration
 

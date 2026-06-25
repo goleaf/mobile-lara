@@ -9,6 +9,8 @@ This document describes the intended SaaS stack and the current package baseline
 
 The stack is intentionally Laravel-first so API rules, admin rules, tests, and mobile client behavior can share conventions without adding a separate JavaScript application framework.
 
+The stack supports the product vision from [Product Vision](product-vision.md): remote admin control with local mobile resilience.
+
 ## Current Package Baseline
 
 | Package / tool | Version | Product role |
@@ -30,6 +32,7 @@ The stack is intentionally Laravel-first so API rules, admin rules, tests, and m
 
 The Admin/API system should be implemented as the SaaS control plane:
 
+- Admin users are SaaS owners, platform operators, tenant owners, tenant admins, support users, billing operators, release managers, and security/compliance reviewers.
 - Livewire admin panel for operators, tenant admins, support, billing, and reports.
 - Versioned API for mobile boot, feature config, domain resources, notifications, sync, conflicts, support, and telemetry.
 - Server-side authorization for every tenant, user, device, feature, billing, and support action.
@@ -40,6 +43,7 @@ The Admin/API system should be implemented as the SaaS control plane:
 
 The Mobile client system should be implemented as the managed edge client:
 
+- Mobile users are tenant-side or field users who need simple allowed workflows without admin complexity.
 - Livewire mobile screens rendered inside NativePHP.
 - NativePHP plugins for device capabilities.
 - Local SQLite for cache, drafts, queues, records, activity, notifications, and sync metadata.
@@ -56,12 +60,23 @@ The Mobile client system should be implemented as the managed edge client:
 - Keep `resources/css/app.scss` as the canonical frontend stylesheet entrypoint.
 - Process Tailwind through `@tailwindcss/postcss` after Sass. Do not reintroduce `@tailwindcss/vite` without verifying Tailwind output.
 
+## Why NativePHP + Livewire
+
+NativePHP + Livewire is chosen because this product is a Laravel SaaS first and a native-capable mobile shell second.
+
+- Laravel remains the center for validation, authorization, API resources, policies, queues, notifications, billing logic, support workflows, and tests.
+- Livewire keeps admin and mobile interactions in the Laravel/Blade model without adding a separate JavaScript frontend framework.
+- NativePHP supplies the mobile shell and native plugin bridge for capabilities such as camera, files, microphone, network status, sharing, and device context when product slices require them.
+- A shared Laravel mental model reduces duplicated logic and keeps mobile behavior aligned with API/admin authority.
+- The mobile client still works through the API. NativePHP + Livewire is a client implementation choice, not a shortcut around server authority.
+
 ## API Stack Principles
 
 Use Laravel's API routing and resource conventions for mobile endpoints:
 
 - API routes belong in the stateless API surface.
 - Authentication should use token-based first-party mobile auth.
+- The API is the boundary where admin settings become enforceable mobile behavior.
 - Responses should be shaped resources, not raw models.
 - Request validation and authorization must happen server-side.
 - High-volume endpoints need rate limits.

@@ -2,12 +2,16 @@
 
 # Mobile Lara Product Contract
 
-This repository is the planning and implementation home for a two-system SaaS mobile platform:
+This repository is the planning and implementation home for a two-system SaaS mobile platform. The product vision is remote control with local resilience: administrators govern mobile behavior centrally, while mobile users keep working through a focused NativePHP client.
+
+The system solves the problem of mobile workflows that need centralized tenant, permission, billing, version, support, notification, report, and sync control without requiring a new mobile release for every product or policy change.
 
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the SaaS control plane.
 2. **Mobile client system** - Laravel plus Livewire inside NativePHP Mobile. This is the managed mobile edge client.
 
 The Admin/API system owns tenant authority, user authority, permissions, feature flags, remote config, app-version policy, notifications, billing, reports, support, audit, and sync decisions. The mobile client consumes those decisions through the API and may cache or queue local work, but it must never become the source of business authority.
+
+NativePHP + Livewire is the chosen mobile approach because the product remains Laravel-first, keeps dynamic UI close to server-side validation and authorization, avoids a separate JavaScript/mobile framework stack, and still allows native capabilities through NativePHP plugins.
 
 ## Documentation-Only Planning Rule
 
@@ -27,6 +31,7 @@ When the user asks for planning, product concept, documentation, system design, 
 Use these docs before changing the product direction:
 
 - `docs/saas-mobile-admin-platform.md`
+- `docs/product-vision.md`
 - `docs/decisions/0001-admin-api-control-plane-and-native-mobile-client.md`
 - `docs/mobile-stack.md`
 - `docs/nativephp-local-storage.md`
@@ -37,6 +42,7 @@ Use these docs before changing the product direction:
 
 - Admin/API is authoritative for SaaS rules.
 - Mobile is authoritative only for local presentation, local drafts, local queues, and native device interaction.
+- Admin settings control mobile feature availability because mobile state can be stale, offline, copied between devices, or running an old app version.
 - Local SQLite stores cache, drafts, and queued intents, not trusted server facts.
 - Secure tokens belong in secure storage, not SQLite.
 - Every replayable mobile write must be idempotent at the API boundary.

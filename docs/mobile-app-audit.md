@@ -13,6 +13,20 @@ Mobile Lara should be treated as a two-system SaaS platform:
 
 The repository already contains substantial mobile-client concepts: Livewire mobile screens, NativePHP services, mobile-local models, local SQLite migrations, offline action infrastructure, permission center ideas, records, media, check-ins, scan history, notifications, and sync status. The admin/API control plane is documented as the source of authority and should be implemented in future slices, not during documentation work.
 
+The product vision is remote control with local resilience. Current mobile assets should be judged by whether they can become admin-controlled, API-enforced, tenant-safe, supportable, and sync-aware. See [Product Vision](product-vision.md).
+
+## Product Vision Audit
+
+| Vision question | Product answer |
+| --- | --- |
+| What problem is solved? | Businesses need controlled mobile workflows without changing the app for every policy, tenant, billing, version, support, or sync decision. |
+| Who are admin users? | SaaS owners, platform operators, tenant owners/admins, support, billing, release, and security/compliance users. |
+| Who are mobile users? | Tenant-side or field users who need simple permitted workflows, native capabilities, and clear offline/sync states. |
+| Why two systems? | Admin/API owns authority and operations; mobile owns focused execution, device capability access, cache, drafts, and queue state. |
+| Why admin-controlled mobile? | Mobile state can be stale, offline, copied, tampered with, or running an old version, so server policy must remain final. |
+| Why NativePHP + Livewire? | It keeps the product Laravel-first while allowing native mobile capabilities and dynamic Blade/Livewire workflows. |
+| Why scalable as SaaS? | Tenant isolation, feature flags, remote config, app-version policy, idempotent sync, observability, support, and billing entitlements turn growth into operations instead of one-off app builds. |
+
 ## Current Product Assets
 
 ### Mobile Client Assets
@@ -63,6 +77,7 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Reports | Admin can report app adoption, device health, sync health, notification health, usage, support, and billing state. |
 | Notification policy | Admin controls templates, channels, quiet hours, device targeting, and delivery health. |
 | Conflict governance | API decides conflict state; mobile displays and resolves according to policy; admin can monitor conflict rate. |
+| Product vision governance | Every future feature must prove the full loop from admin setting to API enforcement to mobile UX to support/audit visibility. |
 
 ## Business Logic Audit
 
@@ -123,6 +138,7 @@ Every admin action that can change mobile behavior should include the scope, act
 | Admin flags become untraceable | Support cannot explain changed behavior. | Feature/config changes require audit trails. |
 | App-version policy is ignored | Old clients keep calling stale API behavior. | App-version policy is part of mobile boot and API enforcement. |
 | Tenant data leaks through support/reporting | SaaS trust is broken. | Tenant scoping applies to support and reports as strongly as to core data. |
+| Product grows by screens instead of control loops | The SaaS value becomes unclear and expensive to operate. | Every feature starts from the product vision and full admin/API/mobile/support/audit loop. |
 
 ## Next Planning Slices
 
@@ -145,6 +161,7 @@ php artisan native:plugin:validate
 ## Sources And References
 
 - [SaaS Mobile Admin Platform Concept](saas-mobile-admin-platform.md)
+- [Product Vision](product-vision.md)
 - [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md)
 - Laravel Boost application info and documentation search.
 - Laravel API routing, authentication, resources, and JSON testing documentation.

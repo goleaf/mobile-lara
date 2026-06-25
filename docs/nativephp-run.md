@@ -4,6 +4,8 @@ Updated: 2026-06-25
 
 This Laravel app is initialized for NativePHP Mobile. In the optimized SaaS product, NativePHP is the mobile shell and native capability bridge. The Admin/API system remains the source of tenant, permission, feature, billing, notification, app-version, and sync policy.
 
+The runbook supports the [Product Vision](product-vision.md): native builds should be stable clients of admin-controlled SaaS behavior, not independent policy engines.
+
 ## Current Placeholders
 
 | Setting | Value |
@@ -22,6 +24,8 @@ Replace `com.example.mobilelara` with a real reverse-domain identifier before si
 ## Product Release Model
 
 Native builds should be treated as managed clients of the Admin/API system.
+
+The reason is product scalability. A SaaS operator must be able to support many tenants, app versions, devices, feature states, and rollout cohorts without publishing a new mobile build for every operational decision.
 
 Each release should have:
 
@@ -48,6 +52,8 @@ The admin control plane should eventually be able to mark versions as:
 ## Native Capability Policy
 
 Native permissions should be requested just in time, not all at first launch.
+
+NativePHP + Livewire is chosen so the Laravel product can reach native device capabilities while keeping mobile workflows close to server-side rules, tests, and API contracts. Native capability access should strengthen the mobile UX; it should never become a separate authority path.
 
 Every NativePHP capability needs:
 
@@ -187,6 +193,7 @@ Before production distribution, the project needs:
 
 ## References
 
+- Product vision: [Product Vision](product-vision.md)
 - NativePHP installation: https://nativephp.com/docs/mobile/3/getting-started/installation
 - NativePHP command reference: https://nativephp.com/docs/mobile/3/getting-started/commands
 - NativePHP app icons: https://nativephp.com/docs/mobile/3/the-basics/app-icon
