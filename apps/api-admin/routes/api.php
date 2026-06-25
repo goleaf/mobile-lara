@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Mobile\ContractIndexController;
 use App\Http\Controllers\Api\V1\Mobile\StatusController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,5 +11,6 @@ Route::prefix('v1')
             ->name('mobile.')
             ->group(function (): void {
                 Route::get('/status', StatusController::class)->name('status');
+                Route::get('/contracts', ContractIndexController::class)->name('contracts.index');
             });
     });

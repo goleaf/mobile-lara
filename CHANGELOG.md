@@ -32,3 +32,7 @@ All notable changes to Mobile Lara will be documented in this file.
   as a standalone Laravel app with Livewire routes, NativePHP config, local
   SQLite infrastructure, mobile UI surfaces, tests, frontend build, and plugin
   validation.
+- Added v1 mobile API contract documentation for auth, bootstrap, tenancy,
+  features, remote config, app version/maintenance, records, sync,
+  notifications, support, billing, reports, and diagnostics, plus an
+  implemented contract catalogue endpoint at `GET /api/v1/mobile/contracts`.

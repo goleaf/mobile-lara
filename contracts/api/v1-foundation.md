@@ -56,6 +56,50 @@ Success response:
 }
 ```
 
+### GET `/api/v1/mobile/contracts`
+
+Purpose:
+
+- Return the authoritative v1 mobile contract catalogue.
+- Let mobile diagnostics, tests, and implementation planning discover which
+  contract groups exist and which endpoints are implemented or planned.
+- Keep planned endpoints explicit without pretending auth, tenancy, or domain
+  modules exist before their phases.
+
+Success response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "base_path": "/api/v1/mobile",
+    "contract_version": "v1",
+    "authority": "admin_api",
+    "contracts": [
+      {
+        "key": "foundation",
+        "document": "v1-foundation.md",
+        "status": "implemented",
+        "routes": [
+          {
+            "method": "GET",
+            "path": "/status",
+            "status": "implemented",
+            "auth": "public"
+          }
+        ]
+      }
+    ]
+  },
+  "meta": {
+    "api_version": "v1",
+    "contract_count": 14,
+    "next_contract": "v1-auth",
+    "server_time": "2026-06-25T00:00:00Z"
+  }
+}
+```
+
 ## Standard Error Envelope
 
 Implemented error responses use this shape:
@@ -81,13 +125,16 @@ Implemented error responses use this shape:
 - This endpoint does not authenticate a mobile user.
 - This endpoint does not expose tenant data, feature flags, remote config,
   permissions, subscription state, notifications, or sync settings.
-- The next control-plane contract is `v1-bootstrap.md`.
+- The contract catalogue is public because it exposes only documentation
+  metadata and planned route names.
+- The next control-plane implementation contract is `v1-auth.md`.
 
 ## Verification
 
 Automated coverage in `apps/api-admin`:
 
 - `tests/Feature/MobileApiEnvelopeTest.php`
+- `tests/Feature/MobileApiContractCatalogueTest.php`
 - `tests/Unit/MobileApiResponseTest.php`
 
 Fresh checks for this phase:

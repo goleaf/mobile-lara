@@ -40,28 +40,32 @@ must resolve minimum supported versions, optional updates, forced updates,
 maintenance mode, store links, update messages, and outdated-client protection
 into mobile-safe API outcomes.
 
-## Current Phase 2 State
+## Current Phase 4 State
 
 This directory is now a Laravel 13 application with a Livewire admin dashboard
-shell and the first versioned mobile API route.
+shell, the first versioned mobile API route, and a public mobile contract
+catalogue.
 
 Implemented foundation:
 
 - `GET /admin/dashboard` renders `App\Livewire\Admin\Dashboard`.
 - `/` redirects to `/admin/dashboard`.
 - `GET /api/v1/mobile/status` returns the standard mobile success envelope.
+- `GET /api/v1/mobile/contracts` returns the v1 mobile contract catalogue.
 - `App\Support\Api\MobileApiResponse` centralizes success and error envelopes.
+- `App\Support\Api\MobileContractRegistry` centralizes documented contract
+  groups and planned routes.
 - Blade layouts exist for admin, auth, and dashboard surfaces.
 - Reusable admin Blade components exist for section headings and status badges.
-- Pest tests cover the dashboard route, root redirect, success envelope, and
-  error envelope.
+- Pest tests cover the dashboard route, root redirect, success envelope, error
+  envelope, contract catalogue, and contract Markdown file coverage.
 
 Still pending:
 
 - Admin authentication, tenant scoping, roles, permissions, policies, and audit.
 - Domain modules for feature flags, remote config, app versions, sync,
   notifications, records/content, support, billing, and reports.
-- Real mobile bootstrap contract and endpoint.
+- Implemented mobile bootstrap endpoint and protected domain routes.
 
 Verification commands for this app:
 

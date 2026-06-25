@@ -33,8 +33,7 @@ rollback, and old-version protection.
 - Decide when to remove or rewire the root Laravel app now that
   `apps/api-admin` and `apps/mobile-client` both exist as Laravel apps.
 - Implement mobile bootstrap as the first real control-plane endpoint after the
-  foundation status route.
-- Add the remaining concrete API contracts in `contracts/api`.
+  foundation status and contract catalogue routes.
 - Add tenancy, roles, permissions, feature flags, remote config, app version
   policy, maintenance mode, subscription state, notification policy, sync
   policy, and audit foundations.

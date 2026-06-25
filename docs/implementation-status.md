@@ -47,14 +47,14 @@ Status values:
 | --- | --- |
 | Root application | A Laravel 13 + Livewire 4 + NativePHP Mobile app remains at the repository root as a transition mirror. |
 | Requested monorepo paths | `apps/api-admin` and `apps/mobile-client` are now separate Laravel applications. |
-| API routes | `apps/api-admin/routes/api.php` exposes the first versioned route at `GET /api/v1/mobile/status`. |
+| API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status` and `GET /api/v1/mobile/contracts`. |
 | Mobile routes | 52 `mobile.*` Livewire routes exist in both the root transition app and `apps/mobile-client/routes/web.php`. |
 | Active database | Default SQLite contains only framework tables and `users`; no SaaS control-plane schema exists yet. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
-| Admin/API system | `apps/api-admin` contains a Laravel 13 app, Livewire dashboard shell, shared API response envelope, and first mobile status endpoint. Auth, tenancy, and SaaS modules remain pending. |
-| Contracts directory | `contracts/api` exists with response-envelope guidance and the first `v1-foundation.md` contract. |
+| Admin/API system | `apps/api-admin` contains a Laravel 13 app, Livewire dashboard shell, shared API response envelope, first mobile status endpoint, and public contract catalogue endpoint. Auth, tenancy, and SaaS modules remain pending. |
+| Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/api-admin` has focused Pest coverage for admin routing and API envelopes. |
+| Tests | Root mobile suite and `apps/mobile-client` suite each pass with 413 tests / 3342 assertions. `apps/api-admin` has focused Pest coverage for admin routing, API envelopes, and the contract catalogue. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -70,7 +70,7 @@ Status values:
 | `apps/api-admin` | tested | Laravel app, Livewire dashboard route, versioned API route, shared responder, tests, and frontend build exist. |
 | `apps/mobile-client` | tested | Laravel app, Livewire mobile routes, NativePHP config, local SQLite infrastructure, copied mobile UI, tests, and frontend build exist. |
 | `docs` | documented | Core docs exist; implementation docs need to track real code as it lands. |
-| `contracts/api` | partial | Directory, response-envelope README, and `v1-foundation.md` exist; domain-specific v1 contracts are pending. |
+| `contracts/api` | tested | Directory, response-envelope README, `v1-foundation.md`, all required v1 contract files, and contract catalogue coverage exist. |
 | Root scripts | partial | Directory and guidance exist; no custom wrappers are needed before app split. |
 | Environment examples | partial | Root, `apps/api-admin`, and `apps/mobile-client` `.env.example` files exist; future API base URL and bootstrap keys still need product-specific entries. |
 | Documentation structure | partial | Product docs, implementation status, remaining tasks, changelog, app boundary docs, and contract guidance exist. |
@@ -114,18 +114,22 @@ Status values:
 
 | Contract Area | Status | Notes |
 | --- | --- | --- |
-| API contract documentation directory | partial | `contracts/api/README.md` defines envelope standards and required contract files. |
+| API contract documentation directory | tested | `contracts/api/README.md` defines envelope standards and links every v1 contract file; API/admin tests verify catalogued documents exist. |
 | Versioned response envelope | tested | Shared responder and `GET /api/v1/mobile/status` test cover `success`, `data`, `error`, `meta`, and `next_action` shape. |
-| Auth contract | documented | Product behavior is documented; endpoints are not implemented. |
-| Bootstrap contract | documented | Required payload is documented; endpoint is not implemented. |
-| Features contract | documented | Resolution rules are documented; endpoint is not implemented. |
-| Remote config contract | documented | Remote Configuration Logic defines receive/cache/offline/fallback rules; endpoint/schema are not implemented. |
-| Notifications contract | documented | Product rules exist; API is not implemented. |
-| Records/content contract | partial | Mobile-local records exist; server API contract is missing. |
-| Sync contract | partial | Mobile queue/replay worker exists; server sync contract is missing. |
-| Support contract | documented | Product rules exist; API is not implemented. |
-| Billing contract | documented | Product rules exist; API is not implemented. |
-| Reports contract | documented | Product rules exist; API is not implemented. |
+| Contract catalogue endpoint | tested | `GET /api/v1/mobile/contracts` returns the public v1 contract catalogue through the standard success envelope. |
+| Auth contract | documented | `v1-auth.md` defines planned auth/session/profile routes and gates; endpoints are not implemented. |
+| Bootstrap contract | documented | `v1-bootstrap.md` defines required payload and cache behavior; endpoint is not implemented. |
+| Tenancy contract | documented | `v1-tenancy.md` defines tenant list/switch behavior; endpoints are not implemented. |
+| Features contract | documented | `v1-features.md` defines resolved feature states and gates; endpoint is not implemented. |
+| Remote config contract | documented | `v1-remote-config.md` defines receive/cache/offline/fallback rules; endpoint is not implemented. |
+| App version/maintenance contract | documented | `v1-app-version-maintenance.md` defines version, force update, and maintenance states; endpoint is not implemented. |
+| Notifications contract | documented | `v1-notifications.md` defines inbox, push token, and read-state routes; API is not implemented. |
+| Records/content contract | documented | `v1-records.md` defines server record routes and offline/idempotency behavior; endpoints are not implemented. |
+| Sync contract | documented | `v1-sync.md` defines sync bootstrap, push, pull, acknowledgement, and conflict behavior; endpoints are not implemented. |
+| Support contract | documented | `v1-support.md` defines support ticket/message behavior; API is not implemented. |
+| Billing contract | documented | `v1-billing.md` defines subscription/plan presentation behavior; API is not implemented. |
+| Reports contract | documented | `v1-reports.md` defines permission-safe report summaries; API is not implemented. |
+| Diagnostics contract | documented | `v1-diagnostics.md` defines privacy-safe diagnostics upload behavior; API is not implemented. |
 
 ## Phase 5 - Authentication And Sessions
 
@@ -444,7 +448,7 @@ Status values:
 | Root README | documented | Needs update as implementation changes. |
 | Architecture docs | documented | Need updates after monorepo/control-plane implementation. |
 | Local development docs | partial | Commands exist in README/docs; per-app docs missing. |
-| API contracts | not started | Need `contracts/api`. |
+| API contracts | tested | `contracts/api` exists with all required v1 contract files and catalogue coverage. |
 | Admin panel docs | documented | Principles only; implementation docs missing. |
 | Mobile client docs | documented | Principles plus audit exist. |
 | NativePHP docs | documented | Runbook exists. |
@@ -458,11 +462,11 @@ Status values:
 
 | Check | Status | Notes |
 | --- | --- | --- |
-| API/admin formatting | not started | No app exists yet. |
-| API/admin tests | not started | No app exists yet. |
-| API/admin frontend build | not started | No app exists yet. |
-| API routes verification | not started | `routes/api.php` missing. |
-| Admin navigation verification | not started | Admin panel missing. |
+| API/admin formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/api-admin`. |
+| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin`. |
+| API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
+| API routes verification | tested | `php artisan route:list --except-vendor` shows status and contracts routes. |
+| Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
 | Mobile formatting | partial | Existing PHP code needs fresh `vendor/bin/pint --dirty --format agent` after edits. |
 | Mobile tests | partial | Many tests exist; full fresh run pending. |
 | Mobile frontend build | partial | Build command exists; fresh run pending. |
@@ -474,27 +478,21 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Finish Phase 1 by creating the monorepo structure, API contract directory,
-   root helper scripts/docs, remaining-task tracking, and migration plan for the
-   existing mobile app into `apps/mobile-client`.
-2. Build Phase 2 as a minimal but real API/admin foundation with versioned
-   `api/v1/mobile` routes, shared response envelope, admin routes/layout, and
-   smoke tests.
-3. Connect Phase 4 and Phase 10 with the first mobile bootstrap endpoint because
+1. Connect Phase 5 and Phase 10 with API authentication and the first mobile bootstrap endpoint because
    it becomes the control point for tenancy, permissions, features, config,
    version rules, subscription status, notifications, and sync policy.
-4. Implement tenancy, roles, feature flags, remote config, version/maintenance,
+2. Implement tenancy, roles, feature flags, remote config, version/maintenance,
    and audit before broad records/support/billing/reporting expansion.
-5. Migrate existing mobile-local features behind API-derived policy instead of
+3. Migrate existing mobile-local features behind API-derived policy instead of
    letting local screens remain standalone authority.
 
 ## Current Blocking Risks
 
 | Risk | Status | Mitigation |
 | --- | --- | --- |
-| Requested monorepo does not match current root app | partial | Introduce `apps/` structure with docs and safe wrappers first, then move code in controlled commits. |
-| Admin/API does not exist yet | not started | Build minimal control-plane foundation before adding business modules. |
-| API contracts do not exist yet | not started | Add `contracts/api` before endpoint implementation. |
+| Root transition app still exists | partial | Decide when to remove or rewire it after `apps/mobile-client` is fully authoritative. |
+| Admin/API domain modules do not exist yet | partial | Build auth, tenancy, policy, feature, config, version, and audit foundations before business modules. |
+| API contracts are documented but most endpoints are planned | partial | Implement endpoints in phase order and keep each contract updated before code changes. |
 | Mobile features are mostly local-only | partial | Route all server-trusted behavior through API contracts as they land. |
 | Native build tooling incomplete | partial | Keep NativePHP service fallbacks tested; treat simulator/emulator release verification as external blocker until tooling is installed. |
 | Full completion scope is very large | partial | Continue in small commits by phase; keep this checklist authoritative. |

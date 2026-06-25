@@ -39,7 +39,25 @@ through app-version policy before old mobile clients lose support.
 ## Implemented Foundation
 
 - [v1-foundation.md](v1-foundation.md) defines the implemented
-  `GET /api/v1/mobile/status` endpoint and the shared success/error envelope.
+  `GET /api/v1/mobile/status` endpoint, implemented
+  `GET /api/v1/mobile/contracts` catalogue endpoint, and the shared
+  success/error envelope.
+
+## Documented v1 Contract Groups
+
+- [v1-auth.md](v1-auth.md)
+- [v1-bootstrap.md](v1-bootstrap.md)
+- [v1-tenancy.md](v1-tenancy.md)
+- [v1-features.md](v1-features.md)
+- [v1-remote-config.md](v1-remote-config.md)
+- [v1-app-version-maintenance.md](v1-app-version-maintenance.md)
+- [v1-records.md](v1-records.md)
+- [v1-sync.md](v1-sync.md)
+- [v1-notifications.md](v1-notifications.md)
+- [v1-support.md](v1-support.md)
+- [v1-billing.md](v1-billing.md)
+- [v1-reports.md](v1-reports.md)
+- [v1-diagnostics.md](v1-diagnostics.md)
 
 ## Standard Success Envelope
 
@@ -84,9 +102,10 @@ Allowed categories include `validation`, `unauthenticated`, `permission`,
 `tenant`, `feature`, `billing`, `version`, `maintenance`, `conflict`,
 `stale_client`, `rate_limit`, `retry_later`, and `server_error`.
 
-## Required Contract Files
+## Contract File Rule
 
-Future implementation phases should add one Markdown file per contract group:
+Each v1 contract group has a Markdown file. Future implementation phases should
+update the relevant file before adding or changing endpoints:
 
 - `v1-foundation.md`
 - `v1-auth.md`

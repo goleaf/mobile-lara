@@ -91,7 +91,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/design-system.md](docs/design-system.md) | Mobile and admin UX principles. |
 | [docs/implementation-status.md](docs/implementation-status.md) | Current implementation checklist grouped by phase and feature area. |
 | [docs/remaining-tasks.md](docs/remaining-tasks.md) | Active remaining work, external blockers, and future enhancements. |
-| [contracts/api](contracts/api) | Target home for versioned mobile API contract documents. |
+| [contracts/api](contracts/api) | Versioned mobile API contract documents and implemented contract catalogue. |
 | [apps](apps) | Target monorepo boundary for `api-admin` and `mobile-client`. |
 | [AGENTS.md](AGENTS.md) / [CLAUDE.md](CLAUDE.md) | Agent-facing project rules. |
 

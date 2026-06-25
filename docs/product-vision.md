@@ -15,6 +15,20 @@ The product is a SaaS control plane plus a managed NativePHP mobile client:
 
 The strongest product promise is remote control with local resilience: administrators can govern mobile behavior centrally, while mobile users can keep working in real-world conditions where connectivity, device state, and app versions vary.
 
+## Vision Contract
+
+| Question | Vision answer |
+| --- | --- |
+| What problem does the system solve? | Businesses need governed mobile workflows where tenant access, permissions, features, billing, support, notifications, reports, versions, and sync behavior can change centrally without rebuilding the mobile app for every operational decision. |
+| Who are the admin users? | Platform owners, super admins, platform operators, tenant admins/managers, support agents, billing managers, release/product managers, and security/compliance reviewers who operate the SaaS control plane. |
+| Who are the mobile users? | Tenant-side workers, field users, service teams, contractors, clients, or customers who need a simple permitted mobile app with native capabilities and clear online/offline state. |
+| Why both Admin/API and mobile client? | Admin/API owns authority, API contracts, tenant safety, billing, support, audit, and sync decisions; mobile owns local execution, NativePHP capabilities, cache, drafts, queues, and clear task UX. |
+| Why must admin settings control mobile? | Mobile can be stale, offline, copied, tampered with, or outdated; only server-side admin policy can safely enforce tenant scope, permissions, feature rollout, version rules, billing, support, and security. |
+| Why NativePHP + Livewire? | The product remains Laravel-first, uses Livewire/Blade for dynamic interfaces without a separate frontend framework, and uses NativePHP for mobile shell and native capability access while still communicating through the API. |
+| What makes it scalable SaaS? | Tenant isolation, API-first contracts, feature flags, remote config, mobile-version policy, idempotent sync, support visibility, billing entitlements, modular expansion, and documentation-first planning let many tenants, devices, roles, versions, and feature states operate from one control plane. |
+
+This contract is the product north star. Future documentation may add detail, but it should not reverse these answers without a new decision record.
+
 ## Product Positioning
 
 Mobile Lara is positioned as a tenant-based SaaS control center with an API-first, feature-controlled, offline-capable mobile workforce/client platform.
