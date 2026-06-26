@@ -1,5 +1,13 @@
 # Final Optimized SaaS Blueprint
 
+Final Consistency Review is defined in `final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Updated: 2026-06-26
 
 This is the main planning document for Mobile Lara. It defines the optimized
@@ -16,7 +24,9 @@ logic.
 Use this blueprint as the first planning reference before changing product
 logic, admin behavior, API contracts, mobile behavior, offline behavior,
 NativePHP feature behavior, billing behavior, support behavior, reporting
-behavior, release behavior, or optional module scope.
+behavior, release behavior, or optional module scope. Use [Final Consistency
+Review](final-consistency-review.md) before accepting documentation that could
+blur authority, terminology, docs-only scope, or database-field boundaries.
 
 ## Product Vision
 

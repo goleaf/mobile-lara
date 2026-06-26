@@ -1,5 +1,13 @@
 # Implementation Status
 
+Final Consistency Review is defined in `final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
 this is the main planning document for product vision, system architecture,
 Admin/API logic, mobile-client logic, API principles, tenant principles,
@@ -434,7 +442,7 @@ Status values:
 | Tailwind mobile styling | tested | Tailwind v4/SCSS entrypoint and mobile design tokens build through Vite in `apps/mobile-client`. |
 | Mobile-first layout and safe-area shell | tested | Shared layout, mobile components, safe-area shell, and bottom navigation are covered by feature tests. |
 | Welcome screen | tested | `Mobile\Welcome` route and view exist in `apps/mobile-client`. |
-| Auth screens | tested | Login, register, profile update, profile logout, sessions logout, and sessions logout-all now consume the mobile auth API service; password reset and email verification remain local validation placeholders until API endpoints are documented and implemented. |
+| Auth screens | tested | Login, register, profile update, profile logout, sessions logout, and sessions logout-all now consume the mobile auth API service; password reset and email verification remain local validation placeholders until API behavior is documented and delivered through a separately approved implementation slice. |
 | Dashboard | tested | `Mobile\Dashboard` exists and renders in `apps/mobile-client`; Admin/API bootstrap integration is missing. |
 | Bottom navigation | tested | `<x-mobile.bottom-navigation>` exists and is covered by shell tests; feature-gated navigation is not API-controlled yet. |
 | Settings | tested | Settings index and sections exist; workspace settings now reads cached bootstrap tenant context and switches tenants through API. Remote config policy remains pending. |

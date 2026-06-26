@@ -1,5 +1,13 @@
 # Product Vision
 
+Final Consistency Review is defined in `final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
 this is the main planning document for product vision, system architecture,
 Admin/API logic, mobile-client logic, API principles, tenant principles,
@@ -529,7 +537,9 @@ This product vision does not create or imply immediate implementation of:
 - Native plugin integrations.
 - Application logic.
 
-Those belong in future implementation slices with explicit acceptance criteria and tests.
+Those belong in future delivery planning after explicit approval with explicit
+acceptance criteria. This vision document does not request tests, code,
+database fields, migrations, endpoints, or application logic.
 
 ## Risks
 

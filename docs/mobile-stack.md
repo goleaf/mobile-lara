@@ -1,5 +1,13 @@
 # Mobile Stack
 
+Final Consistency Review is defined in `final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
 this is the main planning document for product vision, system architecture,
 Admin/API logic, mobile-client logic, API principles, tenant principles,
@@ -342,7 +350,7 @@ The stack is intentionally split because web-only would under-serve mobile worke
 
 ### Admin/API System
 
-The Admin/API system should be implemented as the SaaS control plane:
+The Admin/API system is planned as the SaaS control plane:
 
 - Admin users are SaaS owners, platform operators, tenant owners, tenant admins, support users, billing operators, release managers, and security/compliance reviewers.
 - Livewire admin panel for operators, tenant admins, support, billing, and reports.
@@ -356,7 +364,7 @@ The Admin/API system should be implemented as the SaaS control plane:
 
 ### Mobile Client System
 
-The Mobile client system should be implemented as the managed edge client:
+The Mobile client system is planned as the managed edge client:
 
 - Mobile users are tenant-side or field users who need simple allowed workflows without admin complexity.
 - Livewire mobile screens rendered inside NativePHP.

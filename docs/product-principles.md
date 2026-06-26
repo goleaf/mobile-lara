@@ -1,5 +1,13 @@
 # Core Product Principles
 
+Final Consistency Review is defined in `final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
 this is the main planning document for product vision, system architecture,
 Admin/API logic, mobile-client logic, API principles, tenant principles,
@@ -9,7 +17,10 @@ and future module expansion principles.
 
 Updated: 2026-06-25
 
-This document defines the core product principles for Mobile Lara. These principles guide product decisions, documentation, feature design, and future implementation planning. It is documentation only and does not define database fields, migrations, controllers, components, policies, or application logic.
+This document defines the core product principles for Mobile Lara. These
+principles guide product decisions, documentation, feature design, and future
+delivery planning. It is documentation only and does not define database
+fields, migrations, controllers, components, policies, or application logic.
 
 ## Principle Summary
 
@@ -497,7 +508,8 @@ Documentation-first means feature work starts with principles, boundaries, flows
 
 The detailed checklist lives in [Documentation-First Architecture](documentation-first-architecture.md).
 
-Documentation is not a substitute for tests or implementation. It is the agreement that makes future implementation safer.
+Documentation is not a substitute for separately approved delivery work. It is
+the agreement that makes future implementation planning safer.
 
 Product rule: if a feature changes product authority, tenant behavior, API contracts, sync behavior, native permissions, billing, support, or security, document the decision before writing code.
 
@@ -523,7 +535,7 @@ Product rule: expand by complete feature modules, not scattered screens.
 
 ## Principle Checklist
 
-Before a future feature is implemented, answer:
+Before future feature delivery planning is approved, answer:
 
 | Question | Required answer |
 | --- | --- |
@@ -564,7 +576,9 @@ This principles document does not create:
 - Native plugin integrations.
 - Application logic.
 
-Those belong in future implementation prompts with tests and acceptance criteria.
+Those belong in future delivery planning after explicit approval. This
+principles document does not request tests, code, database fields, migrations,
+endpoints, or application logic.
 
 ## Risks
 

@@ -1,5 +1,13 @@
 # Testing Strategy Principles
 
+Final Consistency Review is defined in `final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
 this is the main planning document for product vision, system architecture,
 Admin/API logic, mobile-client logic, API principles, tenant principles,
@@ -85,7 +93,8 @@ scope, errors, security, and risks will be verified.
 
 This strategy is not a test suite and does not prescribe concrete test class
 names, test files, factories, database schema, endpoint URLs, selectors, or
-assertion code. Those belong to future implementation prompts.
+assertion code. Those belong to future delivery planning after explicit
+approval.
 
 This strategy does define:
 

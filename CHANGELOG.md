@@ -1,5 +1,13 @@
 # Changelog
 
+Final Consistency Review is defined in `docs/final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Final Optimized SaaS Blueprint is defined in `docs/final-optimized-saas-blueprint.md`:
 this is the main planning document for product vision, system architecture,
 Admin/API logic, mobile-client logic, API principles, tenant principles,
@@ -132,6 +140,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Final Consistency Review documentation for API-only mobile authority,
+  admin-controlled configurable features, feature-flag and remote-config
+  separation, tenant isolation, offline behavior, NativePHP permission
+  awareness, billing/plan limits, privacy-safe support, tenant-safe reports,
+  docs-only language, no database-field definitions, and terminology.
 - Added Final Optimized SaaS Blueprint as the main planning document for
   product vision, system architecture, Admin/API logic, mobile-client logic,
   API principles, tenant principles, permissions, feature flags, remote config,

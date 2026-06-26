@@ -1,5 +1,13 @@
 # ADR-0001: Admin/API Control Plane And Native Mobile Client
 
+Final Consistency Review is defined in `../../docs/final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Final Optimized SaaS Blueprint is defined in `../../docs/final-optimized-saas-blueprint.md`:
 this is the main planning document for product vision, system architecture,
 Admin/API logic, mobile-client logic, API principles, tenant principles,
@@ -411,7 +419,8 @@ The mobile client would be implemented as a fully native iOS/Android application
 - Feature work must identify API-first behavior: why mobile talks to API, which context is returned, which response states/errors exist, how sync/conflict works, and how tenant scope is protected.
 - Feature work must identify responsibility ownership: which Admin/API responsibility owns tenant, user, permission, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior.
 - Feature work must identify mobile responsibility ownership: which mobile-client responsibility owns UX, local session, cache, offline action, NativePHP capability, navigation, permission prompt, sync display, draft, feedback, or feature visibility behavior.
-- Documentation and future implementation should treat local mobile data as cache, draft, queue, or confirmed server copy depending on sync state.
+- Documentation and future delivery planning should treat local mobile data as
+  cache, draft, queue, or confirmed server copy depending on sync state.
 - NativePHP + Livewire remains the chosen mobile approach until a future ADR demonstrates that native-only or another mobile stack is worth the extra operational cost.
 - Future architecture changes should preserve the core principles unless a newer ADR explicitly supersedes them.
 - Role and account-state boundaries should be treated as authorization requirements, not UI preferences.

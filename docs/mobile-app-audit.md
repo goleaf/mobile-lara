@@ -1,5 +1,13 @@
 # Mobile App Audit
 
+Final Consistency Review is defined in `final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
 this is the main planning document for product vision, system architecture,
 Admin/API logic, mobile-client logic, API principles, tenant principles,
@@ -18,7 +26,12 @@ Mobile Lara should be treated as a two-system SaaS platform:
 1. **Admin/API system** - Laravel API plus Livewire admin panel. This is the control plane.
 2. **Mobile client system** - Laravel plus Livewire running inside NativePHP Mobile. This is the managed mobile edge client.
 
-The repository already contains substantial mobile-client concepts: Livewire mobile screens, NativePHP services, mobile-local models, local SQLite migrations, offline action infrastructure, permission center ideas, records, media, check-ins, scan history, notifications, and sync status. The admin/API control plane is documented as the source of authority and should be implemented in future slices, not during documentation work.
+The repository already contains substantial mobile-client concepts: Livewire
+mobile screens, NativePHP services, mobile-local models, local SQLite
+migrations, offline action infrastructure, permission center ideas, records,
+media, check-ins, scan history, notifications, and sync status. The admin/API
+control plane is documented as the source of authority and belongs to future
+delivery planning after explicit approval, not to this documentation review.
 
 The product vision is remote control with local resilience. Current mobile assets should be judged by whether they can become admin-controlled, API-enforced, tenant-safe, supportable, and sync-aware. See [Product Vision](product-vision.md).
 
@@ -525,7 +538,8 @@ Native capabilities should be exposed through product slices only when admin pol
 
 ## Target Product Gaps
 
-The optimized SaaS product still needs these concepts to be implemented in future work:
+The optimized SaaS product still needs future delivery planning for these
+concepts:
 
 | Area | Target behavior |
 | --- | --- |
@@ -540,10 +554,10 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 | Conflict governance | API decides conflict state; mobile displays and resolves according to policy; admin can monitor conflict rate. |
 | Product vision governance | Every future feature must prove the full loop from admin setting to API enforcement to mobile UX to support/audit visibility. |
 | Product positioning governance | Future slices must preserve the combined SaaS control center plus mobile platform positioning rather than drifting into web-only or mobile-only work. |
-| Documentation-first governance | Every future slice must document feature behavior, admin mobile effect, mobile API dependency, sync behavior, permission owner, risks, and acceptance criteria before implementation. |
-| Admin Control Center governance | Every future admin slice must define control area, authorized role, scope, mobile effect, API context, audit expectation, support meaning, offline behavior, risk, and non-goals before implementation. |
-| Feature flag governance | Every future important mobile feature must define flag priority, disabled mobile states, admin impact, rollout path, plan limits, support meaning, audit expectation, offline behavior, and non-goals before implementation. |
-| Remote config governance | Every future runtime-configurable behavior must define config type, default, scope, tenant override, mobile cache, offline behavior, invalid-config fallback, safe admin change, support, audit, rollback, and non-goals before implementation. |
+| Documentation-first governance | Every future slice must document feature behavior, admin mobile effect, mobile API dependency, sync behavior, permission owner, risks, and acceptance criteria before delivery planning. |
+| Admin Control Center governance | Every future admin slice must define control area, authorized role, scope, mobile effect, API context, audit expectation, support meaning, offline behavior, risk, and non-goals before delivery planning. |
+| Feature flag governance | Every future important mobile feature must define flag priority, disabled mobile states, admin impact, rollout path, plan limits, support meaning, audit expectation, offline behavior, and non-goals before delivery planning. |
+| Remote config governance | Every future runtime-configurable behavior must define config type, default, scope, tenant override, mobile cache, offline behavior, invalid-config fallback, safe admin change, support, audit, rollback, and non-goals before delivery planning. |
 | SaaS value governance | Every future slice must prove stakeholder value and connect that value to admin control, mobile access, offline sync, notifications, reports, security, or feature flags. |
 | API-first governance | Every future slice must define API purpose, operating context, predictable responses, mobile-friendly errors, sync/conflict behavior, and tenant-boundary protection before endpoint design. |
 | Admin/API responsibility governance | Every future slice must identify which control-plane responsibility owns tenant, user, API, feature, config, version, notification, billing, support, report, audit, conflict, or security behavior. |
@@ -551,7 +565,8 @@ The optimized SaaS product still needs these concepts to be implemented in futur
 
 ## Business Logic Audit
 
-Future feature work must not start from a screen. Each feature must be documented and implemented across:
+Future feature planning must not start from a screen. Each feature must be
+documented across:
 
 - Admin control behavior.
 - API request/response behavior.
@@ -627,7 +642,9 @@ Admin controls should be:
 - Safe by default.
 - Designed for support and operations, not just configuration.
 
-Every admin action that can change mobile behavior should include the scope, actor, old value, new value, and reason in the audit model when implemented.
+Every future delivery plan for an admin action that can change mobile behavior
+should include the scope, actor, old value, new value, and reason in the audit
+model before implementation is approved.
 
 ## Risk Register
 
@@ -649,15 +666,12 @@ Every admin action that can change mobile behavior should include the scope, act
 4. Support and diagnostics: safe mobile diagnostics, support case timeline, admin triage.
 5. Billing and entitlements: plan-driven capability limits enforced by API.
 
-## Verification Commands For Future Implementation
+## Verification Notes For Future Delivery
 
-```bash
-php artisan route:list --except-vendor
-php artisan test --compact
-npm run build
-php artisan native:debug --no-interaction
-php artisan native:plugin:validate
-```
+Future delivery verification belongs only to separately approved
+implementation work. This audit does not request commands, tests, builds,
+NativePHP diagnostics, plugin validation, routes, migrations, endpoints, or
+application logic during documentation review.
 
 ## Sources And References
 

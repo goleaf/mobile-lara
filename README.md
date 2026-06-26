@@ -1,5 +1,13 @@
 # Mobile Lara
 
+Final Consistency Review is defined in `docs/final-consistency-review.md`:
+all SaaS idea documentation must preserve API-only mobile authority,
+admin-controlled configurable features, separated feature flags and remote
+config, tenant isolation, clear offline behavior, permission-aware
+NativePHP features, logical billing and plan limits, privacy-safe support,
+tenant-bound reports, docs-only planning language, no database-field
+definitions, and consistent terminology.
+
 Final Optimized SaaS Blueprint is defined in `docs/final-optimized-saas-blueprint.md`:
 this is the main planning document for product vision, system architecture,
 Admin/API logic, mobile-client logic, API principles, tenant principles,
@@ -304,6 +312,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | Document | Purpose |
 | --- | --- |
 | [docs/final-optimized-saas-blueprint.md](docs/final-optimized-saas-blueprint.md) | Main planning document for product vision, system architecture, Admin/API logic, mobile-client logic, API principles, tenant principles, permissions, feature flags, remote config, offline sync, NativePHP features, notifications, billing, support, reporting, security, release, and future module expansion. |
+| [docs/final-consistency-review.md](docs/final-consistency-review.md) | Final consistency review for API-only mobile authority, admin-controlled configurable features, feature-flag and remote-config separation, tenant isolation, offline behavior, NativePHP permissions, billing/plan limits, privacy-safe support, tenant-safe reports, docs-only language, no database-field definitions, and terminology. |
 | [docs/product-vision.md](docs/product-vision.md) | Plain-language product vision, users, problem, technology choice, and SaaS scale logic. |
 | [docs/product-positioning.md](docs/product-positioning.md) | Product positioning as SaaS control center, mobile client platform, API-first system, offline-capable system, feature-controlled platform, and tenant-based product. |
 | [docs/product-principles.md](docs/product-principles.md) | Core product principles for admin control, API-first mobile behavior, feature control, tenant isolation, offline use, security, documentation, and modular expansion. |
@@ -395,8 +404,9 @@ contracts.
 
 - Use Eloquent and Laravel resources for API-facing data. Do not use raw SQL strings.
 - Start from the [final optimized SaaS blueprint](docs/final-optimized-saas-blueprint.md) before changing product vision, system architecture, Admin/API logic, mobile-client logic, API principles, tenant principles, permissions, feature flags, remote config, offline sync, NativePHP features, notifications, billing, support, reporting, security, release, or future module expansion.
-- Apply [core product principles](docs/product-principles.md) before feature implementation.
-- Apply [documentation-first architecture](docs/documentation-first-architecture.md) before coding any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change.
+- Apply the [final consistency review](docs/final-consistency-review.md) before accepting documentation that could blur API-only mobile authority, admin-controlled configurable features, feature-flag and remote-config separation, tenant isolation, offline behavior, NativePHP permission awareness, billing/plan limits, privacy-safe support, tenant-safe reports, docs-only language, database-field boundaries, or terminology.
+- Apply [core product principles](docs/product-principles.md) before feature delivery planning.
+- Apply [documentation-first architecture](docs/documentation-first-architecture.md) before delivery planning for any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change.
 - Apply [acceptance principles](docs/acceptance-principles.md) before implementation planning for any feature purpose, admin control, mobile behavior, API dependency, offline behavior, permission behavior, feature flag behavior, tenant behavior, error behavior, security behavior, or documentation requirement.
 - Apply the [risk map](docs/risk-map.md) before planning API dependency, offline sync, tenant isolation, secure storage, NativePHP plugin availability, app store releases, forced updates, feature flags, billing restrictions, admin configuration, support access, privacy, or data-conflict behavior.
 - Apply [testing strategy principles](docs/testing-strategy-principles.md) before planning future tests for API contracts, admin controls, mobile feature visibility, permissions, feature flags, remote config, authentication, tenant isolation, offline sync, conflicts, native fallbacks, notifications, billing, or app-version rules.
@@ -481,4 +491,8 @@ Laravel Herd serves the local app at the project test domain. Use Laravel Boost'
 - No admin resources, API controllers, policies, or Livewire components were added.
 - No billing provider, push provider, or external service was integrated.
 
-This repository should move from concept to implementation through explicit product slices, each with tests, migrations, authorization, API contracts, and admin/mobile acceptance criteria.
+This repository should move from concept to delivery only through explicit,
+separately approved product slices. Planning may define acceptance criteria,
+API contracts, authorization expectations, admin/mobile behavior, and risks,
+but this documentation set does not request tests, migrations, database
+fields, endpoints, screens, or application logic by itself.
