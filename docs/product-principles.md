@@ -226,6 +226,14 @@ tenant-enabled, plan-controlled, permission-aware, moderation-ready,
 abuse-report-safe, notification-safe, offline-draft-safe, privacy-safe,
 auditable, and Admin/API-authoritative.
 
+AI Feature Logic is defined in `ai-feature-logic.md`:
+AI assistant purpose, summarization, categorization, smart suggestions,
+moderation assistance, report generation assistance, admin AI controls,
+tenant opt-in, privacy, and human-review principles must remain
+tenant-enabled, plan-controlled, permission-aware, opt-in-only,
+provider-neutral, human-reviewed, privacy-safe, audit-ready,
+rate-limited, cost-aware, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline

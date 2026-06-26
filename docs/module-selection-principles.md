@@ -30,6 +30,14 @@ tenant-enabled, plan-controlled, permission-aware, moderation-ready,
 abuse-report-safe, notification-safe, offline-draft-safe, privacy-safe,
 auditable, and Admin/API-authoritative.
 
+AI Feature Logic is defined in `ai-feature-logic.md`:
+AI assistant purpose, summarization, categorization, smart suggestions,
+moderation assistance, report generation assistance, admin AI controls,
+tenant opt-in, privacy, and human-review principles must remain
+tenant-enabled, plan-controlled, permission-aware, opt-in-only,
+provider-neutral, human-reviewed, privacy-safe, audit-ready,
+rate-limited, cost-aware, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -432,19 +440,21 @@ data, private diagnostics, or unsupported raw operational data.
 
 ### AI Assistant
 
-AI assistant is an optional helper module, not a decision authority. It may
-help users find information, summarize permitted content, draft messages,
-explain offline or sync state, suggest next actions, or assist admins with
-support and reporting context after explicit module documentation is approved.
+AI assistant is defined in [AI Feature Logic](ai-feature-logic.md). It is an
+optional helper module, not a decision authority. It may help users find
+information, summarize permitted content, categorize content, draft messages,
+suggest next actions, assist moderation review, explain offline or sync state,
+or assist admins with support and report-generation context after explicit
+module documentation is approved.
 
 Admin/API should own AI availability, plan entitlement, tenant opt-in,
-allowed data sources, prompt boundaries, tool limits, audit, retention,
-rate/cost limits, privacy policy, support review, and human override. Mobile
-should own a simple assistant UX, context explanation, permission-aware
-prompts, offline unavailable behavior, and clear uncertainty feedback. AI must
-not bypass permissions, invent tenant authority, expose secrets, make billing
-decisions, execute destructive actions without confirmation, or treat model
-output as trusted truth.
+allowed data sources, prompt boundaries, provider-neutral policy, tool limits,
+audit, retention, rate/cost limits, privacy policy, support review, and human
+override. Mobile should own a simple assistant UX, context explanation,
+permission-aware prompts, offline unavailable behavior, and clear uncertainty
+feedback. AI must not bypass permissions, invent tenant authority, expose
+secrets, make billing decisions, execute destructive actions without
+confirmation, or treat model output as trusted truth.
 
 ## Shared Module Behaviors
 

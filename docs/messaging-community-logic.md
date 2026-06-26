@@ -1,5 +1,13 @@
 # Messaging And Community Logic
 
+AI Feature Logic is defined in `ai-feature-logic.md`:
+AI assistant purpose, summarization, categorization, smart suggestions,
+moderation assistance, report generation assistance, admin AI controls,
+tenant opt-in, privacy, and human-review principles must remain
+tenant-enabled, plan-controlled, permission-aware, opt-in-only,
+provider-neutral, human-reviewed, privacy-safe, audit-ready,
+rate-limited, cost-aware, and Admin/API-authoritative.
+
 Updated: 2026-06-26
 
 This document defines messaging and community logic for Mobile Lara. It

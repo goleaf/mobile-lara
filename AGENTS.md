@@ -171,6 +171,14 @@ tenant-enabled, plan-controlled, permission-aware, moderation-ready,
 abuse-report-safe, notification-safe, offline-draft-safe, privacy-safe,
 auditable, and Admin/API-authoritative.
 
+AI Feature Logic is defined in `docs/ai-feature-logic.md`:
+AI assistant purpose, summarization, categorization, smart suggestions,
+moderation assistance, report generation assistance, admin AI controls,
+tenant opt-in, privacy, and human-review principles must remain
+tenant-enabled, plan-controlled, permission-aware, opt-in-only,
+provider-neutral, human-reviewed, privacy-safe, audit-ready,
+rate-limited, cost-aware, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -281,6 +289,7 @@ Use these docs before changing the product direction:
 - `docs/booking-logic.md`
 - `docs/commerce-logic.md`
 - `docs/messaging-community-logic.md`
+- `docs/ai-feature-logic.md`
 - `docs/native-feature-strategy.md`
 - `docs/camera-media-logic.md`
 - `docs/scanner-logic.md`
@@ -337,6 +346,7 @@ Use these docs before changing the product direction:
 - Booking decisions must follow `docs/booking-logic.md`.
 - Commerce decisions must follow `docs/commerce-logic.md`.
 - Messaging and community decisions must follow `docs/messaging-community-logic.md`.
+- AI feature decisions must follow `docs/ai-feature-logic.md`.
 - Native feature decisions must follow `docs/native-feature-strategy.md`.
 - Camera and media decisions must follow `docs/camera-media-logic.md`.
 - Scanner decisions must follow `docs/scanner-logic.md`.
@@ -395,6 +405,7 @@ Use these docs before changing the product direction:
 - Any booking service selection, availability logic, booking request, confirmation, cancellation, reschedule, reminder, admin schedule control, tenant rule, or mobile offline limitation behavior must map to `docs/booking-logic.md`.
 - Any commerce catalog browsing, cart behavior, checkout, hosted payment boundary, order lifecycle, invoice/receipt, subscription upsell, admin product/control, or mobile offline limitation behavior must map to `docs/commerce-logic.md`.
 - Any messaging or community conversation behavior, support chat behavior, message attachment, moderation, report/abuse flow, notification behavior, offline message draft, admin visibility boundary, or privacy behavior must map to `docs/messaging-community-logic.md`.
+- Any AI assistant behavior, summarization, categorization, smart suggestion, moderation assistance, report generation assistance, admin AI control, tenant opt-in, privacy, or human-review behavior must map to `docs/ai-feature-logic.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.
