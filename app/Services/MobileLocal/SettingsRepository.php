@@ -15,17 +15,24 @@ final class SettingsRepository
 
     public function get(): MobileLocalSetting
     {
-        $this->mobileLocalDatabase->ensureFileExists();
-
-        $settings = MobileLocalSetting::query()
-            ->forKey($this->settingsKey())
-            ->first();
+        $settings = $this->find();
 
         if ($settings instanceof MobileLocalSetting) {
             return $settings;
         }
 
         return MobileLocalSetting::query()->create($this->defaultAttributes());
+    }
+
+    public function find(): ?MobileLocalSetting
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+
+        $settings = MobileLocalSetting::query()
+            ->forKey($this->settingsKey())
+            ->first();
+
+        return $settings instanceof MobileLocalSetting ? $settings : null;
     }
 
     /**
@@ -87,6 +94,42 @@ final class SettingsRepository
         return $this->setSyncSettings(array_replace($currentSettings, $settings));
     }
 
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    public function cacheBootstrapContext(array $context, ?CarbonInterface $cachedAt = null): MobileLocalSetting
+    {
+        return $this->update([
+            'bootstrap_context' => $context,
+            'bootstrap_cached_at' => $cachedAt ?: CarbonImmutable::now(),
+        ]);
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function bootstrapContext(): ?array
+    {
+        $context = $this->get()->bootstrap_context;
+
+        return is_array($context) ? $context : null;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function cachedBootstrapContext(): ?array
+    {
+        $context = $this->find()?->bootstrap_context;
+
+        return is_array($context) ? $context : null;
+    }
+
+    public function bootstrapCachedAt(): ?CarbonInterface
+    {
+        return $this->find()?->bootstrap_cached_at;
+    }
+
     public function setBiometricEnabled(bool $enabled): MobileLocalSetting
     {
         return $this->update(['biometric_enabled' => $enabled]);
@@ -129,6 +172,8 @@ final class SettingsRepository
             'language',
             'notification_preferences',
             'sync_settings',
+            'bootstrap_context',
+            'bootstrap_cached_at',
             'biometric_enabled',
             'pin_enabled',
             'last_sync_at',

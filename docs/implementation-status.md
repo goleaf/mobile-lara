@@ -410,6 +410,7 @@ Status values:
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
 | Tests | `apps/mobile-client` passes `php artisan test --compact` with 513 tests / 3959 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, tenant workspace behavior, mobile invitation check/accept/decline actions, cached app-version/maintenance screens, optional-update dashboard banners, mobile records API/sync services, dedicated mobile sync API service calls, dedicated mobile notifications API service calls, dedicated mobile support API service calls, dedicated mobile billing API service/screen behavior, mobile support ticket screens, mobile remote config store/settings consumers, privacy-safe diagnostics export/share, and cached policy guards for mobile record, attachment, profile share, record-detail share, media-gallery share, support-center browser handoff, billing portal handoff, diagnostics share, voice-note, check-in, media-capture, file-manager, scanner, notification inbox, manual sync, conflict resolution, offline queue writes, and developer native debug actions. `apps/api-admin` passes `php artisan test --compact` with 159 tests / 1312 assertions covering admin routing, tenant lifecycle/membership management controls, admin billing management, authenticated tenant invitation list/accept/decline flows, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, mobile notification policy state and endpoints, mobile support ticket/message endpoints, platform-admin support queue triage/replies, mobile sync policy state/endpoints/admin monitor, privacy-safe diagnostics upload and admin review, tenant-scoped records API behavior, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
+| Root transition auth regression | tested | `php artisan test --compact tests/Feature/MobileAuthScreensTest.php` passes with API fakes for login, register, and bootstrap so root web registration cannot create an account without the Admin/API response. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -427,7 +428,7 @@ Status values:
 | `docs` | documented | Core docs exist; implementation docs need to track real code as it lands. |
 | `contracts/api` | tested | Directory, response-envelope README, `v1-foundation.md`, all required v1 contract files, and contract catalogue coverage exist. |
 | Root scripts | partial | Directory and guidance exist; no custom wrappers are needed before app split. |
-| Environment examples | partial | Root, `apps/api-admin`, and `apps/mobile-client` `.env.example` files exist; the mobile client now documents API base URL and timeout keys, while later bootstrap/config keys remain pending. |
+| Environment examples | partial | Root, `apps/api-admin`, and `apps/mobile-client` `.env.example` files exist; the root transition shell and mobile client now document API base URL and timeout keys, while later bootstrap/config keys remain pending. |
 | Documentation structure | partial | Product docs, implementation status, remaining tasks, changelog, app boundary docs, and contract guidance exist. |
 | Git state discipline | partial | Implementation slices are being committed separately; local branch remains ahead of origin. |
 
@@ -456,7 +457,7 @@ Status values:
 | Tailwind mobile styling | tested | Tailwind v4/SCSS entrypoint and mobile design tokens build through Vite in `apps/mobile-client`. |
 | Mobile-first layout and safe-area shell | tested | Shared layout, mobile components, safe-area shell, and bottom navigation are covered by feature tests. |
 | Welcome screen | tested | `Mobile\Welcome` route and view exist in `apps/mobile-client`. |
-| Auth screens | tested | Login, register, profile update, profile logout, sessions logout, and sessions logout-all now consume the mobile auth API service; password reset and email verification remain local validation placeholders until API behavior is documented and delivered through a separately approved implementation slice. |
+| Auth screens | tested | Login, register, profile update, profile logout, sessions logout, and sessions logout-all consume the mobile auth API service in `apps/mobile-client`; the root transition shell login/register screens now use the same API-authoritative path before opening a local presentation session. Password reset and email verification remain local validation placeholders until API behavior is documented and delivered through a separately approved implementation slice. |
 | Dashboard | tested | `Mobile\Dashboard` exists and renders in `apps/mobile-client`; Admin/API bootstrap integration is missing. |
 | Bottom navigation | tested | `<x-mobile.bottom-navigation>` exists and is covered by shell tests; feature-gated navigation is not API-controlled yet. |
 | Settings | tested | Settings index and sections exist; workspace settings now reads cached bootstrap tenant context and switches tenants through API. Remote config policy remains pending. |
@@ -716,7 +717,7 @@ Status values:
 | Sensitive action confirmation | partial | Mobile account deletion/PIN/biometric flows exist; admin confirmations missing. |
 | Mobile app lock PIN/biometric | partial | Implemented locally with tests in existing suite; fresh run pending. |
 | Privacy settings | partial | Legal/privacy screens exist; API privacy settings missing. |
-| Secure token handling | partial | Native secure storage fallback exists; server token authority missing. |
+| Secure token handling | tested | API/admin issues hashed access/refresh tokens and protects mobile routes through bearer-token middleware; the mobile client and root transition shell store returned token sets through `MobileTokenStore` with NativePHP secure storage as default and session fallback for tests/development. Broader app-lock and step-up policy remains partial. |
 | Data export principles/features | documented | Implementation missing. |
 | Local data reset | partial | Storage settings exist; needs verification. |
 | Diagnostics privacy protection | tested | Mobile export/share, API upload, and platform-admin review all use redacted diagnostics data; API stores reports under server-resolved tenant/user/session authority and the admin page avoids exposing mobile-user email or raw support secrets. |
@@ -843,7 +844,7 @@ Status values:
 
 | Risk | Status | Mitigation |
 | --- | --- | --- |
-| Root transition app still exists | partial | Decide when to remove or rewire it after `apps/mobile-client` is fully authoritative. |
+| Root transition app still exists | partial | Login/register are now rewired to the Admin/API auth contract, but the root app should still be removed or folded into `apps/mobile-client` after the final monorepo boundary is stable. |
 | Admin/API domain modules do not exist yet | partial | Build auth, tenancy, policy, feature, config, version, and audit foundations before business modules. |
 | API contracts are documented but most endpoints are planned | partial | Implement endpoints in phase order and keep each contract updated before code changes. |
 | Mobile features are mostly local-only | partial | Route all server-trusted behavior through API contracts as they land. |

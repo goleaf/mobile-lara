@@ -404,8 +404,14 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 The repository now contains separate Laravel applications under
 `apps/api-admin` and `apps/mobile-client`. The root Laravel app is retained as a
 temporary mobile-client transition mirror until a later cleanup task removes or
-rewires it. `contracts/api` remains the home for versioned mobile API
-contracts.
+folds it into the final mobile client. Root login and registration still obey
+the API-only mobile rule: they call the Admin/API v1 mobile auth endpoints,
+store returned tokens through the mobile token-store abstraction, and open only
+a local presentation session for Laravel route protection. `contracts/api`
+remains the home for versioned mobile API contracts.
+
+For local Herd testing, the mobile shell uses `MOBILE_API_BASE_URL`, which
+defaults to `https://mobile-lara-api-admin.test/api/v1/mobile`.
 
 ## Operating Rules
 

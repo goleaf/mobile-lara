@@ -408,8 +408,10 @@ by revocation require local logout and token deletion.
 
 ## Mobile Client Integration
 
-`apps/mobile-client` contains the first tested client-side service boundary for
-this contract:
+`apps/mobile-client` contains the primary tested client-side service boundary
+for this contract. The root Laravel transition shell mirrors the same
+API-auth path for local Herd/web testing until it is removed or folded into the
+final mobile client:
 
 - `App\Services\MobileApi\MobileApiClient` sends standard JSON requests to the
   configured v1 mobile API base URL and raises `MobileApiException` for standard
@@ -424,6 +426,9 @@ this contract:
 - Login and register Livewire screens consume the service, store API tokens,
   and create a local presentation-only Laravel session from the API user
   payload so existing mobile route protection remains usable.
+- The local Laravel `users` row in the mobile shell is a session mirror only:
+  account creation, credential validation, token issuance, revocation, and
+  bootstrap context remain Admin/API authority.
 - Profile and sessions logout actions call the API service before clearing
   local session/token state; sessions also exposes logout-all-devices.
 - Edit profile syncs the account name through `PATCH /auth/profile` when a

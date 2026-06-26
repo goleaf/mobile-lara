@@ -138,6 +138,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Rewired the root mobile transition shell login and registration screens to
+  use the versioned Admin/API mobile auth endpoints before opening a local
+  Laravel session mirror, including API token storage, bootstrap refresh, API
+  base URL configuration, and focused Livewire coverage for API-authoritative
+  registration.
 - Added a protected platform-admin Mobile Diagnostics page for reviewing
   privacy-filtered uploaded diagnostics snapshots by tenant, device, sync
   status, feature/config version, and redacted JSON detail.
