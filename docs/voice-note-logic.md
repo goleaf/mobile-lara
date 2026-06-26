@@ -2,6 +2,13 @@
 
 Updated: 2026-06-26
 
+Device, Network, And Diagnostics Logic is defined in `device-network-diagnostics-logic.md`:
+device information use, network status use, offline detection, diagnostics
+export, support troubleshooting context, diagnostics redaction, admin mobile
+device visibility, and user-controlled diagnostics sharing must remain
+tenant-scoped, permission-aware, support-scoped, privacy-safe, redacted,
+audit-ready, and Admin/API-authoritative.
+
 This document defines voice note logic for the Mobile Lara NativePHP client. It
 explains recording, pausing, resuming, saving locally, attaching to records and
 support, transcription as an optional future feature, offline upload queues,

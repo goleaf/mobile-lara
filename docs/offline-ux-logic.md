@@ -97,6 +97,13 @@ flags, user-facing location understanding, and never-collect rules must
 remain tenant-scoped, permission-aware, fallback-safe, offline-clear,
 privacy-safe, purpose-limited, and Admin/API-authoritative.
 
+Device, Network, And Diagnostics Logic is defined in `device-network-diagnostics-logic.md`:
+device information use, network status use, offline detection, diagnostics
+export, support troubleshooting context, diagnostics redaction, admin mobile
+device visibility, and user-controlled diagnostics sharing must remain
+tenant-scoped, permission-aware, support-scoped, privacy-safe, redacted,
+audit-ready, and Admin/API-authoritative.
+
 Voice Note Logic is defined in `voice-note-logic.md`:
 recording, pausing, resuming, local saving, record/support attachments,
 optional future transcription, offline upload queues, microphone-permission
