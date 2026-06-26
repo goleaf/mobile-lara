@@ -15,7 +15,7 @@ permissions, feature flags, remote config, offline sync, NativePHP features,
 notifications, billing, support, reporting, security, release,
 and future module expansion principles.
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 This document defines UI principles for the two-system product:
 
@@ -73,6 +73,23 @@ Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
 shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
 switching, sync-in-progress, permission-blocked, and feature-disabled behavior
 before implementation.
+
+### Mobile Content Surface
+
+The mobile app shell separates fixed chrome from the scrollable information
+area. The header and bottom navigation remain stable, while the content area
+uses a shared `mobile-content` canvas between them. That canvas provides:
+
+- a full-height scroll surface with touch-friendly momentum scrolling;
+- subtle side rails and horizontal rhythm lines that orient long mobile pages;
+- light and dark mode variables based on the app design tokens;
+- shared card, page-header, empty-state, and error-state treatments so feature
+  screens feel consistent without page-specific decorative wrappers;
+- no business authority, authorization, or API state of its own.
+
+The content surface is presentational only. API, tenant, permission, feature,
+sync, billing, support, and profile truth still comes from Admin/API contracts
+and the mobile services that call those contracts.
 
 Mobile Dashboard Logic is defined in `mobile-dashboard-logic.md`:
 dashboard content must resolve current user context, current tenant, enabled

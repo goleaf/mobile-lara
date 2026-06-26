@@ -23,12 +23,19 @@
 
             <livewire:mobile.offline-banner />
 
-            <main id="mobile-app-content" class="min-h-0 overflow-y-auto overscroll-contain">
-                @isset($slot)
-                    {{ $slot }}
-                @else
-                    @yield('body')
-                @endisset
+            <main
+                id="mobile-app-content"
+                class="mobile-content min-h-0 overflow-y-auto overscroll-contain"
+                tabindex="-1"
+                aria-label="Mobile app content"
+            >
+                <div class="mobile-content-canvas">
+                    @isset($slot)
+                        {{ $slot }}
+                    @else
+                        @yield('body')
+                    @endisset
+                </div>
             </main>
 
             <nav

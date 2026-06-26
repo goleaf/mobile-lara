@@ -120,6 +120,61 @@ $breakpoint-tablet: 768px;
         padding-top: $shell-phone-block-padding;
     }
 
+    .mobile-content {
+        --mobile-content-bg: oklch(0.975 0.012 215);
+        --mobile-content-top: color-mix(in oklch, var(--color-app-surface) 80%, transparent);
+        --mobile-content-bottom: color-mix(in oklch, oklch(0.955 0.014 215) 82%, transparent);
+        --mobile-content-rail: color-mix(in oklch, var(--color-app-line) 72%, var(--color-app-accent) 28%);
+        --mobile-content-grid: color-mix(in oklch, oklch(0.82 0.028 215) 34%, transparent);
+
+        position: relative;
+        background: var(--mobile-content-bg);
+        scrollbar-color: color-mix(in oklch, var(--color-app-muted) 45%, transparent) transparent;
+        scrollbar-gutter: stable both-edges;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-content-canvas {
+        position: relative;
+        min-height: 100%;
+        isolation: isolate;
+        background:
+            linear-gradient(180deg, var(--mobile-content-top), transparent 5.5rem),
+            linear-gradient(0deg, var(--mobile-content-bottom), transparent 5rem),
+            var(--mobile-content-bg);
+    }
+
+    .mobile-content-canvas::before {
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        pointer-events: none;
+        content: '';
+        background:
+            linear-gradient(90deg, var(--mobile-content-rail), transparent 1px) left top / 1px 100% no-repeat,
+            linear-gradient(270deg, var(--mobile-content-rail), transparent 1px) right top / 1px 100% no-repeat,
+            repeating-linear-gradient(
+                180deg,
+                transparent 0 4.75rem,
+                var(--mobile-content-grid) 4.75rem calc(4.75rem + 1px)
+            );
+        opacity: 0.72;
+    }
+
+    .mobile-content-canvas > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .dark .mobile-content {
+        --mobile-content-bg: oklch(0.17 0.018 252);
+        --mobile-content-top: color-mix(in oklch, oklch(0.24 0.02 252) 70%, transparent);
+        --mobile-content-bottom: color-mix(in oklch, oklch(0.13 0.016 252) 78%, transparent);
+        --mobile-content-rail: color-mix(in oklch, oklch(0.42 0.038 252) 70%, var(--color-app-accent) 30%);
+        --mobile-content-grid: color-mix(in oklch, oklch(0.4 0.03 252) 30%, transparent);
+    }
+
     @media (min-width: $breakpoint-wide-phone) {
         .mobile-shell {
             @include shell-size(
