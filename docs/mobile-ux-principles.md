@@ -395,14 +395,24 @@ Offline UX should help users continue safe work and understand what remains loca
 
 The NativePHP client should be comfortable in one hand.
 
+The 2026-06-26 mobile UI polish uses current mobile UX references as practical
+constraints: [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines)
+for stable app layout and tab bar behavior,
+[Nielsen Norman Group touch-target guidance](https://www.nngroup.com/articles/touch-target-size/)
+for adequately sized touch targets, and
+[Smashing Magazine bottom-navigation guidance](https://www.smashingmagazine.com/2016/11/the-golden-rules-of-mobile-navigation-design/)
+for simple, visible, consistent bottom navigation.
+
 Principles:
 
 - Use large touch targets for primary actions, destructive actions, navigation items, native capture, and form controls.
+- Treat `44px` as the minimum compact target baseline and use larger targets for bottom navigation and primary actions where space allows.
 - Keep spacing generous enough to avoid accidental taps.
 - Place primary actions where thumbs can reach them without covering important content.
 - Keep destructive actions separated from common actions and behind confirmation where risk warrants it.
 - Respect safe areas, notches, home indicators, keyboard height, and platform navigation patterns.
 - Avoid tiny text links as the only path to important actions.
+- Keep bottom navigation to a small stable set of top-level destinations; if a tenant or feature policy hides a destination, the remaining destinations must keep stable spacing.
 - Prefer native controls where they improve reliability and familiarity.
 - Keep button labels short and action-oriented.
 - Ensure loading, disabled, and blocked controls remain visually clear without relying only on color.

@@ -11,7 +11,7 @@ test('mobile ui components render expected markup', function (string $template, 
 })->with([
     'button' => [
         '<x-mobile.button wire:click="save">Save</x-mobile.button>',
-        ['wire:click="save"', 'Save', 'data-loading:pointer-events-none', 'bg-app-ink'],
+        ['wire:click="save"', 'Save', 'data-loading:pointer-events-none', 'bg-app-ink', 'focus-visible:ring-app-accent/25'],
     ],
     'loading spinner' => [
         '<x-mobile.loading-spinner label="Refreshing" />',
@@ -51,23 +51,23 @@ test('mobile ui components render expected markup', function (string $template, 
     ],
     'app header' => [
         '<x-mobile.app-header title="Dashboard" />',
-        ['Dashboard', 'aria-label="Notifications"', 'aria-label="Profile"', 'bg-app-surface'],
+        ['Dashboard', 'aria-label="Notifications"', 'aria-label="Profile"', 'bg-app-surface', 'size-12'],
     ],
     'bottom navigation' => [
         '<x-mobile.bottom-navigation />',
-        ['Dashboard', 'Search', 'Create', 'Notifications', 'Profile', 'mobile-tab-mobile.create'],
+        ['Dashboard', 'Search', 'Create', 'Notifications', 'Profile', 'mobile-tab-mobile.create', 'min-h-[6rem]', 'mobile-bottom-nav-label'],
     ],
     'input' => [
         '<x-mobile.input name="email" label="Email" wire:model.live="email" />',
-        ['name="email"', 'Email', 'wire:model.live="email"', 'aria-invalid="false"', 'bg-white'],
+        ['name="email"', 'Email', 'wire:model.live="email"', 'aria-invalid="false"', 'bg-app-surface'],
     ],
     'textarea' => [
         '<x-mobile.textarea name="notes" label="Notes" wire:model="notes">Draft</x-mobile.textarea>',
-        ['name="notes"', 'Notes', 'wire:model="notes"', 'Draft', 'bg-white'],
+        ['name="notes"', 'Notes', 'wire:model="notes"', 'Draft', 'bg-app-surface'],
     ],
     'select' => [
         '<x-mobile.select name="mode" label="Mode" :options="[\'compact\' => \'Compact\']" />',
-        ['name="mode"', 'Mode', 'value="compact"', 'Compact', 'bg-white'],
+        ['name="mode"', 'Mode', 'value="compact"', 'Compact', 'bg-app-surface'],
     ],
     'card' => [
         '<x-mobile.card title="Card title" description="Card copy">Card body</x-mobile.card>',

@@ -6,13 +6,13 @@
 
 @php
     $variantClasses = [
-        'neutral' => 'border-app-line bg-app-bg text-app-muted   ',
-        'primary' => 'border-app-ink/10 bg-app-ink text-white   ',
-        'accent' => 'border-app-accent/20 bg-app-accent/15 text-app-ink   ',
-        'success' => 'border-emerald-200 bg-emerald-50 text-emerald-700   ',
-        'warning' => 'border-app-warm/30 bg-app-warm/15 text-app-ink   ',
-        'danger' => 'border-red-200 bg-red-50 text-red-700   ',
-    ][$variant] ?? 'border-app-line bg-app-bg text-app-muted   ';
+        'neutral' => 'border-app-line bg-app-bg text-app-muted',
+        'primary' => 'border-app-ink/10 bg-app-ink text-white',
+        'accent' => 'border-app-accent/20 bg-app-accent/15 text-app-ink',
+        'success' => 'border-emerald-200 bg-emerald-50 text-emerald-700',
+        'warning' => 'border-app-warm/30 bg-app-warm/15 text-app-ink',
+        'danger' => 'border-red-200 bg-red-50 text-red-700',
+    ][$variant] ?? 'border-app-line bg-app-bg text-app-muted';
 
     $sizeClasses = [
         'sm' => 'px-2 py-0.5 text-[11px]',

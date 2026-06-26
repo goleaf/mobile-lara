@@ -146,7 +146,7 @@
                         name="importUpload"
                         type="file"
                         wire:model="importUpload"
-                        class="block min-h-12 w-full rounded-lg border border-app-line bg-white px-3 py-2 text-sm text-app-ink shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-app-ink file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white focus:border-app-accent focus:outline-none focus:ring-2 focus:ring-app-accent/20     "
+                        class="block min-h-12 w-full rounded-lg border border-app-line bg-app-surface px-3.5 py-2 text-sm text-app-ink shadow-[0_12px_24px_-22px_rgba(15,23,42,0.55)] file:mr-3 file:rounded-lg file:border-0 file:bg-app-ink file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white focus:border-app-accent focus:bg-white focus:outline-none focus:ring-2 focus:ring-app-accent/20"
                     >
                     @error('importUpload')
                         <p class="text-sm font-medium text-red-600 ">{{ $message }}</p>

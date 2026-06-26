@@ -11,7 +11,7 @@
                     href="{{ route($item['route']) }}"
                     wire:navigate
                     wire:key="create-action-{{ $loop->index }}"
-                    class="flex min-h-16 w-full items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface   "
+                    class="flex min-h-16 w-full items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition duration-150 hover:bg-app-surface focus-visible:ring-2 focus-visible:ring-app-accent/25 active:translate-y-px"
                 >
                     <span class="min-w-0">
                         <span class="block text-base font-semibold text-app-ink ">{{ $item['label'] }}</span>

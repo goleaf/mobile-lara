@@ -138,6 +138,7 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Polished the mobile client UI system with research-backed mobile touch/navigation rules: larger tap targets, gentler light-only content canvas, upgraded shared cards/forms/states, fixed single-header shell, five-item bottom navigation with centered Create tab, stable labels, active indicators, and focused Playwright viewport checks.
 - Removed mobile dark-mode UI classes and theme switching paths so the mobile web preview and NativePHP shell use one light interface.
 
 - Refactored the mobile app information block between the shell header and

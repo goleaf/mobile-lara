@@ -454,6 +454,9 @@ Implemented foundation:
 - 52 `mobile.*` Livewire routes.
 - Mobile-first Blade layout, safe-area shell, bottom navigation, and reusable
   mobile components.
+- Light-only polished mobile UI primitives with larger touch targets, fixed
+  single-header shell, five-item bottom navigation, centered Create tab, stable
+  labels, and shared card/form/state styling.
 - Welcome, auth, dashboard, settings, profile, notifications, debug,
   records/content, media, scanner, location, voice-note, sync, and local
   support surfaces.

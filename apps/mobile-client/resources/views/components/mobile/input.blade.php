@@ -14,7 +14,7 @@
 
 <div class="grid gap-2">
     @if ($label)
-        <label @if ($fieldId) for="{{ $fieldId }}" @endif class="text-sm font-medium text-app-ink ">
+        <label @if ($fieldId) for="{{ $fieldId }}" @endif class="text-sm font-semibold text-app-ink">
             {{ $label }}
         </label>
     @endif
@@ -27,18 +27,18 @@
         @if ($fieldId && $errorMessage) aria-describedby="{{ $fieldId }}-error" @endif
         aria-invalid="{{ $errorMessage ? 'true' : 'false' }}"
         {{ $attributes->class([
-            'min-h-12 w-full rounded-lg border bg-white px-3 text-base text-app-ink shadow-sm outline-none transition placeholder:text-app-muted/70 focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 disabled:cursor-not-allowed disabled:bg-app-bg disabled:text-app-muted       ',
-            'border-red-300 focus:border-red-500 focus:ring-red-500/20   ' => $errorMessage,
-            'border-app-line ' => ! $errorMessage,
+            'min-h-12 w-full rounded-lg border bg-app-surface px-3.5 text-base text-app-ink shadow-[0_12px_24px_-22px_rgba(15,23,42,0.55)] outline-none transition placeholder:text-app-muted/65 focus:border-app-accent focus:bg-white focus:ring-2 focus:ring-app-accent/20 disabled:cursor-not-allowed disabled:bg-app-bg disabled:text-app-muted',
+            'border-red-300 focus:border-red-500 focus:ring-red-500/20' => $errorMessage,
+            'border-app-line' => ! $errorMessage,
         ]) }}
     >
 
     @if ($errorMessage)
-        <p @if ($fieldId) id="{{ $fieldId }}-error" @endif class="text-sm font-medium text-red-600 ">
+        <p @if ($fieldId) id="{{ $fieldId }}-error" @endif class="text-sm font-semibold text-red-600">
             {{ $errorMessage }}
         </p>
     @elseif ($hint)
-        <p @if ($fieldId) id="{{ $fieldId }}-hint" @endif class="text-sm text-app-muted ">
+        <p @if ($fieldId) id="{{ $fieldId }}-hint" @endif class="text-sm leading-5 text-app-muted">
             {{ $hint }}
         </p>
     @endif

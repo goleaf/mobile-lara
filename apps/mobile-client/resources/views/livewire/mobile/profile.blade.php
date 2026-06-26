@@ -57,7 +57,7 @@
                             <a
                                 href="{{ route('mobile.profile.edit') }}"
                                 wire:navigate
-                                class="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 active:bg-app-ink/80    "
+                                class="inline-flex min-h-12 w-full touch-manipulation items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-[0_14px_28px_-20px_rgba(15,23,42,0.8)] transition duration-150 hover:bg-app-ink/90 focus-visible:ring-2 focus-visible:ring-app-accent/25 active:translate-y-px active:bg-app-ink/80"
                             >
                                 Edit profile
                             </a>
@@ -108,7 +108,7 @@
                                 wire:key="profile-shortcut-{{ $shortcut['key'] }}"
                                 href="{{ route($shortcut['route']) }}"
                                 wire:navigate
-                                class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface   "
+                                class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition duration-150 hover:bg-app-surface focus-visible:ring-2 focus-visible:ring-app-accent/25 active:translate-y-px"
                             >
                                 <span class="min-w-0">
                                     <span class="block text-base font-semibold text-app-ink ">{{ $shortcut['label'] }}</span>

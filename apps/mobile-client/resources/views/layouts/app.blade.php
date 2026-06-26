@@ -17,7 +17,7 @@
     </head>
     <body class="min-h-dvh overflow-hidden bg-app-bg text-app-ink antialiased">
         <div id="mobile-shell" class="mobile-shell mx-auto grid min-h-dvh w-full overflow-hidden bg-app-bg shadow-[0_0_0_1px_var(--color-app-line)]">
-            <header id="mobile-shell-header" class="mobile-shell-header safe-x z-20 border-b border-app-line bg-app-surface/95 backdrop-blur">
+            <header id="mobile-shell-header" class="mobile-shell-header safe-x z-20 border-b border-app-line bg-app-surface/95 shadow-[0_12px_28px_-24px_rgba(15,23,42,0.45)] backdrop-blur">
                 <x-mobile.app-header :title="$pageTitle" />
             </header>
 
@@ -41,7 +41,7 @@
             <nav
                 id="mobile-shell-footer"
                 aria-label="Primary tabs"
-                class="mobile-shell-footer safe-x z-20 border-t border-app-line bg-app-surface/95 backdrop-blur"
+                class="mobile-shell-footer safe-x z-20 border-t border-app-line bg-app-surface/95 shadow-[0_-12px_28px_-24px_rgba(15,23,42,0.45)] backdrop-blur"
             >
                 <x-mobile.bottom-navigation />
             </nav>

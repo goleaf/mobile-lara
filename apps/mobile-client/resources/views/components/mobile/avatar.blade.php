@@ -26,15 +26,15 @@
         <img
             src="{{ $src }}"
             alt="{{ $alt }}"
-            class="{{ $sizeClasses }} rounded-full border border-app-line object-cover shadow-sm "
+            class="{{ $sizeClasses }} rounded-full border border-app-line object-cover shadow-[0_12px_24px_-20px_rgba(15,23,42,0.45)]"
         >
     @else
-        <span class="{{ $sizeClasses }} grid place-items-center rounded-full border border-app-line bg-app-accent font-semibold text-app-accent-ink shadow-sm   ">
+        <span class="{{ $sizeClasses }} grid place-items-center rounded-full border border-app-accent/40 bg-app-accent font-semibold text-app-accent-ink shadow-[0_12px_24px_-20px_rgba(20,83,45,0.55)]">
             {{ $initials }}
         </span>
     @endif
 
     @if ($statusClasses)
-        <span class="{{ $statusClasses }} absolute bottom-0 right-0 size-3 rounded-full border-2 border-app-surface "></span>
+        <span class="{{ $statusClasses }} absolute bottom-0 right-0 size-3 rounded-full border-2 border-app-surface"></span>
     @endif
 </span>

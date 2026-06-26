@@ -15,7 +15,10 @@
     };
 @endphp
 
-<div {{ $attributes->class(['grid items-end gap-1.5 text-center text-[11px] font-semibold', $columnClass]) }}>
+<div {{ $attributes->class([
+    'grid items-end gap-1 rounded-lg border border-app-line/80 bg-app-surface/90 p-1 text-center text-[10px] font-semibold shadow-[0_18px_40px_-28px_rgba(15,23,42,0.85)] ring-1 ring-white/70 backdrop-blur',
+    $columnClass,
+]) }}>
     @foreach ($items as $item)
         @php
             $active = request()->routeIs($item['route']);
@@ -30,22 +33,26 @@
             aria-label="{{ $item['label'] }}"
             @if ($active) aria-current="page" @endif
             @class([
-                'group flex min-w-0 flex-col items-center justify-end rounded-lg px-1.5 py-2 transition focus-visible:outline-2 focus-visible:outline-offset-2',
-                'min-h-[4.75rem] gap-1.5' => ! $primary,
-                'min-h-[5.5rem] gap-2' => $primary,
-                'bg-app-bg text-app-ink shadow-sm ring-1 ring-app-line/80    ' => $active && ! $primary,
-                'text-app-muted hover:bg-app-bg hover:text-app-ink   ' => ! $active && ! $primary,
-                'text-app-ink ' => $primary,
+                'group relative isolate flex min-w-0 touch-manipulation flex-col items-center justify-center overflow-hidden rounded-lg px-1 py-2 transition duration-150 focus-visible:ring-2 focus-visible:ring-app-accent/25 active:translate-y-px',
+                'min-h-[5rem] gap-1.5' => ! $primary,
+                'min-h-[6rem] gap-2' => $primary,
+                'bg-app-bg text-app-ink shadow-sm ring-1 ring-app-line/80' => $active && ! $primary,
+                'text-app-muted hover:bg-app-bg hover:text-app-ink' => ! $active && ! $primary,
+                'text-app-ink' => $primary,
             ])
         >
+            @if ($active)
+                <span class="absolute inset-x-3 top-1 h-1 rounded-full bg-app-accent" aria-hidden="true"></span>
+            @endif
+
             <span @class([
                 'grid place-items-center transition',
                 'size-11 rounded-lg border' => ! $primary,
                 'size-14 rounded-full border-2 shadow-[0_12px_28px_-18px_rgba(15,23,42,0.85)]' => $primary,
-                'border-app-ink bg-app-ink text-white   ' => $active && ! $primary,
-                'border-transparent bg-app-bg text-current group-hover:border-app-line  ' => ! $active && ! $primary,
-                'bg-app-ink text-white  ' => $active && $primary,
-                'border-app-line bg-app-surface text-app-ink group-hover:bg-app-bg    ' => ! $active && $primary,
+                'border-app-ink bg-app-ink text-white' => $active && ! $primary,
+                'border-app-line/70 bg-app-surface text-current group-hover:border-app-line group-hover:bg-white' => ! $active && ! $primary,
+                'border-app-ink bg-app-ink text-white' => $active && $primary,
+                'border-app-accent/40 bg-app-accent/15 text-app-ink group-hover:bg-app-accent/20' => ! $active && $primary,
             ])>
                 @switch($item['icon'])
                     @case('dashboard')
@@ -84,7 +91,7 @@
 
             <span @class([
                 'mobile-bottom-nav-label',
-                'text-[10px]' => $item['label'] === 'Notifications',
+                'text-[9px]' => $item['label'] === 'Notifications',
             ])>{{ $item['label'] }}</span>
         </a>
     @endforeach

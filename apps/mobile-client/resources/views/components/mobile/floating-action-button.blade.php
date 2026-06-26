@@ -16,7 +16,7 @@
     $isLink = is_string($resolvedHref) && ! $disabled;
 
     $buttonClasses = [
-        'pointer-events-auto inline-flex min-h-14 max-w-full items-center justify-center gap-3 rounded-full bg-app-ink px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-zinc-950/15 transition data-loading:pointer-events-none data-loading:opacity-80 hover:bg-app-ink/90 active:bg-app-ink/80 disabled:pointer-events-none disabled:opacity-50     ',
+        'pointer-events-auto inline-flex min-h-14 max-w-full touch-manipulation items-center justify-center gap-3 rounded-full bg-app-ink px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_-24px_rgba(15,23,42,0.9)] transition duration-150 focus-visible:ring-2 focus-visible:ring-app-accent/25 data-loading:pointer-events-none data-loading:opacity-80 hover:bg-app-ink/90 active:translate-y-px active:bg-app-ink/80 disabled:pointer-events-none disabled:opacity-50',
     ];
 @endphp
 
@@ -28,7 +28,7 @@
             aria-label="{{ $label }}"
             {{ $attributes->class($buttonClasses) }}
         >
-            <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white/15 ">
+            <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white/15">
                 @isset($icon)
                     {{ $icon }}
                 @else
@@ -57,7 +57,7 @@
                     wire:target="{{ $target }}"
                     class="inline-flex min-w-0 items-center gap-3"
                 >
-                    <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white/15 ">
+                    <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white/15">
                         @isset($icon)
                             {{ $icon }}
                         @else
@@ -79,7 +79,7 @@
                     <span>{{ $loadingLabel }}</span>
                 </span>
             @else
-                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white/15 ">
+                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white/15">
                     @isset($icon)
                         {{ $icon }}
                     @else

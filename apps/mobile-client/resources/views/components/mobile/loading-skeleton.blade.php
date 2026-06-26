@@ -3,16 +3,16 @@
     'avatar' => false,
 ])
 
-<div {{ $attributes->class(['animate-pulse rounded-lg border border-app-line bg-app-surface p-5 shadow-sm   ']) }}>
+<div {{ $attributes->class(['animate-pulse rounded-lg border border-app-line bg-app-surface p-5 shadow-[0_12px_24px_-22px_rgba(15,23,42,0.45)]']) }}>
     <div class="flex gap-4">
         @if ($avatar)
-            <div class="size-12 shrink-0 rounded-full bg-app-line "></div>
+            <div class="size-12 shrink-0 rounded-full bg-app-line"></div>
         @endif
 
         <div class="grid flex-1 gap-3">
             @for ($line = 0; $line < $lines; $line++)
                 <div @class([
-                    'h-3 rounded-full bg-app-line ',
+                    'h-3 rounded-full bg-app-line',
                     'w-2/3' => $line === 0,
                     'w-full' => $line > 0 && $line % 2 === 1,
                     'w-5/6' => $line > 0 && $line % 2 === 0,

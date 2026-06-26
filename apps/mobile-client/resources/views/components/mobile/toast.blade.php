@@ -6,24 +6,24 @@
 
 @php
     $variantClasses = [
-        'success' => 'border-emerald-200 bg-emerald-50 text-emerald-950   ',
-        'error' => 'border-red-200 bg-red-50 text-red-950   ',
-        'warning' => 'border-amber-200 bg-amber-50 text-amber-950   ',
-        'info' => 'border-sky-200 bg-sky-50 text-sky-950   ',
-    ][$variant] ?? 'border-app-line bg-app-surface text-app-ink   ';
+        'success' => 'border-emerald-200 bg-emerald-50 text-emerald-950',
+        'error' => 'border-red-200 bg-red-50 text-red-950',
+        'warning' => 'border-amber-200 bg-amber-50 text-amber-950',
+        'info' => 'border-sky-200 bg-sky-50 text-sky-950',
+    ][$variant] ?? 'border-app-line bg-app-surface text-app-ink';
 
     $dotClasses = [
-        'success' => 'bg-emerald-500 ',
-        'error' => 'bg-red-500 ',
-        'warning' => 'bg-amber-500 ',
-        'info' => 'bg-sky-500 ',
-    ][$variant] ?? 'bg-app-accent ';
+        'success' => 'bg-emerald-500',
+        'error' => 'bg-red-500',
+        'warning' => 'bg-amber-500',
+        'info' => 'bg-sky-500',
+    ][$variant] ?? 'bg-app-accent';
 @endphp
 
 @if ($message)
     <div
         {{ $attributes->class([
-            'pointer-events-auto rounded-lg border px-4 py-3 text-sm font-semibold shadow-lg backdrop-blur',
+            'pointer-events-auto rounded-lg border px-4 py-3 text-sm font-semibold shadow-[0_18px_40px_-24px_rgba(15,23,42,0.65)] backdrop-blur',
             $variantClasses,
         ]) }}
         role="{{ $variant === 'error' ? 'alert' : 'status' }}"

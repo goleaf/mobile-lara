@@ -2,12 +2,12 @@ $safe-area-edge: 1rem;
 $shell-phone-width: 28rem;
 $shell-wide-phone-width: 32rem;
 $shell-tablet-width: 44rem;
-$shell-phone-header-height: 5.25rem;
-$shell-phone-footer-height: 8.25rem;
+$shell-phone-header-height: 5.5rem;
+$shell-phone-footer-height: 8.75rem;
 $shell-wide-phone-header-height: 5.75rem;
-$shell-wide-phone-footer-height: 8.75rem;
+$shell-wide-phone-footer-height: 9.25rem;
 $shell-tablet-header-height: 6rem;
-$shell-tablet-footer-height: 9rem;
+$shell-tablet-footer-height: 9.25rem;
 $shell-phone-block-padding: 0.75rem;
 $shell-wide-block-padding: 1rem;
 $breakpoint-wide-phone: 640px;
@@ -46,6 +46,8 @@ $breakpoint-tablet: 768px;
 
     --color-app-bg: oklch(0.985 0.012 96);
     --color-app-surface: oklch(1 0 0);
+    --color-app-raised: oklch(0.998 0.003 96);
+    --color-app-soft: oklch(0.962 0.01 215);
     --color-app-ink: oklch(0.24 0.034 252);
     --color-app-muted: oklch(0.54 0.036 252);
     --color-app-line: oklch(0.9 0.018 252);
@@ -72,6 +74,7 @@ $breakpoint-tablet: 768px;
         color: var(--color-app-ink);
         font-family: var(--font-sans);
         text-rendering: optimizeLegibility;
+        overscroll-behavior-y: none;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
@@ -86,6 +89,12 @@ $breakpoint-tablet: 768px;
     button,
     [role='button'] {
         cursor: pointer;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    a {
+        -webkit-tap-highlight-color: transparent;
     }
 
     :focus-visible {
@@ -119,11 +128,11 @@ $breakpoint-tablet: 768px;
     }
 
     .mobile-content {
-        --mobile-content-bg: oklch(0.975 0.012 215);
-        --mobile-content-top: color-mix(in oklch, var(--color-app-surface) 80%, transparent);
-        --mobile-content-bottom: color-mix(in oklch, oklch(0.955 0.014 215) 82%, transparent);
-        --mobile-content-rail: color-mix(in oklch, var(--color-app-line) 72%, var(--color-app-accent) 28%);
-        --mobile-content-grid: color-mix(in oklch, oklch(0.82 0.028 215) 34%, transparent);
+        --mobile-content-bg: var(--color-app-soft);
+        --mobile-content-top: color-mix(in oklch, var(--color-app-surface) 88%, transparent);
+        --mobile-content-bottom: color-mix(in oklch, oklch(0.952 0.012 215) 72%, transparent);
+        --mobile-content-rail: color-mix(in oklch, var(--color-app-line) 82%, var(--color-app-accent) 18%);
+        --mobile-content-grid: color-mix(in oklch, oklch(0.82 0.02 215) 22%, transparent);
 
         position: relative;
         background: var(--mobile-content-bg);
@@ -154,10 +163,10 @@ $breakpoint-tablet: 768px;
             linear-gradient(270deg, var(--mobile-content-rail), transparent 1px) right top / 1px 100% no-repeat,
             repeating-linear-gradient(
                 180deg,
-                transparent 0 4.75rem,
-                var(--mobile-content-grid) 4.75rem calc(4.75rem + 1px)
+                transparent 0 5.25rem,
+                var(--mobile-content-grid) 5.25rem calc(5.25rem + 1px)
             );
-        opacity: 0.72;
+        opacity: 0.38;
     }
 
     .mobile-content-canvas > * {
@@ -168,23 +177,11 @@ $breakpoint-tablet: 768px;
     .mobile-bottom-nav-label {
         display: block;
         max-width: 100%;
+        overflow: hidden;
         white-space: nowrap;
         text-align: center;
+        text-overflow: ellipsis;
         line-height: 1rem;
-    }
-
-    @media (max-width: 360px) {
-        .mobile-bottom-nav-label {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-        }
     }
 
     @media (min-width: $breakpoint-wide-phone) {

@@ -11,7 +11,7 @@
                 wire:model.live.debounce.250ms="search"
                 placeholder="{{ $placeholder }}"
                 aria-invalid="{{ $errors->has('search') ? 'true' : 'false' }}"
-                class="min-h-12 w-full rounded-lg border border-app-line bg-white px-3 text-base text-app-ink shadow-sm outline-none transition placeholder:text-app-muted/70 focus:border-app-accent focus:ring-2 focus:ring-app-accent/20      "
+                class="min-h-12 w-full rounded-lg border border-app-line bg-app-surface px-3.5 text-base text-app-ink shadow-[0_12px_24px_-22px_rgba(15,23,42,0.55)] outline-none transition placeholder:text-app-muted/65 focus:border-app-accent focus:bg-white focus:ring-2 focus:ring-app-accent/20"
             >
 
             @if ($canCreateTag)

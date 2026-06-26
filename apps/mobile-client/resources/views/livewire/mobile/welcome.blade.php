@@ -1,6 +1,6 @@
 <section class="safe-x safe-pb flex min-h-full flex-col justify-between gap-8 py-6">
     <div class="space-y-5">
-        <div class="rounded-lg border border-app-line bg-app-surface p-5 shadow-sm">
+        <div class="rounded-lg border border-app-line bg-app-surface p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.72)] ring-1 ring-white/75">
             <p class="text-sm font-medium text-app-muted">Native Laravel</p>
             <h2 class="mt-2 text-2xl font-semibold tracking-normal text-app-ink">Livewire pages, Blade views, mobile shell.</h2>
             <p class="mt-3 text-sm leading-6 text-app-muted">
@@ -12,7 +12,7 @@
             <a
                 href="{{ route('mobile.login') }}"
                 wire:navigate
-                class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 py-3 text-sm font-semibold text-white shadow-sm"
+                class="inline-flex min-h-12 touch-manipulation items-center justify-center rounded-lg bg-app-ink px-4 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_-20px_rgba(15,23,42,0.8)] transition duration-150 focus-visible:ring-2 focus-visible:ring-app-accent/25 active:translate-y-px"
             >
                 Login
             </a>
@@ -20,7 +20,7 @@
             <a
                 href="{{ route('mobile.register') }}"
                 wire:navigate
-                class="inline-flex min-h-12 items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 py-3 text-sm font-semibold text-app-ink shadow-sm"
+                class="inline-flex min-h-12 touch-manipulation items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 py-3 text-sm font-semibold text-app-ink shadow-[0_12px_24px_-20px_rgba(15,23,42,0.45)] transition duration-150 focus-visible:ring-2 focus-visible:ring-app-accent/25 active:translate-y-px"
             >
                 Register
             </a>
@@ -33,7 +33,7 @@
         </a>
 
         <div class="grid gap-2 text-xs font-semibold text-app-muted">
-            <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="text-app-accent ">
+            <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="text-app-accent">
                 Review consent
             </a>
             <div class="flex items-center justify-center gap-3">

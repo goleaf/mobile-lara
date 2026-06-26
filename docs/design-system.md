@@ -375,7 +375,9 @@ Mobile UI should also distinguish local responsibility from authority: local dra
 Guest/pre-login, invited, and suspended states should have minimal, clear screens that never expose tenant data or normal mobile workflows.
 
 - Prefer `<x-mobile.*>` Blade components over repeated markup.
-- Keep mobile tap targets at `min-h-12` or larger.
+- Keep mobile tap targets at `min-h-11` or larger for compact controls and `min-h-12` or larger for normal controls.
+- Keep the bottom navigation to the five highest-value destinations, with the Create action centered, stable, and larger than neighboring tabs.
+- Keep bottom navigation labels visible on normal phone widths; truncate inside the tab cell on very narrow widths instead of shifting the layout.
 - Use `gap-*` for sibling spacing instead of stacked margins.
 - Use `rounded-lg` as the default radius for controls, cards, and panels.
 - Use light-only app tokens in every reusable component that owns color; do not add dark-mode variants.
@@ -411,6 +413,8 @@ The base Tailwind v4 theme lives in `resources/css/app.scss`.
 | --- | --- |
 | App background | `bg-app-bg` |
 | Surface | `bg-app-surface` |
+| Raised surface | `bg-app-raised` |
+| Soft content canvas | `bg-app-soft` |
 | Primary text | `text-app-ink` |
 | Muted text | `text-app-muted` |
 | Border | `border-app-line` |
@@ -457,10 +461,10 @@ Avoid larger radii unless the element is circular or a bottom sheet edge.
 | Modal/sheet title | `text-lg font-semibold` |
 | Card title | `text-base font-semibold` |
 | Body text | `text-sm leading-6` |
-| Form label | `text-sm font-medium` |
+| Form label | `text-sm font-semibold` |
 | Input text | `text-base` |
 | Badge text | `text-xs font-semibold` |
-| Bottom navigation | `text-[11px] font-medium` |
+| Bottom navigation | `text-[10px] font-semibold` |
 
 Do not scale font sizes with viewport width. Keep `tracking-normal` for display text.
 
@@ -471,7 +475,7 @@ All reusable mobile components live in `resources/views/components/mobile`.
 | Component | Use |
 | --- | --- |
 | `<x-mobile.app-header>` | Default app shell header with page title, notification icon, and profile icon. |
-| `<x-mobile.page-header>` | Mobile page headers with optional eyebrow, description, back link, and action slot. |
+| `<x-mobile.page-header>` | Compact back/action controls. Page titles stay in the fixed shell header and hidden text preserves accessible context. |
 | `<x-mobile.button>` | Buttons with variants, sizes, disabled state, and Livewire loading styling. |
 | `<x-mobile.input>` | Text inputs with label, hint, validation error, and forwarded Livewire attributes. |
 | `<x-mobile.textarea>` | Multiline input with the same form contract as input. |
@@ -490,7 +494,7 @@ All reusable mobile components live in `resources/views/components/mobile`.
 | `<x-mobile.retry-button>` | Action button with retry loading copy and spinner. |
 | `<x-mobile.page-skeleton>` | Full page loading placeholder built from mobile skeleton cards. |
 | `<x-mobile.network-error-state>` | Connection error state with optional Livewire retry action. |
-| `<x-mobile.bottom-navigation>` | Primary mobile navigation with large icon targets, a centered Create action, visible labels on standard phone widths, and icon-only presentation on very narrow screens. |
+| `<x-mobile.bottom-navigation>` | Primary five-item mobile navigation with large icon targets, a larger centered Create action, visible labels, active indicators, and narrow-width truncation inside stable tab cells. |
 
 ## Product State Badges
 
@@ -533,7 +537,7 @@ Button sizes:
 
 | Size | Utility |
 | --- | --- |
-| `sm` | `min-h-10 px-3 text-sm` |
+| `sm` | `min-h-11 px-3.5 text-sm` |
 | `md` | `min-h-12 px-4 text-sm` |
 | `lg` | `min-h-14 px-5 text-base` |
 
@@ -556,10 +560,10 @@ Use Livewire-aware loading components for every page action that can wait on the
 Inputs, textareas, and selects share the same form pattern:
 
 - wrapper: `grid gap-2`
-- label: `text-sm font-medium text-app-ink`
-- control: `min-h-12`, `rounded-lg`, `border`, `text-base`, focus ring
+- label: `text-sm font-semibold text-app-ink`
+- control: `min-h-12`, `rounded-lg`, `border`, `text-base`, light surface, focus ring
 - hint: `text-sm text-app-muted`
-- error: `text-sm font-medium text-red-600`
+- error: `text-sm font-semibold text-red-600`
 
 Admin forms should also show scope and audit reason for sensitive changes.
 
@@ -570,7 +574,7 @@ Use cards for individual repeated items, forms, and framed tools. Do not nest ca
 Default card styling:
 
 ```text
-rounded-lg border border-app-line bg-app-surface p-5 shadow-sm
+rounded-lg border border-app-line bg-app-surface p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.72)]
 ```
 
 ## Light-Only Interface
