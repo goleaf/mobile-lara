@@ -17,6 +17,11 @@ and future module expansion principles.
 
 This directory is the target monorepo boundary for the two Mobile Lara systems.
 
+Local Herd links:
+
+- `https://mobile-lara-api-admin.test` serves `apps/api-admin`.
+- `https://mobile-lara.test` serves `apps/mobile-client`.
+
 Current billing work follows that boundary: `apps/api-admin` owns
 provider-neutral billing control at `/admin/billing`, while
 `apps/mobile-client` presents API-derived billing state at `/billing` and never

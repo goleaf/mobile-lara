@@ -432,7 +432,9 @@ mobile API contracts.
 
 For local Herd testing, configure app URLs inside each app. The mobile client
 uses `MOBILE_API_BASE_URL`, which defaults to
-`http://api-admin.test/api/v1/mobile`.
+`https://mobile-lara-api-admin.test/api/v1/mobile`. The public web interface
+for the NativePHP mobile client is linked at `https://mobile-lara.test` and
+serves `apps/mobile-client`.
 
 ## Operating Rules
 

@@ -138,6 +138,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Linked the local mobile web interface at `https://mobile-lara.test` directly
+  to `apps/mobile-client`, moved the local mobile `.env` into that app folder,
+  and removed duplicate NativePHP/build artifacts from the monorepo root.
 - Consolidated the repository into a two-app monorepo: removed the former root
   Laravel mobile transition app, kept runtime code only in `apps/api-admin` and
   `apps/mobile-client`, and converted root Composer/NPM/env files into

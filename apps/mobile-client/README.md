@@ -18,6 +18,10 @@ and future module expansion principles.
 `apps/mobile-client` is the target home for the Laravel + Livewire + NativePHP
 mobile client.
 
+Local Herd serves this app at `https://mobile-lara.test`. The app-local `.env`
+belongs in this folder and points `MOBILE_API_BASE_URL` to
+`https://mobile-lara-api-admin.test/api/v1/mobile`.
+
 Product Vision is defined in `../../docs/product-vision.md`: this app exists as
 the managed NativePHP + Livewire execution surface for mobile users, not as a
 source of SaaS authority.
