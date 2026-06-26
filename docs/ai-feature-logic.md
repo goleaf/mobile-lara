@@ -20,6 +20,12 @@ offline sync, conflict behavior, native feature fallbacks, notification flows,
 billing rules, and app version rules must map to documented authority, risk,
 and user-visible behavior before implementation.
 
+Release And Versioning Principles are defined in `release-versioning-principles.md`:
+API versioning, mobile app versioning, admin releases, feature rollout,
+rollback, app store release, forced update, documentation update, and Git
+change-history decisions must preserve documented authority, compatibility,
+rollback, support, audit, and user-visible behavior before release.
+
 Updated: 2026-06-26
 
 This document defines AI feature logic for Mobile Lara as an optional future

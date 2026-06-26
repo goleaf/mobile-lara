@@ -88,6 +88,12 @@ offline sync, conflict behavior, native feature fallbacks, notification flows,
 billing rules, and app version rules must map to documented authority, risk,
 and user-visible behavior before implementation.
 
+Release And Versioning Principles are defined in `docs/release-versioning-principles.md`:
+API versioning, mobile app versioning, admin releases, feature rollout,
+rollback, app store release, forced update, documentation update, and Git
+change-history decisions must preserve documented authority, compatibility,
+rollback, support, audit, and user-visible behavior before release.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -106,6 +112,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Release And Versioning Principles documentation for API versioning,
+  mobile app versioning, admin release process, feature rollout, rollback,
+  app store release, forced update, documentation update requirements, Git
+  commit discipline, and change-history principles.
 - Added Testing Strategy Principles documentation for future API contract,
   admin control, mobile feature visibility, permission, feature flag, remote
   config, authentication, tenant isolation, offline sync, conflict behavior,

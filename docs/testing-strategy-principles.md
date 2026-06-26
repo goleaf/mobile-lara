@@ -1,5 +1,11 @@
 # Testing Strategy Principles
 
+Release And Versioning Principles are defined in `release-versioning-principles.md`:
+API versioning, mobile app versioning, admin releases, feature rollout,
+rollback, app store release, forced update, documentation update, and Git
+change-history decisions must preserve documented authority, compatibility,
+rollback, support, audit, and user-visible behavior before release.
+
 Updated: 2026-06-26
 
 This document defines testing strategy principles for future Mobile Lara
