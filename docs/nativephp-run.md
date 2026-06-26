@@ -336,7 +336,7 @@ Native releases must also honor [Mobile Client Responsibilities](mobile-client-r
 | Android package placeholder | `com.example.mobilelara` |
 | App icon source | `public/icon.png` |
 | Deep link scheme | `mobilelara` |
-| Deep link host | `mobile-lara.test` |
+| Deep link host | `mobile-client.test` |
 | Start URL | `/` |
 
 Replace `com.example.mobilelara` with a real reverse-domain identifier before signing or publishing.

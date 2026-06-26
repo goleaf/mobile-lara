@@ -315,8 +315,8 @@ The admin system is the source of authority. The mobile client is a resilient lo
 If a capability is disabled, unlicensed, blocked by version policy, denied by permission, or outside tenant scope, the mobile client must treat that as final even if local UI state still contains stale cached data.
 
 2026-06-26 API boundary recheck: contracted mobile business actions now call
-Admin/API services before mutating server-trusted local mirrors in both the
-root transition app and `apps/mobile-client`. This includes auth/profile
+Admin/API services before mutating server-trusted local mirrors in
+`apps/mobile-client`. This includes auth/profile
 logout, session logout/logout-all, records create/update/archive/restore/delete
 and bulk mutations, notification read/read-all/open state, support, billing,
 tenant switching, bootstrap, diagnostics upload, and records sync. Remaining
@@ -417,17 +417,22 @@ payload only after the API accepts the update.
 - Tailwind CSS 4 through the SCSS/PostCSS bridge.
 - Pest 4 for tests.
 
-The repository now contains separate Laravel applications under
-`apps/api-admin` and `apps/mobile-client`. The root Laravel app is retained as a
-temporary mobile-client transition mirror until a later cleanup task removes or
-folds it into the final mobile client. Root login and registration still obey
-the API-only mobile rule: they call the Admin/API v1 mobile auth endpoints,
-store returned tokens through the mobile token-store abstraction, and open only
-a local presentation session for Laravel route protection. `contracts/api`
-remains the home for versioned mobile API contracts.
+The repository root is now a monorepo shell. Runtime code lives only in:
 
-For local Herd testing, the mobile shell uses `MOBILE_API_BASE_URL`, which
-defaults to `https://mobile-lara-api-admin.test/api/v1/mobile`.
+- `apps/api-admin`: Laravel Admin/API service with the Livewire admin panel and
+  versioned mobile API.
+- `apps/mobile-client`: Laravel + Livewire + NativePHP mobile client used to
+  generate mobile builds.
+
+The mobile client obeys the API-only mobile rule: login, registration,
+profile, records, support, notifications, billing, bootstrap, diagnostics, and
+sync behavior use the Admin/API v1 mobile endpoints before changing
+server-trusted local mirrors. `contracts/api` remains the home for versioned
+mobile API contracts.
+
+For local Herd testing, configure app URLs inside each app. The mobile client
+uses `MOBILE_API_BASE_URL`, which defaults to
+`http://api-admin.test/api/v1/mobile`.
 
 ## Operating Rules
 

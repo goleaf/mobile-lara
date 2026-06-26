@@ -437,9 +437,9 @@ behavior, feature visibility, and native permission education.
 
 ## Current Implementation State
 
-This directory now contains a complete Laravel 13 + Livewire 4 + NativePHP
-Mobile application copied from the verified root mobile client, plus the first
-tested API/auth service boundary for talking to `apps/api-admin`.
+This directory contains the complete Laravel 13 + Livewire 4 + NativePHP
+Mobile application. It is the only mobile runtime in the monorepo and talks to
+`apps/api-admin` through the tested API/auth service boundary.
 
 Implemented foundation:
 
@@ -448,7 +448,7 @@ Implemented foundation:
   mobile components.
 - Welcome, auth, dashboard, settings, profile, notifications, debug,
   records/content, media, scanner, location, voice-note, sync, and local
-  support surfaces from the root mobile app.
+  support surfaces.
 - NativePHP config, launcher, lockfile, service provider, and safe service
   wrappers.
 - Dedicated `mobile_local` SQLite connection, migrations, models,
@@ -562,9 +562,8 @@ php artisan native:plugin:validate --no-interaction
 two third-party plugins that do not define bridge functions or native code
 directories.
 
-The repository root app remains temporarily as a transition mirror. Future
-mobile work should target `apps/mobile-client` unless a cleanup task explicitly
-removes or rewires the root app.
+The repository root is now a monorepo shell. Future mobile work should target
+`apps/mobile-client`; Admin/API authority belongs in `apps/api-admin`.
 
 Next platform work is to replace bootstrap foundation defaults with real
 permission, feature flag, remote config, app-version, billing, notification,

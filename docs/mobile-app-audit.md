@@ -65,9 +65,9 @@ The mobile UX standard is [Mobile UX Principles](mobile-ux-principles.md). Audit
 
 ## 2026-06-26 API Boundary Recheck
 
-Root `mobile-lara.test` and `apps/mobile-client` were rechecked for
-user-visible business actions that could mutate server-trusted local mirrors.
-The following contracted paths are API-backed and covered by focused tests:
+`apps/mobile-client` was rechecked for user-visible business actions that could
+mutate server-trusted local mirrors. The following contracted paths are
+API-backed and covered by focused tests:
 
 - Authentication and session actions: login, register, profile logout,
   sessions logout, and sessions logout-all.

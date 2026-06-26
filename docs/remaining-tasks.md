@@ -403,8 +403,9 @@ before implementation scope is added.
 
 ## Active Implementation Work
 
-- Decide when to remove or rewire the root Laravel app now that
-  `apps/api-admin` and `apps/mobile-client` both exist as Laravel apps.
+- Continue hardening the two-app monorepo now that the root Laravel transition
+  app has been removed and `apps/api-admin` plus `apps/mobile-client` are the
+  only runtime applications.
 - Complete tenancy beyond the foundation tenant list/switch API, mobile
   workspace switcher, and audited admin tenant/member management screen:
   pre-login signed invitation links, invitation resend/revoke/expiry, email

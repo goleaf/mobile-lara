@@ -389,6 +389,6 @@ php artisan route:list
 php artisan native:plugin:validate
 ```
 
-When the monorepo apps are split into `apps/api-admin` and
-`apps/mobile-client`, scripts here may coordinate per-app checks without
-duplicating the actual Laravel/Pest/Vite commands.
+The monorepo apps now live only in `apps/api-admin` and `apps/mobile-client`.
+Scripts here may coordinate per-app checks without duplicating the actual
+Laravel/Pest/Vite commands.

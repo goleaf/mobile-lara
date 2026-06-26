@@ -138,6 +138,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Consolidated the repository into a two-app monorepo: removed the former root
+  Laravel mobile transition app, kept runtime code only in `apps/api-admin` and
+  `apps/mobile-client`, and converted root Composer/NPM/env files into
+  workspace-level wrappers.
 - Fixed mobile profile detail persistence through the API: `username`, `phone`,
   `bio`, `location`, and `website` now validate and save in Admin/API,
   round-trip in auth/profile payloads, hydrate the mobile edit/profile screens,

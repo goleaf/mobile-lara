@@ -2,22 +2,22 @@
     "$schema": "https://www.schemastore.org/package.json",
     "private": true,
     "type": "module",
+    "workspaces": [
+        "apps/api-admin",
+        "apps/mobile-client"
+    ],
     "scripts": {
-        "build": "vite build",
-        "dev": "vite",
-        "memory:architecture": "codebase-memory-mcp cli get_architecture '{\"project\":\"Users-andrejprus-Herd-mobile-lara\"}'",
-        "memory:config": "codebase-memory-mcp config list",
-        "memory:index": "codebase-memory-mcp cli index_repository '{\"repo_path\":\"$PWD\"}'",
-        "memory:projects": "codebase-memory-mcp cli list_projects '{}'",
-        "memory:status": "codebase-memory-mcp cli index_status '{\"project\":\"Users-andrejprus-Herd-mobile-lara\"}'"
-    },
-    "devDependencies": {
-        "@tailwindcss/postcss": "^4.3.1",
-        "codebase-memory-mcp": "0.8.1",
-        "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^3.1",
-        "sass-embedded": "^1.100.0",
-        "tailwindcss": "^4.3.1",
-        "vite": "^8.0.0"
+        "api:build": "npm --prefix apps/api-admin run build",
+        "api:dev": "npm --prefix apps/api-admin run dev",
+        "build": "npm run api:build && npm run mobile:build",
+        "dev:api": "npm run api:dev",
+        "dev:mobile": "npm run mobile:dev",
+        "memory:architecture": "npx --yes codebase-memory-mcp@0.8.1 cli get_architecture '{\"project\":\"Users-andrejprus-Herd-mobile-lara\"}'",
+        "memory:config": "npx --yes codebase-memory-mcp@0.8.1 config list",
+        "memory:index": "npx --yes codebase-memory-mcp@0.8.1 cli index_repository '{\"repo_path\":\"$PWD\"}'",
+        "memory:projects": "npx --yes codebase-memory-mcp@0.8.1 cli list_projects '{}'",
+        "memory:status": "npx --yes codebase-memory-mcp@0.8.1 cli index_status '{\"project\":\"Users-andrejprus-Herd-mobile-lara\"}'",
+        "mobile:build": "npm --prefix apps/mobile-client run build",
+        "mobile:dev": "npm --prefix apps/mobile-client run dev"
     }
 }

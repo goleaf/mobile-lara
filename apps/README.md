@@ -385,9 +385,9 @@ The product contract remains unchanged:
 - Mobile never reads the admin database directly. Server-trusted behavior must
   move through versioned API contracts.
 
-## Transition Rule
+## Runtime Rule
 
-The root Laravel app is retained as a transition mirror. New control-plane code
-belongs in `apps/api-admin`. New mobile-client code should target
-`apps/mobile-client` unless a later cleanup task explicitly removes or rewires
-the root app.
+The repository root is a monorepo shell, not a Laravel runtime. Control-plane
+code belongs in `apps/api-admin`. NativePHP mobile-client code belongs in
+`apps/mobile-client`. Mobile must communicate with Admin/API through versioned
+API contracts and must never read the Admin/API database directly.

@@ -419,10 +419,9 @@ by revocation require local logout and token deletion.
 
 ## Mobile Client Integration
 
-`apps/mobile-client` contains the primary tested client-side service boundary
-for this contract. The root Laravel transition shell mirrors the same
-API-auth path for local Herd/web testing until it is removed or folded into the
-final mobile client:
+`apps/mobile-client` contains the tested client-side service boundary for this
+contract. The repository root is a monorepo shell and does not contain a mobile
+auth runtime:
 
 - `App\Services\MobileApi\MobileApiClient` sends standard JSON requests to the
   configured v1 mobile API base URL and raises `MobileApiException` for standard
