@@ -412,8 +412,10 @@ before implementation scope is added.
   the cached remote-config support center URL, legal settings now gates
   configured terms/privacy URLs before native browser handoff, and diagnostics
   sharing now gates the NativePHP share handoff while local JSON export remains
-  user-controlled and redacted. Remaining report native share flows and billing
-  browser flows still need feature-specific policy gates.
+  user-controlled and redacted. The API diagnostics upload endpoint now stores
+  current-tenant snapshots after server-side redaction and audit. Remaining
+  report native share flows and billing browser flows still need
+  feature-specific policy gates.
 - Complete the records/content module beyond the API foundation: admin records
   management screens, standalone category/tag/note/attachment endpoints,
   upload/storage handling, hard-delete policy, conflict responses, sync replay

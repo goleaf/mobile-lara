@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\Mobile\Billing\SubscriptionController;
 use App\Http\Controllers\Api\V1\Mobile\BootstrapController;
 use App\Http\Controllers\Api\V1\Mobile\ConfigController;
 use App\Http\Controllers\Api\V1\Mobile\ContractIndexController;
+use App\Http\Controllers\Api\V1\Mobile\Diagnostics\DiagnosticsStoreController;
 use App\Http\Controllers\Api\V1\Mobile\FeatureIndexController;
 use App\Http\Controllers\Api\V1\Mobile\Records\RecordArchiveController;
 use App\Http\Controllers\Api\V1\Mobile\Records\RecordIndexController;
@@ -42,6 +43,7 @@ Route::prefix('v1')
                     Route::get('/config', ConfigController::class)->name('config');
                     Route::get('/features', FeatureIndexController::class)->name('features.index');
                     Route::get('/billing/subscription', SubscriptionController::class)->name('billing.subscription');
+                    Route::post('/diagnostics', DiagnosticsStoreController::class)->name('diagnostics.store');
                     Route::get('/tenants', TenantIndexController::class)->name('tenants.index');
                     Route::post('/tenants/current', SwitchTenantController::class)->name('tenants.current');
                     Route::get('/tenants/invitations', TenantInvitationIndexController::class)->name('tenants.invitations.index');

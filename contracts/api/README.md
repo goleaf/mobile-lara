@@ -388,6 +388,9 @@ through app-version policy before old mobile clients lose support.
   foundation for tenant-scoped list, create, detail, update, archive, restore,
   category/tag resolution, note append, attachment metadata, and activity
   timeline responses.
+- [v1-diagnostics.md](v1-diagnostics.md) defines the partial implemented
+  diagnostics foundation for mobile-local export/share and authenticated
+  current-tenant upload with server-side redaction and audit history.
 
 ## Documented v1 Contract Groups
 

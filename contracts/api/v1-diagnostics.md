@@ -17,8 +17,9 @@ and future module expansion principles.
 
 Updated: 2026-06-26
 
-Status: documented. Mobile-local diagnostics export/share is implemented; API
-upload endpoint remains planned.
+Status: partial. Mobile-local diagnostics export/share and the authenticated
+API upload endpoint are implemented; support-ticket linking and admin support
+views remain planned.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 supports scalable SaaS operations by giving support safe mobile context without
@@ -362,7 +363,7 @@ Diagnostics endpoints let mobile share privacy-safe troubleshooting context
 with support. Mobile owns local diagnostics presentation and export/share, but
 Admin/API owns acceptance, support visibility, audit, and privacy boundaries.
 
-## Planned Route
+## Implemented Route
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -385,21 +386,30 @@ policy.
 ## Success Data
 
 The response returns `diagnostic_id`, `received_at`, `support_ticket_id`,
-`redactions_applied`, and `next_action`.
+`redactions_applied`, and `next_action` through the standard mobile success
+envelope. The server stores the report under the API-resolved tenant, user, and
+device session rather than trusting tenant or user values sent in the snapshot.
 
 ## Payload Rules
 
-Allowed fields include app version, API base URL, tenant ID, user ID,
-feature/config snapshots, network status, sync status, failed sync action
-summaries, and device info where safe.
+Upload requests submit the redacted diagnostics object under a top-level
+`snapshot` key. Allowed snapshot fields include app version, API base URL,
+tenant ID, user ID, feature/config snapshots, network status, sync status,
+failed sync action summaries, redactions applied, and device info where safe.
 
 Secrets, tokens, raw private files, exact sensitive payloads, and unredacted
 personal data must not be sent.
 
+The API rejects failed sync action `payload` and `headers` keys, re-applies
+server-side category allowlisting and redaction before storing the snapshot,
+and drops unexpected top-level diagnostic dump keys.
+
 ## Gates
 
-Diagnostics are controlled by support feature flags, permissions, tenant
+Diagnostics are controlled by support feature flags, permissions, active tenant
 status, app version, remote config, privacy settings, and support policy.
+Current implementation requires `remote_config.values.support.diagnostics_enabled`
+to resolve to `true` for the current tenant before accepting uploads.
 
 ## Offline Behavior
 
@@ -417,5 +427,9 @@ visibility.
 Phase 28 mobile coverage verifies local snapshot redaction, JSON download,
 NativePHP share fallback/gating, failed sync metadata summarization, tenant/user
 context handling, and no tokens, API credentials, queued payloads, headers, or
-emails in exported snapshots. API upload coverage remains pending with the
-planned endpoint.
+emails in exported snapshots.
+
+API/admin coverage verifies authenticated diagnostics upload, current-tenant
+ownership, permission/active-tenant denial, server-side redaction, audit
+history, and standard success/error envelopes. Support-ticket linking and admin
+support visibility coverage remain pending with the support module.

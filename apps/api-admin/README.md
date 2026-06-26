@@ -428,7 +428,11 @@ Implemented foundation:
 - `GET /api/v1/mobile/features` returns resolved mobile-safe feature outcomes
   for the current user and tenant through the standard response envelope.
 - `GET /api/v1/mobile/billing/subscription` returns mobile-safe subscription,
-  plan, trial, billing portal, and feature-impact state for the current tenant.
+  plan, limits, usage, and feature-impact state for the current tenant.
+- `POST /api/v1/mobile/diagnostics` accepts a privacy-filtered diagnostics
+  snapshot for the current active tenant when support diagnostics are enabled
+  by remote config, re-applies server-side redaction, stores only support-safe
+  report metadata, and writes a security audit event.
 - `GET /api/v1/mobile/tenants` returns the authenticated user's tenant context.
 - `POST /api/v1/mobile/tenants/current` switches the current tenant after
   membership/lifecycle checks and records a security audit event.

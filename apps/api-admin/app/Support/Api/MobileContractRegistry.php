@@ -106,8 +106,8 @@ final class MobileContractRegistry
             self::group('reports', 'v1-reports.md', 'documented', 'Tenant/user-safe report summaries and exports controlled by permissions and feature flags.', [
                 self::route('GET', '/reports', 'planned', 'mobile-token'),
             ]),
-            self::group('diagnostics', 'v1-diagnostics.md', 'documented', 'Privacy-safe diagnostics upload/export context for support and troubleshooting.', [
-                self::route('POST', '/diagnostics', 'planned', 'mobile-token'),
+            self::group('diagnostics', 'v1-diagnostics.md', 'partial', 'Privacy-safe diagnostics upload/export context for support and troubleshooting.', [
+                self::route('POST', '/diagnostics', 'implemented', 'mobile-token'),
             ]),
         ];
     }

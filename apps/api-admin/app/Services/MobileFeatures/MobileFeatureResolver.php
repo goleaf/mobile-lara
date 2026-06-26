@@ -27,6 +27,7 @@ final class MobileFeatureResolver
         'support' => ['state' => MobileFeatureState::Disabled, 'reason' => 'support_api_pending', 'offline_behavior' => 'online_only'],
         'billing' => ['state' => MobileFeatureState::Disabled, 'reason' => 'billing_api_pending', 'offline_behavior' => 'online_only'],
         'reports' => ['state' => MobileFeatureState::Disabled, 'reason' => 'reports_api_pending', 'offline_behavior' => 'online_only'],
+        'diagnostics' => ['state' => MobileFeatureState::Visible, 'reason' => null, 'offline_behavior' => 'upload_online_export_local'],
         'native_camera' => ['state' => MobileFeatureState::Visible, 'reason' => null, 'offline_behavior' => 'device_local'],
         'native_files' => ['state' => MobileFeatureState::Visible, 'reason' => null, 'offline_behavior' => 'device_local'],
         'native_share' => ['state' => MobileFeatureState::Visible, 'reason' => null, 'offline_behavior' => 'device_local'],
@@ -43,6 +44,7 @@ final class MobileFeatureResolver
         'support' => 'support.view',
         'billing' => 'billing.view',
         'reports' => 'reports.view',
+        'diagnostics' => 'diagnostics.view',
     ];
 
     private const MAINTENANCE_ALLOWED_FEATURES = [

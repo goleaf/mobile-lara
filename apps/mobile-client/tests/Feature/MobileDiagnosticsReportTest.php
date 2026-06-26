@@ -98,7 +98,9 @@ test('diagnostics report summarizes mobile state without leaking private payload
         ->and($json)->not->toContain('api-secret')
         ->and($json)->not->toContain('queued-secret-token')
         ->and($json)->not->toContain('Sensitive payload title')
-        ->and($json)->not->toContain('abcdef123456');
+        ->and($json)->not->toContain('abcdef123456')
+        ->and($json)->not->toContain('support-api-key')
+        ->and($json)->not->toContain('support-client-secret');
 });
 
 test('debug screen exports diagnostics json through a Livewire download', function (): void {
@@ -167,11 +169,11 @@ function mobileDiagnosticsBootstrapEnvelope(): array
                         'max_batch_size' => 25,
                     ],
                 ],
-            'support_context' => [
-                'secret_token' => 'support-secret-token',
-                'clientSecret' => 'support-client-secret',
-                'contact_email' => 'support-private@example.test',
-            ],
+                'support_context' => [
+                    'secret_token' => 'support-secret-token',
+                    'clientSecret' => 'support-client-secret',
+                    'contact_email' => 'support-private@example.test',
+                ],
                 'defaults_used' => ['uploads'],
             ],
             'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],

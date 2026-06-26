@@ -536,6 +536,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   `mobile-lara-diagnostics.json`, shares the same redacted JSON through the
   NativePHP share wrapper, and strips tokens, API credentials, bearer values,
   emails, queued payloads, and headers from support snapshots.
+- Added the authenticated API diagnostics upload endpoint with current-tenant
+  permission checks, server-side allowlisting/redaction, mobile diagnostic
+  report persistence, standard mobile envelopes, and security audit history.
 - Added the API/admin app version and maintenance foundation with
   minimum-version force updates, optional update states, public `/app-version`
   API output, bootstrap maintenance integration, and focused policy coverage.
