@@ -67,6 +67,11 @@ notification targeting, delivery policy, push behavior, in-app inbox,
 read/unread state, deep links, preferences, offline behavior, and tenant or
 permission boundaries must remain Admin/API-authoritative and mobile-safe.
 
+Support System Logic is defined in `support-system-logic.md`:
+support requests, support messages, attachments, tenant context, support-agent
+visibility, audit, notifications, and offline support drafts must remain
+tenant-scoped, least-privilege, privacy-safe, and Admin/API-authoritative.
+
 ## Offline-First Statement
 
 Offline-first means useful offline, not trusted offline.

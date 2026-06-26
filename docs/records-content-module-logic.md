@@ -51,6 +51,11 @@ record assignment, status, reminder, conflict, support, and deep-link
 notifications must remain tenant-scoped, permission-aware, preference-aware,
 offline-safe, and API-authoritative before mobile displays or routes them.
 
+Support System Logic is defined in `support-system-logic.md`:
+support requests, support messages, attachments, tenant context, support-agent
+visibility, audit, notifications, and offline support drafts must remain
+tenant-scoped, least-privilege, privacy-safe, and Admin/API-authoritative.
+
 ## Module Statement
 
 The records/content module is the shared tenant workspace for structured mobile

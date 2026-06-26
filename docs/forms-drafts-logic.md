@@ -38,6 +38,11 @@ form-submission notifications, draft reminders, validation/security notices,
 and deep links back to form-related work must remain Admin/API-authoritative,
 tenant-scoped, permission-aware, preference-aware, and mobile-safe.
 
+Support System Logic is defined in `support-system-logic.md`:
+support requests, support messages, attachments, tenant context, support-agent
+visibility, audit, notifications, and offline support drafts must remain
+tenant-scoped, least-privilege, privacy-safe, and Admin/API-authoritative.
+
 ## Forms And Drafts Statement
 
 Mobile forms should make it safe and fast for users to enter tenant work

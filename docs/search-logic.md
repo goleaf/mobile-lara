@@ -44,6 +44,11 @@ preference lookup must remain tenant-scoped, permission-aware, privacy-safe,
 offline-limited, and API-authoritative before showing counts, snippets, or
 destinations.
 
+Support System Logic is defined in `support-system-logic.md`:
+support requests, support messages, attachments, tenant context, support-agent
+visibility, audit, notifications, and offline support drafts must remain
+tenant-scoped, least-privilege, privacy-safe, and Admin/API-authoritative.
+
 ## Search Statement
 
 Search helps mobile and admin users find tenant-scoped work quickly without

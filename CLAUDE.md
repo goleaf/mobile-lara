@@ -83,6 +83,11 @@ notification targeting, delivery policy, push behavior, in-app inbox,
 read/unread state, deep links, preferences, offline behavior, and tenant or
 permission boundaries must remain Admin/API-authoritative and mobile-safe.
 
+Support System Logic is defined in `docs/support-system-logic.md`:
+support requests, support messages, attachments, tenant context, support-agent
+visibility, audit, notifications, and offline support drafts must remain
+tenant-scoped, least-privilege, privacy-safe, and Admin/API-authoritative.
+
 Sync Lifecycle Logic is defined in `docs/sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,
@@ -171,6 +176,7 @@ Use these docs before changing the product direction:
 - `docs/search-logic.md`
 - `docs/forms-drafts-logic.md`
 - `docs/notifications-logic.md`
+- `docs/support-system-logic.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -211,6 +217,7 @@ Use these docs before changing the product direction:
 - Search logic decisions must follow `docs/search-logic.md`.
 - Forms and drafts decisions must follow `docs/forms-drafts-logic.md`.
 - Notifications decisions must follow `docs/notifications-logic.md`.
+- Support system decisions must follow `docs/support-system-logic.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -250,6 +257,7 @@ Use these docs before changing the product direction:
 - Any local search, API search, recent search, saved filter, filtering, sorting, scan-to-search, offline search limit, search privacy, tenant search isolation, admin search control, or search result-state behavior must map to `docs/search-logic.md`.
 - Any simple form, multi-step form, validation, autosave, offline draft, online submit, offline submit, submit feedback, admin-controlled form availability, draft retention, sensitive form data, or data-loss prevention behavior must map to `docs/forms-drafts-logic.md`.
 - Any admin-created notification, system notification, security notification, reminder, push notification, in-app inbox, read/unread behavior, deep link, notification preference, offline notification behavior, tenant targeting, or notification permission boundary must map to `docs/notifications-logic.md`.
+- Any mobile support request, support agent review, support message, support attachment, tenant support context, support visibility, support audit, support notification, or offline support draft behavior must map to `docs/support-system-logic.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.

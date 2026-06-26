@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Support System Logic documentation for mobile support requests,
+  admin/support review, support messages, attachments, tenant context, support
+  access limits, audit, notifications, and offline support drafts.
 - Added mobile API-derived access policy that reads cached bootstrap feature,
   permission, subscription, maintenance, notification, and sync outcomes to
   gate primary navigation, dashboard/create/search shortcuts, and direct module

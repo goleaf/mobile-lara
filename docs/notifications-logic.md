@@ -31,11 +31,17 @@ Principles](admin-safety-principles.md), [Data Privacy Principles](data-privacy-
 Logic](multi-tenant-mobile-logic.md), [Offline-First Principles](offline-first-principles.md),
 [Offline UX Logic](offline-ux-logic.md), [Sync Lifecycle Logic](sync-lifecycle-logic.md),
 [Records/Content Module Logic](records-content-module-logic.md), [Forms And
-Drafts Logic](forms-drafts-logic.md), and [API v1 Notifications
+Drafts Logic](forms-drafts-logic.md), [Support System
+Logic](support-system-logic.md), and [API v1 Notifications
 Contract](../contracts/api/v1-notifications.md): notifications are
 tenant-scoped communication events, and Admin/API remains authoritative for
 targeting, eligibility, delivery policy, unread truth, preference acceptance,
 deep-link safety, audit, and tenant boundaries.
+
+Support System Logic is defined in `support-system-logic.md`:
+support replies, diagnostic requests, attachment outcomes, case status changes,
+support-agent visibility, audit, and offline support draft reminders must stay
+tenant-scoped, least-privilege, privacy-safe, and Admin/API-authoritative.
 
 ## Notifications Statement
 
