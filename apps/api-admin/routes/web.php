@@ -10,6 +10,7 @@ use App\Livewire\Admin\MobileDiagnosticReports;
 use App\Livewire\Admin\MobileSupportTickets;
 use App\Livewire\Admin\MobileSyncEvents;
 use App\Livewire\Admin\RemoteConfigs;
+use App\Livewire\Admin\TenantRecords;
 use App\Livewire\Admin\TenantFeatureOverrides;
 use App\Livewire\Admin\TenantRemoteConfigOverrides;
 use App\Livewire\Admin\Tenants;
@@ -40,6 +41,7 @@ Route::middleware(['web'])
                     Route::livewire('/mobile/app-versions', AppVersionPolicies::class)->name('mobile.app-versions');
                     Route::livewire('/mobile/diagnostics', MobileDiagnosticReports::class)->name('mobile.diagnostics');
                     Route::livewire('/mobile/sync', MobileSyncEvents::class)->name('mobile.sync');
+                    Route::livewire('/records', TenantRecords::class)->name('records');
                     Route::livewire('/billing', Billing::class)->name('billing');
                     Route::livewire('/support', MobileSupportTickets::class)->name('support');
                     Route::post('/logout', LogoutController::class)->name('logout');

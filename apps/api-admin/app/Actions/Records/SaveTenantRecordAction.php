@@ -22,9 +22,16 @@ final class SaveTenantRecordAction
     /**
      * @param  array<string, mixed>  $data
      */
-    public function create(array $data, Tenant $tenant, User $user, Request $request): TenantRecord
+    public function create(
+        array $data,
+        Tenant $tenant,
+        User $user,
+        Request $request,
+        string $source = 'mobile_api',
+        string $auditPrefix = 'mobile',
+    ): TenantRecord
     {
-        return DB::transaction(function () use ($data, $tenant, $user, $request): TenantRecord {
+        return DB::transaction(function () use ($data, $tenant, $user, $request, $source, $auditPrefix): TenantRecord {
             $record = TenantRecord::query()->create([
                 'tenant_id' => $tenant->id,
                 'created_by_user_id' => $user->id,
@@ -39,10 +46,10 @@ final class SaveTenantRecordAction
             ]);
 
             $this->syncTags($record, $data, $tenant);
-            $this->createNote($record, $data, $user);
-            $this->createAttachments($record, $data, $user);
-            $this->recordActivity($record, $user, 'record.created', 'Record created.', ['source' => 'mobile_api']);
-            $this->audit->record('mobile_record_created', $request, $user, $request->attributes->get('mobile_device_session'), metadata: [
+            $this->createNote($record, $data, $user, $source);
+            $this->createAttachments($record, $data, $user, $source);
+            $this->recordActivity($record, $user, 'record.created', 'Record created.', ['source' => $source]);
+            $this->audit->record($auditPrefix.'_record_created', $request, $user, $request->attributes->get('mobile_device_session'), metadata: [
                 'tenant_public_id' => $tenant->public_id,
                 'record_public_id' => $record->public_id,
             ]);
@@ -54,9 +61,17 @@ final class SaveTenantRecordAction
     /**
      * @param  array<string, mixed>  $data
      */
-    public function update(TenantRecord $record, array $data, Tenant $tenant, User $user, Request $request): TenantRecord
+    public function update(
+        TenantRecord $record,
+        array $data,
+        Tenant $tenant,
+        User $user,
+        Request $request,
+        string $source = 'mobile_api',
+        string $auditPrefix = 'mobile',
+    ): TenantRecord
     {
-        return DB::transaction(function () use ($record, $data, $tenant, $user, $request): TenantRecord {
+        return DB::transaction(function () use ($record, $data, $tenant, $user, $request, $source, $auditPrefix): TenantRecord {
             $attributes = [
                 'updated_by_user_id' => $user->id,
                 'sync_version' => (string) Str::uuid(),
@@ -74,10 +89,13 @@ final class SaveTenantRecordAction
 
             $record->fill($attributes)->save();
             $this->syncTags($record, $data, $tenant);
-            $this->createNote($record, $data, $user);
-            $this->createAttachments($record, $data, $user);
-            $this->recordActivity($record, $user, 'record.updated', 'Record updated.', ['fields' => array_keys($data)]);
-            $this->audit->record('mobile_record_updated', $request, $user, $request->attributes->get('mobile_device_session'), metadata: [
+            $this->createNote($record, $data, $user, $source);
+            $this->createAttachments($record, $data, $user, $source);
+            $this->recordActivity($record, $user, 'record.updated', 'Record updated.', [
+                'source' => $source,
+                'fields' => array_keys($data),
+            ]);
+            $this->audit->record($auditPrefix.'_record_updated', $request, $user, $request->attributes->get('mobile_device_session'), metadata: [
                 'tenant_public_id' => $tenant->public_id,
                 'record_public_id' => $record->public_id,
                 'fields' => array_keys($data),
@@ -149,7 +167,7 @@ final class SaveTenantRecordAction
     /**
      * @param  array<string, mixed>  $data
      */
-    private function createNote(TenantRecord $record, array $data, User $user): void
+    private function createNote(TenantRecord $record, array $data, User $user, string $source): void
     {
         $body = $this->nullableString($data['note'] ?? null);
 
@@ -163,14 +181,14 @@ final class SaveTenantRecordAction
             'author_user_id' => $user->id,
             'body' => $body,
             'visibility' => 'tenant',
-            'metadata' => ['source' => 'mobile_api'],
+            'metadata' => ['source' => $source],
         ]);
     }
 
     /**
      * @param  array<string, mixed>  $data
      */
-    private function createAttachments(TenantRecord $record, array $data, User $user): void
+    private function createAttachments(TenantRecord $record, array $data, User $user, string $source): void
     {
         foreach (is_array($data['attachments'] ?? null) ? $data['attachments'] : [] as $attachment) {
             if (! is_array($attachment)) {
@@ -186,7 +204,10 @@ final class SaveTenantRecordAction
                 'mime_type' => $this->nullableString($attachment['mime_type'] ?? null),
                 'size_bytes' => (int) ($attachment['size_bytes'] ?? 0),
                 'status' => 'metadata_only',
-                'metadata' => is_array($attachment['metadata'] ?? null) ? $attachment['metadata'] : [],
+                'metadata' => array_merge(
+                    is_array($attachment['metadata'] ?? null) ? $attachment['metadata'] : [],
+                    ['source' => $source],
+                ),
             ]);
         }
     }

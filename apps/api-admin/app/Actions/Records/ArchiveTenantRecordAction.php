@@ -15,7 +15,14 @@ final class ArchiveTenantRecordAction
 {
     public function __construct(private readonly MobileAuditLogger $audit) {}
 
-    public function archive(TenantRecord $record, Tenant $tenant, User $user, Request $request): TenantRecord
+    public function archive(
+        TenantRecord $record,
+        Tenant $tenant,
+        User $user,
+        Request $request,
+        string $source = 'mobile_api',
+        string $auditPrefix = 'mobile',
+    ): TenantRecord
     {
         $record->forceFill([
             'archived_at' => Carbon::now(),
@@ -29,10 +36,10 @@ final class ArchiveTenantRecordAction
             'actor_user_id' => $user->id,
             'action' => 'record.archived',
             'description' => 'Record archived.',
-            'metadata' => ['source' => 'mobile_api'],
+            'metadata' => ['source' => $source],
         ]);
 
-        $this->audit->record('mobile_record_archived', $request, $user, $request->attributes->get('mobile_device_session'), metadata: [
+        $this->audit->record($auditPrefix.'_record_archived', $request, $user, $request->attributes->get('mobile_device_session'), metadata: [
             'tenant_public_id' => $tenant->public_id,
             'record_public_id' => $record->public_id,
         ]);

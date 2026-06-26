@@ -520,6 +520,11 @@ Implemented foundation:
 - `/admin/billing` is protected by session auth and platform-admin access, and
   manages provider-neutral tenant billing state, plan metadata, trial date,
   billing portal URL, mobile-safe limits/usage JSON, and audit history.
+- `/admin/records` is protected by session auth and platform-admin access, and
+  manages tenant-scoped records with search, tenant/status/archive filters,
+  detail review, create/update, reversible archive/restore, eager-loaded
+  categories, tags, notes, attachment metadata, activity timeline, and
+  admin-specific audit history.
 - `App\Actions\Admin\SaveMobileFeatureFlagAction` persists feature defaults and
   writes before/after audit metadata to `security_audit_events`.
 - `App\Actions\Admin\SaveTenantFeatureOverrideAction` persists tenant feature
@@ -557,16 +562,17 @@ Implemented foundation:
   billing subscription resolution, admin billing management, mobile
   notification policy and endpoint behavior, mobile support ticket/message
   endpoint behavior, mobile sync policy resolution, tenant-scoped records API
-  behavior, resource policies, success envelope, error envelope, contract
-  catalogue, and contract Markdown file coverage.
+  behavior, admin records management, resource policies, success envelope,
+  error envelope, contract catalogue, and contract Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   broader resource policy expansion, and broader control-plane audit.
-- Admin records/content management screens, standalone records subresource
-  endpoints, non-record sync replay, provider-backed billing, invoices, usage
-  events, notifications, support-provider workflows, and reports.
+- Standalone records subresource endpoints and admin screens for categories,
+  tags, notes, attachments, non-record sync replay, provider-backed billing,
+  invoices, usage events, notifications, support-provider workflows, and
+  reports.
 - Protected domain routes for notifications, reports, and remaining
   feature/config/version policy surfaces.
 

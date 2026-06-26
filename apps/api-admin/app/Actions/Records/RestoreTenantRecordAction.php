@@ -14,7 +14,14 @@ final class RestoreTenantRecordAction
 {
     public function __construct(private readonly MobileAuditLogger $audit) {}
 
-    public function restore(TenantRecord $record, Tenant $tenant, User $user, Request $request): TenantRecord
+    public function restore(
+        TenantRecord $record,
+        Tenant $tenant,
+        User $user,
+        Request $request,
+        string $source = 'mobile_api',
+        string $auditPrefix = 'mobile',
+    ): TenantRecord
     {
         $record->forceFill([
             'archived_at' => null,
@@ -28,10 +35,10 @@ final class RestoreTenantRecordAction
             'actor_user_id' => $user->id,
             'action' => 'record.restored',
             'description' => 'Record restored.',
-            'metadata' => ['source' => 'mobile_api'],
+            'metadata' => ['source' => $source],
         ]);
 
-        $this->audit->record('mobile_record_restored', $request, $user, $request->attributes->get('mobile_device_session'), metadata: [
+        $this->audit->record($auditPrefix.'_record_restored', $request, $user, $request->attributes->get('mobile_device_session'), metadata: [
             'tenant_public_id' => $tenant->public_id,
             'record_public_id' => $record->public_id,
         ]);

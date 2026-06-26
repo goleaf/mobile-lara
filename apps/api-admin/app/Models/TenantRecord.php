@@ -185,6 +185,50 @@ class TenantRecord extends Model
      * @param  Builder<TenantRecord>  $query
      * @return Builder<TenantRecord>
      */
+    public function scopeForAdminIndex(Builder $query): Builder
+    {
+        return $query
+            ->select(self::SELECT_COLUMNS)
+            ->with([
+                'tenant:id,public_id,name,slug,status,subscription_state',
+                'category:id,tenant_id,public_id,name,slug,color',
+                'creator:id,name',
+                'updater:id,name',
+                'tags:id,tenant_id,public_id,name,slug,color',
+            ])
+            ->withCount(['notes', 'attachments', 'activities'])
+            ->orderByDesc('updated_at')
+            ->orderByDesc('id');
+    }
+
+    /**
+     * @param  Builder<TenantRecord>  $query
+     * @return Builder<TenantRecord>
+     */
+    public function scopeForAdminDetail(Builder $query): Builder
+    {
+        return $query
+            ->select(self::SELECT_COLUMNS)
+            ->with([
+                'tenant:id,public_id,name,slug,status,subscription_state',
+                'category:id,tenant_id,public_id,name,slug,color,description,is_active',
+                'creator:id,name',
+                'updater:id,name',
+                'tags:id,tenant_id,public_id,name,slug,color',
+                'notes:id,tenant_id,tenant_record_id,author_user_id,public_id,body,visibility,metadata,created_at,updated_at',
+                'notes.author:id,name',
+                'attachments:id,tenant_id,tenant_record_id,uploaded_by_user_id,public_id,local_id,file_name,mime_type,size_bytes,status,metadata,created_at,updated_at',
+                'attachments.uploader:id,name',
+                'activities:id,tenant_id,tenant_record_id,actor_user_id,action,description,metadata,created_at',
+                'activities.actor:id,name',
+            ])
+            ->withCount(['notes', 'attachments', 'activities']);
+    }
+
+    /**
+     * @param  Builder<TenantRecord>  $query
+     * @return Builder<TenantRecord>
+     */
     public function scopeMatchingSearch(Builder $query, ?string $search): Builder
     {
         $search = trim((string) $search);
@@ -206,6 +250,54 @@ class TenantRecord extends Model
      * @param  Builder<TenantRecord>  $query
      * @return Builder<TenantRecord>
      */
+    public function scopeMatchingAdminSearch(Builder $query, ?string $search): Builder
+    {
+        $search = trim((string) $search);
+
+        if ($search === '') {
+            return $query;
+        }
+
+        return $query->where(function (Builder $query) use ($search): void {
+            $query
+                ->where('public_id', 'like', '%'.$search.'%')
+                ->orWhere('title', 'like', '%'.$search.'%')
+                ->orWhere('description', 'like', '%'.$search.'%')
+                ->orWhere('status', 'like', '%'.$search.'%')
+                ->orWhere('priority', 'like', '%'.$search.'%')
+                ->orWhereHas('tenant', function (Builder $query) use ($search): void {
+                    $query
+                        ->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('slug', 'like', '%'.$search.'%');
+                })
+                ->orWhereHas('category', function (Builder $query) use ($search): void {
+                    $query->where('name', 'like', '%'.$search.'%');
+                })
+                ->orWhereHas('tags', function (Builder $query) use ($search): void {
+                    $query->where('name', 'like', '%'.$search.'%');
+                });
+        });
+    }
+
+    /**
+     * @param  Builder<TenantRecord>  $query
+     * @return Builder<TenantRecord>
+     */
+    public function scopeForStatus(Builder $query, ?string $status): Builder
+    {
+        $status = trim((string) $status);
+
+        if ($status === '' || ! in_array($status, self::statuses(), true)) {
+            return $query;
+        }
+
+        return $query->where('status', $status);
+    }
+
+    /**
+     * @param  Builder<TenantRecord>  $query
+     * @return Builder<TenantRecord>
+     */
     public function scopeArchivedFilter(Builder $query, ?string $archived): Builder
     {
         return match ($archived) {
@@ -218,5 +310,31 @@ class TenantRecord extends Model
     public function isArchived(): bool
     {
         return $this->archived_at !== null;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function statuses(): array
+    {
+        return [
+            self::STATUS_DRAFT,
+            self::STATUS_ACTIVE,
+            self::STATUS_REVIEW,
+            self::STATUS_DONE,
+        ];
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function priorities(): array
+    {
+        return [
+            self::PRIORITY_LOW,
+            self::PRIORITY_NORMAL,
+            self::PRIORITY_HIGH,
+            self::PRIORITY_URGENT,
+        ];
     }
 }

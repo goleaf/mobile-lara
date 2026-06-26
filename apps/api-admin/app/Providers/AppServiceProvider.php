@@ -10,6 +10,7 @@ use App\Models\MobileSupportTicket;
 use App\Models\MobileSyncEvent;
 use App\Models\Tenant;
 use App\Models\TenantFeatureOverride;
+use App\Models\TenantRecord;
 use App\Models\TenantRemoteConfigOverride;
 use App\Models\UserFeatureOverride;
 use App\Policies\MobileAppVersionPolicyPolicy;
@@ -20,6 +21,7 @@ use App\Policies\MobileSupportTicketPolicy;
 use App\Policies\MobileSyncEventPolicy;
 use App\Policies\TenantFeatureOverridePolicy;
 use App\Policies\TenantPolicy;
+use App\Policies\TenantRecordPolicy;
 use App\Policies\TenantRemoteConfigOverridePolicy;
 use App\Policies\UserFeatureOverridePolicy;
 use Illuminate\Support\Facades\Gate;
@@ -50,5 +52,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(TenantRemoteConfigOverride::class, TenantRemoteConfigOverridePolicy::class);
         Gate::policy(MobileAppVersionPolicy::class, MobileAppVersionPolicyPolicy::class);
         Gate::policy(Tenant::class, TenantPolicy::class);
+        Gate::policy(TenantRecord::class, TenantRecordPolicy::class);
     }
 }

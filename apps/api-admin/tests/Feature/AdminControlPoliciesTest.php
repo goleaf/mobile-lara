@@ -5,6 +5,7 @@ use App\Models\MobileFeatureFlag;
 use App\Models\MobileRemoteConfig;
 use App\Models\Tenant;
 use App\Models\TenantFeatureOverride;
+use App\Models\TenantRecord;
 use App\Models\TenantRemoteConfigOverride;
 use App\Models\User;
 use App\Models\UserFeatureOverride;
@@ -54,5 +55,6 @@ function adminControlPolicyResources(): array
         [MobileRemoteConfig::class, MobileRemoteConfig::factory()->create()],
         [TenantRemoteConfigOverride::class, TenantRemoteConfigOverride::factory()->create()],
         [MobileAppVersionPolicy::class, MobileAppVersionPolicy::factory()->create()],
+        [TenantRecord::class, TenantRecord::factory()->create()],
     ];
 }

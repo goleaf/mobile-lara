@@ -426,11 +426,11 @@ before implementation scope is added.
   role-specific support-agent scoping, ticket-linked diagnostics, offline
   support drafts, and report native share flows still need feature-specific
   policy gates.
-- Complete the records/content module beyond the API and records-only sync
-  foundation: admin records management screens, standalone
-  category/tag/note/attachment endpoints, upload/storage handling, richer
-  hard-delete governance, non-record sync adapters, full mobile pull/reconcile
-  hydration from the authoritative records contract.
+- Complete the records/content module beyond the API, admin management screen,
+  and records-only sync foundation: standalone category/tag/note/attachment
+  endpoints and admin subresource screens, upload/storage handling, richer
+  hard-delete governance, non-record sync adapters, and full mobile
+  pull/reconcile hydration from the authoritative records contract.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

@@ -87,6 +87,13 @@ final class Dashboard extends Component
                 'route' => 'admin.mobile.sync',
             ],
             [
+                'label' => 'Records management',
+                'status' => 'Live',
+                'detail' => 'Tenant-scoped records, categories, tags, notes, attachments, timelines, and reversible archive state.',
+                'tone' => 'success',
+                'route' => 'admin.records',
+            ],
+            [
                 'label' => 'Billing control',
                 'status' => 'Live',
                 'detail' => 'Tenant subscription state, plan metadata, limits, usage snapshots, and billing portal settings.',
