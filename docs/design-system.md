@@ -87,6 +87,11 @@ uses a shared `mobile-content` canvas between them. That canvas provides:
   screens feel consistent without page-specific decorative wrappers;
 - no business authority, authorization, or API state of its own.
 
+The fixed shell header is the only page header. Mobile content screens must not
+repeat the current page title or page introduction inside the scrollable
+content block. Shared `page-header` usage is reserved for compact back/action
+controls that support the current page without rendering another heading.
+
 The content surface is presentational only. API, tenant, permission, feature,
 sync, billing, support, and profile truth still comes from Admin/API contracts
 and the mobile services that call those contracts.

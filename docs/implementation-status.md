@@ -455,7 +455,7 @@ Status values:
 | NativePHP Mobile configuration | tested | NativePHP config, launcher, lockfile, service provider, wrappers, tests, and plugin validation exist in `apps/mobile-client`; simulator/emulator builds still depend on external tooling. |
 | Livewire + Blade mobile UI | tested | Class-based Livewire mobile components and Blade views exist under `apps/mobile-client` and are covered by route/component tests. |
 | Tailwind mobile styling | tested | Tailwind v4/SCSS entrypoint and mobile design tokens build through Vite in `apps/mobile-client`. |
-| Mobile-first layout and safe-area shell | tested | Shared layout, mobile components, safe-area shell, bottom navigation, and the refactored scrollable content canvas between header/footer are covered by feature tests and the mobile Vite build. |
+| Mobile-first layout and safe-area shell | tested | Shared layout, mobile components, safe-area shell, bottom navigation, the single shell-header rule, and the refactored scrollable content canvas between header/footer are covered by feature tests, Playwright viewport checks, and the mobile Vite build. |
 | Welcome screen | tested | `Mobile\Welcome` route and view exist in `apps/mobile-client`. |
 | Auth screens | tested | Login, register, profile update, profile logout, sessions logout, and sessions logout-all consume the mobile auth API service in `apps/mobile-client`. Password reset and email verification remain local validation placeholders until API behavior is documented and delivered through a separately approved implementation slice. |
 | Dashboard | tested | `Mobile\Dashboard` exists and renders in `apps/mobile-client`; Admin/API bootstrap integration is missing. |
@@ -464,7 +464,7 @@ Status values:
 | Profile | tested | Profile and edit profile screens exist; edit profile syncs account details (`name`, `username`, `phone`, `bio`, `location`, `website`), optional avatar upload, and avatar removal through the API profile endpoint when a valid access token exists. |
 | Notifications page | tested | Local notification inbox exists, server notification authority exists for inbox/read/delete/push-token endpoints, and native push permission/token capture UI remains pending. |
 | Debug/diagnostics page | tested | Debug screen includes privacy-safe diagnostics preview, local JSON export, and native share handoff with redaction coverage. |
-| Reusable mobile UI components | tested | Components exist and are covered by mobile UI component tests; shared cards, page headers, empty states, and error states now align with the shell content-canvas design. |
+| Reusable mobile UI components | tested | Components exist and are covered by mobile UI component tests; shared cards, empty states, and error states align with the shell content-canvas design, while shared page headers now render only compact back/action controls so page titles are not duplicated. |
 
 ## Phase 4 - API Contracts
 

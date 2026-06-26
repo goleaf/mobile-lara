@@ -29,6 +29,11 @@ variables, and consistent shared states. It does not own authentication,
 tenant authority, server profile data, feature decisions, remote config,
 sync truth, or permission truth.
 
+The shell header is also the only page-level header. Individual mobile screens
+must not render a second page title or page-introduction block inside the
+content canvas. Screen-level navigation or status controls may appear as
+compact back/action rows, but page naming belongs to the fixed shell header.
+
 Mobile Dashboard Logic is defined in `mobile-dashboard-logic.md`:
 dashboard content must resolve current user context, current tenant, enabled
 feature shortcuts, sync/offline status, unread notifications, recent

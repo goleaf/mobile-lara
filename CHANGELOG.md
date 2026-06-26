@@ -142,6 +142,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   footer: the shared layout now wraps pages in a dedicated scrollable content
   canvas with light/dark surface variables, side rails, rhythm lines, and
   refreshed shared card, page-header, empty-state, and error-state components.
+- Enforced a single mobile page header: the fixed shell header owns page titles
+  across the app, while shared page-header instances now render only compact
+  back/action controls instead of duplicate title and description blocks.
 - Refactored the mobile auth/profile boundary to server-only account storage:
   login and registration now authenticate the Laravel session from the API user
   id without creating a local mobile `users` row, profile screens hydrate from
