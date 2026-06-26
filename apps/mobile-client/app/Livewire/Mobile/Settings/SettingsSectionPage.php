@@ -31,7 +31,7 @@ abstract class SettingsSectionPage extends Component
     /**
      * @return list<array{key: string, label: string, description: string, url: string|null, badge: string|null}>
      */
-    private function sectionItems(): array
+    protected function sectionItems(): array
     {
         return array_map(
             static fn (array $item): array => [

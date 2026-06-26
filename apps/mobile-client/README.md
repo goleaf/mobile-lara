@@ -230,6 +230,13 @@ assistant must be tenant-enabled, plan-controlled, permission-aware,
 mobile-hidden when unavailable, feature-flag-safe, documented before
 implementation, and Admin/API-authoritative.
 
+Field Service Logic is defined in `../../docs/field-service-logic.md`:
+work order lifecycle, technician mobile flow, check-in/check-out, photos,
+notes, future signatures, offline behavior, admin dispatch/control, and
+report visibility must remain tenant-enabled, plan-controlled,
+permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
+and Admin/API-authoritative.
+
 Voice Note Logic is defined in `../../docs/voice-note-logic.md`:
 recording, pausing, resuming, local saving, record/support attachments,
 optional future transcription, offline upload queues, microphone-permission
@@ -297,9 +304,11 @@ sync policy before local sync timestamps or conflict queue statuses change, and
 the offline-first queue service refuses new replay intents when offline sync is
 disabled. Core recovery surfaces such as dashboard, profile, settings,
 workspace switching, support, and billing stay reachable so users can recover
-when a tenant or policy state blocks a workflow. Developer debug native-action
-examples use the same cached policy before camera, notification, share,
-browser, device, dialog, or secure storage wrapper calls.
+when a tenant or policy state blocks a workflow. Support-center browser handoff
+is checked against cached native browser policy before support settings opens a
+NativePHP browser surface. Developer debug native-action examples use the same
+cached policy before camera, notification, share, browser, device, dialog, or
+secure storage wrapper calls.
 
 Admin Control Center logic in `../../docs/admin-control-center-logic.md`
 defines the server-side controls that mobile receives as API outcomes:

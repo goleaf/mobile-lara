@@ -30,6 +30,13 @@ assistant must be tenant-enabled, plan-controlled, permission-aware,
 mobile-hidden when unavailable, feature-flag-safe, documented before
 implementation, and Admin/API-authoritative.
 
+Field Service Logic is defined in `docs/field-service-logic.md`:
+work order lifecycle, technician mobile flow, check-in/check-out, photos,
+notes, future signatures, offline behavior, admin dispatch/control, and
+report visibility must remain tenant-enabled, plan-controlled,
+permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
+and Admin/API-authoritative.
+
 Voice Note Logic is defined in `docs/voice-note-logic.md`:
 recording, pausing, resuming, local saving, record/support attachments,
 optional future transcription, offline upload queues, microphone-permission
@@ -126,6 +133,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added API-derived policy checks to the developer debug native-action surface
   so disabled camera, share, notification, browser, device, dialog, or secure
   storage policy hides debug controls and blocks direct wrapper calls/callbacks.
+- Added a policy-gated support-center browser action to mobile support
+  settings so disabled native browser policy hides the recovery control and
+  blocks direct Livewire calls before native browser handoff.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

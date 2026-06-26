@@ -225,6 +225,13 @@ assistant must be tenant-enabled, plan-controlled, permission-aware,
 mobile-hidden when unavailable, feature-flag-safe, documented before
 implementation, and Admin/API-authoritative.
 
+Field Service Logic is defined in `field-service-logic.md`:
+work order lifecycle, technician mobile flow, check-in/check-out, photos,
+notes, future signatures, offline behavior, admin dispatch/control, and
+report visibility must remain tenant-enabled, plan-controlled,
+permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
+and Admin/API-authoritative.
+
 Voice Note Logic is defined in `voice-note-logic.md`:
 recording, pausing, resuming, local saving, record/support attachments,
 optional future transcription, offline upload queues, microphone-permission
@@ -308,8 +315,9 @@ before implementation scope is added.
   now gates cached sync policy before writing new replay intents. Developer
   debug native-action wrappers now gate cached camera, notification, share,
   browser, device, dialog, and secure-storage policy before native wrapper
-  handoff. Remaining diagnostics/support/report native share and browser flows
-  still need feature-specific policy gates.
+  handoff. Support settings now gates native browser handoff before opening
+  the support center. Remaining diagnostics/report native share flows and
+  legal/billing browser flows still need feature-specific policy gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 
