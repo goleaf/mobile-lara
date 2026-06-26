@@ -241,3 +241,6 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added mobile subscription resolution from tenant subscription state/settings,
   `/api/v1/mobile/billing/subscription`, bootstrap subscription metadata, and
   subscription-backed feature plan gates.
+- Added bootstrap notification policy resolution from tenant settings with
+  quiet-hours metadata, push-registration hints, fail-closed no-tenant behavior,
+  and notification policy version metadata.

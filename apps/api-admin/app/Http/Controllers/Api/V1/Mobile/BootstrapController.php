@@ -10,6 +10,7 @@ use App\Services\MobileConfig\MobileRemoteConfigResolver;
 use App\Services\MobileFeatures\MobileFeatureResolver;
 use App\Services\MobilePermissions\MobilePermissionResolver;
 use App\Services\MobileVersion\MobileAppVersionPolicyResolver;
+use App\Services\Notifications\MobileNotificationPolicyResolver;
 use App\Services\Tenancy\MobileTenantContextResolver;
 use App\Support\Api\MobileApiResponse;
 use App\Support\Api\MobileBootstrapPayload;
@@ -25,6 +26,7 @@ final class BootstrapController extends Controller
         private MobileRemoteConfigResolver $config,
         private MobileAppVersionPolicyResolver $versions,
         private MobileSubscriptionResolver $subscriptions,
+        private MobileNotificationPolicyResolver $notifications,
     ) {}
 
     /**
@@ -48,6 +50,7 @@ final class BootstrapController extends Controller
         $tenantContext = $this->tenants->resolve($user);
         $permissions = $this->permissions->resolve($user, $tenantContext);
         $subscription = $this->subscriptions->resolve($tenantContext);
+        $notificationPolicy = $this->notifications->resolve($tenantContext);
         $tenantContextWithSubscription = [
             ...$tenantContext,
             'subscription' => $subscription,
@@ -67,8 +70,9 @@ final class BootstrapController extends Controller
                 $remoteConfig,
                 $appVersion,
                 $subscription,
+                $notificationPolicy,
             ),
-            MobileBootstrapPayload::meta($features, $remoteConfig, $subscription),
+            MobileBootstrapPayload::meta($features, $remoteConfig, $subscription, $notificationPolicy),
         );
     }
 }

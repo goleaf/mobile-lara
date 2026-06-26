@@ -2,7 +2,11 @@
 
 Updated: 2026-06-26
 
-Status: documented. Endpoints are planned for Phase 21.
+Status: partially implemented. Bootstrap now returns resolved tenant
+notification preferences, quiet-hours metadata, push-registration hints,
+fail-closed no-tenant behavior, and notification policy version metadata.
+Inbox, push token registration/revocation, read state, delete actions, deep
+links, and delivery/open tracking remain planned for Phase 21.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps notification orchestration centralized while mobile handles device
@@ -207,6 +211,11 @@ deletes, and deep-link payloads.
 Responses return notification `id`, `type`, `title`, `body`, `read_at`,
 `deep_link`, `created_at`, `actions`, and `unread_count` where useful.
 
+Bootstrap currently returns `notification_preferences` with `push_enabled`,
+`in_app_enabled`, `email_enabled`, `quiet_hours`,
+`push_registration_required`, and `status`. `unread_notification_count` remains
+`0` until server-side inbox storage is implemented.
+
 ## Gates
 
 Notifications are controlled by tenant membership, user preferences, feature
@@ -226,5 +235,12 @@ required.
 
 ## Tests
 
-Phase 21 should verify token ownership, tenant isolation, unread counts,
-preference effects, read/delete actions, and deep-link safety.
+Current preference coverage:
+
+```bash
+cd apps/api-admin && php artisan test --compact --filter=MobileNotificationPolicyTest
+```
+
+Future Phase 21 coverage should verify token ownership, tenant isolation,
+unread counts, read/delete actions, delivery/open tracking, and deep-link
+safety.

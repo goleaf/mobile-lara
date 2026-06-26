@@ -215,7 +215,7 @@ Status values:
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, registered policies for current mobile control-plane resources, audited global feature flag controls, audited global remote config controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 93 tests / 771 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 95 tests / 790 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, mobile notification policy state, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -284,7 +284,7 @@ Status values:
 | Features contract | tested | `v1-features.md` defines resolved feature states and gates; `GET /features` is implemented for global default, tenant override, user override, plan-gated, device-gated, permission-gated, and app-version-gated mobile-safe outcomes. |
 | Remote config contract | tested | `v1-remote-config.md` defines receive/cache/offline/fallback rules; `GET /config` returns resolved foundation/global/tenant config with freshness and version metadata. |
 | App version/maintenance contract | tested | `v1-app-version-maintenance.md` defines version, force update, and maintenance states; `GET /app-version` returns resolved policy outcomes, public cohort checks and version-range policy targeting are supported, and bootstrap consumes tenant-aware resolver output. |
-| Notifications contract | documented | `v1-notifications.md` defines inbox, push token, and read-state routes; API is not implemented. |
+| Notifications contract | partial | `v1-notifications.md` defines inbox, push token, and read-state routes; bootstrap notification preferences are implemented from tenant policy settings. Inbox and push endpoints remain pending. |
 | Records/content contract | documented | `v1-records.md` defines server record routes and offline/idempotency behavior; endpoints are not implemented. |
 | Sync contract | documented | `v1-sync.md` defines sync bootstrap, push, pull, acknowledgement, and conflict behavior; endpoints are not implemented. |
 | Support contract | documented | `v1-support.md` defines support ticket/message behavior; API is not implemented. |
@@ -369,9 +369,9 @@ Status values:
 | App version rules | tested | Bootstrap returns resolved version policy from foundation defaults or active tenant, cohort, platform, and global policies. |
 | Maintenance mode | tested | Bootstrap returns maintenance state, message, support URL, and retry timing from active version policy. |
 | Subscription status | tested | Bootstrap returns current tenant subscription state, plan, trial, limits, usage, billing portal state, feature impacts, and subscription metadata from Admin/API-owned tenant data. |
-| Notification preferences | partial | Bootstrap returns in-app enabled/push pending defaults until notification API exists. |
+| Notification preferences | tested | Bootstrap returns tenant notification preferences, quiet hours, push-registration hints, fail-closed no-tenant behavior, and notification policy version metadata. |
 | Sync settings | partial | Bootstrap returns sync disabled with local offline queue allowed until server sync endpoints exist. |
-| Unread notification count | partial | Bootstrap returns `0` until server notifications exist. |
+| Unread notification count | partial | Bootstrap intentionally returns `0` until server notification inbox storage exists. |
 | Mobile bootstrap service/cache | tested | `MobileBootstrapService` calls `GET /bootstrap` with the stored access token and caches the envelope in mobile-local settings; login/register refresh it after authentication, and the workspace settings screen consumes/refetches that cached context after tenant switches. |
 
 ## Phase 11 - App Version, Force Update, And Maintenance Mode
@@ -624,7 +624,7 @@ Status values:
 | Check | Status | Notes |
 | --- | --- | --- |
 | API/admin formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/api-admin`. |
-| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 93 tests / 771 assertions. |
+| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 95 tests / 790 assertions. |
 | API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
 | API routes verification | tested | `php artisan route:list --except-vendor` shows 20 app routes including app-version, auth, bootstrap, config, contracts, features, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
@@ -639,8 +639,7 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Replace bootstrap foundation defaults with real notification and sync policy
-   modules.
+1. Replace bootstrap foundation sync defaults with a real sync policy module.
 2. Migrate existing mobile-local features behind API-derived policy instead of
    letting local screens remain standalone authority.
 

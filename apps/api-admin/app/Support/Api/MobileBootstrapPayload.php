@@ -16,6 +16,7 @@ final class MobileBootstrapPayload
      * @param  array<string, mixed>  $remoteConfig
      * @param  array<string, mixed>  $appVersion
      * @param  array<string, mixed>  $subscription
+     * @param  array<string, mixed>  $notificationPolicy
      * @return array<string, mixed>
      */
     public static function make(
@@ -28,6 +29,7 @@ final class MobileBootstrapPayload
         array $remoteConfig = [],
         array $appVersion = [],
         array $subscription = [],
+        array $notificationPolicy = [],
     ): array {
         $now = CarbonImmutable::now();
 
@@ -42,12 +44,7 @@ final class MobileBootstrapPayload
             'app_version' => $appVersion ?: self::appVersion($request),
             'maintenance' => $appVersion['maintenance'] ?? self::maintenance(),
             'subscription' => $subscription ?: self::subscription($now),
-            'notification_preferences' => [
-                'push_enabled' => false,
-                'in_app_enabled' => true,
-                'email_enabled' => false,
-                'status' => 'api_pending',
-            ],
+            'notification_preferences' => $notificationPolicy['preferences'] ?? self::notificationPreferences(),
             'sync' => [
                 'enabled' => false,
                 'offline_queue_enabled' => true,
@@ -55,14 +52,14 @@ final class MobileBootstrapPayload
                 'reason' => 'sync_api_pending',
                 'retry_after_seconds' => 300,
             ],
-            'unread_notification_count' => 0,
+            'unread_notification_count' => is_int($notificationPolicy['unread_count'] ?? null) ? $notificationPolicy['unread_count'] : 0,
         ];
     }
 
     /**
      * @return array<string, mixed>
      */
-    public static function meta(array $features = [], array $remoteConfig = [], array $subscription = []): array
+    public static function meta(array $features = [], array $remoteConfig = [], array $subscription = [], array $notificationPolicy = []): array
     {
         $now = CarbonImmutable::now();
 
@@ -71,6 +68,7 @@ final class MobileBootstrapPayload
             'config_version' => is_string($remoteConfig['config_version'] ?? null) ? $remoteConfig['config_version'] : 'remote-config-foundation-1',
             'features_version' => is_string($features['version'] ?? null) ? $features['version'] : 'foundation-1',
             'subscription_version' => is_string($subscription['subscription_version'] ?? null) ? $subscription['subscription_version'] : 'subscription-foundation-1',
+            'notification_policy_version' => is_string($notificationPolicy['policy_version'] ?? null) ? $notificationPolicy['policy_version'] : 'notifications-foundation-1',
             'sync_cursor' => null,
             'issued_at' => $now->toIso8601String(),
             'fresh_until' => $now->addMinutes(15)->toIso8601String(),
@@ -229,6 +227,26 @@ final class MobileBootstrapPayload
             'source' => 'foundation_default',
             'resolved_at' => $now->toIso8601String(),
             'subscription_version' => 'subscription-foundation-1',
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function notificationPreferences(): array
+    {
+        return [
+            'push_enabled' => false,
+            'in_app_enabled' => true,
+            'email_enabled' => false,
+            'quiet_hours' => [
+                'enabled' => false,
+                'starts_at' => null,
+                'ends_at' => null,
+                'timezone' => null,
+            ],
+            'push_registration_required' => false,
+            'status' => 'foundation_default',
         ];
     }
 
