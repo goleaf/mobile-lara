@@ -53,6 +53,11 @@ final class Tenant extends Model
         return $this->hasMany(TenantUser::class);
     }
 
+    public function records(): HasMany
+    {
+        return $this->hasMany(TenantRecord::class);
+    }
+
     /**
      * @param  Builder<Tenant>  $query
      * @return Builder<Tenant>

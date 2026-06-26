@@ -465,9 +465,15 @@ Implemented foundation:
   `security_audit_events`.
 - `App\Actions\Admin\SaveMobileAppVersionPolicyAction` persists scoped version
   policies and writes before/after audit metadata to `security_audit_events`.
+- `App\Actions\Records\SaveTenantRecordAction` persists tenant-scoped record
+  create/update payloads with category/tag resolution, note append, attachment
+  metadata, activity timeline entries, and security audit events.
+- `App\Actions\Records\ArchiveTenantRecordAction` and
+  `App\Actions\Records\RestoreTenantRecordAction` control reversible record
+  lifecycle transitions with audit metadata.
 - `App\Support\Api\MobileApiResponse` centralizes success and error envelopes.
 - `App\Support\Api\MobileContractRegistry` centralizes documented contract
-  groups and planned routes.
+  groups, implemented routes, and planned routes.
 - Mobile access and refresh tokens are stored only as SHA-256 hashes.
 - `security_audit_events` records mobile auth/security actions.
 - Blade layouts exist for admin, auth, and dashboard surfaces.
@@ -478,16 +484,19 @@ Implemented foundation:
   config resolution, feature maintenance/plan/cohort/device/emergency/app-version
   gates, tenant/cohort app version policy, app-version range resolution, mobile
   billing subscription resolution, mobile notification policy resolution,
-  mobile sync policy resolution, resource policies, success envelope, error
-  envelope, contract catalogue, and contract Markdown file coverage.
+  mobile sync policy resolution, tenant-scoped records API behavior, resource
+  policies, success envelope, error envelope, contract catalogue, and contract
+  Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   broader resource policy expansion, and broader control-plane audit.
-- Sync, notifications, records/content, support, billing, and reports.
-- Protected domain routes for records/content, sync, notifications, support,
-  billing, reports, diagnostics, and feature/config/version policies.
+- Admin records/content management screens, standalone records subresource
+  endpoints, sync conflict/replay endpoints, notifications, support, billing
+  admin, and reports.
+- Protected domain routes for sync, notifications, support, billing, reports,
+  diagnostics, and remaining feature/config/version policy surfaces.
 
 Verification commands for this app:
 

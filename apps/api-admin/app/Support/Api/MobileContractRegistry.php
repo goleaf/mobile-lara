@@ -74,12 +74,13 @@ final class MobileContractRegistry
             self::group('app_version_maintenance', 'v1-app-version-maintenance.md', 'partial', 'Minimum version, optional update, force update, blocked, deprecated, and maintenance decisions.', [
                 self::route('GET', '/app-version', 'implemented', 'public-with-mobile-context'),
             ]),
-            self::group('records', 'v1-records.md', 'documented', 'Tenant-scoped records, categories, tags, notes, attachment metadata, and activity timeline.', [
-                self::route('GET', '/records', 'planned', 'mobile-token'),
-                self::route('POST', '/records', 'planned', 'mobile-token'),
-                self::route('GET', '/records/{record}', 'planned', 'mobile-token'),
-                self::route('PATCH', '/records/{record}', 'planned', 'mobile-token'),
-                self::route('DELETE', '/records/{record}', 'planned', 'mobile-token'),
+            self::group('records', 'v1-records.md', 'partial', 'Tenant-scoped records, categories, tags, notes, attachment metadata, and activity timeline.', [
+                self::route('GET', '/records', 'implemented', 'mobile-token'),
+                self::route('POST', '/records', 'implemented', 'mobile-token'),
+                self::route('GET', '/records/{record}', 'implemented', 'mobile-token'),
+                self::route('PATCH', '/records/{record}', 'implemented', 'mobile-token'),
+                self::route('DELETE', '/records/{record}', 'implemented-as-archive', 'mobile-token'),
+                self::route('POST', '/records/{record}/restore', 'implemented', 'mobile-token'),
             ]),
             self::group('sync', 'v1-sync.md', 'documented', 'Offline queue bootstrap, push, pull, acknowledgement, conflicts, and replay safety.', [
                 self::route('GET', '/sync/bootstrap', 'planned', 'mobile-token'),

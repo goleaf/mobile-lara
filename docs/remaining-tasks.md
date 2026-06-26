@@ -377,6 +377,10 @@ before implementation scope is added.
   handoff. Support settings now gates native browser handoff before opening
   the support center. Remaining diagnostics/report native share flows and
   legal/billing browser flows still need feature-specific policy gates.
+- Complete the records/content module beyond the API foundation: admin records
+  management screens, standalone category/tag/note/attachment endpoints,
+  upload/storage handling, hard-delete policy, conflict responses, sync replay
+  acceptance, and mobile API consumption of the authoritative records contract.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

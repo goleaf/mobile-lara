@@ -333,7 +333,7 @@ Records endpoints provide tenant-scoped content authority for list, detail,
 create, update, archive, restore, delete, categories, tags, notes, attachment
 metadata, and activity timeline.
 
-## Planned Routes
+## Implemented Routes
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -341,13 +341,23 @@ metadata, and activity timeline.
 | POST | `/api/v1/mobile/records` | Create a record or accept an online create intent. | mobile token |
 | GET | `/api/v1/mobile/records/{record}` | Show record detail. | mobile token |
 | PATCH | `/api/v1/mobile/records/{record}` | Update record fields. | mobile token |
-| DELETE | `/api/v1/mobile/records/{record}` | Archive or delete based on policy. | mobile token |
+| DELETE | `/api/v1/mobile/records/{record}` | Archive the record based on policy. | mobile token |
+| POST | `/api/v1/mobile/records/{record}/restore` | Restore an archived record. | mobile token |
 
 ## Success Data
 
 Responses use shaped records with `id`, `tenant_id`, `title`, `status`,
-`category`, `tags`, `notes_count`, `attachments_count`, `updated_at`,
-`sync_version`, and permission-aware `actions`.
+`description`, `priority`, `category`, `tags`, `notes_count`,
+`attachments_count`, `activities_count`, `updated_at`, `sync_version`,
+archival state, and permission-aware `actions`. Detail responses include
+eager-loaded notes, attachment metadata, and activity timeline entries.
+
+The current foundation implements online list, create, detail, update,
+archive, and restore for the active tenant. Categories and tags are created or
+resolved from record write payloads, notes can be appended during create/update,
+and attachment metadata can be registered without trusting mobile file storage
+as server truth. Standalone category, tag, note, attachment, hard-delete,
+conflict, and sync replay endpoints remain future work.
 
 ## Gates
 
@@ -362,10 +372,15 @@ The API decides conflicts, accepted writes, rejected writes, and server truth.
 
 ## Audit
 
-Audit create, update, archive, restore, delete, attachment metadata changes,
-note changes, conflict decisions, and sync replay outcomes.
+Implemented record create, update, archive, and restore actions write security
+audit events and record activity timeline entries. Future sync replay,
+standalone attachment changes, standalone note changes, conflict decisions, and
+hard-delete policy decisions must extend the same audit trail.
 
 ## Tests
 
 Phase 12 should verify tenant isolation, explicit selects/eager loads,
 permissions, idempotency keys, conflict responses, and activity timeline.
+Current feature coverage verifies tenant isolation, permission denial, online
+create/update/archive/restore, category/tag/note/attachment metadata creation,
+activity/audit events, and non-leaking cross-tenant record lookups.

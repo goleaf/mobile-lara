@@ -27,6 +27,10 @@ test('mobile contract catalogue is exposed through the standard envelope', funct
             ->where('data.contracts.2.key', 'bootstrap')
             ->where('data.contracts.3.key', 'tenancy')
             ->where('data.contracts.3.status', 'partial')
+            ->where('data.contracts.7.key', 'records')
+            ->where('data.contracts.7.status', 'partial')
+            ->where('data.contracts.7.routes.0.status', 'implemented')
+            ->where('data.contracts.7.routes.5.path', '/records/{record}/restore')
             ->where('data.contracts.8.key', 'sync')
             ->where('data.contracts.13.key', 'diagnostics')
         );

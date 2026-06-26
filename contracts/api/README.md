@@ -350,6 +350,10 @@ through app-version policy before old mobile clients lose support.
   success/error envelope.
 - [v1-auth.md](v1-auth.md) defines the implemented mobile auth, registration,
   refresh, logout, logout-all, current-user, and profile endpoints.
+- [v1-records.md](v1-records.md) defines the partial implemented records
+  foundation for tenant-scoped list, create, detail, update, archive, restore,
+  category/tag resolution, note append, attachment metadata, and activity
+  timeline responses.
 
 ## Documented v1 Contract Groups
 

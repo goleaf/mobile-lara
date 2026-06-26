@@ -13,6 +13,12 @@ use App\Http\Controllers\Api\V1\Mobile\BootstrapController;
 use App\Http\Controllers\Api\V1\Mobile\ConfigController;
 use App\Http\Controllers\Api\V1\Mobile\ContractIndexController;
 use App\Http\Controllers\Api\V1\Mobile\FeatureIndexController;
+use App\Http\Controllers\Api\V1\Mobile\Records\RecordArchiveController;
+use App\Http\Controllers\Api\V1\Mobile\Records\RecordIndexController;
+use App\Http\Controllers\Api\V1\Mobile\Records\RecordRestoreController;
+use App\Http\Controllers\Api\V1\Mobile\Records\RecordShowController;
+use App\Http\Controllers\Api\V1\Mobile\Records\RecordStoreController;
+use App\Http\Controllers\Api\V1\Mobile\Records\RecordUpdateController;
 use App\Http\Controllers\Api\V1\Mobile\StatusController;
 use App\Http\Controllers\Api\V1\Mobile\Tenants\AcceptTenantInvitationController;
 use App\Http\Controllers\Api\V1\Mobile\Tenants\DeclineTenantInvitationController;
@@ -41,6 +47,12 @@ Route::prefix('v1')
                     Route::get('/tenants/invitations', TenantInvitationIndexController::class)->name('tenants.invitations.index');
                     Route::post('/tenants/invitations/{tenant}/accept', AcceptTenantInvitationController::class)->name('tenants.invitations.accept');
                     Route::post('/tenants/invitations/{tenant}/decline', DeclineTenantInvitationController::class)->name('tenants.invitations.decline');
+                    Route::get('/records', RecordIndexController::class)->name('records.index');
+                    Route::post('/records', RecordStoreController::class)->name('records.store');
+                    Route::get('/records/{record}', RecordShowController::class)->name('records.show');
+                    Route::patch('/records/{record}', RecordUpdateController::class)->name('records.update');
+                    Route::delete('/records/{record}', RecordArchiveController::class)->name('records.archive');
+                    Route::post('/records/{record}/restore', RecordRestoreController::class)->name('records.restore');
                 });
 
                 Route::prefix('auth')

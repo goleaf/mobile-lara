@@ -473,6 +473,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added the API/admin app version and maintenance foundation with
   minimum-version force updates, optional update states, public `/app-version`
   API output, bootstrap maintenance integration, and focused policy coverage.
+- Added the API/admin records/content API foundation with tenant-scoped record
+  persistence, category/tag resolution, note append, attachment metadata,
+  activity timeline entries, security audit events, mobile list/detail/create/
+  update/archive/restore endpoints, contract catalogue updates, and focused
+  feature coverage.
 - Added the API/admin app version policy control page with confirmation,
   mobile impact preview, audited create/update, dashboard navigation, and
   restore-from-audit coverage.
