@@ -5,11 +5,13 @@ namespace App\Livewire\Mobile;
 use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileAppState\MobileAppStateStore;
 use App\Services\MobileConfig\MobileRemoteConfigStore;
+use App\Services\MobileLocal\SettingsRepository;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Throwable;
 
 #[Title('Dashboard')]
 class Dashboard extends Component
@@ -26,11 +28,18 @@ class Dashboard extends Component
 
     private MobileRemoteConfigStore $remoteConfig;
 
-    public function boot(MobileAccessPolicy $accessPolicy, MobileAppStateStore $appStates, MobileRemoteConfigStore $remoteConfig): void
-    {
+    private SettingsRepository $settings;
+
+    public function boot(
+        MobileAccessPolicy $accessPolicy,
+        MobileAppStateStore $appStates,
+        MobileRemoteConfigStore $remoteConfig,
+        SettingsRepository $settings,
+    ): void {
         $this->accessPolicy = $accessPolicy;
         $this->appStates = $appStates;
         $this->remoteConfig = $remoteConfig;
+        $this->settings = $settings;
     }
 
     public function refreshDashboard(): void
@@ -56,7 +65,11 @@ class Dashboard extends Component
 
     private function greetingName(): string
     {
-        $name = Auth::user()?->name;
+        try {
+            $name = Arr::get($this->settings->cachedBootstrapContext() ?? [], 'data.user.name');
+        } catch (Throwable) {
+            $name = null;
+        }
 
         if (! is_string($name) || trim($name) === '') {
             return 'Mobile user';
@@ -124,8 +137,8 @@ class Dashboard extends Component
             ],
             [
                 'id' => 'profile-cache-updated',
-                'title' => 'Profile cache updated',
-                'description' => 'Local profile data refreshed from the mobile session placeholder.',
+                'title' => 'API profile ready',
+                'description' => 'Profile data is loaded from the Admin/API account contract.',
                 'time_label' => '18 min ago',
                 'variant' => 'neutral',
             ],

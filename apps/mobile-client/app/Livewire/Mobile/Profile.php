@@ -2,16 +2,17 @@
 
 namespace App\Livewire\Mobile;
 
+use App\Auth\MobileApiUser;
 use App\Livewire\Concerns\DispatchesToasts;
 use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileApi\MobileApiException;
 use App\Services\MobileAuth\MobileAuthApiService;
+use App\Services\MobileAuth\MobileCurrentUserService;
 use App\Services\MobileAuth\MobileSessionService;
 use App\Services\MobileProfile\AvatarStorageService;
 use App\Services\Native\ShareService;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -46,6 +47,8 @@ class Profile extends Component
 
     protected MobileAuthApiService $authApi;
 
+    protected MobileCurrentUserService $currentUsers;
+
     protected AvatarStorageService $avatarStorage;
 
     protected ShareService $shares;
@@ -53,12 +56,14 @@ class Profile extends Component
     public function boot(
         MobileSessionService $mobileSessions,
         MobileAuthApiService $authApi,
+        MobileCurrentUserService $currentUsers,
         AvatarStorageService $avatarStorage,
         ShareService $shares,
         MobileAccessPolicy $mobileAccessPolicy,
     ): void {
         $this->mobileSessions = $mobileSessions;
         $this->authApi = $authApi;
+        $this->currentUsers = $currentUsers;
         $this->avatarStorage = $avatarStorage;
         $this->shares = $shares;
         $this->mobileAccessPolicy = $mobileAccessPolicy;
@@ -66,22 +71,7 @@ class Profile extends Component
 
     public function mount(): void
     {
-        $user = Auth::user();
-
-        if ($user === null) {
-            $this->refreshDerivedProfileState();
-
-            return;
-        }
-
-        $this->displayName = (string) $user->name;
-        $this->email = (string) $user->email;
-        $this->phone = is_string($user->phone) ? $user->phone : '';
-        $this->bio = is_string($user->bio) ? $user->bio : '';
-        $this->accountStatus = $user->email_verified_at === null ? 'Active' : 'Verified';
-        $this->avatarUrl = $this->avatarStorage->url($user->avatar_path);
-
-        $this->refreshDerivedProfileState();
+        $this->loadProfileFromApi();
     }
 
     public function editProfile(): void
@@ -126,9 +116,7 @@ class Profile extends Component
 
     public function retryProfile(): void
     {
-        $this->hasNetworkError = false;
-        $this->hasProfile = true;
-        $this->refreshDerivedProfileState();
+        $this->loadProfileFromApi(showToast: true);
     }
 
     public function logout(): void
@@ -159,6 +147,36 @@ class Profile extends Component
         $this->phone = trim($this->phone) === '' ? 'Not added' : trim($this->phone);
         $this->bio = trim($this->bio) === '' ? 'Local mobile account' : trim($this->bio);
         $this->avatarInitials = $this->initials($this->displayName);
+    }
+
+    private function loadProfileFromApi(bool $showToast = false): void
+    {
+        try {
+            $this->applyApiUser($this->currentUsers->requireFromApi());
+            $this->hasNetworkError = false;
+            $this->hasProfile = true;
+        } catch (MobileApiException $exception) {
+            $this->hasNetworkError = true;
+            $this->hasProfile = false;
+
+            if ($showToast) {
+                $this->toastWarning($exception->getMessage(), 'Profile unavailable');
+            }
+        }
+
+        $this->refreshDerivedProfileState();
+    }
+
+    private function applyApiUser(MobileApiUser $user): void
+    {
+        $this->displayName = $user->stringAttribute('name', 'Mobile Lara') ?? 'Mobile Lara';
+        $this->email = $user->stringAttribute('email', 'mobile@example.test') ?? 'mobile@example.test';
+        $this->phone = $user->stringAttribute('phone', '');
+        $this->bio = $user->stringAttribute('bio', '');
+        $this->accountStatus = is_string($user->getAttribute('email_verified_at')) ? 'Verified' : 'Active';
+
+        $this->avatarUrl = $user->stringAttribute('avatar_url')
+            ?? $this->avatarStorage->url($user->stringAttribute('avatar_path'));
     }
 
     /**

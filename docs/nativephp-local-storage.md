@@ -379,9 +379,9 @@ The local database file is intentionally stored under `storage/app/mobile` so it
 
 Implementation note: browser-selected record attachments are copied into the
 mobile attachment sandbox before local attachment metadata is queued. Avatar
-files may also exist locally as presentation mirrors, but the profile avatar
-state is synchronized through the Admin/API profile endpoint when a valid
-mobile token exists.
+files may exist locally only as temporary upload staging; accepted profile
+avatar state and display URLs come back from the Admin/API profile endpoint when
+a valid mobile token exists.
 
 ## Offline State Model
 

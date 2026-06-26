@@ -42,22 +42,28 @@ afterEach(function (): void {
 });
 
 test('profile page renders authenticated account overview and shortcuts', function (): void {
-    Storage::fake('public');
-    Storage::disk('public')->put('avatars/current.jpg', 'avatar');
-
     $user = User::factory()->create([
-        'name' => 'Taylor Mobile',
-        'email' => 'taylor@example.test',
-        'phone' => '+370 600 11111',
-        'bio' => 'Mobile field operator',
-        'avatar_path' => 'avatars/current.jpg',
+        'name' => 'Local Mirror',
+        'email' => 'local@example.test',
+    ]);
+
+    app(AccessTokenService::class)->put('profile-current-user-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: 'Taylor Mobile',
+            email: 'taylor@example.test',
+            avatarPath: 'avatars/current.jpg',
+            phone: '+370 600 11111',
+            bio: 'Mobile field operator',
+        )),
     ]);
 
     Livewire::actingAs($user)
         ->test(Profile::class)
         ->assertSet('displayName', 'Taylor Mobile')
         ->assertSet('email', 'taylor@example.test')
-        ->assertSet('avatarUrl', Storage::disk('public')->url('avatars/current.jpg'))
+        ->assertSet('avatarUrl', 'https://api-admin.example.test/storage/avatars/current.jpg')
         ->assertSet('phone', '+370 600 11111')
         ->assertSet('bio', 'Mobile field operator')
         ->assertSet('avatarInitials', 'TM')
@@ -136,6 +142,10 @@ test('edit profile screen renders editable fields and saves valid details', func
     app(AccessTokenService::class)->put('profile-edit-access-token', CarbonImmutable::now()->addMinutes(15));
 
     Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: 'Taylor Mobile',
+            email: 'taylor@example.test',
+        )),
         'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response(mobileProfileApiEnvelope(
             name: 'Updated Person',
             email: 'taylor@example.test',
@@ -192,15 +202,15 @@ test('edit profile screen renders editable fields and saves valid details', func
 
     $user->refresh();
 
-    expect($user->name)->toBe('Updated Person')
-        ->and($user->username)->toBe('updated.person')
-        ->and($user->phone)->toBe('+370 600 00000')
-        ->and($user->bio)->toBe('Mobile profile owner')
-        ->and($user->location)->toBe('Vilnius')
-        ->and($user->website)->toBe('https://example.test')
-        ->and($user->avatar_path)->toBe('avatars/api-updated-profile.png');
+    expect($user->name)->toBe('Taylor Mobile')
+        ->and($user->username)->toBeNull()
+        ->and($user->phone)->toBeNull()
+        ->and($user->bio)->toBeNull()
+        ->and($user->location)->toBeNull()
+        ->and($user->website)->toBeNull()
+        ->and($user->avatar_path)->toBeNull();
 
-    Storage::disk('public')->assertExists('avatars/api-updated-profile.png');
+    Storage::disk('public')->assertMissing('avatars/api-updated-profile.png');
 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
         && $request->hasHeader('Authorization', 'Bearer profile-edit-access-token')
@@ -218,15 +228,24 @@ test('edit profile screen renders editable fields and saves valid details', func
         && str_contains($request->body(), 'https://example.test'));
 });
 
-test('edit profile hydrates saved api profile details from the local mirror', function (): void {
+test('edit profile hydrates saved api profile details from the current user api', function (): void {
     $user = User::factory()->create([
-        'name' => 'Taylor Mobile',
-        'email' => 'taylor@example.test',
-        'username' => 'taylor.saved',
-        'phone' => '+370 600 22222',
-        'bio' => 'Saved API profile',
-        'location' => 'Kaunas',
-        'website' => 'https://saved.example.test',
+        'name' => 'Local Mirror',
+        'email' => 'local@example.test',
+    ]);
+
+    app(AccessTokenService::class)->put('profile-hydrate-access-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: 'Taylor Mobile',
+            email: 'taylor@example.test',
+            username: 'taylor.saved',
+            phone: '+370 600 22222',
+            bio: 'Saved API profile',
+            location: 'Kaunas',
+            website: 'https://saved.example.test',
+        )),
     ]);
 
     Livewire::actingAs($user)
@@ -250,6 +269,11 @@ test('edit profile screen removes a saved avatar on save', function (): void {
     app(AccessTokenService::class)->put('profile-remove-avatar-token', CarbonImmutable::now()->addMinutes(15));
 
     Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: (string) $user->name,
+            email: (string) $user->email,
+            avatarPath: 'avatars/current.jpg',
+        )),
         'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response(mobileProfileApiEnvelope(
             name: (string) $user->name,
             email: (string) $user->email,
@@ -270,7 +294,7 @@ test('edit profile screen removes a saved avatar on save', function (): void {
         ->assertSet('avatarMarkedForRemoval', false)
         ->assertSet('successMessage', 'Profile details and avatar saved with API.');
 
-    expect($user->refresh()->avatar_path)->toBeNull();
+    expect($user->refresh()->avatar_path)->toBe('avatars/current.jpg');
 
     Storage::disk('public')->assertMissing('avatars/current.jpg');
 
@@ -290,6 +314,10 @@ test('edit profile syncs account details through api when access token exists', 
     app(AccessTokenService::class)->put('profile-update-access-token', CarbonImmutable::now()->addMinutes(15));
 
     Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: 'Taylor Mobile',
+            email: 'taylor@example.test',
+        )),
         'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response([
             'success' => true,
             'data' => [
@@ -335,12 +363,12 @@ test('edit profile syncs account details through api when access token exists', 
 
     $user->refresh();
 
-    expect($user->name)->toBe('API Updated Person')
-        ->and($user->username)->toBe('api.updated')
-        ->and($user->phone)->toBe('+370 600 55555')
-        ->and($user->bio)->toBe('Updated through API.')
-        ->and($user->location)->toBe('Riga')
-        ->and($user->website)->toBe('https://api.example.test');
+    expect($user->name)->toBe('Taylor Mobile')
+        ->and($user->username)->toBeNull()
+        ->and($user->phone)->toBeNull()
+        ->and($user->bio)->toBeNull()
+        ->and($user->location)->toBeNull()
+        ->and($user->website)->toBeNull();
 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
         && $request->hasHeader('Authorization', 'Bearer profile-update-access-token')
@@ -363,6 +391,10 @@ test('edit profile syncs uploaded avatar through api when access token exists', 
     app(AccessTokenService::class)->put('profile-avatar-access-token', CarbonImmutable::now()->addMinutes(15));
 
     Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: 'Taylor Mobile',
+            email: 'taylor@example.test',
+        )),
         'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response([
             'success' => true,
             'data' => [
@@ -388,6 +420,7 @@ test('edit profile syncs uploaded avatar through api when access token exists', 
         ->call('saveProfile')
         ->assertSet('successMessage', 'Profile details and avatar saved with API.')
         ->assertSet('savedAvatarPath', 'avatars/api-avatar.png')
+        ->assertSet('savedAvatarUrl', 'https://api-admin.example.test/storage/avatars/api-avatar.png')
         ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
             return $event === 'mobile-toast'
                 && ($params['type'] ?? null) === 'success'
@@ -395,15 +428,15 @@ test('edit profile syncs uploaded avatar through api when access token exists', 
                 && ($params['message'] ?? null) === 'Profile details and avatar saved with API.';
         });
 
-    expect($user->refresh()->avatar_path)->toBe('avatars/api-avatar.png');
+    expect($user->refresh()->avatar_path)->toBeNull();
 
-    Storage::disk('public')->assertExists('avatars/api-avatar.png');
+    Storage::disk('public')->assertMissing('avatars/api-avatar.png');
 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
         && $request->hasHeader('Authorization', 'Bearer profile-avatar-access-token'));
 });
 
-test('edit profile does not update local mirror when api rejects profile save', function (): void {
+test('edit profile leaves mobile state unchanged when api rejects profile save', function (): void {
     Storage::fake('public');
 
     $user = User::factory()->create([
@@ -416,6 +449,12 @@ test('edit profile does not update local mirror when api rejects profile save', 
     app(AccessTokenService::class)->put('profile-failure-token', CarbonImmutable::now()->addMinutes(15));
 
     Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: 'Original Person',
+            email: 'original@example.test',
+            username: 'original.person',
+            phone: '+370 600 33333',
+        )),
         'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response([
             'success' => false,
             'error' => [
@@ -461,6 +500,10 @@ test('native camera photo can be previewed and saved as avatar', function (): vo
     app(AccessTokenService::class)->put('profile-native-camera-token', CarbonImmutable::now()->addMinutes(15));
 
     Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: (string) $user->name,
+            email: (string) $user->email,
+        )),
         'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response(mobileProfileApiEnvelope(
             name: (string) $user->name,
             email: (string) $user->email,
@@ -482,9 +525,9 @@ test('native camera photo can be previewed and saved as avatar', function (): vo
 
     $avatarPath = $user->refresh()->avatar_path;
 
-    expect($avatarPath)->toBe('avatars/api-native-camera.jpg');
+    expect($avatarPath)->toBeNull();
 
-    Storage::disk('public')->assertExists((string) $avatarPath);
+    Storage::disk('public')->assertMissing('avatars/api-native-camera.jpg');
 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
         && $request->hasHeader('Authorization', 'Bearer profile-native-camera-token'));
@@ -500,6 +543,10 @@ test('native gallery image can be previewed and saved as avatar', function (): v
     app(AccessTokenService::class)->put('profile-native-gallery-token', CarbonImmutable::now()->addMinutes(15));
 
     Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: (string) $user->name,
+            email: (string) $user->email,
+        )),
         'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response(mobileProfileApiEnvelope(
             name: (string) $user->name,
             email: (string) $user->email,
@@ -526,9 +573,9 @@ test('native gallery image can be previewed and saved as avatar', function (): v
 
     $avatarPath = $user->refresh()->avatar_path;
 
-    expect($avatarPath)->toBe('avatars/api-native-gallery.png');
+    expect($avatarPath)->toBeNull();
 
-    Storage::disk('public')->assertExists((string) $avatarPath);
+    Storage::disk('public')->assertMissing('avatars/api-native-gallery.png');
 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
         && $request->hasHeader('Authorization', 'Bearer profile-native-gallery-token'));
@@ -565,6 +612,10 @@ test('profile logout redirects and clears local mobile state', function (): void
     app(AccessTokenService::class)->put('profile-logout-access-token', CarbonImmutable::now()->addMinutes(15));
 
     Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response(mobileProfileApiEnvelope(
+            name: 'Taylor Mobile',
+            email: 'taylor@example.test',
+        )),
         'https://api-admin.example.test/api/v1/mobile/auth/logout' => Http::response([
             'success' => true,
             'data' => ['revoked' => true],

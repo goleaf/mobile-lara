@@ -103,19 +103,26 @@ test('account deletion requires explicit confirmation and password by default', 
         ]);
 });
 
-test('account deletion rejects incorrect password confirmation', function (): void {
+test('account deletion does not use the local user password hash as authority', function (): void {
     $user = User::factory()->create([
         'password' => Hash::make('correct-password'),
     ]);
 
-    Livewire::actingAs($user)
+    $component = Livewire::actingAs($user)
         ->test(AccountDeletion::class)
         ->set('password', 'wrong-password')
         ->set('confirmationAccepted', true)
         ->call('deleteAccount')
-        ->assertHasErrors('password')
-        ->assertSet('error', 'The provided password does not match this account.')
-        ->assertSet('toastVariant', 'error');
+        ->assertHasNoErrors()
+        ->assertSet('status', 'Account deletion API placeholder reached. No account has been deleted yet.')
+        ->assertSet('toastVariant', 'success');
+
+    expect($component->instance()->deletionRequest)->toMatchArray([
+        'status' => 'placeholder',
+        'server_endpoint' => 'DELETE /api/mobile/account',
+        'confirmed_by' => 'password',
+        'user_id' => (string) $user->getKey(),
+    ]);
 });
 
 test('account deletion can be requested after password confirmation', function (): void {

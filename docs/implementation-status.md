@@ -498,7 +498,7 @@ Status values:
 | Logout | tested | tested | API/admin logout revokes the current device session; mobile profile/sessions screens call the endpoint and clear local session/token state. |
 | Logout all devices | tested | tested | API/admin logout-all revokes active mobile sessions; mobile sessions screen calls the endpoint and clears local session/token state. |
 | Current user endpoint | tested | tested | `GET /api/v1/mobile/auth/user` exists and the mobile service calls it with a bearer token. |
-| Profile update endpoint | tested | tested | `PATCH /api/v1/mobile/auth/profile` exists and the edit-profile Livewire screen syncs editable profile details, optional avatar upload, and avatar removal through it when a valid access token exists. API/admin stores profile detail fields and avatar files, returns the full profile payload plus avatar path/url, and mobile keeps a local display mirror only after API success. |
+| Profile update endpoint | tested | tested | `PATCH /api/v1/mobile/auth/profile` exists and the edit-profile Livewire screen syncs editable profile details, optional avatar upload, and avatar removal through it when a valid access token exists. API/admin stores profile detail fields and avatar files, returns the full profile payload plus avatar path/url, and mobile keeps only in-memory display state, bootstrap cache, and temporary upload staging. |
 | Device/session logic | tested | tested | API/admin device sessions are persisted, last-seen tracked, and revocable; mobile auth service sends a stable device context from the client session. Tenant/device trust policy remains pending. |
 | Security audit events | tested | partial | API/admin writes auth audit events; broader admin/control-plane audit remains pending. |
 
@@ -807,7 +807,7 @@ Status values:
 | Architecture docs | documented | Need updates after monorepo/control-plane implementation. |
 | Local development docs | partial | Commands exist in README/docs; per-app docs missing. |
 | API contracts | tested | `contracts/api` exists with all required v1 contract files and catalogue coverage. |
-| Mobile API boundary recheck | tested | 2026-06-26 pass verified root and nested mobile business actions that have API contracts: auth login/register/logout/logout-all, profile update/avatar sync, records list/edit/detail/bulk mutations, notifications read/read-all/open state, workspace tenant switching, billing subscription, support tickets/messages, bootstrap, diagnostics upload, and records sync all route through API services before changing server-trusted local mirrors. Profile API rejection now blocks the local user/avatar mirror update. Device-local actions remain local only when they are explicitly cache, draft, secure-storage, PIN/app-lock, export/share, native permission, local-file, or offline-queue behavior. |
+| Mobile API boundary recheck | tested | 2026-06-26 pass verified root and nested mobile business actions that have API contracts: auth login/register/logout/logout-all, profile current-user/profile-update/avatar sync, records list/edit/detail/bulk mutations, notifications read/read-all/open state, workspace tenant switching, billing subscription, support tickets/messages, bootstrap, diagnostics upload, and records sync all route through API services before changing server-trusted state. Login/register no longer create a local mobile `users` row, profile screens hydrate through `GET /auth/user`, and avatar display uses API-returned URLs while temporary staging is cleaned after upload. Device-local actions remain local only when they are explicitly cache, draft, secure-storage, PIN/app-lock, export/share, native permission, local-file, or offline-queue behavior. |
 | Admin panel docs | documented | Principles only; implementation docs missing. |
 | Mobile client docs | documented | Principles plus audit exist. |
 | NativePHP docs | documented | Runbook exists. |
@@ -827,7 +827,7 @@ Status values:
 | API routes verification | tested | `php artisan route:list --path=api/v1/mobile` shows 40 mobile API routes; `php artisan route:list --json` confirms 14 named admin routes including the support queue. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists, and the sync monitor plus support queue routes/views are covered by feature tests; browser-level verification remains future. |
 | Mobile formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/mobile-client`. |
-| Mobile tests | tested | `php artisan test` passes in `apps/mobile-client` with 521 tests / 4026 assertions. |
+| Mobile tests | tested | `php artisan test` passes in `apps/mobile-client` with 521 tests / 4031 assertions. |
 | Mobile frontend build | tested | `npm run build` passes in `apps/mobile-client`. |
 | Mobile navigation verification | tested | `php artisan route:list --name=mobile` confirms 59 named `mobile.*` routes and route tests cover authenticated/guest rendering plus the support ticket and billing routes. Browser/native manual verification remains future. |
 | NativePHP fallback verification | tested | `php artisan native:plugin:validate --no-interaction` exits successfully with two non-fatal third-party manifest warnings; simulator/emulator release verification remains external-tooling dependent. |

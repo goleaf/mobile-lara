@@ -31,16 +31,20 @@ Completed in this pass:
   before local session cleanup.
 - Record list, edit, and detail actions now route server-backed
   create/update/archive/restore/delete and bulk mutations through the records
-  API service before updating server-trusted local mirrors.
+  API service before updating local cache rows.
 - Notification read, open-as-read, and read-all actions now call the
   notifications API for server-backed inbox rows before local read-state
   mutation.
-- Profile detail/avatar/removal saves now call `PATCH /auth/profile` before the
-  local user/avatar mirror is updated; `username`, `phone`, `bio`, `location`,
-  and `website` round-trip through the API, and API rejection leaves the local
-  mirror unchanged.
+- Mobile login/register now authenticate from the API response without creating
+  a local mobile `users` row.
+- Profile detail/avatar/removal saves now call `PATCH /auth/profile`; profile
+  display and edit hydration call `GET /auth/user`; `username`, `phone`, `bio`,
+  `location`, and `website` round-trip through the API; and API rejection
+  leaves mobile state unchanged. Server avatar URLs are displayed from the API,
+  not copied into mobile storage.
 - Tests cover API requests, bearer-token headers, stray-request prevention for
-  focused suites, and failed API record delete preserving the local cache row.
+  focused suites, server-only auth/profile state, and failed API record delete
+  preserving the local cache row.
 
 Still remaining:
 

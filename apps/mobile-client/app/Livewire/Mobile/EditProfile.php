@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Mobile;
 
+use App\Auth\MobileApiUser;
 use App\Livewire\Concerns\DispatchesToasts;
-use App\Models\User;
 use App\Services\MobileApi\MobileApiException;
 use App\Services\MobileAuth\MobileApiSessionBridge;
 use App\Services\MobileAuth\MobileAuthApiService;
+use App\Services\MobileAuth\MobileCurrentUserService;
 use App\Services\MobileProfile\AvatarStorageService;
 use App\Services\MobileProfile\NativeAvatarSourceService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Title;
@@ -72,32 +72,32 @@ final class EditProfile extends Component
 
     protected MobileApiSessionBridge $apiSessions;
 
+    protected MobileCurrentUserService $currentUsers;
+
     public function boot(
         AvatarStorageService $avatarStorage,
         NativeAvatarSourceService $nativeAvatars,
         MobileAuthApiService $authApi,
         MobileApiSessionBridge $apiSessions,
+        MobileCurrentUserService $currentUsers,
     ): void {
         $this->avatarStorage = $avatarStorage;
         $this->nativeAvatars = $nativeAvatars;
         $this->authApi = $authApi;
         $this->apiSessions = $apiSessions;
+        $this->currentUsers = $currentUsers;
     }
 
     public function mount(): void
     {
-        $user = Auth::user();
+        try {
+            $this->fillFromApiUser($this->currentUsers->requireFromApi());
+        } catch (MobileApiException $exception) {
+            $this->name = 'Mobile Lara';
+            $this->username = $this->defaultUsername($this->name);
+            $this->nativeAvatarStatus = $exception->getMessage();
+        }
 
-        $this->name = $user instanceof User ? (string) $user->name : 'Mobile Lara';
-        $this->username = $user instanceof User && is_string($user->username) && trim($user->username) !== ''
-            ? trim($user->username)
-            : $this->defaultUsername($user instanceof User ? (string) $user->email : $this->name);
-        $this->phone = $user instanceof User && is_string($user->phone) ? trim($user->phone) : '';
-        $this->bio = $user instanceof User && is_string($user->bio) ? trim($user->bio) : '';
-        $this->location = $user instanceof User && is_string($user->location) ? trim($user->location) : '';
-        $this->website = $user instanceof User && is_string($user->website) ? trim($user->website) : '';
-        $this->savedAvatarPath = $user instanceof User ? $user->avatar_path : null;
-        $this->savedAvatarUrl = $this->avatarStorage->url($this->savedAvatarPath);
         $this->refreshAvatarInitials();
     }
 
@@ -135,8 +135,7 @@ final class EditProfile extends Component
         $this->website = trim((string) ($validated['website'] ?? ''));
         $this->refreshAvatarInitials();
 
-        $user = Auth::user();
-        $previousAvatarPath = $user instanceof User ? $user->avatar_path : $this->savedAvatarPath;
+        $previousAvatarPath = $this->savedAvatarPath;
         $avatarPath = $previousAvatarPath;
         $avatarPathForApi = null;
         $removeAvatarInApi = false;
@@ -180,7 +179,6 @@ final class EditProfile extends Component
             $apiAvatarPath = $syncResult['avatar_path'];
 
             if (is_string($apiAvatarPath) && $apiAvatarPath !== $avatarPath) {
-                $this->avatarStorage->copyWithinDisk($avatarPath, $apiAvatarPath);
                 $this->avatarStorage->delete($avatarPath);
             }
 
@@ -197,19 +195,10 @@ final class EditProfile extends Component
             $this->clearPendingNativeAvatar(except: $avatarPath);
         }
 
-        if ($user instanceof User) {
-            $user->name = $this->name;
-            $user->username = $this->username;
-            $user->phone = $this->phone === '' ? null : $this->phone;
-            $user->bio = $this->bio === '' ? null : $this->bio;
-            $user->location = $this->location === '' ? null : $this->location;
-            $user->website = $this->website === '' ? null : $this->website;
-            $user->avatar_path = $avatarPath;
-            $user->save();
-        }
-
         $this->savedAvatarPath = $avatarPath;
-        $this->savedAvatarUrl = $this->avatarStorage->url($avatarPath);
+        $this->savedAvatarUrl = is_array($syncResult['profile'] ?? null) && is_string(($syncResult['profile']['avatar_url'] ?? null))
+            ? $syncResult['profile']['avatar_url']
+            : $this->avatarStorage->url($avatarPath);
         $this->avatar = null;
         $this->avatarMarkedForRemoval = false;
         $this->nativeAvatarStatus = $avatarChanged
@@ -482,6 +471,19 @@ final class EditProfile extends Component
             ->implode('');
 
         $this->avatarInitials = $initials === '' ? 'ML' : $initials;
+    }
+
+    private function fillFromApiUser(MobileApiUser $user): void
+    {
+        $this->name = $user->stringAttribute('name', 'Mobile Lara') ?? 'Mobile Lara';
+        $this->username = $user->stringAttribute('username')
+            ?? $this->defaultUsername($user->stringAttribute('email', $this->name) ?? $this->name);
+        $this->phone = $user->stringAttribute('phone', '') ?? '';
+        $this->bio = $user->stringAttribute('bio', '') ?? '';
+        $this->location = $user->stringAttribute('location', '') ?? '';
+        $this->website = $user->stringAttribute('website', '') ?? '';
+        $this->savedAvatarPath = $user->stringAttribute('avatar_path');
+        $this->savedAvatarUrl = $user->stringAttribute('avatar_url') ?? $this->avatarStorage->url($this->savedAvatarPath);
     }
 
     /**

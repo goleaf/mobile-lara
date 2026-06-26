@@ -6,7 +6,6 @@ use App\Actions\MobileAuth\RequestAccountDeletionAction;
 use App\Services\MobileAuth\BiometricUnlockService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
@@ -184,14 +183,6 @@ class AccountDeletion extends Component
 
         if (is_null($user)) {
             $this->error = 'Password confirmation requires a signed-in server account.';
-            $this->addError('password', $this->error);
-            $this->showToast($this->error, 'error');
-
-            return false;
-        }
-
-        if (! Hash::check($this->password, $user->getAuthPassword())) {
-            $this->error = 'The provided password does not match this account.';
             $this->addError('password', $this->error);
             $this->showToast($this->error, 'error');
 

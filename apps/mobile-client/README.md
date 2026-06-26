@@ -491,15 +491,17 @@ Implemented foundation:
   tests or safe development fallback.
 - `MobileDeviceContext` sends stable device id, device name, platform, and app
   version metadata with auth requests.
-- Login and register Livewire screens call the API service, then create a
-  local presentation-only Laravel session from the API user payload.
+- Login and register Livewire screens call the API service, store secure token
+  state, then create a Laravel session from the API user id without creating or
+  updating a local mobile `users` row.
 - Profile logout and sessions logout/logout-all call the API service before
   clearing local session/token state.
 - Edit profile syncs account details (`name`, `username`, `phone`, `bio`,
   `location`, `website`), optional avatar upload, and avatar removal through
-  `PATCH /auth/profile` before updating the local user mirror; local profile
-  fields and avatar files are presentation mirrors of the API-authoritative
-  account state, and API rejection blocks the local profile change.
+  `PATCH /auth/profile`. Profile display and edit hydration use
+  `GET /auth/user`; mobile no longer persists account/profile fields in its
+  local user table. Temporary avatar staging is cleaned after the API accepts
+  the upload, and the UI displays the API-returned `avatar_url`.
 - Record create, edit, list-row, detail, and bulk actions now call the
   records API service for server-backed create/update/archive/restore/delete
   mutations before changing local cache rows. A failed API delete keeps the

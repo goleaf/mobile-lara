@@ -66,13 +66,14 @@ The mobile UX standard is [Mobile UX Principles](mobile-ux-principles.md). Audit
 ## 2026-06-26 API Boundary Recheck
 
 `apps/mobile-client` was rechecked for user-visible business actions that could
-mutate server-trusted local mirrors. The following contracted paths are
-API-backed and covered by focused tests:
+change server-trusted state. The following contracted paths are API-backed and
+covered by focused tests:
 
 - Authentication and session actions: login, register, profile logout,
   sessions logout, and sessions logout-all.
-- Profile update and avatar sync through `PATCH /auth/profile`, with local
-  user/avatar mirror changes blocked when the API rejects the save.
+- Profile current-user hydration through `GET /auth/user` plus profile update
+  and avatar sync through `PATCH /auth/profile`, with login/register avoiding
+  any local mobile `users` row creation.
 - Records create, update, archive, restore, delete, detail delete, and bulk
   list mutations through the records API/sync service when a server record id
   exists.

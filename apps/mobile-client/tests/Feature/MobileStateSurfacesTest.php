@@ -5,6 +5,9 @@ use App\Livewire\Mobile\Notifications;
 use App\Livewire\Mobile\Profile;
 use App\Livewire\Mobile\Search;
 use App\Livewire\Mobile\Settings;
+use App\Services\MobileAuth\AccessTokenService;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 
 test('dashboard renders loading empty network and retry surfaces', function (): void {
@@ -48,6 +51,30 @@ test('list pages rely on the bottom navigation create action only', function ():
 });
 
 test('profile renders submit spinner empty network and retry surfaces', function (): void {
+    config([
+        'mobile_auth.api.base_url' => 'https://api-admin.example.test/api/v1/mobile',
+        'mobile_auth.storage.driver' => 'session',
+        'mobile_auth.storage.session_key' => 'testing.mobile_state.tokens',
+    ]);
+
+    app(AccessTokenService::class)->put('state-profile-access-token', CarbonImmutable::now()->addDay());
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/user' => Http::response([
+            'success' => true,
+            'data' => [
+                'user' => [
+                    'id' => 123,
+                    'name' => 'State Tester',
+                    'email' => 'state@example.test',
+                    'email_verified_at' => '2026-06-25T12:00:00+00:00',
+                ],
+                'session' => ['id' => 99, 'status' => 'active'],
+            ],
+            'meta' => ['api_version' => 'v1'],
+        ]),
+    ]);
+
     Livewire::test(Profile::class)
         ->assertSee('Updating profile...')
         ->assertSee('Profile')

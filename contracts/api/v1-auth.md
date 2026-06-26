@@ -393,8 +393,9 @@ profile fields `name`, `email`, `username`, `phone`, `bio`, `location`,
 
 The returned `data.user` payload includes `id`, `name`, `email`, `username`,
 `phone`, `bio`, `location`, `website`, `avatar_path`, `avatar_url`, and
-`email_verified_at`. Mobile clients may mirror those values locally for
-presentation, but must not treat local profile data as account authority.
+`email_verified_at`. Mobile clients may keep only short-lived in-memory
+presentation state and bootstrap cache for offline display; they must not save
+account/profile records as trusted local account data.
 
 ## Error States
 
@@ -434,18 +435,18 @@ auth runtime:
   NativePHP secure storage remains the default token home and the session
   adapter remains available for tests and safe development fallback.
 - Login and register Livewire screens consume the service, store API tokens,
-  and create a local presentation-only Laravel session from the API user
-  payload so existing mobile route protection remains usable.
-- The local Laravel `users` row in the mobile shell is a session mirror only:
-  account creation, credential validation, token issuance, revocation, and
-  bootstrap context remain Admin/API authority.
+  and create a Laravel session from the API user id so existing mobile route
+  protection remains usable without creating a local account/profile row.
+- The mobile Laravel `users` table is not an account authority for API-created
+  users: account creation, credential validation, token issuance, revocation,
+  profile state, and bootstrap context remain Admin/API authority.
 - Profile and sessions logout actions call the API service before clearing
   local session/token state; sessions also exposes logout-all-devices.
 - Edit profile syncs account details, optional avatar upload, and avatar
   removal through `PATCH /auth/profile` when a valid access token exists.
   API responses include the editable profile fields plus `avatar_path` and
-  `avatar_url`; the mobile client keeps a local presentation mirror but treats
-  the API payload as account authority.
+  `avatar_url`; the mobile client keeps only in-memory presentation state,
+  bootstrap cache, and temporary upload staging.
 
 Password reset and email verification screens remain local validation
 placeholders until that API behavior is documented and delivered through a

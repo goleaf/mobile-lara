@@ -138,6 +138,12 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Refactored the mobile auth/profile boundary to server-only account storage:
+  login and registration now authenticate the Laravel session from the API user
+  id without creating a local mobile `users` row, profile screens hydrate from
+  `GET /auth/user`, profile updates remain on `PATCH /auth/profile`, and mobile
+  avatar UI displays API-returned URLs without copying server avatar paths into
+  mobile storage.
 - Linked the local mobile web interface at `https://mobile-lara.test` directly
   to `apps/mobile-client`, moved the local mobile `.env` into that app folder,
   and removed duplicate NativePHP/build artifacts from the monorepo root.
@@ -148,20 +154,17 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Fixed mobile profile detail persistence through the API: `username`, `phone`,
   `bio`, `location`, and `website` now validate and save in Admin/API,
   round-trip in auth/profile payloads, hydrate the mobile edit/profile screens,
-  and update the local presentation mirror only after `PATCH /auth/profile`
-  succeeds.
+  and leave the mobile UI unchanged when `PATCH /auth/profile` fails.
 - Rechecked the mobile API boundary and tightened user-visible business
   actions so root and nested mobile clients call the Admin/API services before
-  mutating server-trusted local mirrors: profile logout, sessions logout and
-  logout-all, profile name/avatar/removal saves, record list/edit/detail
+  changing server-trusted state: profile logout, sessions logout and logout-all,
+  profile name/avatar/removal saves, record list/edit/detail
   archive/restore/delete, record bulk status/archive/category/delete actions,
-  and notification read/read-all/open state. Added regression coverage with
-  HTTP fakes, failed-API profile save protection, and failed-API delete
-  protection so server-backed local mirrors are not changed when the API
-  rejects the action.
+  and notification read/read-all/open state. Added regression coverage with HTTP
+  fakes, failed-API profile save protection, and failed-API delete protection.
 - Added API-backed mobile avatar upload/removal through `PATCH /auth/profile`,
   including Admin/API public-disk storage, avatar path/url payloads, mobile
-  multipart profile sync, and local mirror preservation for the current device.
+  multipart profile sync, and temporary mobile staging cleanup.
 - Added real record attachment uploads in the mobile client: browser-selected
   files are copied into the mobile attachment sandbox before attachment
   metadata is queued for sync.
@@ -170,7 +173,7 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   centered bottom navigation item.
 - Rewired the root mobile transition shell login and registration screens to
   use the versioned Admin/API mobile auth endpoints before opening a local
-  Laravel session mirror, including API token storage, bootstrap refresh, API
+  Laravel session, including API token storage, bootstrap refresh, API
   base URL configuration, and focused Livewire coverage for API-authoritative
   registration.
 - Added a protected platform-admin Mobile Diagnostics page for reviewing

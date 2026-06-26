@@ -11,6 +11,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
@@ -103,11 +104,10 @@ test('login accepts valid credentials and signs the user in', function (): void 
         ->assertSet('toastMessage', 'Signed in.')
         ->assertSet('toastVariant', 'success');
 
-    $user = User::query()->where('email', 'person@example.com')->firstOrFail();
+    expect(User::query()->where('email', 'person@example.com')->exists())->toBeFalse()
+        ->and(Auth::id())->toBe('123');
 
-    expect($user->name)->toBe('Person Mobile');
-
-    $this->assertAuthenticatedAs($user);
+    $this->assertAuthenticated();
 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/login'
         && $request['email'] === 'person@example.com'
@@ -196,11 +196,10 @@ test('register accepts valid account details', function (): void {
         ->assertSet('toastMessage', 'Account created.')
         ->assertSet('toastVariant', 'success');
 
-    $user = User::query()->where('email', 'mobile@example.com')->firstOrFail();
+    expect(User::query()->where('email', 'mobile@example.com')->exists())->toBeFalse()
+        ->and(Auth::id())->toBe('456');
 
-    expect($user->name)->toBe('Mobile User');
-
-    $this->assertAuthenticatedAs($user);
+    $this->assertAuthenticated();
 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/register'
         && $request['name'] === 'Mobile User'

@@ -2,12 +2,9 @@
 
 namespace App\Services\MobileAuth;
 
-use App\Models\User;
+use App\Auth\MobileApiUser;
 use App\Services\MobileApi\MobileApiException;
-use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 final class MobileApiSessionBridge
 {
@@ -16,7 +13,7 @@ final class MobileApiSessionBridge
     /**
      * @param  array<string, mixed>  $envelope
      */
-    public function start(array $envelope, bool $remember = false): User
+    public function start(array $envelope, bool $remember = false): MobileApiUser
     {
         $user = $this->syncUser($envelope);
 
@@ -30,47 +27,14 @@ final class MobileApiSessionBridge
     /**
      * @param  array<string, mixed>  $envelope
      */
-    public function syncUser(array $envelope): User
+    public function syncUser(array $envelope): MobileApiUser
     {
         $payload = $this->userPayload($envelope);
-        $email = $this->requiredString($payload['email'] ?? null);
-        $name = $this->requiredString($payload['name'] ?? null);
-        $emailVerifiedAt = $this->optionalDate($payload['email_verified_at'] ?? null);
+        $user = MobileApiUser::fromPayload($payload);
 
-        $user = User::query()
-            ->select(['id', 'name', 'email', 'email_verified_at', 'password', 'avatar_path', 'username', 'phone', 'bio', 'location', 'website'])
-            ->where('email', $email)
-            ->first();
+        Auth::setUser($user);
 
-        $attributes = [
-            'name' => $name,
-            'email_verified_at' => $emailVerifiedAt,
-        ];
-
-        if (array_key_exists('avatar_path', $payload)) {
-            $avatarPath = $payload['avatar_path'];
-            $attributes['avatar_path'] = is_string($avatarPath) && trim($avatarPath) !== ''
-                ? trim($avatarPath)
-                : null;
-        }
-
-        foreach (['username', 'phone', 'bio', 'location', 'website'] as $profileField) {
-            if (array_key_exists($profileField, $payload)) {
-                $attributes[$profileField] = $this->optionalString($payload[$profileField]);
-            }
-        }
-
-        if (! $user instanceof User) {
-            $attributes['password'] = Hash::make('api-session-'.Str::random(48));
-        }
-
-        /** @var User $syncedUser */
-        $syncedUser = User::query()->updateOrCreate(
-            ['email' => $email],
-            $attributes,
-        );
-
-        return $syncedUser;
+        return $user;
     }
 
     /**
@@ -85,33 +49,13 @@ final class MobileApiSessionBridge
             throw MobileApiException::malformedResponse($envelope);
         }
 
-        return $data['user'];
-    }
+        $payload = $data['user'];
+        $id = $payload['id'] ?? null;
 
-    private function requiredString(mixed $value): string
-    {
-        if (! is_string($value) || trim($value) === '') {
-            throw MobileApiException::malformedResponse();
+        if ((! is_int($id) && ! is_string($id)) || trim((string) $id) === '') {
+            throw MobileApiException::malformedResponse($envelope);
         }
 
-        return trim($value);
-    }
-
-    private function optionalDate(mixed $value): ?CarbonImmutable
-    {
-        if (! is_string($value) || trim($value) === '') {
-            return null;
-        }
-
-        return CarbonImmutable::parse($value);
-    }
-
-    private function optionalString(mixed $value): ?string
-    {
-        if (! is_string($value) || trim($value) === '') {
-            return null;
-        }
-
-        return trim($value);
+        return $payload;
     }
 }

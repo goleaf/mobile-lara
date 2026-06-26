@@ -315,20 +315,21 @@ The admin system is the source of authority. The mobile client is a resilient lo
 If a capability is disabled, unlicensed, blocked by version policy, denied by permission, or outside tenant scope, the mobile client must treat that as final even if local UI state still contains stale cached data.
 
 2026-06-26 API boundary recheck: contracted mobile business actions now call
-Admin/API services before mutating server-trusted local mirrors in
-`apps/mobile-client`. This includes auth/profile
-logout, session logout/logout-all, records create/update/archive/restore/delete
-and bulk mutations, notification read/read-all/open state, support, billing,
-tenant switching, bootstrap, diagnostics upload, and records sync. Remaining
-device-local actions such as PIN/app-lock, secure storage, local cache reset,
-local file manager work, native permission probes, native share/export, and
-offline drafts/queues stay local until a dedicated API replay endpoint accepts
-them.
+Admin/API services before changing server-trusted state. This includes
+auth/profile logout, session logout/logout-all, records
+create/update/archive/restore/delete and bulk mutations, notification
+read/read-all/open state, support, billing, tenant switching, bootstrap,
+diagnostics upload, and records sync. Remaining device-local actions such as
+PIN/app-lock, secure storage, local cache reset, local file manager work, native
+permission probes, native share/export, and offline drafts/queues stay local
+until a dedicated API replay endpoint accepts them.
 
-2026-06-26 profile persistence fix: mobile profile details (`username`,
-`phone`, `bio`, `location`, and `website`) now round-trip through
-`PATCH /api/v1/mobile/auth/profile`; the local mobile user row mirrors the API
-payload only after the API accepts the update.
+2026-06-26 server-only account/profile fix: mobile login and registration create
+a session from the API user id without creating or updating a local mobile
+`users` row. Profile display loads `GET /api/v1/mobile/auth/user`; profile
+edits, avatar uploads, and avatar removal save through
+`PATCH /api/v1/mobile/auth/profile`; and returned avatar URLs are displayed from
+the API instead of copying server avatar paths into mobile storage.
 
 ## Documentation Map
 
@@ -426,9 +427,11 @@ The repository root is now a monorepo shell. Runtime code lives only in:
 
 The mobile client obeys the API-only mobile rule: login, registration,
 profile, records, support, notifications, billing, bootstrap, diagnostics, and
-sync behavior use the Admin/API v1 mobile endpoints before changing
-server-trusted local mirrors. `contracts/api` remains the home for versioned
-mobile API contracts.
+sync behavior use the Admin/API v1 mobile endpoints for server-trusted state.
+The mobile app may keep secure tokens, session identity, bootstrap cache,
+offline cache, drafts, queues, and temporary upload staging, but account/profile
+records live on the Admin/API service. `contracts/api` remains the home for
+versioned mobile API contracts.
 
 For local Herd testing, configure app URLs inside each app. The mobile client
 uses `MOBILE_API_BASE_URL`, which defaults to
