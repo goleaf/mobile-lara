@@ -11,11 +11,11 @@
                     href="{{ route($item['route']) }}"
                     wire:navigate
                     wire:key="create-action-{{ $loop->index }}"
-                    class="flex min-h-16 w-full items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+                    class="flex min-h-16 w-full items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface   "
                 >
                     <span class="min-w-0">
-                        <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $item['label'] }}</span>
-                        <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $item['description'] }}</span>
+                        <span class="block text-base font-semibold text-app-ink ">{{ $item['label'] }}</span>
+                        <span class="mt-1 block text-sm leading-5 text-app-muted ">{{ $item['description'] }}</span>
                     </span>
                     <x-mobile.badge variant="neutral" size="sm">
                         {{ $item['badge'] }}

@@ -14,7 +14,7 @@
     @if ($history === [])
         <x-mobile.empty-state title="No consent history" description="Accept the current policy versions to create a local consent record.">
             <x-slot:action>
-                <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white">
+                <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90   ">
                     Accept consent
                 </a>
             </x-slot:action>
@@ -24,29 +24,29 @@
             @foreach ($history as $record)
                 <x-mobile.card wire:key="consent-history-{{ $record['id'] }}" title="{{ $record['policy_title'] }}" description="Version {{ $record['version'] }}">
                     <dl class="grid gap-3 text-sm">
-                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <dt class="text-app-muted dark:text-zinc-400">Accepted at</dt>
-                            <dd class="max-w-[58%] text-right font-semibold text-app-ink dark:text-zinc-100">{{ $record['accepted_at_label'] }}</dd>
+                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
+                            <dt class="text-app-muted ">Accepted at</dt>
+                            <dd class="max-w-[58%] text-right font-semibold text-app-ink ">{{ $record['accepted_at_label'] }}</dd>
                         </div>
-                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <dt class="text-app-muted dark:text-zinc-400">Sync status</dt>
-                            <dd class="max-w-[58%] text-right font-semibold text-app-ink dark:text-zinc-100">{{ $record['sync_status'] }}</dd>
+                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
+                            <dt class="text-app-muted ">Sync status</dt>
+                            <dd class="max-w-[58%] text-right font-semibold text-app-ink ">{{ $record['sync_status'] }}</dd>
                         </div>
-                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <dt class="text-app-muted dark:text-zinc-400">Locale</dt>
-                            <dd class="font-semibold text-app-ink dark:text-zinc-100">{{ $record['locale'] }}</dd>
+                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
+                            <dt class="text-app-muted ">Locale</dt>
+                            <dd class="font-semibold text-app-ink ">{{ $record['locale'] }}</dd>
                         </div>
-                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <dt class="text-app-muted dark:text-zinc-400">App version</dt>
-                            <dd class="font-semibold text-app-ink dark:text-zinc-100">{{ $record['app_version'] }} ({{ $record['app_version_code'] }})</dd>
+                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
+                            <dt class="text-app-muted ">App version</dt>
+                            <dd class="font-semibold text-app-ink ">{{ $record['app_version'] }} ({{ $record['app_version_code'] }})</dd>
                         </div>
-                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <dt class="text-app-muted dark:text-zinc-400">Device</dt>
-                            <dd class="max-w-[58%] text-right font-semibold text-app-ink dark:text-zinc-100">{{ $record['device_label'] }}</dd>
+                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
+                            <dt class="text-app-muted ">Device</dt>
+                            <dd class="max-w-[58%] text-right font-semibold text-app-ink ">{{ $record['device_label'] }}</dd>
                         </div>
-                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <dt class="text-app-muted dark:text-zinc-400">Device reference</dt>
-                            <dd class="font-mono text-xs font-semibold text-app-ink dark:text-zinc-100">{{ $record['device_session_reference'] }}</dd>
+                        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
+                            <dt class="text-app-muted ">Device reference</dt>
+                            <dd class="font-mono text-xs font-semibold text-app-ink ">{{ $record['device_session_reference'] }}</dd>
                         </div>
                     </dl>
                 </x-mobile.card>
@@ -55,13 +55,13 @@
 
         <x-mobile.card title="Sync target" description="History records are ready for future server sync.">
             <dl class="grid gap-3 text-sm">
-                <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                    <dt class="text-app-muted dark:text-zinc-400">Endpoint</dt>
-                    <dd class="text-right font-mono text-xs font-semibold text-app-ink dark:text-zinc-100">{{ $syncPayload['endpoint'] }}</dd>
+                <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
+                    <dt class="text-app-muted ">Endpoint</dt>
+                    <dd class="text-right font-mono text-xs font-semibold text-app-ink ">{{ $syncPayload['endpoint'] }}</dd>
                 </div>
-                <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                    <dt class="text-app-muted dark:text-zinc-400">Method</dt>
-                    <dd class="font-semibold text-app-ink dark:text-zinc-100">{{ $syncPayload['method'] }}</dd>
+                <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
+                    <dt class="text-app-muted ">Method</dt>
+                    <dd class="font-semibold text-app-ink ">{{ $syncPayload['method'] }}</dd>
                 </div>
             </dl>
         </x-mobile.card>

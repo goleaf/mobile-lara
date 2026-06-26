@@ -73,9 +73,9 @@
                     wire:model.live="photoId"
                 />
 
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">Sync status</p>
-                    <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <p class="text-sm font-semibold text-app-ink ">Sync status</p>
+                    <p class="mt-1 text-sm leading-5 text-app-muted ">
                         New check-ins are saved as pending until the offline sync worker sends them to the server.
                     </p>
                 </div>

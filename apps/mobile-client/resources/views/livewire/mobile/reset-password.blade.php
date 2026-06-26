@@ -49,7 +49,7 @@
 
                 <div aria-live="polite" class="min-h-6">
                     @if ($status)
-                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800   ">
                             {{ $status }}
                         </p>
                     @endif
@@ -64,7 +64,7 @@
         </x-mobile.card>
     </form>
 
-    <a href="{{ route('mobile.login') }}" wire:navigate class="text-center text-sm font-semibold text-app-accent dark:text-emerald-300">
+    <a href="{{ route('mobile.login') }}" wire:navigate class="text-center text-sm font-semibold text-app-accent ">
         Back to login
     </a>
 </section>

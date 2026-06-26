@@ -49,8 +49,8 @@ test('settings section pages include connected and placeholder entries', functio
         ->assertSee(route('mobile.settings'), false);
 
     Livewire::test(Appearance::class)
-        ->assertSee('Theme mode')
-        ->assertSee('Placeholder');
+        ->assertSee('Light interface')
+        ->assertSee('Theme switching is disabled.');
 
     Livewire::test(Developer::class)
         ->assertSee('Mobile debug')

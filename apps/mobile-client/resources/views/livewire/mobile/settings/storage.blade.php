@@ -8,11 +8,11 @@
     @if ($statusMessage)
         @php
             $statusClasses = [
-                'success' => 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950 dark:text-emerald-100',
-                'error' => 'border-red-200 bg-red-50 text-red-900 dark:border-red-900/60 dark:bg-red-950 dark:text-red-100',
-                'warning' => 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900/60 dark:bg-amber-950 dark:text-amber-100',
-                'info' => 'border-sky-200 bg-sky-50 text-sky-900 dark:border-sky-900/60 dark:bg-sky-950 dark:text-sky-100',
-            ][$statusVariant] ?? 'border-sky-200 bg-sky-50 text-sky-900 dark:border-sky-900/60 dark:bg-sky-950 dark:text-sky-100';
+                'success' => 'border-emerald-200 bg-emerald-50 text-emerald-900   ',
+                'error' => 'border-red-200 bg-red-50 text-red-900   ',
+                'warning' => 'border-amber-200 bg-amber-50 text-amber-900   ',
+                'info' => 'border-sky-200 bg-sky-50 text-sky-900   ',
+            ][$statusVariant] ?? 'border-sky-200 bg-sky-50 text-sky-900   ';
         @endphp
 
         <div class="{{ $statusClasses }} rounded-lg border px-4 py-3 text-sm font-medium">
@@ -25,15 +25,15 @@
             @forelse ($storageRows as $row)
                 <div
                     wire:key="storage-row-{{ str($row['label'])->slug() }}"
-                    class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                    class="rounded-lg border border-app-line bg-app-bg p-4  "
                 >
                     <div class="flex items-start justify-between gap-4">
                         <div class="min-w-0">
-                            <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $row['label'] }}</p>
-                            <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $row['description'] }}</p>
+                            <p class="text-sm font-semibold text-app-ink ">{{ $row['label'] }}</p>
+                            <p class="mt-1 text-sm leading-5 text-app-muted ">{{ $row['description'] }}</p>
                         </div>
 
-                        <p class="max-w-36 shrink-0 truncate text-right text-sm font-semibold text-app-ink dark:text-zinc-100">
+                        <p class="max-w-36 shrink-0 truncate text-right text-sm font-semibold text-app-ink ">
                             {{ $row['value'] }}
                         </p>
                     </div>

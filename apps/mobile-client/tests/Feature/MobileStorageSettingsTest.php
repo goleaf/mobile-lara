@@ -102,7 +102,7 @@ test('reset local data requires confirmation and recreates the local schema', fu
 
     MobileLocalSetting::query()->create([
         'settings_key' => 'default',
-        'theme' => 'dark',
+        'theme' => 'light',
         'language' => 'en',
     ]);
 

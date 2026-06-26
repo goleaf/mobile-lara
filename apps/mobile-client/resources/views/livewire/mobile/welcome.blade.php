@@ -33,7 +33,7 @@
         </a>
 
         <div class="grid gap-2 text-xs font-semibold text-app-muted">
-            <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="text-app-accent dark:text-emerald-300">
+            <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="text-app-accent ">
                 Review consent
             </a>
             <div class="flex items-center justify-center gap-3">

@@ -45,11 +45,11 @@
 
         <x-mobile.card title="Plan" description="Billing authority stays in Admin/API; this device only displays the resolved outcome.">
             <div class="grid gap-4">
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
                     <div class="flex items-start justify-between gap-4">
                         <div class="min-w-0">
-                            <p class="break-words text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $plan['name'] }}</p>
-                            <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                            <p class="break-words text-xl font-semibold text-app-ink ">{{ $plan['name'] }}</p>
+                            <p class="mt-1 text-sm leading-5 text-app-muted ">
                                 {{ $plan['key'] }} / {{ $plan['tier'] }}
                             </p>
                         </div>
@@ -60,23 +60,23 @@
                     </div>
 
                     @if ($trial['active'])
-                        <p class="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-100">
+                        <p class="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900   ">
                             Trial ends {{ $trial['ends_at'] }}{{ $trial['days_remaining'] !== null ? ' - '.$trial['days_remaining'].' days remaining' : '' }}
                         </p>
                     @endif
 
                     @if ($featureImpact['limited'])
-                        <p class="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-200">
+                        <p class="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800   ">
                             Paid features are limited{{ $featureImpact['reason'] ? ': '.$featureImpact['reason'] : '.' }}
                         </p>
                     @endif
                 </div>
 
                 <div class="grid gap-3">
-                    <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                    <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4  ">
                         <span class="min-w-0">
-                            <span class="block text-sm font-semibold text-app-ink dark:text-zinc-100">Billing portal</span>
-                            <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">
+                            <span class="block text-sm font-semibold text-app-ink ">Billing portal</span>
+                            <span class="mt-1 block text-sm leading-5 text-app-muted ">
                                 {{ $portal['available'] ? 'Portal available' : str($portal['reason'] ?: 'portal_not_configured')->replace('_', ' ')->title() }}
                             </span>
                         </span>
@@ -104,10 +104,10 @@
         <x-mobile.card title="Limits and usage" description="Mobile-safe usage snapshots from tenant billing settings.">
             <div class="grid gap-3">
                 @forelse ($metricRows as $row)
-                    <div wire:key="billing-metric-{{ $row['key'] }}" class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                    <div wire:key="billing-metric-{{ $row['key'] }}" class="rounded-lg border border-app-line bg-app-bg p-4  ">
                         <div class="flex items-center justify-between gap-4">
-                            <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $row['label'] }}</p>
-                            <p class="text-sm font-medium text-app-muted dark:text-zinc-400">{{ $row['usage'] }} / {{ $row['limit'] }}</p>
+                            <p class="text-sm font-semibold text-app-ink ">{{ $row['label'] }}</p>
+                            <p class="text-sm font-medium text-app-muted ">{{ $row['usage'] }} / {{ $row['limit'] }}</p>
                         </div>
                     </div>
                 @empty

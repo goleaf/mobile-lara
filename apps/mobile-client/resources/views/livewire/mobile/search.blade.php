@@ -31,9 +31,9 @@
         @else
             <div class="grid grid-cols-2 gap-3">
                 @foreach ($results as $result)
-                    <a wire:key="search-result-{{ $result['route'] }}" href="{{ route($result['route']) }}" wire:navigate class="rounded-lg border border-app-line bg-app-surface p-4 shadow-sm transition hover:bg-app-bg dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none dark:hover:bg-zinc-800">
-                        <p class="text-base font-semibold text-app-ink dark:text-zinc-100">{{ $result['title'] }}</p>
-                        <p class="mt-1 text-sm text-app-muted dark:text-zinc-400">{{ $result['description'] }}</p>
+                    <a wire:key="search-result-{{ $result['route'] }}" href="{{ route($result['route']) }}" wire:navigate class="rounded-lg border border-app-line bg-app-surface p-4 shadow-sm transition hover:bg-app-bg    ">
+                        <p class="text-base font-semibold text-app-ink ">{{ $result['title'] }}</p>
+                        <p class="mt-1 text-sm text-app-muted ">{{ $result['description'] }}</p>
                     </a>
                 @endforeach
             </div>

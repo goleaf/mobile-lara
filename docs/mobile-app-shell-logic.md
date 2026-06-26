@@ -24,7 +24,7 @@ Use this document with [Product Vision](product-vision.md), [Product Positioning
 The implemented mobile shell keeps the header and bottom navigation fixed as
 the stable chrome. The scrollable information block between them is a shared
 content canvas (`mobile-content` and `mobile-content-canvas`) that owns only
-presentation: scroll momentum, edge rails, rhythm lines, light/dark surface
+presentation: scroll momentum, edge rails, rhythm lines, light-only surface
 variables, and consistent shared states. It does not own authentication,
 tenant authority, server profile data, feature decisions, remote config,
 sync truth, or permission truth.

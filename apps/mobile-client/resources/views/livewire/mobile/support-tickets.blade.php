@@ -36,14 +36,14 @@
                             wire:click="setStatus('{{ $option['key'] }}')"
                             @class([
                                 'inline-flex min-h-10 shrink-0 items-center rounded-lg border px-3 text-sm font-semibold transition',
-                                'border-app-ink bg-app-ink text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-950' => $option['active'],
-                                'border-app-line bg-app-bg text-app-ink hover:bg-app-surface dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900' => ! $option['active'],
+                                'border-app-ink bg-app-ink text-white   ' => $option['active'],
+                                'border-app-line bg-app-bg text-app-ink hover:bg-app-surface    ' => ! $option['active'],
                             ])
                         >
                             {{ $option['label'] }}
                         </button>
                     @empty
-                        <span class="text-sm font-medium text-app-muted dark:text-zinc-400">No filters available</span>
+                        <span class="text-sm font-medium text-app-muted ">No filters available</span>
                     @endforelse
                 </div>
 
@@ -79,14 +79,14 @@
                         wire:key="support-ticket-{{ $ticket['id'] ?? $loop->index }}"
                         href="{{ route('mobile.support.show', ['ticket' => $ticket['id'] ?? 'unknown']) }}"
                         wire:navigate
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 text-left transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 text-left transition hover:bg-app-surface   "
                     >
                         <div class="flex items-start justify-between gap-3">
                             <div class="min-w-0">
-                                <p class="break-words text-base font-semibold text-app-ink dark:text-zinc-100">
+                                <p class="break-words text-base font-semibold text-app-ink ">
                                     {{ $ticket['subject'] ?? 'Untitled ticket' }}
                                 </p>
-                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                <p class="mt-1 text-sm leading-5 text-app-muted ">
                                     {{ $ticket['category'] ?? 'general' }} - {{ $ticket['messages_count'] ?? 0 }} messages
                                 </p>
                             </div>
@@ -101,7 +101,7 @@
                             </div>
                         </div>
 
-                        <p class="text-xs font-medium text-app-muted dark:text-zinc-500">
+                        <p class="text-xs font-medium text-app-muted ">
                             Last activity: {{ $ticket['last_message_at'] ?? $ticket['updated_at'] ?? 'unknown' }}
                         </p>
                     </a>
@@ -114,7 +114,7 @@
                             <a
                                 href="{{ route('mobile.support.create') }}"
                                 wire:navigate
-                                class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
+                                class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90   "
                             >
                                 Create ticket
                             </a>
@@ -125,14 +125,14 @@
 
             <x-slot:footer>
                 <div class="flex items-center justify-between gap-3">
-                    <p class="text-sm font-medium text-app-muted dark:text-zinc-400">
+                    <p class="text-sm font-medium text-app-muted ">
                         {{ $ticketCount }} shown
                     </p>
 
                     <a
                         href="{{ route('mobile.support.create') }}"
                         wire:navigate
-                        class="inline-flex min-h-10 items-center justify-center rounded-lg bg-app-ink px-3 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
+                        class="inline-flex min-h-10 items-center justify-center rounded-lg bg-app-ink px-3 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90   "
                     >
                         Create ticket
                     </a>

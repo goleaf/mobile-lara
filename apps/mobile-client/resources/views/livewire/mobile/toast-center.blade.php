@@ -40,7 +40,7 @@
                 <button
                     type="button"
                     wire:click="dismiss('{{ $toast['id'] }}')"
-                    class="inline-flex size-8 shrink-0 items-center justify-center rounded-lg opacity-70 transition hover:bg-black/5 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-current/20 dark:hover:bg-white/10"
+                    class="inline-flex size-8 shrink-0 items-center justify-center rounded-lg opacity-70 transition hover:bg-black/5 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-current/20 "
                     aria-label="Dismiss notification"
                 >
                     <svg aria-hidden="true" class="size-4" viewBox="0 0 20 20" fill="none">

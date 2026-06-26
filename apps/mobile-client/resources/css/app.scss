@@ -34,8 +34,6 @@ $breakpoint-tablet: 768px;
 
 @import url('tailwindcss');
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
 @source '../views/**/*.blade.php';
 @source '../views/components/**/*.blade.php';
 @source '../views/livewire/**/*.blade.php';
@@ -58,7 +56,7 @@ $breakpoint-tablet: 768px;
 
 @layer base {
     :root {
-        color-scheme: light dark;
+        color-scheme: light;
     }
 
     html {
@@ -165,14 +163,6 @@ $breakpoint-tablet: 768px;
     .mobile-content-canvas > * {
         position: relative;
         z-index: 1;
-    }
-
-    .dark .mobile-content {
-        --mobile-content-bg: oklch(0.17 0.018 252);
-        --mobile-content-top: color-mix(in oklch, oklch(0.24 0.02 252) 70%, transparent);
-        --mobile-content-bottom: color-mix(in oklch, oklch(0.13 0.016 252) 78%, transparent);
-        --mobile-content-rail: color-mix(in oklch, oklch(0.42 0.038 252) 70%, var(--color-app-accent) 30%);
-        --mobile-content-grid: color-mix(in oklch, oklch(0.4 0.03 252) 30%, transparent);
     }
 
     .mobile-bottom-nav-label {

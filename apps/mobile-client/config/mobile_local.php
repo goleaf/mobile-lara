@@ -36,7 +36,7 @@ return [
 
     'settings' => [
         'key' => 'default',
-        'theme' => 'system',
+        'theme' => 'light',
         'language' => env('APP_LOCALE', 'en'),
         'notification_preferences' => [
             'push_enabled' => true,

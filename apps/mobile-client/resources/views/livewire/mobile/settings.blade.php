@@ -27,18 +27,18 @@
                                 wire:key="settings-section-{{ $section['key'] }}"
                                 href="{{ route($section['route']) }}"
                                 wire:navigate
-                                class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+                                class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface   "
                             >
                                 <span class="min-w-0">
-                                    <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $section['title'] }}</span>
-                                    <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $section['description'] }}</span>
+                                    <span class="block text-base font-semibold text-app-ink ">{{ $section['title'] }}</span>
+                                    <span class="mt-1 block text-sm leading-5 text-app-muted ">{{ $section['description'] }}</span>
                                 </span>
 
                                 <span class="flex shrink-0 items-center gap-2">
                                     <x-mobile.badge variant="accent">
                                         {{ $section['badge'] }}
                                     </x-mobile.badge>
-                                    <span aria-hidden="true" class="text-lg font-semibold text-app-muted dark:text-zinc-500">›</span>
+                                    <span aria-hidden="true" class="text-lg font-semibold text-app-muted ">›</span>
                                 </span>
                             </a>
                         @empty
@@ -51,19 +51,19 @@
                     <x-mobile.card title="Settings" description="Mobile configuration surface.">
                         <div class="grid gap-3">
                             @forelse ($settings as $setting)
-                                <label wire:key="setting-{{ $setting['property'] }}" class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                                <label wire:key="setting-{{ $setting['property'] }}" class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4  ">
                                     <span class="min-w-0">
-                                        <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $setting['label'] }}</span>
-                                        <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $setting['description'] }}</span>
+                                        <span class="block text-base font-semibold text-app-ink ">{{ $setting['label'] }}</span>
+                                        <span class="mt-1 block text-sm leading-5 text-app-muted ">{{ $setting['description'] }}</span>
                                     </span>
                                     <input
                                         type="checkbox"
                                         wire:model="{{ $setting['property'] }}"
-                                        class="size-5 rounded border-app-line text-app-accent focus:ring-app-accent dark:border-zinc-700 dark:bg-zinc-900"
+                                        class="size-5 rounded border-app-line text-app-accent focus:ring-app-accent  "
                                     >
                                 </label>
                             @empty
-                                <p class="text-sm text-app-muted dark:text-zinc-400">No settings available.</p>
+                                <p class="text-sm text-app-muted ">No settings available.</p>
                             @endforelse
                         </div>
 
@@ -71,11 +71,11 @@
                             <div class="grid gap-3">
                                 <div aria-live="polite" class="min-h-6">
                                     @if ($settingsError)
-                                        <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-200">
+                                        <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800   ">
                                             {{ $settingsError }}
                                         </p>
                                     @elseif ($settingsStatus)
-                                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800   ">
                                             {{ $settingsStatus }}
                                         </p>
                                     @endif
@@ -90,12 +90,12 @@
                 </form>
 
                 <x-mobile.card title="Local PIN" description="Manage the numeric unlock code stored securely on this device.">
-                    <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                    <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4  ">
                         <div class="min-w-0">
-                            <p class="text-base font-semibold text-app-ink dark:text-zinc-100">
+                            <p class="text-base font-semibold text-app-ink ">
                                 {{ $hasPinUnlock ? 'PIN unlock is on' : 'PIN unlock is off' }}
                             </p>
-                            <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                            <p class="mt-1 text-sm leading-5 text-app-muted ">
                                 {{ $hasPinUnlock ? 'Change or remove the local PIN for this device.' : 'Create a local PIN for app unlock fallback.' }}
                             </p>
                         </div>
@@ -107,14 +107,14 @@
                     <x-slot:footer>
                         <div class="grid gap-3 sm:grid-cols-2">
                             @if ($hasPinUnlock)
-                                <a href="{{ route('mobile.pin.change') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800">
+                                <a href="{{ route('mobile.pin.change') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg    ">
                                     Change PIN
                                 </a>
-                                <a href="{{ route('mobile.pin.remove') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-red-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400">
+                                <a href="{{ route('mobile.pin.remove') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-red-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700  ">
                                     Remove PIN
                                 </a>
                             @else
-                                <a href="{{ route('mobile.pin.create') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white sm:col-span-2">
+                                <a href="{{ route('mobile.pin.create') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90    sm:col-span-2">
                                     Create PIN
                                 </a>
                             @endif
@@ -123,10 +123,10 @@
                 </x-mobile.card>
 
                 <x-mobile.card title="Device sessions" description="Review the current app session and future remote sessions API.">
-                    <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                    <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4  ">
                         <div class="min-w-0">
-                            <p class="text-base font-semibold text-app-ink dark:text-zinc-100">Current device session</p>
-                            <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                            <p class="text-base font-semibold text-app-ink ">Current device session</p>
+                            <p class="mt-1 text-sm leading-5 text-app-muted ">
                                 Includes last login time, app version, logout, and remote session placeholders.
                             </p>
                         </div>
@@ -137,7 +137,7 @@
                     </div>
 
                     <x-slot:footer>
-                        <a href="{{ route('mobile.sessions') }}" wire:navigate class="inline-flex min-h-12 w-full items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800">
+                        <a href="{{ route('mobile.sessions') }}" wire:navigate class="inline-flex min-h-12 w-full items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg    ">
                             Open sessions
                         </a>
                     </x-slot:footer>
@@ -145,22 +145,22 @@
 
                 <x-mobile.card title="Legal and consent" description="Review policies, accepted versions, and server sync readiness.">
                     <div class="grid gap-3">
-                        <a href="{{ route('mobile.terms') }}" wire:navigate class="flex min-h-12 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-sm font-semibold text-app-ink transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900">
+                        <a href="{{ route('mobile.terms') }}" wire:navigate class="flex min-h-12 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-sm font-semibold text-app-ink transition hover:bg-app-surface    ">
                             Terms of Service
-                            <span class="text-app-muted dark:text-zinc-400">Review</span>
+                            <span class="text-app-muted ">Review</span>
                         </a>
-                        <a href="{{ route('mobile.privacy') }}" wire:navigate class="flex min-h-12 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-sm font-semibold text-app-ink transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900">
+                        <a href="{{ route('mobile.privacy') }}" wire:navigate class="flex min-h-12 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-sm font-semibold text-app-ink transition hover:bg-app-surface    ">
                             Privacy Policy
-                            <span class="text-app-muted dark:text-zinc-400">Review</span>
+                            <span class="text-app-muted ">Review</span>
                         </a>
                     </div>
 
                     <x-slot:footer>
                         <div class="grid gap-3 sm:grid-cols-2">
-                            <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white">
+                            <a href="{{ route('mobile.consent.accept') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90   ">
                                 Accept consent
                             </a>
-                            <a href="{{ route('mobile.consent.history') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800">
+                            <a href="{{ route('mobile.consent.history') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg    ">
                                 Consent history
                             </a>
                         </div>
@@ -168,15 +168,15 @@
                 </x-mobile.card>
 
                 <x-mobile.card title="Danger zone" description="Destructive account actions require an extra confirmation step.">
-                    <div class="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-400/30 dark:bg-red-400/10">
-                        <p class="text-base font-semibold text-red-900 dark:text-red-100">Delete account</p>
-                        <p class="mt-1 text-sm leading-5 text-red-800 dark:text-red-200/80">
+                    <div class="rounded-lg border border-red-200 bg-red-50 p-4  ">
+                        <p class="text-base font-semibold text-red-900 ">Delete account</p>
+                        <p class="mt-1 text-sm leading-5 text-red-800 ">
                             Open the protected deletion screen to confirm with a password or device biometrics.
                         </p>
                     </div>
 
                     <x-slot:footer>
-                        <a href="{{ route('mobile.account.delete') }}" wire:navigate class="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-red-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400">
+                        <a href="{{ route('mobile.account.delete') }}" wire:navigate class="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-red-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700  ">
                             Delete account
                         </a>
                     </x-slot:footer>

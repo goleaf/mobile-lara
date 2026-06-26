@@ -14,7 +14,7 @@
     @if (! $hasPendingSetup)
         <x-mobile.empty-state title="No PIN setup pending" description="Start by creating a new local PIN.">
             <x-slot:action>
-                <a href="{{ route('mobile.pin.create') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white">
+                <a href="{{ route('mobile.pin.create') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90   ">
                     Create PIN
                 </a>
             </x-slot:action>
@@ -34,7 +34,7 @@
                     />
 
                     @if ($error)
-                        <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-200">
+                        <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800   ">
                             {{ $error }}
                         </p>
                     @endif

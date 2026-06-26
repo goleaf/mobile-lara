@@ -29,9 +29,9 @@
     <x-mobile.card title="Overview" description="Current status, priority, ownership, archive, and sync state.">
         <dl class="grid gap-3">
             @foreach ($detailRows as $row)
-                <div wire:key="record-detail-row-{{ str($row['label'])->slug() }}" class="grid grid-cols-[7rem_1fr] gap-3 border-b border-app-line pb-3 last:border-b-0 last:pb-0 dark:border-zinc-800">
-                    <dt class="text-sm font-medium text-app-muted dark:text-zinc-400">{{ $row['label'] }}</dt>
-                    <dd class="min-w-0 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $row['value'] ?: '-' }}</dd>
+                <div wire:key="record-detail-row-{{ str($row['label'])->slug() }}" class="grid grid-cols-[7rem_1fr] gap-3 border-b border-app-line pb-3 last:border-b-0 last:pb-0 ">
+                    <dt class="text-sm font-medium text-app-muted ">{{ $row['label'] }}</dt>
+                    <dd class="min-w-0 break-words text-sm font-semibold text-app-ink ">{{ $row['value'] ?: '-' }}</dd>
                 </div>
             @endforeach
         </dl>
@@ -40,13 +40,13 @@
     <x-mobile.card title="Record" description="Primary local content saved for this record.">
         <div class="grid gap-4">
             <div>
-                <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Title</p>
-                <p class="mt-1 break-words text-xl font-semibold leading-7 text-app-ink dark:text-zinc-100">{{ $record->title }}</p>
+                <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Title</p>
+                <p class="mt-1 break-words text-xl font-semibold leading-7 text-app-ink ">{{ $record->title }}</p>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Status</p>
+                <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Status</p>
                     <div class="mt-2">
                         <x-mobile.badge :variant="$record->statusVariant()" size="sm" dot>
                             {{ $record->statusLabel() }}
@@ -54,8 +54,8 @@
                     </div>
                 </div>
 
-                <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Priority</p>
+                <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Priority</p>
                     <div class="mt-2">
                         <x-mobile.badge :variant="$record->priorityVariant()" size="sm" dot>
                             {{ $record->priorityLabel() }}
@@ -65,12 +65,12 @@
             </div>
 
             <div>
-                <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Description</p>
-                <p class="mt-1 whitespace-pre-line text-sm leading-6 text-app-ink dark:text-zinc-100">{{ $record->description ?: 'No description' }}</p>
+                <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Description</p>
+                <p class="mt-1 whitespace-pre-line text-sm leading-6 text-app-ink ">{{ $record->description ?: 'No description' }}</p>
             </div>
 
             <div>
-                <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Tags</p>
+                <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Tags</p>
                 <div class="mt-2 flex flex-wrap gap-2">
                     @forelse ($tags as $tag)
                         <x-mobile.badge wire:key="record-detail-tag-{{ $tag }}" variant="neutral" size="sm">
@@ -89,9 +89,9 @@
     <x-mobile.card title="Metadata" description="Structured JSON values stored with the local record.">
         <div class="grid gap-3">
             @forelse ($metadataRows as $metadataRow)
-                <div wire:key="record-metadata-{{ $metadataRow['key'] }}" class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">{{ $metadataRow['label'] }}</p>
-                    <p class="mt-1 break-words text-sm leading-6 text-app-ink dark:text-zinc-100">{{ $metadataRow['value'] }}</p>
+                <div wire:key="record-metadata-{{ $metadataRow['key'] }}" class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">{{ $metadataRow['label'] }}</p>
+                    <p class="mt-1 break-words text-sm leading-6 text-app-ink ">{{ $metadataRow['value'] }}</p>
                 </div>
             @empty
                 <x-mobile.empty-state
@@ -103,7 +103,7 @@
     </x-mobile.card>
 
     <x-mobile.card title="Notes" description="Local notes stored in record metadata.">
-        <p class="whitespace-pre-line text-sm leading-6 text-app-ink dark:text-zinc-100">{{ $record->notesText() ?: 'No notes' }}</p>
+        <p class="whitespace-pre-line text-sm leading-6 text-app-ink ">{{ $record->notesText() ?: 'No notes' }}</p>
     </x-mobile.card>
 
     <livewire:mobile.record-notes
@@ -119,11 +119,11 @@
     <x-mobile.card title="Attachments" description="Local media files related to this record.">
         <div class="grid gap-3">
             @forelse ($attachments as $attachment)
-                <article wire:key="record-attachment-{{ $attachment['key'] }}" class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                <article wire:key="record-attachment-{{ $attachment['key'] }}" class="rounded-lg border border-app-line bg-app-bg p-4  ">
                     <div class="flex items-start justify-between gap-3">
                         <div class="min-w-0">
-                            <p class="break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $attachment['name'] }}</p>
-                            <p class="mt-1 text-xs font-medium text-app-muted dark:text-zinc-400">{{ $attachment['type'] }}@if ($attachment['meta']) - {{ $attachment['meta'] }} @endif</p>
+                            <p class="break-words text-sm font-semibold text-app-ink ">{{ $attachment['name'] }}</p>
+                            <p class="mt-1 text-xs font-medium text-app-muted ">{{ $attachment['type'] }}@if ($attachment['meta']) - {{ $attachment['meta'] }} @endif</p>
                         </div>
 
                         <x-mobile.badge variant="neutral" size="sm">
@@ -132,10 +132,10 @@
                     </div>
 
                     @if ($attachment['caption'])
-                        <p class="mt-3 text-sm leading-5 text-app-ink dark:text-zinc-100">{{ $attachment['caption'] }}</p>
+                        <p class="mt-3 text-sm leading-5 text-app-ink ">{{ $attachment['caption'] }}</p>
                     @endif
 
-                    <p class="mt-3 break-all text-xs leading-5 text-app-muted dark:text-zinc-400">{{ $attachment['path'] }}</p>
+                    <p class="mt-3 break-all text-xs leading-5 text-app-muted ">{{ $attachment['path'] }}</p>
                 </article>
             @empty
                 <x-mobile.empty-state
@@ -152,14 +152,14 @@
     />
 
     <x-mobile.card :title="$commentsPlaceholder['title']" :description="$commentsPlaceholder['description']">
-        <div class="rounded-lg border border-dashed border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+        <div class="rounded-lg border border-dashed border-app-line bg-app-bg p-4  ">
             <div class="flex items-center justify-between gap-3">
-                <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">Comments</p>
+                <p class="text-sm font-semibold text-app-ink ">Comments</p>
                 <x-mobile.badge variant="neutral" size="sm">
                     {{ $commentsPlaceholder['badge'] }}
                 </x-mobile.badge>
             </div>
-            <p class="mt-2 text-sm leading-6 text-app-muted dark:text-zinc-400">No local comments table is connected yet.</p>
+            <p class="mt-2 text-sm leading-6 text-app-muted ">No local comments table is connected yet.</p>
         </div>
     </x-mobile.card>
 
@@ -169,7 +169,7 @@
                 <a
                     href="{{ route('mobile.records.edit', $record) }}"
                     wire:navigate
-                    class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 active:bg-app-ink/80 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
+                    class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 active:bg-app-ink/80   "
                 >
                     Edit record
                 </a>

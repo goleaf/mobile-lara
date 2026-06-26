@@ -82,7 +82,7 @@ uses a shared `mobile-content` canvas between them. That canvas provides:
 
 - a full-height scroll surface with touch-friendly momentum scrolling;
 - subtle side rails and horizontal rhythm lines that orient long mobile pages;
-- light and dark mode variables based on the app design tokens;
+- light-only variables based on the app design tokens;
 - shared card, page-header, empty-state, and error-state treatments so feature
   screens feel consistent without page-specific decorative wrappers;
 - no business authority, authorization, or API state of its own.
@@ -378,7 +378,7 @@ Guest/pre-login, invited, and suspended states should have minimal, clear screen
 - Keep mobile tap targets at `min-h-12` or larger.
 - Use `gap-*` for sibling spacing instead of stacked margins.
 - Use `rounded-lg` as the default radius for controls, cards, and panels.
-- Use `dark:` classes in every reusable component that owns color.
+- Use light-only app tokens in every reusable component that owns color; do not add dark-mode variants.
 - Forward attributes so Livewire directives like `wire:model`, `wire:click`, `wire:submit`, and `wire:navigate` continue to work.
 - Show last sync, pending count, network status, and conflict state near affected workflows.
 - Request NativePHP permissions just in time and explain the business purpose.
@@ -409,13 +409,13 @@ The base Tailwind v4 theme lives in `resources/css/app.scss`.
 
 | Purpose | Utility |
 | --- | --- |
-| App background | `bg-app-bg dark:bg-zinc-950` |
-| Surface | `bg-app-surface dark:bg-zinc-900` |
-| Primary text | `text-app-ink dark:text-zinc-100` |
-| Muted text | `text-app-muted dark:text-zinc-400` |
-| Border | `border-app-line dark:border-zinc-800` |
-| Accent | `bg-app-accent text-app-accent-ink dark:bg-emerald-400 dark:text-zinc-950` |
-| Warning accent | `bg-app-warm` or `bg-amber-*` in dark mode |
+| App background | `bg-app-bg` |
+| Surface | `bg-app-surface` |
+| Primary text | `text-app-ink` |
+| Muted text | `text-app-muted` |
+| Border | `border-app-line` |
+| Accent | `bg-app-accent text-app-accent-ink` |
+| Warning accent | `bg-app-warm` or `bg-amber-*` |
 
 ## Spacing
 
@@ -556,10 +556,10 @@ Use Livewire-aware loading components for every page action that can wait on the
 Inputs, textareas, and selects share the same form pattern:
 
 - wrapper: `grid gap-2`
-- label: `text-sm font-medium text-app-ink dark:text-zinc-100`
+- label: `text-sm font-medium text-app-ink`
 - control: `min-h-12`, `rounded-lg`, `border`, `text-base`, focus ring
-- hint: `text-sm text-app-muted dark:text-zinc-400`
-- error: `text-sm font-medium text-red-600 dark:text-red-400`
+- hint: `text-sm text-app-muted`
+- error: `text-sm font-medium text-red-600`
 
 Admin forms should also show scope and audit reason for sensitive changes.
 
@@ -570,12 +570,14 @@ Use cards for individual repeated items, forms, and framed tools. Do not nest ca
 Default card styling:
 
 ```text
-rounded-lg border border-app-line bg-app-surface p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none
+rounded-lg border border-app-line bg-app-surface p-5 shadow-sm
 ```
 
-## Dark Mode
+## Light-Only Interface
 
-Tailwind's `dark:` variant is used directly in Blade components. Reusable components should include dark-mode classes anywhere they own color. The app does not yet include a theme toggle. Tailwind's default dark mode behavior follows the user's system preference unless a future toggle changes the strategy.
+The mobile client intentionally ships one light interface for web preview and NativePHP builds. Blade components,
+Livewire classes, mobile local settings, and generated CSS should not include `dark:` variants, `.dark` selectors,
+or `prefers-color-scheme: dark` behavior.
 
 ## Page Layout
 

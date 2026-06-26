@@ -22,11 +22,7 @@ class MobileLocalSetting extends Model
 {
     public const DEFAULT_SETTINGS_KEY = 'default';
 
-    public const THEME_SYSTEM = 'system';
-
     public const THEME_LIGHT = 'light';
-
-    public const THEME_DARK = 'dark';
 
     /**
      * @var list<string>
@@ -54,7 +50,7 @@ class MobileLocalSetting extends Model
      */
     protected $attributes = [
         'settings_key' => self::DEFAULT_SETTINGS_KEY,
-        'theme' => self::THEME_SYSTEM,
+        'theme' => self::THEME_LIGHT,
         'language' => 'en',
         'notification_preferences' => '{}',
         'sync_settings' => '{}',

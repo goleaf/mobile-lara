@@ -9,12 +9,12 @@
         title="Location bridge"
         description="NativePHP geolocation calls return through Livewire native events."
     >
-        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4  ">
             <div class="min-w-0">
-                <p class="text-base font-semibold text-app-ink dark:text-zinc-100">
+                <p class="text-base font-semibold text-app-ink ">
                     {{ $nativeLocationAvailable ? 'Native location available' : 'Browser fallback active' }}
                 </p>
-                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                <p class="mt-1 text-sm leading-5 text-app-muted ">
                     {{ $nativeLocationAvailable ? 'Permission and location requests can run on this device.' : 'Open this route inside NativePHP or Jump Bridge to request native location access.' }}
                 </p>
             </div>
@@ -25,20 +25,20 @@
         </div>
 
         @if ($pendingOperationId)
-            <div class="mt-3 rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/30 dark:bg-sky-400/10">
-                <p class="text-sm font-semibold text-sky-950 dark:text-sky-100">Pending native operation</p>
-                <p class="mt-1 break-words text-sm text-sky-900 dark:text-sky-100/80">{{ $pendingOperation }} · {{ $pendingOperationId }}</p>
+            <div class="mt-3 rounded-lg border border-sky-200 bg-sky-50 p-4  ">
+                <p class="text-sm font-semibold text-sky-950 ">Pending native operation</p>
+                <p class="mt-1 break-words text-sm text-sky-900 ">{{ $pendingOperation }} · {{ $pendingOperationId }}</p>
             </div>
         @endif
 
         <x-slot:footer>
             <div aria-live="polite" class="min-h-6">
                 @if ($operationError)
-                    <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-100">
+                    <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900   ">
                         {{ $operationError }}
                     </p>
                 @elseif ($operationStatus)
-                    <p class="rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-sm font-medium text-sky-900 dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-100">
+                    <p class="rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-sm font-medium text-sky-900   ">
                         {{ $operationStatus }}
                     </p>
                 @endif
@@ -54,10 +54,10 @@
             />
         @else
             <div class="grid gap-3">
-            <div class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
+            <div class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
                 <span class="min-w-0">
-                    <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">Overall permission</span>
-                    <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">
+                    <span class="block text-base font-semibold text-app-ink ">Overall permission</span>
+                    <span class="mt-1 block text-sm leading-5 text-app-muted ">
                         {{ $permissionMessage ?? 'Permission status has not been checked yet.' }}
                     </span>
                 </span>
@@ -68,23 +68,23 @@
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Coarse</p>
-                    <p class="mt-2 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <p class="text-xs font-semibold uppercase text-app-muted ">Coarse</p>
+                    <p class="mt-2 break-words text-sm font-semibold text-app-ink ">
                         {{ $coarsePermissionStatusLabel }}
                     </p>
                 </div>
 
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Fine</p>
-                    <p class="mt-2 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <p class="text-xs font-semibold uppercase text-app-muted ">Fine</p>
+                    <p class="mt-2 break-words text-sm font-semibold text-app-ink ">
                         {{ $finePermissionStatusLabel }}
                     </p>
                 </div>
             </div>
 
             @if ($permissionError)
-                <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700 dark:border-red-400/20 dark:bg-red-400/15 dark:text-red-200">
+                <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700   ">
                     {{ $permissionError }}
                 </p>
             @endif
@@ -124,16 +124,16 @@
             />
         @else
             <div class="grid gap-4">
-                <label class="flex min-h-14 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
+                <label class="flex min-h-14 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
                     <span class="min-w-0">
-                        <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">High accuracy</span>
-                        <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">Use GPS precision when the device allows it.</span>
+                        <span class="block text-base font-semibold text-app-ink ">High accuracy</span>
+                        <span class="mt-1 block text-sm leading-5 text-app-muted ">Use GPS precision when the device allows it.</span>
                     </span>
 
                     <input
                         wire:model.live="fineAccuracy"
                         type="checkbox"
-                        class="size-5 rounded border-app-line text-app-ink focus:ring-app-ink dark:border-zinc-700 dark:bg-zinc-950 dark:focus:ring-zinc-200"
+                        class="size-5 rounded border-app-line text-app-ink focus:ring-app-ink   "
                     >
                 </label>
 
@@ -151,11 +151,11 @@
 
                 <div aria-live="polite" class="min-h-6">
                     @if ($locationError)
-                        <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700 dark:border-red-400/20 dark:bg-red-400/15 dark:text-red-200">
+                        <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700   ">
                             {{ $locationError }}
                         </p>
                     @elseif ($locationStatus)
-                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800   ">
                             {{ $locationStatus }}
                         </p>
                     @endif
@@ -168,34 +168,34 @@
         @if ($locationHasCoordinates)
             <div class="grid gap-3">
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Latitude</p>
-                        <p class="mt-2 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $locationLatitude }}</p>
+                    <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                        <p class="text-xs font-semibold uppercase text-app-muted ">Latitude</p>
+                        <p class="mt-2 break-words text-sm font-semibold text-app-ink ">{{ $locationLatitude }}</p>
                     </div>
 
-                    <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Longitude</p>
-                        <p class="mt-2 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $locationLongitude }}</p>
+                    <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                        <p class="text-xs font-semibold uppercase text-app-muted ">Longitude</p>
+                        <p class="mt-2 break-words text-sm font-semibold text-app-ink ">{{ $locationLongitude }}</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Accuracy</p>
-                        <p class="mt-2 text-sm font-semibold text-app-ink dark:text-zinc-100">
+                    <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                        <p class="text-xs font-semibold uppercase text-app-muted ">Accuracy</p>
+                        <p class="mt-2 text-sm font-semibold text-app-ink ">
                             {{ $locationAccuracy !== null ? $locationAccuracy.' m' : 'Unknown' }}
                         </p>
                     </div>
 
-                    <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Provider</p>
-                        <p class="mt-2 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $locationProvider ?? 'Unknown' }}</p>
+                    <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                        <p class="text-xs font-semibold uppercase text-app-muted ">Provider</p>
+                        <p class="mt-2 break-words text-sm font-semibold text-app-ink ">{{ $locationProvider ?? 'Unknown' }}</p>
                     </div>
                 </div>
 
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Timestamp</p>
-                    <p class="mt-2 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $locationTimestamp ?? 'Unknown' }}</p>
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <p class="text-xs font-semibold uppercase text-app-muted ">Timestamp</p>
+                    <p class="mt-2 break-words text-sm font-semibold text-app-ink ">{{ $locationTimestamp ?? 'Unknown' }}</p>
                 </div>
             </div>
 
@@ -217,12 +217,12 @@
             @forelse ($locationCapabilities as $capability)
                 <div
                     wire:key="location-capability-{{ $capability['key'] }}"
-                    class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950"
+                    class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  "
                 >
                     <span class="min-w-0">
-                        <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $capability['label'] }}</span>
-                        <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $capability['description'] }}</span>
-                        <span class="mt-1 block text-xs font-medium text-app-muted dark:text-zinc-500">{{ $capability['driver'] }}</span>
+                        <span class="block text-base font-semibold text-app-ink ">{{ $capability['label'] }}</span>
+                        <span class="mt-1 block text-sm leading-5 text-app-muted ">{{ $capability['description'] }}</span>
+                        <span class="mt-1 block text-xs font-medium text-app-muted ">{{ $capability['driver'] }}</span>
                     </span>
 
                     <x-mobile.badge :variant="$capability['supported'] ? 'success' : 'neutral'">

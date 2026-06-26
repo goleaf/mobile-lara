@@ -35,15 +35,15 @@
                 @forelse ($metrics as $metric)
                     <div
                         wire:key="notification-metric-{{ $metric['label'] }}"
-                        class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="rounded-lg border border-app-line bg-app-bg p-4  "
                     >
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">
+                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">
                             {{ $metric['label'] }}
                         </p>
-                        <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">
+                        <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink ">
                             {{ $metric['value'] }}
                         </p>
-                        <p class="mt-1 text-xs font-medium text-app-muted dark:text-zinc-400">
+                        <p class="mt-1 text-xs font-medium text-app-muted ">
                             {{ $metric['description'] }}
                         </p>
                     </div>
@@ -73,8 +73,8 @@
                             wire:click="setFilter('{{ $filterOption['key'] }}')"
                             @class([
                                 'inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg border px-3 text-sm font-semibold transition',
-                                'border-app-ink bg-app-ink text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-950' => $filterOption['active'],
-                                'border-app-line bg-app-bg text-app-ink hover:bg-app-surface dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900' => ! $filterOption['active'],
+                                'border-app-ink bg-app-ink text-white   ' => $filterOption['active'],
+                                'border-app-line bg-app-bg text-app-ink hover:bg-app-surface    ' => ! $filterOption['active'],
                             ])
                         >
                             <span>{{ $filterOption['label'] }}</span>
@@ -83,7 +83,7 @@
                             </span>
                         </button>
                     @empty
-                        <span class="text-sm font-medium text-app-muted dark:text-zinc-400">No filters available</span>
+                        <span class="text-sm font-medium text-app-muted ">No filters available</span>
                     @endforelse
                 </div>
 
@@ -112,15 +112,15 @@
                     <article
                         wire:key="notification-item-{{ $notification->id }}"
                         @class([
-                            'grid gap-3 rounded-lg border bg-app-bg p-4 dark:bg-zinc-950',
-                            'border-app-warm/40 dark:border-amber-300/30' => $notification->isUnread(),
-                            'border-app-line dark:border-zinc-800' => ! $notification->isUnread(),
+                            'grid gap-3 rounded-lg border bg-app-bg p-4 ',
+                            'border-app-warm/40 ' => $notification->isUnread(),
+                            'border-app-line ' => ! $notification->isUnread(),
                         ])
                     >
                         <div class="flex items-start justify-between gap-4">
                             <div class="min-w-0">
                                 <div class="flex flex-wrap items-center gap-2">
-                                    <p class="break-words text-base font-semibold text-app-ink dark:text-zinc-100">
+                                    <p class="break-words text-base font-semibold text-app-ink ">
                                         {{ $notification->title }}
                                     </p>
 
@@ -131,7 +131,7 @@
                                     @endif
                                 </div>
 
-                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                <p class="mt-1 text-sm leading-5 text-app-muted ">
                                     {{ $notification->created_at?->diffForHumans() ?? 'Time unknown' }}
                                 </p>
                             </div>
@@ -149,16 +149,16 @@
                             </div>
                         </div>
 
-                        <p class="break-words text-sm leading-6 text-app-muted dark:text-zinc-400">
+                        <p class="break-words text-sm leading-6 text-app-muted ">
                             {{ $notification->bodyPreview() }}
                         </p>
 
                         @if ($notification->deepLinkLabel())
-                            <div class="rounded-lg border border-dashed border-app-line bg-app-surface p-3 dark:border-zinc-800 dark:bg-zinc-900">
-                                <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">
+                            <div class="rounded-lg border border-dashed border-app-line bg-app-surface p-3  ">
+                                <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">
                                     Deep link
                                 </p>
-                                <p class="mt-1 break-words text-sm font-medium text-app-ink dark:text-zinc-100">
+                                <p class="mt-1 break-words text-sm font-medium text-app-ink ">
                                     {{ $notification->deepLinkLabel() }}
                                 </p>
                             </div>
@@ -169,13 +169,13 @@
                                 @forelse ($notification->dataEntries() as $entry)
                                     <div
                                         wire:key="notification-data-{{ $notification->id }}-{{ $entry['key'] }}"
-                                        class="flex items-start justify-between gap-3 rounded-lg bg-app-surface px-3 py-2 text-sm dark:bg-zinc-900"
+                                        class="flex items-start justify-between gap-3 rounded-lg bg-app-surface px-3 py-2 text-sm "
                                     >
-                                        <span class="shrink-0 font-semibold text-app-ink dark:text-zinc-100">{{ $entry['key'] }}</span>
-                                        <span class="break-words text-right text-app-muted dark:text-zinc-400">{{ $entry['value'] }}</span>
+                                        <span class="shrink-0 font-semibold text-app-ink ">{{ $entry['key'] }}</span>
+                                        <span class="break-words text-right text-app-muted ">{{ $entry['value'] }}</span>
                                     </div>
                                 @empty
-                                    <span class="text-sm font-medium text-app-muted dark:text-zinc-400">No notification data</span>
+                                    <span class="text-sm font-medium text-app-muted ">No notification data</span>
                                 @endforelse
                             </div>
                         @endif
@@ -218,7 +218,7 @@
 
             <x-slot:footer>
                 <div class="flex items-center justify-between gap-3">
-                    <p class="text-sm font-medium text-app-muted dark:text-zinc-400">
+                    <p class="text-sm font-medium text-app-muted ">
                         {{ $inboxCount }} shown
                     </p>
 

@@ -10,7 +10,7 @@
             <a
                 href="{{ route('mobile.media.capture') }}"
                 wire:navigate
-                class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+                class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg    "
             >
                 Capture
             </a>
@@ -34,15 +34,15 @@
                 @forelse ($metrics as $metric)
                     <div
                         wire:key="media-gallery-metric-{{ $metric['label'] }}"
-                        class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="rounded-lg border border-app-line bg-app-bg p-4  "
                     >
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">
+                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">
                             {{ $metric['label'] }}
                         </p>
-                        <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">
+                        <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink ">
                             {{ $metric['value'] }}
                         </p>
-                        <p class="mt-1 text-xs font-medium text-app-muted dark:text-zinc-400">
+                        <p class="mt-1 text-xs font-medium text-app-muted ">
                             {{ $metric['description'] }}
                         </p>
                     </div>
@@ -70,8 +70,8 @@
                         wire:click="setFilter('{{ $filterOption['key'] }}')"
                         @class([
                             'inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg border px-3 text-sm font-semibold transition',
-                            'border-app-ink bg-app-ink text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-950' => $filterOption['active'],
-                            'border-app-line bg-app-bg text-app-ink hover:bg-app-surface dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900' => ! $filterOption['active'],
+                            'border-app-ink bg-app-ink text-white   ' => $filterOption['active'],
+                            'border-app-line bg-app-bg text-app-ink hover:bg-app-surface    ' => ! $filterOption['active'],
                         ])
                     >
                         <span>{{ $filterOption['label'] }}</span>
@@ -80,7 +80,7 @@
                         </span>
                     </button>
                 @empty
-                    <span class="text-sm font-medium text-app-muted dark:text-zinc-400">No filters available</span>
+                    <span class="text-sm font-medium text-app-muted ">No filters available</span>
                 @endforelse
             </div>
 
@@ -88,14 +88,14 @@
                 @forelse ($mediaItems as $mediaItem)
                     <article
                         wire:key="media-gallery-item-{{ $mediaItem->id }}"
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4  "
                     >
                         <div class="flex items-start justify-between gap-4">
                             <div class="min-w-0">
-                                <p class="break-words text-base font-semibold text-app-ink dark:text-zinc-100">
+                                <p class="break-words text-base font-semibold text-app-ink ">
                                     {{ $mediaItem->displayName() }}
                                 </p>
-                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                <p class="mt-1 text-sm leading-5 text-app-muted ">
                                     {{ $mediaItem->mime ?: 'Unknown MIME' }}
                                     @if ($mediaItem->dimensions())
                                         / {{ $mediaItem->dimensions() }}
@@ -112,12 +112,12 @@
                         </div>
 
                         @if ($mediaItem->caption)
-                            <p class="text-sm leading-6 text-app-ink dark:text-zinc-200">
+                            <p class="text-sm leading-6 text-app-ink ">
                                 {{ $mediaItem->caption }}
                             </p>
                         @endif
 
-                        <p class="break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                        <p class="break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted   ">
                             {{ $mediaItem->path }}
                         </p>
 

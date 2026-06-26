@@ -32,23 +32,23 @@
                 />
 
                 <div class="flex items-center justify-between gap-4">
-                    <label class="flex min-w-0 items-center gap-3 text-sm font-medium text-app-ink dark:text-zinc-100">
+                    <label class="flex min-w-0 items-center gap-3 text-sm font-medium text-app-ink ">
                         <input
                             type="checkbox"
                             wire:model.live="remember"
-                            class="size-5 rounded border-app-line text-app-accent focus:ring-app-accent dark:border-zinc-700 dark:bg-zinc-950"
+                            class="size-5 rounded border-app-line text-app-accent focus:ring-app-accent  "
                         >
                         <span>Remember me</span>
                     </label>
 
-                    <a href="{{ route('mobile.password.request') }}" wire:navigate class="shrink-0 text-sm font-semibold text-app-accent dark:text-emerald-300">
+                    <a href="{{ route('mobile.password.request') }}" wire:navigate class="shrink-0 text-sm font-semibold text-app-accent ">
                         Forgot?
                     </a>
                 </div>
 
                 <div aria-live="polite" class="min-h-6">
                     @if ($status)
-                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800   ">
                             {{ $status }}
                         </p>
                     @endif
@@ -64,10 +64,10 @@
     </form>
 
     <div class="grid gap-3 text-center text-sm">
-        <a href="{{ route('mobile.register') }}" wire:navigate class="font-semibold text-app-accent dark:text-emerald-300">
+        <a href="{{ route('mobile.register') }}" wire:navigate class="font-semibold text-app-accent ">
             Create account
         </a>
-        <a href="{{ route('mobile.verification.notice') }}" wire:navigate class="font-semibold text-app-muted dark:text-zinc-400">
+        <a href="{{ route('mobile.verification.notice') }}" wire:navigate class="font-semibold text-app-muted ">
             Verify email
         </a>
     </div>

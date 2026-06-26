@@ -25,19 +25,19 @@
                 />
 
                 <div class="grid gap-3 sm:grid-cols-3">
-                    <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Notes</p>
-                        <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $noteCount }}</p>
+                    <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Notes</p>
+                        <p class="mt-1 text-xl font-semibold text-app-ink ">{{ $noteCount }}</p>
                     </div>
 
-                    <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Pending</p>
-                        <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $pendingCount }}</p>
+                    <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Pending</p>
+                        <p class="mt-1 text-xl font-semibold text-app-ink ">{{ $pendingCount }}</p>
                     </div>
 
-                    <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Failed</p>
-                        <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $failedCount }}</p>
+                    <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Failed</p>
+                        <p class="mt-1 text-xl font-semibold text-app-ink ">{{ $failedCount }}</p>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                 @forelse ($notes as $note)
                     <article
                         wire:key="record-note-{{ $note->id }}"
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4  "
                     >
                         @if ($editingNoteId === $note->id)
                             <form wire:submit="updateNote" class="grid gap-3">
@@ -76,8 +76,8 @@
                         @else
                             <div class="flex items-start justify-between gap-3">
                                 <div class="min-w-0">
-                                    <p class="whitespace-pre-line break-words text-sm leading-6 text-app-ink dark:text-zinc-100">{{ $note->body }}</p>
-                                    <p class="mt-2 text-xs font-medium text-app-muted dark:text-zinc-400">
+                                    <p class="whitespace-pre-line break-words text-sm leading-6 text-app-ink ">{{ $note->body }}</p>
+                                    <p class="mt-2 text-xs font-medium text-app-muted ">
                                         Updated {{ $note->updated_at?->diffForHumans() ?? 'time unknown' }}
                                     </p>
                                 </div>

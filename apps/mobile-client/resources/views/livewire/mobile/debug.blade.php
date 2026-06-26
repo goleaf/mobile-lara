@@ -10,10 +10,10 @@
             @forelse ($debugRows as $debugRow)
                 <div
                     wire:key="debug-row-{{ $debugRow['key'] }}"
-                    class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                    class="rounded-lg border border-app-line bg-app-bg p-4  "
                 >
-                    <p class="text-sm font-medium text-app-muted dark:text-zinc-400">{{ $debugRow['label'] }}</p>
-                    <p class="mt-1 break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ $debugRow['value'] }}</p>
+                    <p class="text-sm font-medium text-app-muted ">{{ $debugRow['label'] }}</p>
+                    <p class="mt-1 break-words text-base font-semibold text-app-ink ">{{ $debugRow['value'] }}</p>
                 </div>
             @empty
                 <x-mobile.empty-state
@@ -30,10 +30,10 @@
                 @forelse ($diagnosticsRows as $diagnosticsRow)
                     <div
                         wire:key="diagnostics-row-{{ $diagnosticsRow['key'] }}"
-                        class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="rounded-lg border border-app-line bg-app-bg p-4  "
                     >
-                        <p class="text-sm font-medium text-app-muted dark:text-zinc-400">{{ $diagnosticsRow['label'] }}</p>
-                        <p class="mt-1 break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ $diagnosticsRow['value'] }}</p>
+                        <p class="text-sm font-medium text-app-muted ">{{ $diagnosticsRow['label'] }}</p>
+                        <p class="mt-1 break-words text-base font-semibold text-app-ink ">{{ $diagnosticsRow['value'] }}</p>
                     </div>
                 @empty
                     <x-mobile.empty-state
@@ -59,8 +59,8 @@
             </x-mobile.button>
 
             @if ($diagnosticsStatus)
-                <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-500/30 dark:bg-emerald-500/10">
-                    <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-100">{{ $diagnosticsStatus }}</p>
+                <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4  ">
+                    <p class="text-sm font-semibold text-emerald-900 ">{{ $diagnosticsStatus }}</p>
                 </div>
             @endif
         </div>
@@ -99,8 +99,8 @@
             </div>
 
             @if ($dialogStatus)
-                <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-500/30 dark:bg-emerald-500/10">
-                    <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-100">{{ $dialogStatus }}</p>
+                <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4  ">
+                    <p class="text-sm font-semibold text-emerald-900 ">{{ $dialogStatus }}</p>
                 </div>
             @endif
 
@@ -109,13 +109,13 @@
                     @forelse ($testStatusRows as $testStatusRow)
                         <div
                             wire:key="test-status-{{ $testStatusRow['key'] }}"
-                            class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                            class="rounded-lg border border-app-line bg-app-bg p-4  "
                         >
-                            <dt class="text-sm font-medium text-app-muted dark:text-zinc-400">{{ $testStatusRow['label'] }}</dt>
-                            <dd class="mt-1 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $testStatusRow['value'] }}</dd>
+                            <dt class="text-sm font-medium text-app-muted ">{{ $testStatusRow['label'] }}</dt>
+                            <dd class="mt-1 break-words text-sm font-semibold text-app-ink ">{{ $testStatusRow['value'] }}</dd>
                         </div>
                     @empty
-                        <div class="text-sm text-app-muted dark:text-zinc-400">
+                        <div class="text-sm text-app-muted ">
                             No native test results recorded.
                         </div>
                     @endforelse
@@ -155,8 +155,8 @@
             </div>
 
             @if ($browserStatus)
-                <div class="rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/30 dark:bg-sky-400/10">
-                    <p class="text-sm font-semibold text-sky-950 dark:text-sky-100">{{ $browserStatus }}</p>
+                <div class="rounded-lg border border-sky-200 bg-sky-50 p-4  ">
+                    <p class="text-sm font-semibold text-sky-950 ">{{ $browserStatus }}</p>
                 </div>
             @endif
         </div>
@@ -193,8 +193,8 @@
             </div>
 
             @if ($shareStatus)
-                <div class="rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/30 dark:bg-sky-400/10">
-                    <p class="text-sm font-semibold text-sky-950 dark:text-sky-100">{{ $shareStatus }}</p>
+                <div class="rounded-lg border border-sky-200 bg-sky-50 p-4  ">
+                    <p class="text-sm font-semibold text-sky-950 ">{{ $shareStatus }}</p>
                 </div>
             @endif
         </div>
@@ -238,22 +238,22 @@
             </div>
 
             @if ($dialogStatus)
-                <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-500/30 dark:bg-emerald-500/10">
-                    <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-100">{{ $dialogStatus }}</p>
+                <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4  ">
+                    <p class="text-sm font-semibold text-emerald-900 ">{{ $dialogStatus }}</p>
                 </div>
             @endif
 
             @if ($dialogResultRows !== [])
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <h3 class="text-sm font-semibold text-app-ink dark:text-zinc-100">Last payload</h3>
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <h3 class="text-sm font-semibold text-app-ink ">Last payload</h3>
                     <dl class="mt-3 grid gap-3">
                         @forelse ($dialogResultRows as $dialogResultRow)
                             <div wire:key="dialog-result-{{ $dialogResultRow['key'] }}" class="grid gap-1">
-                                <dt class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">{{ $dialogResultRow['label'] }}</dt>
-                                <dd class="break-words text-sm text-app-ink dark:text-zinc-100">{{ $dialogResultRow['value'] }}</dd>
+                                <dt class="text-xs font-semibold uppercase text-app-muted ">{{ $dialogResultRow['label'] }}</dt>
+                                <dd class="break-words text-sm text-app-ink ">{{ $dialogResultRow['value'] }}</dd>
                             </div>
                         @empty
-                            <div class="text-sm text-app-muted dark:text-zinc-400">
+                            <div class="text-sm text-app-muted ">
                                 No payload recorded.
                             </div>
                         @endforelse
@@ -294,8 +294,8 @@
             </div>
 
             @if ($toastActionStatus)
-                <div class="rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/30 dark:bg-sky-400/10">
-                    <p class="text-sm font-semibold text-sky-950 dark:text-sky-100">{{ $toastActionStatus }}</p>
+                <div class="rounded-lg border border-sky-200 bg-sky-50 p-4  ">
+                    <p class="text-sm font-semibold text-sky-950 ">{{ $toastActionStatus }}</p>
                 </div>
             @endif
         </div>

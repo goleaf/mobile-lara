@@ -12,12 +12,12 @@
         description="NativePHP handles copy, move, and sharing when the native bridge is available."
     >
         <div class="grid gap-3">
-            <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+            <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4  ">
                 <div class="min-w-0">
-                    <p class="text-base font-semibold text-app-ink dark:text-zinc-100">
+                    <p class="text-base font-semibold text-app-ink ">
                         {{ $snapshot['native_available'] ? 'Native bridge available' : 'Browser fallback active' }}
                     </p>
-                    <p class="mt-1 break-words text-sm leading-5 text-app-muted dark:text-zinc-400">
+                    <p class="mt-1 break-words text-sm leading-5 text-app-muted ">
                         {{ $snapshot['root_path'] }}
                     </p>
                 </div>
@@ -28,14 +28,14 @@
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Files</p>
-                    <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">{{ $snapshot['file_count'] }}</p>
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Files</p>
+                    <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink ">{{ $snapshot['file_count'] }}</p>
                 </div>
 
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Size</p>
-                    <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">{{ $snapshot['total_size_label'] }}</p>
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Size</p>
+                    <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink ">{{ $snapshot['total_size_label'] }}</p>
                 </div>
             </div>
         </div>
@@ -44,8 +44,8 @@
     @if ($lastOperationMessage)
         <div @class([
             'rounded-lg border px-4 py-3 text-sm font-medium',
-            'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-100' => $lastOperationStatus === 'success',
-            'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100' => $lastOperationStatus !== 'success',
+            'border-emerald-200 bg-emerald-50 text-emerald-900   ' => $lastOperationStatus === 'success',
+            'border-amber-200 bg-amber-50 text-amber-900   ' => $lastOperationStatus !== 'success',
         ])>
             {{ $lastOperationMessage }}
         </div>
@@ -138,7 +138,7 @@
                 />
 
                 <div class="grid gap-2">
-                    <label for="importUpload" class="text-sm font-medium text-app-ink dark:text-zinc-100">
+                    <label for="importUpload" class="text-sm font-medium text-app-ink ">
                         File
                     </label>
                     <input
@@ -146,10 +146,10 @@
                         name="importUpload"
                         type="file"
                         wire:model="importUpload"
-                        class="block min-h-12 w-full rounded-lg border border-app-line bg-white px-3 py-2 text-sm text-app-ink shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-app-ink file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white focus:border-app-accent focus:outline-none focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:file:bg-zinc-100 dark:file:text-zinc-950"
+                        class="block min-h-12 w-full rounded-lg border border-app-line bg-white px-3 py-2 text-sm text-app-ink shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-app-ink file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white focus:border-app-accent focus:outline-none focus:ring-2 focus:ring-app-accent/20     "
                     >
                     @error('importUpload')
-                        <p class="text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
+                        <p class="text-sm font-medium text-red-600 ">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -166,12 +166,12 @@
             @forelse ($capabilities as $capability)
                 <div
                     wire:key="file-capability-{{ $capability['key'] }}"
-                    class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950"
+                    class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  "
                 >
                     <span class="min-w-0">
-                        <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $capability['label'] }}</span>
-                        <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $capability['description'] }}</span>
-                        <span class="mt-1 block text-xs font-medium text-app-muted dark:text-zinc-500">{{ $capability['driver'] }}</span>
+                        <span class="block text-base font-semibold text-app-ink ">{{ $capability['label'] }}</span>
+                        <span class="mt-1 block text-sm leading-5 text-app-muted ">{{ $capability['description'] }}</span>
+                        <span class="mt-1 block text-xs font-medium text-app-muted ">{{ $capability['driver'] }}</span>
                     </span>
 
                     <x-mobile.badge :variant="$capability['supported'] ? 'success' : 'neutral'">
@@ -203,12 +203,12 @@
                 @forelse ($fileRows as $file)
                     <div
                         wire:key="managed-file-{{ $file['path'] }}"
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4  "
                     >
                         <div class="flex items-start justify-between gap-4">
                             <div class="min-w-0">
-                                <p class="break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ $file['name'] }}</p>
-                                <p class="mt-1 break-words text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $file['path'] }}</p>
+                                <p class="break-words text-base font-semibold text-app-ink ">{{ $file['name'] }}</p>
+                                <p class="mt-1 break-words text-sm leading-5 text-app-muted ">{{ $file['path'] }}</p>
                             </div>
 
                             <x-mobile.badge variant="neutral">
@@ -242,7 +242,7 @@
         @endif
 
         <x-slot:footer>
-            <p class="break-words text-xs font-medium text-app-muted dark:text-zinc-500">
+            <p class="break-words text-xs font-medium text-app-muted ">
                 Exports are copied to {{ $snapshot['export_path'] }}.
             </p>
         </x-slot:footer>

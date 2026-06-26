@@ -22,6 +22,10 @@ Local Herd serves this app at `https://mobile-lara.test`. The app-local `.env`
 belongs in this folder and points `MOBILE_API_BASE_URL` to
 `https://mobile-lara-api-admin.test/api/v1/mobile`.
 
+The mobile client uses a light-only interface in the web preview and NativePHP
+builds. Do not add theme switching, `dark:` Tailwind variants, `.dark`
+selectors, or system color-scheme switching to mobile views or services.
+
 Product Vision is defined in `../../docs/product-vision.md`: this app exists as
 the managed NativePHP + Livewire execution surface for mobile users, not as a
 source of SaaS authority.

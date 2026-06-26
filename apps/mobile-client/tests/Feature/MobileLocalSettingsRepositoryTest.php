@@ -24,7 +24,7 @@ beforeEach(function (): void {
         'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
         'mobile_local.settings' => [
             'key' => 'default',
-            'theme' => 'system',
+            'theme' => 'light',
             'language' => 'en',
             'notification_preferences' => [
                 'push_enabled' => true,
@@ -59,7 +59,7 @@ test('settings repository creates the default local settings row', function (): 
 
     expect($settings)->toBeInstanceOf(MobileLocalSetting::class)
         ->and($settings->settings_key)->toBe('default')
-        ->and($settings->theme)->toBe('system')
+        ->and($settings->theme)->toBe('light')
         ->and($settings->language)->toBe('en')
         ->and($settings->notification_preferences)->toBe([
             'push_enabled' => true,
@@ -77,7 +77,7 @@ test('settings repository creates the default local settings row', function (): 
 
 test('settings repository updates all local settings fields', function (): void {
     $settings = app(SettingsRepository::class)->update([
-        'theme' => 'dark',
+        'theme' => 'system',
         'language' => 'lt',
         'notification_preferences' => [
             'push_enabled' => false,
@@ -97,7 +97,7 @@ test('settings repository updates all local settings fields', function (): void 
         'last_sync_at' => CarbonImmutable::parse('2026-06-25 13:45:00'),
     ]);
 
-    expect($settings->theme)->toBe('dark')
+    expect($settings->theme)->toBe('light')
         ->and($settings->language)->toBe('lt')
         ->and($settings->notification_preferences)->toBe([
             'push_enabled' => false,

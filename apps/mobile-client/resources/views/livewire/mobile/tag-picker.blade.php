@@ -1,6 +1,6 @@
 <div class="grid gap-3">
     <div class="grid gap-2">
-        <label for="tag-picker-{{ $context }}" class="text-sm font-medium text-app-ink dark:text-zinc-100">
+        <label for="tag-picker-{{ $context }}" class="text-sm font-medium text-app-ink ">
             {{ $label }}
         </label>
 
@@ -11,7 +11,7 @@
                 wire:model.live.debounce.250ms="search"
                 placeholder="{{ $placeholder }}"
                 aria-invalid="{{ $errors->has('search') ? 'true' : 'false' }}"
-                class="min-h-12 w-full rounded-lg border border-app-line bg-white px-3 text-base text-app-ink shadow-sm outline-none transition placeholder:text-app-muted/70 focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20"
+                class="min-h-12 w-full rounded-lg border border-app-line bg-white px-3 text-base text-app-ink shadow-sm outline-none transition placeholder:text-app-muted/70 focus:border-app-accent focus:ring-2 focus:ring-app-accent/20      "
             >
 
             @if ($canCreateTag)
@@ -29,11 +29,11 @@
         </div>
 
         @error('search')
-            <p class="text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
+            <p class="text-sm font-medium text-red-600 ">{{ $message }}</p>
         @enderror
 
         @if ($storageError)
-            <p class="text-sm font-medium text-red-600 dark:text-red-400">{{ $storageError }}</p>
+            <p class="text-sm font-medium text-red-600 ">{{ $storageError }}</p>
         @endif
     </div>
 
@@ -41,13 +41,13 @@
         @forelse ($selectedTags as $tag)
             <span
                 wire:key="tag-picker-{{ $context }}-selected-{{ $tag['slug'] }}"
-                class="inline-flex min-h-9 items-center gap-2 rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                class="inline-flex min-h-9 items-center gap-2 rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink   "
             >
                 <span>{{ $tag['name'] }}</span>
                 <button
                     type="button"
                     wire:click="removeTag('{{ $tag['slug'] }}')"
-                    class="inline-flex size-6 items-center justify-center rounded-full text-app-muted transition hover:bg-app-line hover:text-app-ink dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                    class="inline-flex size-6 items-center justify-center rounded-full text-app-muted transition hover:bg-app-line hover:text-app-ink   "
                     aria-label="Remove {{ $tag['name'] }}"
                 >
                     &times;
@@ -65,7 +65,7 @@
             <button
                 type="button"
                 wire:click="clearTags"
-                class="text-sm font-semibold text-app-muted underline-offset-4 hover:text-app-ink hover:underline dark:text-zinc-400 dark:hover:text-zinc-100"
+                class="text-sm font-semibold text-app-muted underline-offset-4 hover:text-app-ink hover:underline  "
             >
                 Clear tags
             </button>
@@ -78,14 +78,14 @@
                 type="button"
                 wire:key="tag-picker-{{ $context }}-result-{{ $tag['id'] }}"
                 wire:click="addTag({{ $tag['id'] }})"
-                class="flex min-h-11 items-center justify-between gap-3 rounded-lg border border-app-line bg-app-bg px-3 text-left text-sm font-semibold text-app-ink transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900"
+                class="flex min-h-11 items-center justify-between gap-3 rounded-lg border border-app-line bg-app-bg px-3 text-left text-sm font-semibold text-app-ink transition hover:bg-app-surface    "
             >
                 <span>{{ $tag['name'] }}</span>
-                <span class="text-xs font-medium text-app-muted dark:text-zinc-500">Add</span>
+                <span class="text-xs font-medium text-app-muted ">Add</span>
             </button>
         @empty
             @if (trim($search) !== '' && ! $canCreateTag && ! $storageError)
-                <p class="text-sm text-app-muted dark:text-zinc-400">No matching tags</p>
+                <p class="text-sm text-app-muted ">No matching tags</p>
             @endif
         @endforelse
     </div>

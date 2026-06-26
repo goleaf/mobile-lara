@@ -20,11 +20,11 @@
     <div class="grid gap-5">
         <x-mobile.card title="Current workspace" description="API-derived tenant context cached on this device.">
             @if ($currentTenant)
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
                     <div class="flex items-start justify-between gap-4">
                         <div class="min-w-0">
-                            <p class="text-lg font-semibold text-app-ink dark:text-zinc-100">{{ $currentTenant['name'] ?? 'Workspace' }}</p>
-                            <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                            <p class="text-lg font-semibold text-app-ink ">{{ $currentTenant['name'] ?? 'Workspace' }}</p>
+                            <p class="mt-1 text-sm leading-5 text-app-muted ">
                                 {{ $currentTenant['role_summary']['label'] ?? 'Mobile access' }}
                             </p>
                         </div>
@@ -42,7 +42,7 @@
             @endif
 
             <x-slot:footer>
-                <p class="text-sm leading-5 text-app-muted dark:text-zinc-400">
+                <p class="text-sm leading-5 text-app-muted ">
                     {{ $cachedAt ? 'Cached '.$cachedAt : 'No cached bootstrap context yet.' }}
                 </p>
             </x-slot:footer>
@@ -66,13 +66,13 @@
                         $invitedAt = is_string($invitation['invited_at'] ?? null) ? $invitation['invited_at'] : null;
                     @endphp
 
-                    <div wire:key="workspace-invitation-{{ $tenantId }}" class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                    <div wire:key="workspace-invitation-{{ $tenantId }}" class="rounded-lg border border-app-line bg-app-bg p-4  ">
                         <div class="flex items-start justify-between gap-4">
                             <div class="min-w-0">
-                                <p class="text-base font-semibold text-app-ink dark:text-zinc-100">{{ $tenantName }}</p>
-                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $roleLabel }}</p>
+                                <p class="text-base font-semibold text-app-ink ">{{ $tenantName }}</p>
+                                <p class="mt-1 text-sm leading-5 text-app-muted ">{{ $roleLabel }}</p>
                                 @if ($invitedAt)
-                                    <p class="mt-1 text-xs font-medium text-app-muted dark:text-zinc-500">Invited {{ $invitedAt }}</p>
+                                    <p class="mt-1 text-xs font-medium text-app-muted ">Invited {{ $invitedAt }}</p>
                                 @endif
                             </div>
 
@@ -138,17 +138,17 @@
                             @disabled(! $switchable)
                             @class([
                                 'flex min-h-20 items-center justify-between gap-4 rounded-lg border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-60',
-                                'border-app-ink bg-app-bg dark:border-zinc-100 dark:bg-zinc-950' => $isSelected,
-                                'border-app-line bg-app-bg hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900' => ! $isSelected,
+                                'border-app-ink bg-app-bg  ' => $isSelected,
+                                'border-app-line bg-app-bg hover:bg-app-surface   ' => ! $isSelected,
                             ])
                         >
                             <span class="min-w-0">
-                                <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $tenantName }}</span>
-                                <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                <span class="block text-base font-semibold text-app-ink ">{{ $tenantName }}</span>
+                                <span class="mt-1 block text-sm leading-5 text-app-muted ">
                                     {{ $tenant['role_summary']['label'] ?? 'Mobile access' }}
                                 </span>
                                 @if (! $switchable && ($tenant['disabled_reason'] ?? null))
-                                    <span class="mt-1 block text-xs font-medium text-red-700 dark:text-red-300">{{ $tenant['disabled_reason'] }}</span>
+                                    <span class="mt-1 block text-xs font-medium text-red-700 ">{{ $tenant['disabled_reason'] }}</span>
                                 @endif
                             </span>
 
@@ -157,7 +157,7 @@
                                     {{ $isCurrent ? 'Current' : ($switchable ? 'Available' : 'Blocked') }}
                                 </x-mobile.badge>
                                 @if ($isSelected)
-                                    <span class="text-xs font-semibold text-app-ink dark:text-zinc-100">Selected</span>
+                                    <span class="text-xs font-semibold text-app-ink ">Selected</span>
                                 @endif
                             </span>
                         </button>
@@ -170,18 +170,18 @@
                 </div>
 
                 @error('selectedTenantId')
-                    <p class="mt-3 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
+                    <p class="mt-3 text-sm font-medium text-red-600 ">{{ $message }}</p>
                 @enderror
 
                 <x-slot:footer>
                     <div class="grid gap-3">
                         <div aria-live="polite" class="min-h-6">
                             @if ($workspaceError)
-                                <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-200">
+                                <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800   ">
                                     {{ $workspaceError }}
                                 </p>
                             @elseif ($workspaceStatus)
-                                <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                                <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800   ">
                                     {{ $workspaceStatus }}
                                 </p>
                             @endif

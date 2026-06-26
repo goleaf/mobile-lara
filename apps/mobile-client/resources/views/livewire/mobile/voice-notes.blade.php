@@ -11,12 +11,12 @@
         title="Microphone bridge"
         description="NativePHP microphone events return a local file path to this Livewire screen."
     >
-        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+        <div class="flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg p-4  ">
             <div class="min-w-0">
-                <p class="text-base font-semibold text-app-ink dark:text-zinc-100">
+                <p class="text-base font-semibold text-app-ink ">
                     {{ $nativeAudioAvailable ? 'Native microphone available' : 'Browser fallback active' }}
                 </p>
-                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                <p class="mt-1 text-sm leading-5 text-app-muted ">
                     {{ $nativeAudioAvailable ? 'Microphone recording requests can be opened on this device.' : 'Open this route inside NativePHP or Jump Bridge to launch native audio controls.' }}
                 </p>
             </div>
@@ -27,39 +27,39 @@
         </div>
 
         <dl class="mt-3 grid grid-cols-2 gap-3">
-            <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                <dt class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">State</dt>
-                <dd class="mt-1 text-base font-semibold capitalize text-app-ink dark:text-zinc-100">{{ $recordingState }}</dd>
+            <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                <dt class="text-xs font-semibold uppercase text-app-muted ">State</dt>
+                <dd class="mt-1 text-base font-semibold capitalize text-app-ink ">{{ $recordingState }}</dd>
             </div>
-            <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                <dt class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Saved note</dt>
-                <dd class="mt-1 text-base font-semibold text-app-ink dark:text-zinc-100">{{ $savedVoiceNoteId ? '#'.$savedVoiceNoteId : 'None' }}</dd>
+            <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                <dt class="text-xs font-semibold uppercase text-app-muted ">Saved note</dt>
+                <dd class="mt-1 text-base font-semibold text-app-ink ">{{ $savedVoiceNoteId ? '#'.$savedVoiceNoteId : 'None' }}</dd>
             </div>
         </dl>
 
         @if ($pendingRecordingId)
-            <div class="mt-3 rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/30 dark:bg-sky-400/10">
-                <p class="text-sm font-semibold text-sky-950 dark:text-sky-100">Pending recording</p>
-                <p class="mt-1 break-words text-sm text-sky-900 dark:text-sky-100/80">{{ $pendingRecordingId }}</p>
+            <div class="mt-3 rounded-lg border border-sky-200 bg-sky-50 p-4  ">
+                <p class="text-sm font-semibold text-sky-950 ">Pending recording</p>
+                <p class="mt-1 break-words text-sm text-sky-900 ">{{ $pendingRecordingId }}</p>
             </div>
         @endif
 
         <x-slot:footer>
             <div aria-live="polite" class="grid min-h-6 gap-2">
                 @if ($recordingError)
-                    <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-100">
+                    <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900   ">
                         {{ $recordingError }}
                     </p>
                 @endif
 
                 @if ($recordingStatus)
-                    <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                    <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800   ">
                         {{ $recordingStatus }}
                     </p>
                 @endif
 
                 @if ($uploadQueueStatus)
-                    <p class="rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-sm font-medium text-sky-900 dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-100">
+                    <p class="rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-sm font-medium text-sky-900   ">
                         {{ $uploadQueueStatus }}
                     </p>
                 @endif
@@ -101,17 +101,17 @@
     <x-mobile.card title="Current recording" description="Review the returned native audio path before saving.">
         @if ($recordedPath)
             <div class="grid gap-4">
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
                     <div class="flex items-start justify-between gap-4">
                         <div class="min-w-0">
-                            <p class="break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ basename($recordedPath) }}</p>
-                            <p class="mt-1 text-sm text-app-muted dark:text-zinc-400">{{ $recordedMimeType }}</p>
+                            <p class="break-words text-base font-semibold text-app-ink ">{{ basename($recordedPath) }}</p>
+                            <p class="mt-1 text-sm text-app-muted ">{{ $recordedMimeType }}</p>
                         </div>
 
                         <x-mobile.badge variant="accent">Unsaved</x-mobile.badge>
                     </div>
 
-                    <p class="mt-3 break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                    <p class="mt-3 break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted   ">
                         {{ $recordedPath }}
                     </p>
 
@@ -183,11 +183,11 @@
             </x-slot:action>
 
             <div class="grid gap-4">
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
                     <div class="flex items-start justify-between gap-4">
                         <div class="min-w-0">
-                            <p class="break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ $selectedVoiceNote->displayName() }}</p>
-                            <p class="mt-1 text-sm text-app-muted dark:text-zinc-400">
+                            <p class="break-words text-base font-semibold text-app-ink ">{{ $selectedVoiceNote->displayName() }}</p>
+                            <p class="mt-1 text-sm text-app-muted ">
                                 {{ $selectedVoiceNote->formattedDuration() ?: 'Duration pending' }}
                                 / {{ $selectedVoiceNote->created_at?->diffForHumans() ?? 'Time unknown' }}
                             </p>
@@ -198,7 +198,7 @@
                         </x-mobile.badge>
                     </div>
 
-                    <p class="mt-3 break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                    <p class="mt-3 break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted   ">
                         {{ $selectedVoiceNote->local_file_path }}
                     </p>
 
@@ -207,14 +207,14 @@
                     </audio>
                 </div>
 
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Transcript placeholder</p>
-                    <p class="mt-2 whitespace-pre-line text-sm leading-6 text-app-ink dark:text-zinc-100">
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <p class="text-xs font-semibold uppercase text-app-muted ">Transcript placeholder</p>
+                    <p class="mt-2 whitespace-pre-line text-sm leading-6 text-app-ink ">
                         {{ $selectedVoiceNote->transcript ?: 'Transcript pending' }}
                     </p>
                 </div>
 
-                <div class="grid gap-2 text-sm text-app-muted dark:text-zinc-400">
+                <div class="grid gap-2 text-sm text-app-muted ">
                     <p>Related entity: {{ $selectedVoiceNote->relatedEntityLabel() ?: 'None' }}</p>
                     <p>Created: {{ $selectedVoiceNote->created_at?->toDayDateTimeString() ?? 'Unknown' }}</p>
                 </div>
@@ -245,12 +245,12 @@
             @forelse ($audioCapabilities as $capability)
                 <div
                     wire:key="audio-capability-{{ $capability['key'] }}"
-                    class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                    class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4  "
                 >
                     <div class="flex items-start justify-between gap-4">
                         <span class="min-w-0">
-                            <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $capability['label'] }}</span>
-                            <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $capability['description'] }}</span>
+                            <span class="block text-base font-semibold text-app-ink ">{{ $capability['label'] }}</span>
+                            <span class="mt-1 block text-sm leading-5 text-app-muted ">{{ $capability['description'] }}</span>
                         </span>
 
                         <x-mobile.badge :variant="$capability['supported'] ? 'success' : 'neutral'">
@@ -258,7 +258,7 @@
                         </x-mobile.badge>
                     </div>
 
-                    <p class="break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                    <p class="break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted   ">
                         {{ $capability['driver'] }}
                     </p>
                 </div>
@@ -282,12 +282,12 @@
                 @forelse ($voiceNotes as $voiceNote)
                     <article
                         wire:key="voice-note-{{ $voiceNote->getKey() }}"
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4  "
                     >
                         <div class="flex items-start justify-between gap-4">
                             <div class="min-w-0">
-                                <p class="break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ $voiceNote->displayName() }}</p>
-                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                <p class="break-words text-base font-semibold text-app-ink ">{{ $voiceNote->displayName() }}</p>
+                                <p class="mt-1 text-sm leading-5 text-app-muted ">
                                     {{ $voiceNote->transcriptPreview() }}
                                 </p>
                             </div>
@@ -313,7 +313,7 @@
                             </x-mobile.badge>
                         </div>
 
-                        <p class="break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                        <p class="break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted   ">
                             {{ $voiceNote->local_file_path }}
                         </p>
 

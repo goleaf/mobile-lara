@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
+        <meta name="color-scheme" content="light">
         <link rel="icon" href="{{ asset('icon.png') }}" type="image/png">
 
         @php
@@ -15,9 +15,9 @@
         @vite(['resources/css/app.scss', 'resources/js/app.js'])
         @livewireStyles
     </head>
-    <body class="min-h-dvh overflow-hidden bg-app-bg text-app-ink antialiased dark:bg-zinc-950 dark:text-zinc-100">
-        <div id="mobile-shell" class="mobile-shell mx-auto grid min-h-dvh w-full overflow-hidden bg-app-bg shadow-[0_0_0_1px_var(--color-app-line)] dark:bg-zinc-950 dark:shadow-[0_0_0_1px_#27272a]">
-            <header id="mobile-shell-header" class="mobile-shell-header safe-x z-20 border-b border-app-line bg-app-surface/95 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/95">
+    <body class="min-h-dvh overflow-hidden bg-app-bg text-app-ink antialiased">
+        <div id="mobile-shell" class="mobile-shell mx-auto grid min-h-dvh w-full overflow-hidden bg-app-bg shadow-[0_0_0_1px_var(--color-app-line)]">
+            <header id="mobile-shell-header" class="mobile-shell-header safe-x z-20 border-b border-app-line bg-app-surface/95 backdrop-blur">
                 <x-mobile.app-header :title="$pageTitle" />
             </header>
 
@@ -41,7 +41,7 @@
             <nav
                 id="mobile-shell-footer"
                 aria-label="Primary tabs"
-                class="mobile-shell-footer safe-x z-20 border-t border-app-line bg-app-surface/95 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/95"
+                class="mobile-shell-footer safe-x z-20 border-t border-app-line bg-app-surface/95 backdrop-blur"
             >
                 <x-mobile.bottom-navigation />
             </nav>

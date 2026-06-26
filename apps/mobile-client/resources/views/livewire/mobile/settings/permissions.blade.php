@@ -10,17 +10,17 @@
             @forelse ($permissionRows as $permission)
                 <article
                     wire:key="permission-center-{{ $permission['key'] }}"
-                    class="grid gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                    class="grid gap-4 rounded-lg border border-app-line bg-app-bg p-4  "
                 >
                     <div class="flex items-start justify-between gap-4">
                         <span class="min-w-0">
                             <span class="flex flex-wrap items-center gap-2">
-                                <span class="text-base font-semibold text-app-ink dark:text-zinc-100">{{ $permission['label'] }}</span>
+                                <span class="text-base font-semibold text-app-ink ">{{ $permission['label'] }}</span>
                                 <x-mobile.badge variant="neutral" size="sm">
                                     {{ $permission['badge'] }}
                                 </x-mobile.badge>
                             </span>
-                            <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $permission['description'] }}</span>
+                            <span class="mt-1 block text-sm leading-5 text-app-muted ">{{ $permission['description'] }}</span>
                         </span>
 
                         <x-mobile.badge :variant="$permission['status_variant']" dot>
@@ -28,19 +28,19 @@
                         </x-mobile.badge>
                     </div>
 
-                    <div class="rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 dark:border-zinc-800 dark:bg-zinc-900">
-                        <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">Explanation</p>
-                        <p class="mt-1 text-sm leading-5 text-app-ink dark:text-zinc-100">{{ $permission['explanation'] }}</p>
+                    <div class="rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2  ">
+                        <p class="text-xs font-semibold uppercase text-app-muted ">Explanation</p>
+                        <p class="mt-1 text-sm leading-5 text-app-ink ">{{ $permission['explanation'] }}</p>
                     </div>
 
                     <dl class="grid gap-2 sm:grid-cols-2">
                         @foreach ($permission['details'] as $detail)
                             <div
                                 wire:key="permission-center-{{ $permission['key'] }}-detail-{{ $loop->index }}"
-                                class="rounded-lg border border-app-line bg-app-surface px-3 py-2 dark:border-zinc-800 dark:bg-zinc-900"
+                                class="rounded-lg border border-app-line bg-app-surface px-3 py-2  "
                             >
-                                <dt class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">{{ $detail['label'] }}</dt>
-                                <dd class="mt-1 break-words text-sm font-medium text-app-ink dark:text-zinc-100">{{ $detail['value'] }}</dd>
+                                <dt class="text-xs font-semibold uppercase text-app-muted ">{{ $detail['label'] }}</dt>
+                                <dd class="mt-1 break-words text-sm font-medium text-app-ink ">{{ $detail['value'] }}</dd>
                             </div>
                         @endforeach
                     </dl>
@@ -75,7 +75,7 @@
                         </x-mobile.button>
                     </div>
 
-                    <p class="text-xs leading-5 text-app-muted dark:text-zinc-500">{{ $permission['recovery_note'] }}</p>
+                    <p class="text-xs leading-5 text-app-muted ">{{ $permission['recovery_note'] }}</p>
                 </article>
             @empty
                 <x-mobile.empty-state
@@ -88,21 +88,21 @@
         <x-slot:footer>
             <div aria-live="polite" class="grid min-h-6 gap-3">
                 @if ($permissionError)
-                    <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-100">
+                    <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900   ">
                         {{ $permissionError }}
                     </p>
                 @elseif ($permissionStatus)
-                    <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                    <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800   ">
                         {{ $permissionStatus }}
                     </p>
                 @endif
 
                 @if ($settingsError)
-                    <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-100">
+                    <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900   ">
                         {{ $settingsError }}
                     </p>
                 @elseif ($settingsStatus)
-                    <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                    <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800   ">
                         {{ $settingsStatus }}
                     </p>
                 @endif
@@ -115,11 +115,11 @@
             @forelse ($platformRows as $platformRow)
                 <div
                     wire:key="platform-helper-{{ $platformRow['key'] }}"
-                    class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950"
+                    class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  "
                 >
                     <span class="min-w-0">
-                        <span class="block text-sm font-medium text-app-muted dark:text-zinc-400">{{ $platformRow['label'] }}</span>
-                        <span class="mt-1 block break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ $platformRow['value'] }}</span>
+                        <span class="block text-sm font-medium text-app-muted ">{{ $platformRow['label'] }}</span>
+                        <span class="mt-1 block break-words text-base font-semibold text-app-ink ">{{ $platformRow['value'] }}</span>
                     </span>
                 </div>
             @empty
@@ -135,18 +135,18 @@
         <a
             href="{{ route('mobile.debug') }}"
             wire:navigate
-            class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+            class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface   "
         >
             <span class="min-w-0">
-                <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">Developer debug</span>
-                <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">Open runtime, device, network, storage, camera, and notification checks.</span>
+                <span class="block text-base font-semibold text-app-ink ">Developer debug</span>
+                <span class="mt-1 block text-sm leading-5 text-app-muted ">Open runtime, device, network, storage, camera, and notification checks.</span>
             </span>
 
             <span class="flex shrink-0 items-center gap-2">
                 <x-mobile.badge variant="accent">
                     Live
                 </x-mobile.badge>
-                <span aria-hidden="true" class="text-lg font-semibold text-app-muted dark:text-zinc-500">›</span>
+                <span aria-hidden="true" class="text-lg font-semibold text-app-muted ">›</span>
             </span>
         </a>
     </x-mobile.card>

@@ -33,19 +33,19 @@
                 'group flex min-w-0 flex-col items-center justify-end rounded-lg px-1.5 py-2 transition focus-visible:outline-2 focus-visible:outline-offset-2',
                 'min-h-[4.75rem] gap-1.5' => ! $primary,
                 'min-h-[5.5rem] gap-2' => $primary,
-                'bg-app-bg text-app-ink shadow-sm ring-1 ring-app-line/80 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-zinc-700 dark:shadow-none' => $active && ! $primary,
-                'text-app-muted hover:bg-app-bg hover:text-app-ink dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100' => ! $active && ! $primary,
-                'text-app-ink dark:text-zinc-100' => $primary,
+                'bg-app-bg text-app-ink shadow-sm ring-1 ring-app-line/80    ' => $active && ! $primary,
+                'text-app-muted hover:bg-app-bg hover:text-app-ink   ' => ! $active && ! $primary,
+                'text-app-ink ' => $primary,
             ])
         >
             <span @class([
                 'grid place-items-center transition',
                 'size-11 rounded-lg border' => ! $primary,
                 'size-14 rounded-full border-2 shadow-[0_12px_28px_-18px_rgba(15,23,42,0.85)]' => $primary,
-                'border-app-ink bg-app-ink text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-950' => $active && ! $primary,
-                'border-transparent bg-app-bg text-current group-hover:border-app-line dark:bg-zinc-950 dark:group-hover:border-zinc-700' => ! $active && ! $primary,
-                'bg-app-ink text-white dark:bg-zinc-100 dark:text-zinc-950' => $active && $primary,
-                'border-app-line bg-app-surface text-app-ink group-hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:group-hover:bg-zinc-800' => ! $active && $primary,
+                'border-app-ink bg-app-ink text-white   ' => $active && ! $primary,
+                'border-transparent bg-app-bg text-current group-hover:border-app-line  ' => ! $active && ! $primary,
+                'bg-app-ink text-white  ' => $active && $primary,
+                'border-app-line bg-app-surface text-app-ink group-hover:bg-app-bg    ' => ! $active && $primary,
             ])>
                 @switch($item['icon'])
                     @case('dashboard')

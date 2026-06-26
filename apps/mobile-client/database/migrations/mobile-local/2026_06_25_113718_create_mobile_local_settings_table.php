@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::connection($this->connection)->create('mobile_local_settings', function (Blueprint $table) {
             $table->id();
             $table->string('settings_key')->default('default')->unique();
-            $table->string('theme', 32)->default('system');
+            $table->string('theme', 32)->default('light');
             $table->string('language', 16)->default('en');
             $table->json('notification_preferences')->nullable();
             $table->json('sync_settings')->nullable();

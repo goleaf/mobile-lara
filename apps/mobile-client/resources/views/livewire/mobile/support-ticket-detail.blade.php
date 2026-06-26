@@ -35,24 +35,24 @@
         <x-mobile.card title="Ticket summary" description="Admin/API owns status, priority, assignment, and visibility.">
             <div class="grid gap-3">
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Priority</p>
-                        <p class="mt-1 text-sm font-semibold text-app-ink dark:text-zinc-100">
+                    <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Priority</p>
+                        <p class="mt-1 text-sm font-semibold text-app-ink ">
                             {{ str($ticketData['priority'] ?? 'normal')->title() }}
                         </p>
                     </div>
 
-                    <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Messages</p>
-                        <p class="mt-1 text-sm font-semibold text-app-ink dark:text-zinc-100">
+                    <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Messages</p>
+                        <p class="mt-1 text-sm font-semibold text-app-ink ">
                             {{ $ticketData['messages_count'] ?? count($ticketMessages) }}
                         </p>
                     </div>
                 </div>
 
-                <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Assignment</p>
-                    <p class="mt-1 text-sm font-semibold text-app-ink dark:text-zinc-100">
+                <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Assignment</p>
+                    <p class="mt-1 text-sm font-semibold text-app-ink ">
                         @if (($ticketData['assignment']['assigned'] ?? false) && is_array($ticketData['assignment']['agent'] ?? null))
                             {{ $ticketData['assignment']['agent']['name'] ?? 'Assigned agent' }}
                         @else
@@ -68,10 +68,10 @@
                 @forelse ($ticketMessages as $message)
                     <article
                         wire:key="support-message-{{ $message['id'] ?? $loop->index }}"
-                        class="grid gap-2 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="grid gap-2 rounded-lg border border-app-line bg-app-bg p-4  "
                     >
                         <div class="flex items-start justify-between gap-3">
-                            <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">
+                            <p class="text-sm font-semibold text-app-ink ">
                                 {{ $message['author']['name'] ?? 'Support message' }}
                             </p>
                             <x-mobile.badge variant="neutral" size="sm">
@@ -79,12 +79,12 @@
                             </x-mobile.badge>
                         </div>
 
-                        <p class="break-words text-sm leading-6 text-app-muted dark:text-zinc-400">
+                        <p class="break-words text-sm leading-6 text-app-muted ">
                             {{ $message['body'] ?? '' }}
                         </p>
 
                         @if (! empty($message['attachments']) || ! empty($message['diagnostic_report_id']))
-                            <p class="text-xs font-medium text-app-muted dark:text-zinc-500">
+                            <p class="text-xs font-medium text-app-muted ">
                                 Includes attachment metadata or diagnostics reference.
                             </p>
                         @endif
@@ -110,7 +110,7 @@
                     />
 
                     @if ($messageError)
-                        <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-100">
+                        <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900   ">
                             {{ $messageError }}
                         </p>
                     @endif

@@ -48,7 +48,7 @@
                     />
 
                     <div
-                        class="mb-7 size-12 rounded-lg border border-app-line shadow-sm dark:border-zinc-700"
+                        class="mb-7 size-12 rounded-lg border border-app-line shadow-sm "
                         style="background-color: {{ $colorPreview }}"
                         aria-hidden="true"
                     ></div>
@@ -89,16 +89,16 @@
 
         <x-mobile.card title="Category summary" description="Counts are calculated in one local query with record totals attached.">
             <div class="grid grid-cols-2 gap-3">
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Categories</p>
-                    <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">{{ $categoryCount }}</p>
-                    <p class="mt-1 text-xs font-medium text-app-muted dark:text-zinc-400">Local labels</p>
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Categories</p>
+                    <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink ">{{ $categoryCount }}</p>
+                    <p class="mt-1 text-xs font-medium text-app-muted ">Local labels</p>
                 </div>
 
-                <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Records</p>
-                    <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">{{ $recordCount }}</p>
-                    <p class="mt-1 text-xs font-medium text-app-muted dark:text-zinc-400">Assigned locally</p>
+                <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                    <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Records</p>
+                    <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink ">{{ $recordCount }}</p>
+                    <p class="mt-1 text-xs font-medium text-app-muted ">Assigned locally</p>
                 </div>
             </div>
         </x-mobile.card>
@@ -108,19 +108,19 @@
                 @forelse ($categories as $category)
                     <article
                         wire:key="record-category-{{ $category->id }}"
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4  "
                     >
                         <div class="flex items-start justify-between gap-4">
                             <div class="flex min-w-0 items-start gap-3">
                                 <span
-                                    class="mt-1 size-4 shrink-0 rounded-full border border-black/10 dark:border-white/20"
+                                    class="mt-1 size-4 shrink-0 rounded-full border border-black/10 "
                                     style="background-color: {{ $category->color }}"
                                     aria-hidden="true"
                                 ></span>
 
                                 <div class="min-w-0">
-                                    <p class="break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ $category->label }}</p>
-                                    <p class="mt-1 break-all text-xs font-medium text-app-muted dark:text-zinc-400">{{ $category->slug }}</p>
+                                    <p class="break-words text-base font-semibold text-app-ink ">{{ $category->label }}</p>
+                                    <p class="mt-1 break-all text-xs font-medium text-app-muted ">{{ $category->slug }}</p>
                                 </div>
                             </div>
 

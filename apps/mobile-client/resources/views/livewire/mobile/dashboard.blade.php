@@ -18,8 +18,8 @@
             <div class="grid gap-5">
                 @if (session('mobile_policy_denial'))
                     <x-mobile.card title="Feature unavailable" description="{{ session('mobile_policy_denial') }}">
-                        <div class="flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 dark:border-amber-400/30 dark:bg-amber-400/10">
-                            <p class="text-sm font-medium text-amber-900 dark:text-amber-100">
+                        <div class="flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3  ">
+                            <p class="text-sm font-medium text-amber-900 ">
                                 Admin/API policy blocked that screen for the current workspace.
                             </p>
 
@@ -39,8 +39,8 @@
                     >
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <div class="min-w-0">
-                                <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $appState['label'] }}</p>
-                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                <p class="text-sm font-semibold text-app-ink ">{{ $appState['label'] }}</p>
+                                <p class="mt-1 text-sm leading-5 text-app-muted ">
                                     Current {{ $appState['current_version'] }}
                                     @if ($appState['latest_version'])
                                         · Latest {{ $appState['latest_version'] }}
@@ -51,7 +51,7 @@
                             <a
                                 href="{{ route($appState['maintenance_enabled'] ? 'mobile.maintenance' : 'mobile.update-required') }}"
                                 wire:navigate
-                                class="inline-flex min-h-10 shrink-0 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+                                class="inline-flex min-h-10 shrink-0 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg    "
                             >
                                 Review
                             </a>
@@ -59,14 +59,14 @@
                     </x-mobile.card>
                 @endif
 
-                <div class="rounded-lg border border-app-line bg-app-surface p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
+                <div class="rounded-lg border border-app-line bg-app-surface p-5 shadow-sm   ">
                     <div class="flex items-start justify-between gap-4">
                         <div class="min-w-0">
-                            <p class="text-sm font-medium text-app-muted dark:text-zinc-400">Welcome back</p>
-                            <h2 class="mt-1 text-2xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">
+                            <p class="text-sm font-medium text-app-muted ">Welcome back</p>
+                            <h2 class="mt-1 text-2xl font-semibold tracking-normal text-app-ink ">
                                 Good afternoon, {{ $greetingName }}
                             </h2>
-                            <p class="mt-2 text-sm leading-6 text-app-muted dark:text-zinc-400">
+                            <p class="mt-2 text-sm leading-6 text-app-muted ">
                                 Your mobile workspace is ready with cached content, sync status, and recent alerts.
                             </p>
                         </div>
@@ -77,38 +77,38 @@
                     </div>
 
                     <div class="mt-5 grid grid-cols-3 gap-2 text-center">
-                        <div class="rounded-lg bg-app-bg px-3 py-3 dark:bg-zinc-950">
-                            <p class="text-lg font-semibold text-app-ink dark:text-zinc-100">{{ $syncStatus['queued_changes'] }}</p>
-                            <p class="mt-1 text-[11px] font-medium text-app-muted dark:text-zinc-400">Queued</p>
+                        <div class="rounded-lg bg-app-bg px-3 py-3 ">
+                            <p class="text-lg font-semibold text-app-ink ">{{ $syncStatus['queued_changes'] }}</p>
+                            <p class="mt-1 text-[11px] font-medium text-app-muted ">Queued</p>
                         </div>
-                        <div class="rounded-lg bg-app-bg px-3 py-3 dark:bg-zinc-950">
-                            <p class="text-lg font-semibold text-app-ink dark:text-zinc-100">{{ $offlineStatus['cached_screens'] }}</p>
-                            <p class="mt-1 text-[11px] font-medium text-app-muted dark:text-zinc-400">Cached</p>
+                        <div class="rounded-lg bg-app-bg px-3 py-3 ">
+                            <p class="text-lg font-semibold text-app-ink ">{{ $offlineStatus['cached_screens'] }}</p>
+                            <p class="mt-1 text-[11px] font-medium text-app-muted ">Cached</p>
                         </div>
-                        <div class="rounded-lg bg-app-bg px-3 py-3 dark:bg-zinc-950">
-                            <p class="text-lg font-semibold text-app-ink dark:text-zinc-100">{{ count($notificationPreview) }}</p>
-                            <p class="mt-1 text-[11px] font-medium text-app-muted dark:text-zinc-400">Alerts</p>
+                        <div class="rounded-lg bg-app-bg px-3 py-3 ">
+                            <p class="text-lg font-semibold text-app-ink ">{{ count($notificationPreview) }}</p>
+                            <p class="mt-1 text-[11px] font-medium text-app-muted ">Alerts</p>
                         </div>
                     </div>
                 </div>
 
                 <section aria-labelledby="quick-stats-title" class="grid gap-3">
                     <div class="flex items-center justify-between gap-3">
-                        <h2 id="quick-stats-title" class="text-base font-semibold text-app-ink dark:text-zinc-100">Quick stats</h2>
+                        <h2 id="quick-stats-title" class="text-base font-semibold text-app-ink ">Quick stats</h2>
                         <x-mobile.badge variant="neutral">Fake data</x-mobile.badge>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         @forelse ($quickStats as $stat)
-                            <article wire:key="dashboard-stat-{{ $stat['key'] }}" class="min-h-32 rounded-lg border border-app-line bg-app-surface p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
+                            <article wire:key="dashboard-stat-{{ $stat['key'] }}" class="min-h-32 rounded-lg border border-app-line bg-app-surface p-4 shadow-sm   ">
                                 <div class="flex items-start justify-between gap-2">
-                                    <p class="text-sm font-medium leading-5 text-app-muted dark:text-zinc-400">{{ $stat['label'] }}</p>
+                                    <p class="text-sm font-medium leading-5 text-app-muted ">{{ $stat['label'] }}</p>
                                     <x-mobile.badge :variant="$stat['variant']" size="sm" dot>
                                         Live
                                     </x-mobile.badge>
                                 </div>
-                                <p class="mt-4 text-3xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">{{ $stat['value'] }}</p>
-                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $stat['description'] }}</p>
+                                <p class="mt-4 text-3xl font-semibold tracking-normal text-app-ink ">{{ $stat['value'] }}</p>
+                                <p class="mt-1 text-sm leading-5 text-app-muted ">{{ $stat['description'] }}</p>
                             </article>
                         @empty
                             <x-mobile.empty-state title="No stats yet" description="Stats will appear once dashboard data is connected." />
@@ -122,8 +122,8 @@
                     <x-mobile.card title="Offline status" description="{{ $offlineStatus['description'] }}">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-2xl font-semibold text-app-ink dark:text-zinc-100">{{ $offlineStatus['label'] }}</p>
-                                <p class="mt-1 text-sm text-app-muted dark:text-zinc-400">{{ $offlineStatus['cached_screens'] }} cached screens</p>
+                                <p class="text-2xl font-semibold text-app-ink ">{{ $offlineStatus['label'] }}</p>
+                                <p class="mt-1 text-sm text-app-muted ">{{ $offlineStatus['cached_screens'] }} cached screens</p>
                             </div>
                             <x-mobile.badge :variant="$offlineStatus['variant']" dot>
                                 Ready
@@ -131,7 +131,7 @@
                         </div>
 
                         <x-slot:footer>
-                            <p class="text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $offlineStatus['updated_label'] }}</p>
+                            <p class="text-sm leading-5 text-app-muted ">{{ $offlineStatus['updated_label'] }}</p>
                         </x-slot:footer>
                     </x-mobile.card>
                 </div>
@@ -143,16 +143,16 @@
                                 wire:key="dashboard-action-{{ $action['key'] }}"
                                 href="{{ route($action['route']) }}"
                                 wire:navigate
-                                class="flex min-h-14 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+                                class="flex min-h-14 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 transition hover:bg-app-surface   "
                             >
                                 <span class="min-w-0">
-                                    <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $action['label'] }}</span>
-                                    <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $action['description'] }}</span>
+                                    <span class="block text-base font-semibold text-app-ink ">{{ $action['label'] }}</span>
+                                    <span class="mt-1 block text-sm leading-5 text-app-muted ">{{ $action['description'] }}</span>
                                 </span>
-                                <span aria-hidden="true" class="shrink-0 text-lg text-app-muted dark:text-zinc-400">&rsaquo;</span>
+                                <span aria-hidden="true" class="shrink-0 text-lg text-app-muted ">&rsaquo;</span>
                             </a>
                         @empty
-                            <p class="text-sm text-app-muted dark:text-zinc-400">No quick actions available.</p>
+                            <p class="text-sm text-app-muted ">No quick actions available.</p>
                         @endforelse
                     </div>
                 </x-mobile.card>
@@ -161,26 +161,26 @@
                     <div class="grid gap-4">
                         @forelse ($recentActivities as $activity)
                             <article wire:key="dashboard-activity-{{ $activity['id'] }}" class="grid grid-cols-[auto_1fr] gap-3">
-                                <span class="mt-1 size-2.5 rounded-full bg-app-accent dark:bg-emerald-400"></span>
-                                <div class="min-w-0 border-b border-app-line pb-4 last:border-b-0 last:pb-0 dark:border-zinc-800">
+                                <span class="mt-1 size-2.5 rounded-full bg-app-accent "></span>
+                                <div class="min-w-0 border-b border-app-line pb-4 last:border-b-0 last:pb-0 ">
                                     <div class="flex items-start justify-between gap-3">
-                                        <h3 class="text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $activity['title'] }}</h3>
+                                        <h3 class="text-sm font-semibold text-app-ink ">{{ $activity['title'] }}</h3>
                                         <x-mobile.badge :variant="$activity['variant']" size="sm">
                                             {{ $activity['time_label'] }}
                                         </x-mobile.badge>
                                     </div>
-                                    <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $activity['description'] }}</p>
+                                    <p class="mt-1 text-sm leading-5 text-app-muted ">{{ $activity['description'] }}</p>
                                 </div>
                             </article>
                         @empty
-                            <p class="text-sm text-app-muted dark:text-zinc-400">No recent activity yet.</p>
+                            <p class="text-sm text-app-muted ">No recent activity yet.</p>
                         @endforelse
                     </div>
                 </x-mobile.card>
 
                 <x-mobile.card title="Notification preview" description="Most recent alerts waiting on this device.">
                     <x-slot:action>
-                        <a href="{{ route('mobile.notifications') }}" wire:navigate class="text-sm font-semibold text-app-ink underline-offset-4 hover:underline dark:text-zinc-100">
+                        <a href="{{ route('mobile.notifications') }}" wire:navigate class="text-sm font-semibold text-app-ink underline-offset-4 hover:underline ">
                             View all
                         </a>
                     </x-slot:action>
@@ -190,19 +190,19 @@
                             <article wire:key="dashboard-notification-{{ $notification['id'] }}" class="flex gap-3">
                                 <span @class([
                                     'mt-2 size-2 shrink-0 rounded-full',
-                                    'bg-app-accent dark:bg-emerald-400' => $notification['unread'],
-                                    'bg-app-line dark:bg-zinc-700' => ! $notification['unread'],
+                                    'bg-app-accent ' => $notification['unread'],
+                                    'bg-app-line ' => ! $notification['unread'],
                                 ])></span>
                                 <div class="min-w-0">
                                     <div class="flex items-start justify-between gap-3">
-                                        <h3 class="text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $notification['title'] }}</h3>
-                                        <span class="shrink-0 text-xs font-medium text-app-muted dark:text-zinc-400">{{ $notification['time_label'] }}</span>
+                                        <h3 class="text-sm font-semibold text-app-ink ">{{ $notification['title'] }}</h3>
+                                        <span class="shrink-0 text-xs font-medium text-app-muted ">{{ $notification['time_label'] }}</span>
                                     </div>
-                                    <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $notification['body'] }}</p>
+                                    <p class="mt-1 text-sm leading-5 text-app-muted ">{{ $notification['body'] }}</p>
                                 </div>
                             </article>
                         @empty
-                            <p class="text-sm text-app-muted dark:text-zinc-400">No notifications yet.</p>
+                            <p class="text-sm text-app-muted ">No notifications yet.</p>
                         @endforelse
                     </div>
                 </x-mobile.card>

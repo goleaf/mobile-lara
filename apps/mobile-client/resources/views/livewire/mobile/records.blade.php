@@ -34,15 +34,15 @@
                 @forelse ($metrics as $metric)
                     <div
                         wire:key="records-metric-{{ $metric['label'] }}"
-                        class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="rounded-lg border border-app-line bg-app-bg p-4  "
                     >
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">
+                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">
                             {{ $metric['label'] }}
                         </p>
-                        <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink dark:text-zinc-100">
+                        <p class="mt-2 text-2xl font-semibold tracking-normal text-app-ink ">
                             {{ $metric['value'] }}
                         </p>
-                        <p class="mt-1 text-xs font-medium text-app-muted dark:text-zinc-400">
+                        <p class="mt-1 text-xs font-medium text-app-muted ">
                             {{ $metric['description'] }}
                         </p>
                     </div>
@@ -80,8 +80,8 @@
                             wire:click="setFilter('{{ $filterOption['key'] }}')"
                             @class([
                                 'inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg border px-3 text-sm font-semibold transition',
-                                'border-app-ink bg-app-ink text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-950' => $filterOption['active'],
-                                'border-app-line bg-app-bg text-app-ink hover:bg-app-surface dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900' => ! $filterOption['active'],
+                                'border-app-ink bg-app-ink text-white   ' => $filterOption['active'],
+                                'border-app-line bg-app-bg text-app-ink hover:bg-app-surface    ' => ! $filterOption['active'],
                             ])
                         >
                             <span>{{ $filterOption['label'] }}</span>
@@ -90,7 +90,7 @@
                             </span>
                         </button>
                     @empty
-                        <span class="text-sm font-medium text-app-muted dark:text-zinc-400">No filters available</span>
+                        <span class="text-sm font-medium text-app-muted ">No filters available</span>
                     @endforelse
                 </div>
 
@@ -107,7 +107,7 @@
                         <a
                             href="{{ route('mobile.records.categories') }}"
                             wire:navigate
-                            class="inline-flex min-h-12 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+                            class="inline-flex min-h-12 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg    "
                         >
                             Categories
                         </a>
@@ -116,7 +116,7 @@
                             <a
                                 href="{{ route('mobile.records.create') }}"
                                 wire:navigate
-                                class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-accent px-3 text-sm font-semibold text-app-accent-ink shadow-sm transition hover:bg-app-accent/90 active:bg-app-accent/80 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+                                class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-accent px-3 text-sm font-semibold text-app-accent-ink shadow-sm transition hover:bg-app-accent/90 active:bg-app-accent/80   "
                             >
                                 New record
                             </a>
@@ -153,18 +153,18 @@
                         wire:key="record-row-{{ $record->id }}"
                         @class([
                             'grid gap-3 rounded-lg border p-4 transition',
-                            'border-app-accent bg-app-accent/10 dark:border-emerald-400/50 dark:bg-emerald-400/10' => $selectedRecordKeys[$record->id] ?? false,
-                            'border-app-line bg-app-bg dark:border-zinc-800 dark:bg-zinc-950' => ! ($selectedRecordKeys[$record->id] ?? false),
+                            'border-app-accent bg-app-accent/10  ' => $selectedRecordKeys[$record->id] ?? false,
+                            'border-app-line bg-app-bg  ' => ! ($selectedRecordKeys[$record->id] ?? false),
                         ])
                     >
                         <div class="flex items-start justify-between gap-4">
                             <div class="flex min-w-0 items-start gap-3">
-                                <label class="flex size-10 shrink-0 items-center justify-center rounded-lg border border-app-line bg-app-surface dark:border-zinc-700 dark:bg-zinc-900">
+                                <label class="flex size-10 shrink-0 items-center justify-center rounded-lg border border-app-line bg-app-surface  ">
                                     <input
                                         type="checkbox"
                                         value="{{ $record->id }}"
                                         wire:model.live="selectedRecordIds"
-                                        class="size-5 rounded border-app-line text-app-accent focus:ring-app-accent/30 dark:border-zinc-700 dark:bg-zinc-950"
+                                        class="size-5 rounded border-app-line text-app-accent focus:ring-app-accent/30  "
                                     >
                                     <span class="sr-only">Select {{ $record->title }}</span>
                                 </label>
@@ -173,11 +173,11 @@
                                     <a
                                         href="{{ route('mobile.records.show', $record) }}"
                                         wire:navigate
-                                        class="block break-words text-base font-semibold text-app-ink underline-offset-4 hover:underline dark:text-zinc-100"
+                                        class="block break-words text-base font-semibold text-app-ink underline-offset-4 hover:underline "
                                     >
                                         {{ $record->title }}
                                     </a>
-                                    <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                    <p class="mt-1 text-sm leading-5 text-app-muted ">
                                         Updated {{ $record->updated_at?->diffForHumans() ?? 'time unknown' }}
                                     </p>
                                 </div>
@@ -194,7 +194,7 @@
                             </div>
                         </div>
 
-                        <p class="text-sm leading-6 text-app-muted dark:text-zinc-400">
+                        <p class="text-sm leading-6 text-app-muted ">
                             {{ $record->descriptionPreview() }}
                         </p>
 
@@ -228,16 +228,16 @@
                             @endforelse
                         </div>
 
-                        <div class="rounded-lg border border-dashed border-app-line bg-app-surface p-3 dark:border-zinc-800 dark:bg-zinc-900">
-                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Notes</p>
-                            <p class="mt-1 text-sm leading-5 text-app-ink dark:text-zinc-100">{{ $record->notesPreview() }}</p>
+                        <div class="rounded-lg border border-dashed border-app-line bg-app-surface p-3  ">
+                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Notes</p>
+                            <p class="mt-1 text-sm leading-5 text-app-ink ">{{ $record->notesPreview() }}</p>
                         </div>
 
                         <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
                             <a
                                 href="{{ route('mobile.records.show', $record) }}"
                                 wire:navigate
-                                class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+                                class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg    "
                             >
                                 Detail
                             </a>
@@ -246,7 +246,7 @@
                                 <a
                                     href="{{ route('mobile.records.edit', $record) }}"
                                     wire:navigate
-                                    class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+                                    class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg    "
                                 >
                                     Edit
                                 </a>
@@ -310,12 +310,12 @@
         </x-mobile.card>
 
         @if ($hasSelection)
-            <div class="fixed inset-x-0 bottom-0 z-40 border-t border-app-line bg-app-surface/95 shadow-2xl backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95">
+            <div class="fixed inset-x-0 bottom-0 z-40 border-t border-app-line bg-app-surface/95 shadow-2xl backdrop-blur  ">
                 <div class="safe-x mx-auto grid max-w-3xl gap-3 px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
                     <div class="flex items-center justify-between gap-3">
                         <div class="min-w-0">
-                            <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">Bulk actions</p>
-                            <p class="text-xs font-medium text-app-muted dark:text-zinc-400">{{ $selectedCount }} selected</p>
+                            <p class="text-sm font-semibold text-app-ink ">Bulk actions</p>
+                            <p class="text-xs font-medium text-app-muted ">{{ $selectedCount }} selected</p>
                         </div>
 
                         <x-mobile.button wire:click="clearSelection" variant="ghost" size="sm">
@@ -361,7 +361,7 @@
                                 <select
                                     id="bulkStatus"
                                     wire:model.live="bulkStatus"
-                                    class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+                                    class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20   "
                                 >
                                     @foreach ($bulkStatusOptions as $statusValue => $statusLabel)
                                         <option value="{{ $statusValue }}">{{ $statusLabel }}</option>
@@ -384,7 +384,7 @@
                                 <select
                                     id="bulkCategoryId"
                                     wire:model.live="bulkCategoryId"
-                                    class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+                                    class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20   "
                                 >
                                     @foreach ($bulkCategoryOptions as $categoryValue => $categoryLabel)
                                         <option value="{{ $categoryValue }}">{{ $categoryLabel }}</option>

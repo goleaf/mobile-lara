@@ -6,18 +6,18 @@
 
 @php
     $variantClasses = [
-        'success' => 'border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-100',
-        'error' => 'border-red-200 bg-red-50 text-red-950 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-100',
-        'warning' => 'border-amber-200 bg-amber-50 text-amber-950 dark:border-amber-300/30 dark:bg-amber-300/10 dark:text-amber-100',
-        'info' => 'border-sky-200 bg-sky-50 text-sky-950 dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-100',
-    ][$variant] ?? 'border-app-line bg-app-surface text-app-ink dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100';
+        'success' => 'border-emerald-200 bg-emerald-50 text-emerald-950   ',
+        'error' => 'border-red-200 bg-red-50 text-red-950   ',
+        'warning' => 'border-amber-200 bg-amber-50 text-amber-950   ',
+        'info' => 'border-sky-200 bg-sky-50 text-sky-950   ',
+    ][$variant] ?? 'border-app-line bg-app-surface text-app-ink   ';
 
     $dotClasses = [
-        'success' => 'bg-emerald-500 dark:bg-emerald-300',
-        'error' => 'bg-red-500 dark:bg-red-300',
-        'warning' => 'bg-amber-500 dark:bg-amber-300',
-        'info' => 'bg-sky-500 dark:bg-sky-300',
-    ][$variant] ?? 'bg-app-accent dark:bg-emerald-300';
+        'success' => 'bg-emerald-500 ',
+        'error' => 'bg-red-500 ',
+        'warning' => 'bg-amber-500 ',
+        'info' => 'bg-sky-500 ',
+    ][$variant] ?? 'bg-app-accent ';
 @endphp
 
 @if ($message)

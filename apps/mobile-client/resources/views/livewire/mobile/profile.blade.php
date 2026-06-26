@@ -28,25 +28,25 @@
 
                         <div class="min-w-0 flex-1">
                             <div class="flex flex-wrap items-center gap-2">
-                                <h2 class="break-words text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $displayName }}</h2>
+                                <h2 class="break-words text-xl font-semibold text-app-ink ">{{ $displayName }}</h2>
                                 <x-mobile.badge variant="success" dot>
                                     {{ $accountStatus }}
                                 </x-mobile.badge>
                             </div>
 
-                            <p class="mt-1 break-words text-sm font-medium text-app-muted dark:text-zinc-400">{{ $email }}</p>
-                            <p class="mt-3 text-sm leading-6 text-app-ink dark:text-zinc-200">{{ $bio }}</p>
+                            <p class="mt-1 break-words text-sm font-medium text-app-muted ">{{ $email }}</p>
+                            <p class="mt-3 text-sm leading-6 text-app-ink ">{{ $bio }}</p>
                         </div>
                     </div>
 
                     <dl class="mt-5 grid gap-3">
                         @forelse ($profileRows as $row)
-                            <div wire:key="profile-row-{{ $row['key'] }}" class="flex min-h-12 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                                <dt class="text-sm font-medium text-app-muted dark:text-zinc-400">{{ $row['label'] }}</dt>
-                                <dd class="max-w-[62%] break-words text-right text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $row['value'] }}</dd>
+                            <div wire:key="profile-row-{{ $row['key'] }}" class="flex min-h-12 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3  ">
+                                <dt class="text-sm font-medium text-app-muted ">{{ $row['label'] }}</dt>
+                                <dd class="max-w-[62%] break-words text-right text-sm font-semibold text-app-ink ">{{ $row['value'] }}</dd>
                             </div>
                         @empty
-                            <div class="text-sm text-app-muted dark:text-zinc-400">
+                            <div class="text-sm text-app-muted ">
                                 No profile details available.
                             </div>
                         @endforelse
@@ -57,7 +57,7 @@
                             <a
                                 href="{{ route('mobile.profile.edit') }}"
                                 wire:navigate
-                                class="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 active:bg-app-ink/80 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white dark:active:bg-zinc-200"
+                                class="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 active:bg-app-ink/80    "
                             >
                                 Edit profile
                             </a>
@@ -108,18 +108,18 @@
                                 wire:key="profile-shortcut-{{ $shortcut['key'] }}"
                                 href="{{ route($shortcut['route']) }}"
                                 wire:navigate
-                                class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+                                class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 text-left transition hover:bg-app-surface   "
                             >
                                 <span class="min-w-0">
-                                    <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">{{ $shortcut['label'] }}</span>
-                                    <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $shortcut['description'] }}</span>
+                                    <span class="block text-base font-semibold text-app-ink ">{{ $shortcut['label'] }}</span>
+                                    <span class="mt-1 block text-sm leading-5 text-app-muted ">{{ $shortcut['description'] }}</span>
                                 </span>
 
                                 <span class="flex shrink-0 items-center gap-2">
                                     <x-mobile.badge variant="accent">
                                         {{ $shortcut['badge'] }}
                                     </x-mobile.badge>
-                                    <span aria-hidden="true" class="text-lg font-semibold text-app-muted dark:text-zinc-500">›</span>
+                                    <span aria-hidden="true" class="text-lg font-semibold text-app-muted ">›</span>
                                 </span>
                             </a>
                         @empty

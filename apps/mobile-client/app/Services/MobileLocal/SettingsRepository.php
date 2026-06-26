@@ -50,7 +50,7 @@ final class SettingsRepository
 
     public function setTheme(string $theme): MobileLocalSetting
     {
-        return $this->update(['theme' => $theme]);
+        return $this->update(['theme' => $this->normalizeTheme($theme)]);
     }
 
     public function setLanguage(string $language): MobileLocalSetting
@@ -152,7 +152,7 @@ final class SettingsRepository
     {
         return [
             'settings_key' => $this->settingsKey(),
-            'theme' => (string) config('mobile_local.settings.theme', MobileLocalSetting::THEME_SYSTEM),
+            'theme' => $this->normalizeTheme((string) config('mobile_local.settings.theme', MobileLocalSetting::THEME_LIGHT)),
             'language' => (string) config('mobile_local.settings.language', config('app.locale', 'en')),
             'notification_preferences' => (array) config('mobile_local.settings.notification_preferences', []),
             'sync_settings' => (array) config('mobile_local.settings.sync_settings', []),
@@ -167,7 +167,7 @@ final class SettingsRepository
      */
     private function settingsAttributes(array $attributes): array
     {
-        return Arr::only($attributes, [
+        $settingsAttributes = Arr::only($attributes, [
             'theme',
             'language',
             'notification_preferences',
@@ -178,6 +178,19 @@ final class SettingsRepository
             'pin_enabled',
             'last_sync_at',
         ]);
+
+        if (array_key_exists('theme', $settingsAttributes)) {
+            $settingsAttributes['theme'] = $this->normalizeTheme((string) $settingsAttributes['theme']);
+        }
+
+        return $settingsAttributes;
+    }
+
+    private function normalizeTheme(string $theme): string
+    {
+        return $theme === MobileLocalSetting::THEME_LIGHT
+            ? $theme
+            : MobileLocalSetting::THEME_LIGHT;
     }
 
     private function settingsKey(): string

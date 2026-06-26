@@ -23,7 +23,7 @@
                 />
 
                 <div class="grid min-w-0 flex-1 gap-2">
-                    <label for="avatar" class="text-sm font-medium text-app-ink dark:text-zinc-100">
+                    <label for="avatar" class="text-sm font-medium text-app-ink ">
                         Profile photo
                     </label>
 
@@ -56,39 +56,39 @@
                         accept="image/*"
                         wire:model="avatar"
                         aria-describedby="avatar-hint"
-                        class="block min-h-12 w-full rounded-lg border border-app-line bg-white px-3 py-2 text-sm text-app-ink shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-app-ink file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white focus:border-app-accent focus:outline-none focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:file:bg-zinc-100 dark:file:text-zinc-950"
+                        class="block min-h-12 w-full rounded-lg border border-app-line bg-white px-3 py-2 text-sm text-app-ink shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-app-ink file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white focus:border-app-accent focus:outline-none focus:ring-2 focus:ring-app-accent/20     "
                     >
 
-                    <p id="avatar-hint" class="text-sm leading-5 text-app-muted dark:text-zinc-400">
+                    <p id="avatar-hint" class="text-sm leading-5 text-app-muted ">
                         JPG, PNG, or WebP up to 2 MB.
                     </p>
 
-                    <p wire:loading wire:target="avatar, takeAvatarPhoto, chooseAvatarFromGallery" class="text-sm font-medium text-app-ink dark:text-zinc-100">
+                    <p wire:loading wire:target="avatar, takeAvatarPhoto, chooseAvatarFromGallery" class="text-sm font-medium text-app-ink ">
                         Preparing avatar...
                     </p>
 
                     @error('avatar')
-                        <p class="text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
+                        <p class="text-sm font-medium text-red-600 ">{{ $message }}</p>
                     @enderror
 
                     @if ($nativeAvatarStatus)
-                        <p class="rounded-lg border border-app-line bg-app-bg px-3 py-2 text-sm font-medium text-app-ink dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100">
+                        <p class="rounded-lg border border-app-line bg-app-bg px-3 py-2 text-sm font-medium text-app-ink   ">
                             {{ $nativeAvatarStatus }}
                         </p>
                     @elseif (! $nativeAvatarAvailable)
-                        <p class="rounded-lg border border-app-line bg-app-bg px-3 py-2 text-sm text-app-muted dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+                        <p class="rounded-lg border border-app-line bg-app-bg px-3 py-2 text-sm text-app-muted   ">
                             Native camera and gallery open inside the mobile app; this browser can use upload.
                         </p>
                     @endif
 
                     @if ($avatarMarkedForRemoval)
-                        <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100">
+                        <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900   ">
                             Avatar marked for removal. Save profile to apply.
                         </p>
                     @endif
 
                     @if ($avatarUploadName)
-                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-900 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-100">
+                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-900   ">
                             Avatar ready: {{ $avatarUploadName }}
                         </p>
                     @endif
@@ -168,7 +168,7 @@
                     <a
                         href="{{ route('mobile.profile') }}"
                         wire:navigate
-                        class="inline-flex min-h-12 w-full items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+                        class="inline-flex min-h-12 w-full items-center justify-center rounded-lg border border-app-line bg-app-surface px-4 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg    "
                     >
                         Cancel
                     </a>

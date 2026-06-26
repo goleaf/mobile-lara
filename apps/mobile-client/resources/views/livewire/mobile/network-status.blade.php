@@ -10,10 +10,10 @@
             @forelse ($statusRows as $row)
                 <div
                     wire:key="network-status-{{ $row['key'] }}"
-                    class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950"
+                    class="rounded-lg border border-app-line bg-app-bg p-3  "
                 >
-                    <p class="text-xs font-semibold uppercase text-app-muted dark:text-zinc-500">{{ $row['label'] }}</p>
-                    <p class="mt-1 break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $row['value'] }}</p>
+                    <p class="text-xs font-semibold uppercase text-app-muted ">{{ $row['label'] }}</p>
+                    <p class="mt-1 break-words text-sm font-semibold text-app-ink ">{{ $row['value'] }}</p>
                 </div>
             @empty
                 <x-mobile.empty-state
@@ -24,7 +24,7 @@
         </div>
 
         <x-slot:footer>
-            <p class="text-sm leading-5 text-app-muted dark:text-zinc-400">
+            <p class="text-sm leading-5 text-app-muted ">
                 Native status {{ $nativeStatusAvailable ? 'available' : 'unavailable' }}.
                 Fallback check {{ $fallbackCheckUsed ? 'enabled' : 'not used' }}@if ($fallbackUrl): {{ $fallbackUrl }}@endif.
             </p>

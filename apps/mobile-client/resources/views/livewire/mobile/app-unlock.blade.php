@@ -13,25 +13,25 @@
 
     <x-mobile.card title="Protected content" description="One successful local unlock method opens protected screens for this session.">
         <div class="grid place-items-center gap-5 text-center">
-            <div class="grid size-20 place-items-center rounded-full border border-app-line bg-app-bg text-3xl font-semibold text-app-ink dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100">
+            <div class="grid size-20 place-items-center rounded-full border border-app-line bg-app-bg text-3xl font-semibold text-app-ink   ">
                 PIN
             </div>
 
             <div class="grid gap-2">
                 @if ($error)
-                    <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-200">
+                    <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800   ">
                         {{ $error }}
                     </p>
                 @elseif ($status)
-                    <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                    <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800   ">
                         {{ $status }}
                     </p>
                 @elseif (! $biometricEnabled && ! $pinEnabled)
-                    <p class="text-sm leading-5 text-app-muted dark:text-zinc-400">
+                    <p class="text-sm leading-5 text-app-muted ">
                         No local unlock method is currently enabled. Create a PIN or turn on biometrics in settings.
                     </p>
                 @else
-                    <p class="text-sm leading-5 text-app-muted dark:text-zinc-400">
+                    <p class="text-sm leading-5 text-app-muted ">
                         Protected screens are locked until PIN or biometric confirmation succeeds.
                     </p>
                 @endif
@@ -54,7 +54,7 @@
                         />
 
                         @if ($pinLocked)
-                            <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-200">
+                            <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800   ">
                                 Try again in {{ $pinLockoutSeconds }} seconds.
                             </p>
                         @endif
@@ -73,12 +73,12 @@
                 @endif
 
                 @if (! $pinEnabled && ! $biometricEnabled)
-                    <a href="{{ route('mobile.pin.create') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white">
+                    <a href="{{ route('mobile.pin.create') }}" wire:navigate class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90   ">
                         Create PIN
                     </a>
                 @endif
 
-                <a href="{{ route('mobile.login') }}" wire:navigate class="text-center text-sm font-semibold text-app-muted transition hover:text-app-ink dark:text-zinc-400 dark:hover:text-zinc-100">
+                <a href="{{ route('mobile.login') }}" wire:navigate class="text-center text-sm font-semibold text-app-muted transition hover:text-app-ink  ">
                     Sign in another way
                 </a>
             </div>

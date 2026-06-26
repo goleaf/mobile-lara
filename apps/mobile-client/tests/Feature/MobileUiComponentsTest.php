@@ -11,7 +11,7 @@ test('mobile ui components render expected markup', function (string $template, 
 })->with([
     'button' => [
         '<x-mobile.button wire:click="save">Save</x-mobile.button>',
-        ['wire:click="save"', 'Save', 'data-loading:pointer-events-none', 'dark:bg-zinc-100'],
+        ['wire:click="save"', 'Save', 'data-loading:pointer-events-none', 'bg-app-ink'],
     ],
     'loading spinner' => [
         '<x-mobile.loading-spinner label="Refreshing" />',
@@ -43,7 +43,7 @@ test('mobile ui components render expected markup', function (string $template, 
     ],
     'page skeleton' => [
         '<x-mobile.page-skeleton :cards="1" />',
-        ['animate-pulse', 'aria-hidden="true"', 'dark:bg-zinc-900'],
+        ['animate-pulse', 'aria-hidden="true"', 'bg-app-surface'],
     ],
     'network error state' => [
         '<x-mobile.network-error-state retry-action="retrySearch" />',
@@ -51,7 +51,7 @@ test('mobile ui components render expected markup', function (string $template, 
     ],
     'app header' => [
         '<x-mobile.app-header title="Dashboard" />',
-        ['Dashboard', 'aria-label="Notifications"', 'aria-label="Profile"', 'dark:bg-zinc-900'],
+        ['Dashboard', 'aria-label="Notifications"', 'aria-label="Profile"', 'bg-app-surface'],
     ],
     'bottom navigation' => [
         '<x-mobile.bottom-navigation />',
@@ -59,51 +59,51 @@ test('mobile ui components render expected markup', function (string $template, 
     ],
     'input' => [
         '<x-mobile.input name="email" label="Email" wire:model.live="email" />',
-        ['name="email"', 'Email', 'wire:model.live="email"', 'aria-invalid="false"', 'dark:bg-zinc-950'],
+        ['name="email"', 'Email', 'wire:model.live="email"', 'aria-invalid="false"', 'bg-white'],
     ],
     'textarea' => [
         '<x-mobile.textarea name="notes" label="Notes" wire:model="notes">Draft</x-mobile.textarea>',
-        ['name="notes"', 'Notes', 'wire:model="notes"', 'Draft', 'dark:bg-zinc-950'],
+        ['name="notes"', 'Notes', 'wire:model="notes"', 'Draft', 'bg-white'],
     ],
     'select' => [
         '<x-mobile.select name="mode" label="Mode" :options="[\'compact\' => \'Compact\']" />',
-        ['name="mode"', 'Mode', 'value="compact"', 'Compact', 'dark:bg-zinc-950'],
+        ['name="mode"', 'Mode', 'value="compact"', 'Compact', 'bg-white'],
     ],
     'card' => [
         '<x-mobile.card title="Card title" description="Card copy">Card body</x-mobile.card>',
-        ['Card title', 'Card copy', 'Card body', 'dark:bg-zinc-900'],
+        ['Card title', 'Card copy', 'Card body', 'bg-app-surface'],
     ],
     'modal' => [
         '<x-mobile.modal :show="true" title="Dialog title">Dialog body</x-mobile.modal>',
-        ['role="dialog"', 'aria-modal="true"', 'Dialog title', 'Dialog body', 'dark:bg-zinc-900'],
+        ['role="dialog"', 'aria-modal="true"', 'Dialog title', 'Dialog body', 'bg-app-surface'],
     ],
     'badge' => [
         '<x-mobile.badge variant="success" dot>Active</x-mobile.badge>',
-        ['Active', 'bg-emerald-50', 'dark:text-emerald-200'],
+        ['Active', 'bg-emerald-50', 'text-emerald-700'],
     ],
     'avatar' => [
         '<x-mobile.avatar initials="ML" status="online" />',
-        ['ML', 'bg-emerald-500', 'dark:bg-emerald-400'],
+        ['ML', 'bg-emerald-500', 'text-app-accent-ink'],
     ],
     'empty state' => [
         '<x-mobile.empty-state title="Nothing here" description="Try another search." />',
-        ['Nothing here', 'Try another search.', 'dark:bg-zinc-900'],
+        ['Nothing here', 'Try another search.', 'bg-app-surface'],
     ],
     'error state' => [
         '<x-mobile.error-state title="Offline" message="Reconnect and try again." />',
-        ['Offline', 'Reconnect and try again.', 'dark:bg-red-400/10'],
+        ['Offline', 'Reconnect and try again.', 'bg-red-50'],
     ],
     'loading skeleton' => [
         '<x-mobile.loading-skeleton :lines="2" avatar />',
-        ['animate-pulse', 'rounded-full', 'dark:bg-zinc-900'],
+        ['animate-pulse', 'rounded-full', 'bg-app-surface'],
     ],
     'bottom sheet' => [
         '<x-mobile.bottom-sheet :show="true" title="Actions">Sheet body</x-mobile.bottom-sheet>',
-        ['role="dialog"', 'Actions', 'Sheet body', 'bottom-0', 'dark:bg-zinc-900'],
+        ['role="dialog"', 'Actions', 'Sheet body', 'bottom-0', 'bg-app-surface'],
     ],
     'page header' => [
         '<x-mobile.page-header title="Dashboard" description="Overview" back-href="/" />',
-        ['Dashboard', 'Overview', 'href="/"', 'aria-label="Back"', 'dark:text-zinc-100'],
+        ['Dashboard', 'Overview', 'href="/"', 'aria-label="Back"', 'text-app-ink'],
     ],
 ]);
 

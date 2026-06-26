@@ -9,15 +9,15 @@ final class Appearance extends SettingsSectionPage
 {
     protected const TITLE = 'Appearance settings';
 
-    protected const DESCRIPTION = 'Prepare theme, spacing, text scale, and mobile display preferences.';
+    protected const DESCRIPTION = 'Prepare spacing, text scale, and mobile display preferences.';
 
-    protected const STATUS = 'This is a placeholder route for appearance controls.';
+    protected const STATUS = 'The mobile interface is light-only. Theme switching is disabled.';
 
     protected const ITEMS = [
         [
-            'label' => 'Theme mode',
-            'description' => 'Placeholder for system, light, and dark theme selection.',
-            'badge' => 'Next',
+            'label' => 'Light interface',
+            'description' => 'The app uses the light design system on every device.',
+            'badge' => 'Active',
         ],
         [
             'label' => 'Compact layout',

@@ -271,12 +271,13 @@ return [
         |--------------------------------------------------------------------------
         |
         | Set the color of the status bar and navigation bar icons.
-        | Options: 'auto'  - Auto-detect from system theme (recommended)
+        | The light-only interface uses dark icons for contrast.
+        | Options: 'auto'  - Auto-detect from system theme
         |          'light' - Light/white icons
         |          'dark'  - Dark icons
         |
         */
-        'status_bar_style' => 'auto',
+        'status_bar_style' => 'dark',
 
         /*
         |--------------------------------------------------------------------------
@@ -287,8 +288,8 @@ return [
         | drive the colorPrimary / colorOnPrimary values used by native dialogs
         | such as the date and time pickers (OK / Cancel buttons).
         |
-        | The night value is written to values-night/themes.xml so Android can
-        | switch automatically when the device is in dark mode.
+        | NativePHP still writes values-night/themes.xml, so the night value is
+        | kept equal to the light brand color by default.
         |
         | Values must be hex strings: #RRGGBB or #AARRGGBB. Wrap them in quotes
         | inside your .env file (e.g. NATIVEPHP_ANDROID_COLOR_PRIMARY="#04ABA6")
@@ -300,7 +301,7 @@ return [
         */
         'theme' => [
             'color_primary' => env('NATIVEPHP_ANDROID_COLOR_PRIMARY', '#04ABA6'),
-            'color_primary_night' => env('NATIVEPHP_ANDROID_COLOR_PRIMARY_NIGHT', '#FFFFFF'),
+            'color_primary_night' => env('NATIVEPHP_ANDROID_COLOR_PRIMARY_NIGHT', env('NATIVEPHP_ANDROID_COLOR_PRIMARY', '#04ABA6')),
             'color_on_primary' => env('NATIVEPHP_ANDROID_COLOR_ON_PRIMARY', '#FFFFFF'),
         ],
 

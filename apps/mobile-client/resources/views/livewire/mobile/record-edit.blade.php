@@ -24,7 +24,7 @@
             <div
                 wire:dirty
                 wire:target="title,description,status,priority,categoryId,dueAt,tags,notes,locationName,latitude,longitude"
-                class="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm leading-5 text-amber-900 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-100"
+                class="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm leading-5 text-amber-900   "
             >
                 <p class="font-semibold">Unsaved changes</p>
                 <p class="mt-1">Save or save as draft before leaving this record.</p>
@@ -76,11 +76,11 @@
                 wire:model.live="dueAt"
             />
 
-            <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+            <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
                 <div class="flex items-start justify-between gap-3">
                     <div>
-                        <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $attachmentPlaceholder['title'] }}</p>
-                        <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $attachmentPlaceholder['description'] }}</p>
+                        <p class="text-sm font-semibold text-app-ink ">{{ $attachmentPlaceholder['title'] }}</p>
+                        <p class="mt-1 text-sm leading-5 text-app-muted ">{{ $attachmentPlaceholder['description'] }}</p>
                     </div>
 
                     <x-mobile.badge variant="neutral" size="sm">
@@ -97,10 +97,10 @@
                 :wire:key="$tagPickerContext"
             />
 
-            <div class="grid gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+            <div class="grid gap-4 rounded-lg border border-app-line bg-app-bg p-4  ">
                 <div>
-                    <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">Location optional</p>
-                    <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                    <p class="text-sm font-semibold text-app-ink ">Location optional</p>
+                    <p class="mt-1 text-sm leading-5 text-app-muted ">
                         Keep, change, or clear the place metadata for this local record.
                     </p>
                 </div>
@@ -141,9 +141,9 @@
                 wire:model.live="notes"
             />
 
-            <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">Archive state</p>
-                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+            <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                <p class="text-sm font-semibold text-app-ink ">Archive state</p>
+                <p class="mt-1 text-sm leading-5 text-app-muted ">
                     Current state: {{ $record->archiveLabel() }}. Archive and restore actions keep the record pending for sync.
                 </p>
             </div>
@@ -168,7 +168,7 @@
                 </div>
             @endif
 
-            <div class="grid gap-3 border-t border-app-line pt-4 dark:border-zinc-800">
+            <div class="grid gap-3 border-t border-app-line pt-4 ">
                 @if ($recordActionPermissions['archive'] && $record->isArchived())
                     <x-mobile.button
                         wire:click="restoreRecord"

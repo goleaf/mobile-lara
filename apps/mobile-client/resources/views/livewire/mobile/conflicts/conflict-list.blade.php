@@ -33,16 +33,16 @@
                         wire:key="sync-conflict-{{ $conflict->id }}"
                         href="{{ route('mobile.conflicts.show', $conflict) }}"
                         wire:navigate
-                        class="flex min-h-20 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 transition hover:bg-app-surface dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+                        class="flex min-h-20 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 transition hover:bg-app-surface   "
                     >
                         <span class="min-w-0">
-                            <span class="block text-sm font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">
+                            <span class="block text-sm font-semibold uppercase tracking-normal text-app-muted ">
                                 {{ $conflict->method }} {{ $conflict->action_type }}
                             </span>
-                            <span class="mt-1 block truncate text-base font-semibold text-app-ink dark:text-zinc-100">
+                            <span class="mt-1 block truncate text-base font-semibold text-app-ink ">
                                 {{ $conflict->endpoint }}
                             </span>
-                            <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">
+                            <span class="mt-1 block text-sm leading-5 text-app-muted ">
                                 Local {{ $conflict->local_version ?: 'unknown' }} · Remote {{ $conflict->remote_version ?: 'unknown' }}
                             </span>
                         </span>
@@ -51,7 +51,7 @@
                             <x-mobile.badge variant="warning">
                                 {{ $conflict->conflict_status }}
                             </x-mobile.badge>
-                            <span aria-hidden="true" class="text-lg font-semibold text-app-muted dark:text-zinc-500">›</span>
+                            <span aria-hidden="true" class="text-lg font-semibold text-app-muted ">›</span>
                         </span>
                     </a>
                 @empty

@@ -24,7 +24,7 @@
         <x-mobile.card title="Attachment picker" description="Record attachments saved locally and queued for upload.">
             <form wire:submit="createAttachment" class="grid gap-4">
                 <div class="grid gap-2">
-                    <label for="attachmentUpload" class="text-sm font-medium text-app-ink dark:text-zinc-100">
+                    <label for="attachmentUpload" class="text-sm font-medium text-app-ink ">
                         Upload file
                     </label>
                     <input
@@ -32,16 +32,16 @@
                         name="attachmentUpload"
                         type="file"
                         wire:model="attachmentUpload"
-                        class="block min-h-12 w-full rounded-lg border border-app-line bg-white px-3 py-2 text-sm text-app-ink shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-app-ink file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white focus:border-app-accent focus:outline-none focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:file:bg-zinc-100 dark:file:text-zinc-950"
+                        class="block min-h-12 w-full rounded-lg border border-app-line bg-white px-3 py-2 text-sm text-app-ink shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-app-ink file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white focus:border-app-accent focus:outline-none focus:ring-2 focus:ring-app-accent/20     "
                     >
-                    <p class="text-sm leading-5 text-app-muted dark:text-zinc-400">
+                    <p class="text-sm leading-5 text-app-muted ">
                         Browser uploads are copied into the mobile attachment sandbox. Local paths still work for NativePHP file picker results.
                     </p>
-                    <p wire:loading wire:target="attachmentUpload" class="text-sm font-medium text-app-ink dark:text-zinc-100">
+                    <p wire:loading wire:target="attachmentUpload" class="text-sm font-medium text-app-ink ">
                         Preparing file...
                     </p>
                     @error('attachmentUpload')
-                        <p class="text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
+                        <p class="text-sm font-medium text-red-600 ">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -96,24 +96,24 @@
                     />
 
                     <div class="grid gap-3 sm:grid-cols-4">
-                        <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Attachments</p>
-                            <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $attachmentCount }}</p>
+                        <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Attachments</p>
+                            <p class="mt-1 text-xl font-semibold text-app-ink ">{{ $attachmentCount }}</p>
                         </div>
 
-                        <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Queued</p>
-                            <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $queuedCount }}</p>
+                        <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Queued</p>
+                            <p class="mt-1 text-xl font-semibold text-app-ink ">{{ $queuedCount }}</p>
                         </div>
 
-                        <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Pending</p>
-                            <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $pendingCount }}</p>
+                        <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Pending</p>
+                            <p class="mt-1 text-xl font-semibold text-app-ink ">{{ $pendingCount }}</p>
                         </div>
 
-                        <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Failed</p>
-                            <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $failedCount }}</p>
+                        <div class="rounded-lg border border-app-line bg-app-bg p-3  ">
+                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted ">Failed</p>
+                            <p class="mt-1 text-xl font-semibold text-app-ink ">{{ $failedCount }}</p>
                         </div>
                     </div>
 
@@ -136,12 +136,12 @@
                     @forelse ($mediaItems as $mediaItem)
                     <article
                         wire:key="record-attachment-media-{{ $mediaItem->id }}"
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4  "
                     >
                         <div class="flex items-start justify-between gap-3">
                             <div class="min-w-0">
-                                <p class="break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $mediaItem->displayName() }}</p>
-                                <p class="mt-1 text-xs font-medium text-app-muted dark:text-zinc-400">
+                                <p class="break-words text-sm font-semibold text-app-ink ">{{ $mediaItem->displayName() }}</p>
+                                <p class="mt-1 text-xs font-medium text-app-muted ">
                                     {{ $mediaItem->mime ?: 'Unknown MIME' }}
                                     @if ($mediaItem->formattedSize())
                                         / {{ $mediaItem->formattedSize() }}
@@ -154,7 +154,7 @@
                             </x-mobile.badge>
                         </div>
 
-                        <p class="break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                        <p class="break-words rounded-lg border border-dashed border-app-line bg-app-surface px-3 py-2 text-xs font-medium text-app-muted   ">
                             {{ $mediaItem->path }}
                         </p>
 
@@ -184,11 +184,11 @@
         @if ($previewAttachment)
             <x-mobile.card title="Attachment preview" description="Selected local attachment details.">
                 <div class="grid gap-4">
-                    <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                    <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
                         <div class="flex items-start justify-between gap-3">
                             <div class="min-w-0">
-                                <p class="break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ $previewAttachment->displayName() }}</p>
-                                <p class="mt-1 break-words text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $previewAttachment->path }}</p>
+                                <p class="break-words text-base font-semibold text-app-ink ">{{ $previewAttachment->displayName() }}</p>
+                                <p class="mt-1 break-words text-sm leading-5 text-app-muted ">{{ $previewAttachment->path }}</p>
                             </div>
 
                             <x-mobile.badge :variant="$previewAttachment->isImage() ? 'success' : 'neutral'">
@@ -197,15 +197,15 @@
                         </div>
 
                         @if ($previewAttachment->caption)
-                            <p class="mt-3 whitespace-pre-line text-sm leading-6 text-app-ink dark:text-zinc-100">{{ $previewAttachment->caption }}</p>
+                            <p class="mt-3 whitespace-pre-line text-sm leading-6 text-app-ink ">{{ $previewAttachment->caption }}</p>
                         @endif
                     </div>
 
                     <dl class="grid gap-2">
                         @foreach ($previewAttachment->previewRows() as $row)
-                            <div wire:key="attachment-preview-{{ $row['label'] }}" class="grid grid-cols-[6rem_1fr] gap-3 rounded-lg border border-app-line bg-app-bg px-3 py-2 dark:border-zinc-800 dark:bg-zinc-950">
-                                <dt class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">{{ $row['label'] }}</dt>
-                                <dd class="min-w-0 break-words text-sm font-medium text-app-ink dark:text-zinc-100">{{ $row['value'] ?: '-' }}</dd>
+                            <div wire:key="attachment-preview-{{ $row['label'] }}" class="grid grid-cols-[6rem_1fr] gap-3 rounded-lg border border-app-line bg-app-bg px-3 py-2  ">
+                                <dt class="text-xs font-semibold uppercase tracking-normal text-app-muted ">{{ $row['label'] }}</dt>
+                                <dd class="min-w-0 break-words text-sm font-medium text-app-ink ">{{ $row['value'] ?: '-' }}</dd>
                             </div>
                         @endforeach
                     </dl>
@@ -257,12 +257,12 @@
                 @forelse ($attachments as $attachment)
                     <article
                         wire:key="record-attachment-item-{{ $attachment->id }}"
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4  "
                     >
                         <div class="flex items-start justify-between gap-3">
                             <div class="min-w-0">
-                                <p class="break-words text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $attachment->displayName() }}</p>
-                                <p class="mt-1 break-words text-xs font-medium text-app-muted dark:text-zinc-400">{{ $attachment->path }}</p>
+                                <p class="break-words text-sm font-semibold text-app-ink ">{{ $attachment->displayName() }}</p>
+                                <p class="mt-1 break-words text-xs font-medium text-app-muted ">{{ $attachment->path }}</p>
                             </div>
 
                             <x-mobile.badge :variant="$attachment->isImage() ? 'success' : 'neutral'" size="sm">
@@ -271,7 +271,7 @@
                         </div>
 
                         @if ($attachment->caption)
-                            <p class="text-sm leading-6 text-app-ink dark:text-zinc-100">{{ $attachment->caption }}</p>
+                            <p class="text-sm leading-6 text-app-ink ">{{ $attachment->caption }}</p>
                         @endif
 
                         <div class="flex flex-wrap gap-2">

@@ -138,9 +138,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Removed mobile dark-mode UI classes and theme switching paths so the mobile web preview and NativePHP shell use one light interface.
+
 - Refactored the mobile app information block between the shell header and
   footer: the shared layout now wraps pages in a dedicated scrollable content
-  canvas with light/dark surface variables, side rails, rhythm lines, and
+  canvas with light-only surface variables, side rails, rhythm lines, and
   refreshed shared card, page-header, empty-state, and error-state components.
 - Enforced a single mobile page header: the fixed shell header owns page titles
   across the app, while shared page-header instances now render only compact

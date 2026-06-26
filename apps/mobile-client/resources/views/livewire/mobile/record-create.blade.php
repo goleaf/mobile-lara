@@ -61,11 +61,11 @@
                 wire:model.live="dueAt"
             />
 
-            <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+            <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
                 <div class="flex items-start justify-between gap-3">
                     <div>
-                        <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $attachmentPlaceholder['title'] }}</p>
-                        <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $attachmentPlaceholder['description'] }}</p>
+                        <p class="text-sm font-semibold text-app-ink ">{{ $attachmentPlaceholder['title'] }}</p>
+                        <p class="mt-1 text-sm leading-5 text-app-muted ">{{ $attachmentPlaceholder['description'] }}</p>
                     </div>
 
                     <x-mobile.badge variant="neutral" size="sm">
@@ -82,10 +82,10 @@
                 :wire:key="$tagPickerContext"
             />
 
-            <div class="grid gap-4 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+            <div class="grid gap-4 rounded-lg border border-app-line bg-app-bg p-4  ">
                 <div>
-                    <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">Location optional</p>
-                    <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                    <p class="text-sm font-semibold text-app-ink ">Location optional</p>
+                    <p class="mt-1 text-sm leading-5 text-app-muted ">
                         Save a label or coordinates when this record is tied to a place.
                     </p>
                 </div>
@@ -126,9 +126,9 @@
                 wire:model.live="notes"
             />
 
-            <div class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
-                <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">Local-first</p>
-                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+            <div class="rounded-lg border border-app-line bg-app-bg p-4  ">
+                <p class="text-sm font-semibold text-app-ink ">Local-first</p>
+                <p class="mt-1 text-sm leading-5 text-app-muted ">
                     Save a draft to keep working locally, or submit offline to queue the record as a pending local change.
                 </p>
             </div>
