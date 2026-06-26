@@ -525,6 +525,15 @@ Principles:
 - Offline replay must recheck entitlement and quota before API acceptance.
 - Billing controls should be explainable to tenant admins, support, and billing roles.
 
+Current implementation:
+
+- `/admin/billing` manages provider-neutral tenant subscription state, plan
+  metadata, trial date, portal URL, limits, and usage snapshots for mobile
+  presentation and plan gates.
+- Billing changes are audited as `admin_billing_updated`.
+- Provider subscriptions, invoices, usage ingestion, and payment recovery
+  remain future control-center work.
+
 ## Support
 
 Admin control of support defines safe recovery and diagnosis.

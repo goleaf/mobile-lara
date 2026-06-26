@@ -486,6 +486,16 @@ Principles:
 
 Mobile receives allowed, blocked, quota-warning, contact-admin, contact-support, or upgrade/contact-sales outcomes.
 
+Current implementation:
+
+- Admin/API resolves mobile-safe subscription state from tenant
+  `subscription_state` and tenant billing settings.
+- `/admin/billing` gives platform admins a provider-neutral billing control
+  surface for state, plan metadata, trial date, limits, usage snapshots, portal
+  URL, and audited before/after changes.
+- Payment-provider records, invoices, usage ingestion, and webhook handling are
+  not implemented yet.
+
 ## Support Operations
 
 Admin/API owns support operations because support needs safe context without broad tenant exposure.

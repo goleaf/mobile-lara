@@ -3,6 +3,7 @@
 use App\Livewire\Mobile\AccountDeletion;
 use App\Livewire\Mobile\ActivityFeed;
 use App\Livewire\Mobile\AppUnlock;
+use App\Livewire\Mobile\Billing;
 use App\Livewire\Mobile\CheckInCreate;
 use App\Livewire\Mobile\CheckInHistory;
 use App\Livewire\Mobile\Conflicts\ConflictDetail;
@@ -102,6 +103,9 @@ Route::middleware(['web'])
                 Route::livewire('/settings/support', SettingsSupport::class)->name('settings.support');
                 Route::livewire('/settings/legal', SettingsLegal::class)->name('settings.legal');
                 Route::livewire('/settings/developer', SettingsDeveloper::class)->name('settings.developer');
+                Route::livewire('/billing', Billing::class)
+                    ->middleware('mobile.feature:billing,billing.view')
+                    ->name('billing');
                 Route::livewire('/support', SupportTickets::class)
                     ->middleware('mobile.feature:support,support.view')
                     ->name('support.index');

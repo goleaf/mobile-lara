@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\LogoutController;
 use App\Livewire\Admin\AppVersionPolicies;
+use App\Livewire\Admin\Billing;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\FeatureFlags;
 use App\Livewire\Admin\MobileDiagnosticReports;
@@ -39,6 +40,7 @@ Route::middleware(['web'])
                     Route::livewire('/mobile/app-versions', AppVersionPolicies::class)->name('mobile.app-versions');
                     Route::livewire('/mobile/diagnostics', MobileDiagnosticReports::class)->name('mobile.diagnostics');
                     Route::livewire('/mobile/sync', MobileSyncEvents::class)->name('mobile.sync');
+                    Route::livewire('/billing', Billing::class)->name('billing');
                     Route::livewire('/support', MobileSupportTickets::class)->name('support');
                     Route::post('/logout', LogoutController::class)->name('logout');
                 });

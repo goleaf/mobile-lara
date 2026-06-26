@@ -398,9 +398,11 @@ disabled. Core recovery surfaces such as dashboard, profile, settings,
 workspace switching, support, and billing stay reachable so users can recover
 when a tenant or policy state blocks a workflow. Support-center browser handoff
 is checked against cached native browser policy before support settings opens a
-NativePHP browser surface. Developer debug native-action examples use the same
-cached policy before camera, notification, share, browser, device, dialog, or
-secure storage wrapper calls.
+NativePHP browser surface. The Billing screen is checked against cached
+`billing` and `billing.view` policy before API refresh, and billing portal
+handoff is checked against cached `native_browser` policy. Developer debug
+native-action examples use the same cached policy before camera, notification,
+share, browser, device, dialog, or secure storage wrapper calls.
 
 Admin Control Center logic in `../../docs/admin-control-center-logic.md`
 defines the server-side controls that mobile receives as API outcomes:
@@ -519,6 +521,12 @@ Implemented foundation:
   available switchable tenants, supports manual bootstrap refresh, and switches
   the current tenant through `POST /tenants/current` before refreshing
   bootstrap.
+- `App\Services\MobileBilling\MobileBillingApiService` calls
+  `GET /billing/subscription` with the stored access token.
+- `App\Livewire\Mobile\Billing` displays the current plan, subscription state,
+  trial ending, limits/usage snapshots, available actions, and portal status.
+  It caches live subscription payloads into the local bootstrap context and
+  displays cached state as last-known when the API is unavailable.
 
 Fresh verification:
 
@@ -530,6 +538,7 @@ php artisan test --compact --filter=MobileAuthApiServiceTest
 php artisan test --compact --filter=MobileBootstrapServiceTest
 php artisan test --compact --filter=MobileTenantApiServiceTest
 php artisan test --compact --filter=MobileWorkspaceSettingsTest
+php artisan test --compact tests/Feature/MobileBillingScreenTest.php
 php artisan test --compact tests/Feature/MobileDiagnosticsReportTest.php tests/Feature/MobileDebugDialogExamplesTest.php tests/Feature/NativeShareServiceTest.php
 vendor/bin/pint --dirty --format agent
 npm run build

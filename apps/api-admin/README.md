@@ -517,6 +517,9 @@ Implemented foundation:
   access, and manages audited global/platform, tenant, and cohort mobile
   version policies with version-range targeting, confirmation, impact preview,
   and audit-history restore.
+- `/admin/billing` is protected by session auth and platform-admin access, and
+  manages provider-neutral tenant billing state, plan metadata, trial date,
+  billing portal URL, mobile-safe limits/usage JSON, and audit history.
 - `App\Actions\Admin\SaveMobileFeatureFlagAction` persists feature defaults and
   writes before/after audit metadata to `security_audit_events`.
 - `App\Actions\Admin\SaveTenantFeatureOverrideAction` persists tenant feature
@@ -530,6 +533,9 @@ Implemented foundation:
   `security_audit_events`.
 - `App\Actions\Admin\SaveMobileAppVersionPolicyAction` persists scoped version
   policies and writes before/after audit metadata to `security_audit_events`.
+- `App\Actions\Admin\SaveTenantBillingAction` persists tenant billing snapshots
+  without overwriting unrelated tenant settings and writes before/after audit
+  metadata to `security_audit_events`.
 - `App\Actions\Records\SaveTenantRecordAction` persists tenant-scoped record
   create/update payloads with category/tag resolution, note append, attachment
   metadata, activity timeline entries, and security audit events.
@@ -548,21 +554,21 @@ Implemented foundation:
   controls, tenant remote config controls, app version admin controls, remote
   config resolution, feature maintenance/plan/cohort/device/emergency/app-version
   gates, tenant/cohort app version policy, app-version range resolution, mobile
-  billing subscription resolution, mobile notification policy and endpoint
-  behavior, mobile support ticket/message endpoint behavior, mobile sync policy
-  resolution, tenant-scoped records API behavior, resource policies, success
-  envelope, error envelope, contract catalogue, and contract Markdown file
-  coverage.
+  billing subscription resolution, admin billing management, mobile
+  notification policy and endpoint behavior, mobile support ticket/message
+  endpoint behavior, mobile sync policy resolution, tenant-scoped records API
+  behavior, resource policies, success envelope, error envelope, contract
+  catalogue, and contract Markdown file coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   broader resource policy expansion, and broader control-plane audit.
 - Admin records/content management screens, standalone records subresource
-  endpoints, non-record sync replay, notifications, support, billing admin, and
-  reports.
-- Protected domain routes for notifications, support, billing, reports, and
-  remaining feature/config/version policy surfaces.
+  endpoints, non-record sync replay, provider-backed billing, invoices, usage
+  events, notifications, support-provider workflows, and reports.
+- Protected domain routes for notifications, reports, and remaining
+  feature/config/version policy surfaces.
 
 Verification commands for this app:
 

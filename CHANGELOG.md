@@ -610,6 +610,14 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added mobile subscription resolution from tenant subscription state/settings,
   `/api/v1/mobile/billing/subscription`, bootstrap subscription metadata, and
   subscription-backed feature plan gates.
+- Added platform-admin billing control at `/admin/billing` for tenant
+  subscription state, plan metadata, trial date, portal URL, mobile-safe
+  limits/usage JSON, dashboard navigation, and `admin_billing_updated` audit
+  events.
+- Added a mobile Billing screen at `/billing` with API-backed subscription
+  refresh, cached bootstrap fallback labeled as last-known state, billing
+  feature/permission route gating, limits/usage display, available action
+  chips, and native-browser billing portal handoff.
 - Added bootstrap notification policy resolution from tenant settings with
   quiet-hours metadata, push-registration hints, fail-closed no-tenant behavior,
   and notification policy version metadata.

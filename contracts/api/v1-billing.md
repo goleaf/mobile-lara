@@ -17,11 +17,13 @@ and future module expansion principles.
 
 Updated: 2026-06-26
 
-Status: partially implemented. `GET /api/v1/mobile/billing/subscription`
-returns mobile-safe subscription state from the current tenant's
-Admin/API-owned subscription state and settings. Provider billing integration,
-invoices, usage event writes, admin billing screens, and billing audit workflows
-remain pending.
+Status: partially implemented and UI-tested. `GET
+/api/v1/mobile/billing/subscription` returns mobile-safe subscription state
+from the current tenant's Admin/API-owned subscription state and settings.
+`/admin/billing` lets platform admins manage the provider-neutral tenant billing
+snapshot with audit, and `/billing` lets mobile users view live or cached
+subscription state. Provider billing integration, invoices, usage event writes,
+payment recovery, and provider webhooks remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps billing and entitlement authority centralized while mobile receives only
@@ -370,6 +372,10 @@ Billing endpoints expose mobile-safe plan and subscription state. Admin/API
 owns plans, subscriptions, usage, invoice placeholders, plan-based feature
 availability, and suspended/trial/expired behavior.
 
+The current provider-neutral implementation stores plan/state presentation in
+tenant settings and tenant `subscription_state`. This is deliberately not a
+payment-provider integration.
+
 ## Implemented Route
 
 | Method | Path | Purpose | Auth |
@@ -390,6 +396,23 @@ The current implementation resolves:
 - `features_limited` and `feature_impacts` from active/trialing versus
   past-due, expired, canceled, suspended, unknown, or missing tenant states.
 - `subscription_version` as a deterministic support/debug key.
+
+## Admin Control
+
+`/admin/billing` is a platform-admin control surface for the tenant billing
+snapshot used by bootstrap and this API contract. It can search/filter tenants,
+select a tenant, update subscription state, plan key/name/tier, trial end date,
+billing portal URL, limits JSON, and usage JSON, and records
+`admin_billing_updated` audit events. It preserves unrelated tenant settings.
+
+## Mobile Screen
+
+`/billing` is a mobile Livewire screen protected by cached `billing` feature and
+`billing.view` permission policy. It calls `GET /billing/subscription` when
+online, caches the returned subscription inside the local bootstrap context, and
+falls back to cached bootstrap subscription state with a last-known label when
+the API is unavailable. Billing portal handoff is guarded by cached
+`native_browser` policy.
 
 ## Gates
 
@@ -412,8 +435,10 @@ Current coverage:
 
 ```bash
 cd apps/api-admin && php artisan test --compact --filter=MobileBillingSubscriptionTest
+cd apps/api-admin && php artisan test --compact tests/Feature/AdminBillingManagementTest.php
+cd apps/mobile-client && php artisan test --compact tests/Feature/MobileBillingScreenTest.php
 ```
 
 Future Phase 23 coverage should add provider integration, invoice placeholders,
-usage event writes, admin billing screens, richer role authorization, and audit
-history for plan or subscription changes.
+usage event writes, payment recovery, richer role authorization, and provider
+webhook audit history.

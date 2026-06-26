@@ -560,6 +560,16 @@ Manual controls are not provider implementation. They are product authority
 decisions that may later connect to a provider through a separate documented
 integration.
 
+Current implementation note:
+
+- `/admin/billing` implements provider-neutral manual billing controls for
+  tenant `subscription_state`, plan key/name/tier, trial end date, billing
+  portal URL, mobile-safe limits, and usage snapshots.
+- The admin screen writes `admin_billing_updated` audit events and preserves
+  unrelated tenant settings.
+- Provider plans, invoice records, payment-provider webhooks, usage-event
+  ingestion, and payment recovery are intentionally still future work.
+
 ## Offline Billing Behavior
 
 Billing authority requires fresh API confirmation.
@@ -568,6 +578,8 @@ Offline principles:
 
 - Mobile may display last-known billing and plan state with freshness metadata.
 - Mobile should label billing state as cached when offline.
+- The current `/billing` mobile screen labels cached bootstrap subscription
+  fallback as last-known when `GET /billing/subscription` is unavailable.
 - Mobile should not unlock paid features from stale cached billing state when
   the state is expired, suspended, unknown, or near a time-sensitive boundary.
 - Mobile may allow safe read-only access where policy allows.

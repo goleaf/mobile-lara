@@ -17,6 +17,11 @@ and future module expansion principles.
 
 This directory is the target monorepo boundary for the two Mobile Lara systems.
 
+Current billing work follows that boundary: `apps/api-admin` owns
+provider-neutral billing control at `/admin/billing`, while
+`apps/mobile-client` presents API-derived billing state at `/billing` and never
+changes plan, subscription, invoice, or payment authority locally.
+
 Product Vision is defined in `../docs/product-vision.md`: both apps exist to
 support remote control with local resilience, where Admin/API owns authority and
 mobile owns local execution.

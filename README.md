@@ -140,6 +140,13 @@ The product is positioned as a tenant-based SaaS control center with an API-firs
 
 The core principle is strict: Admin/API controls business authority; mobile never bypasses the API; every feature is controllable; tenant isolation, security, documentation, and modular expansion are default requirements.
 
+Current billing implementation is provider-neutral: Admin/API exposes
+`/admin/billing` to manage tenant subscription state, plan metadata, trial date,
+portal URL, limits, and usage snapshots with audit, while mobile exposes
+`/billing` to display live or cached `GET /api/v1/mobile/billing/subscription`
+state without gaining billing authority. Provider subscriptions, invoices,
+usage ingestion, and payment recovery remain future work.
+
 The role model is explicit: platform owner, super admin, tenant admin, tenant manager, support agent, billing manager, mobile user, invited user, suspended user, and guest/pre-login user each have different responsibilities, visibility, and control boundaries.
 
 The role and permission model is explicit: platform, tenant, admin-user, and mobile-user permissions are resolved by Admin/API before API access or mobile UI visibility, feature flags remain separate availability gates, and suspended users or tenants fail closed.

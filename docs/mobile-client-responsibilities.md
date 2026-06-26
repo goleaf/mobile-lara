@@ -360,6 +360,10 @@ Principles:
 - Loading, empty, error, offline, disabled, blocked, pending, synced, conflict, and failed states should be clear.
 - Admin machinery should be translated into simple outcomes.
 - Mobile UX should not expose raw tenant configuration, billing internals, permission matrices, rollout cohorts, or support internals unless the user needs a safe explanation.
+- The current mobile Billing screen displays Admin/API-resolved plan,
+  subscription state, limits, usage, available actions, and portal status, but
+  it does not decide entitlement, quota acceptance, payment state, or plan
+  authority.
 
 The mobile client owns presentation quality. Admin/API owns whether an action is allowed and whether submitted work becomes server truth.
 

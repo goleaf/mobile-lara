@@ -87,6 +87,13 @@ final class Dashboard extends Component
                 'route' => 'admin.mobile.sync',
             ],
             [
+                'label' => 'Billing control',
+                'status' => 'Live',
+                'detail' => 'Tenant subscription state, plan metadata, limits, usage snapshots, and billing portal settings.',
+                'tone' => 'success',
+                'route' => 'admin.billing',
+            ],
+            [
                 'label' => 'Support queue',
                 'status' => 'Live',
                 'detail' => 'Requester-safe ticket triage, assignment, status, priority, replies, and audit history.',

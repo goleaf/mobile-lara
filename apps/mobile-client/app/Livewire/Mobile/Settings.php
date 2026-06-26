@@ -163,6 +163,13 @@ class Settings extends Component
                 'badge' => 'Offline',
             ],
             [
+                'key' => 'billing',
+                'title' => 'Billing',
+                'description' => 'Plan, subscription state, limits, usage, and billing portal status.',
+                'route' => 'mobile.billing',
+                'badge' => 'Plan',
+            ],
+            [
                 'key' => 'permissions',
                 'title' => 'Permissions',
                 'description' => 'Camera, location, microphone, scanner, files, and biometrics.',

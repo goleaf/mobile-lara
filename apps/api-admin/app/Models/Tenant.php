@@ -98,6 +98,59 @@ final class Tenant extends Model
      * @param  Builder<Tenant>  $query
      * @return Builder<Tenant>
      */
+    public function scopeForAdminBillingIndex(Builder $query): Builder
+    {
+        return $query
+            ->select([
+                'id',
+                'public_id',
+                'name',
+                'slug',
+                'status',
+                'subscription_state',
+                'settings',
+                'updated_at',
+            ])
+            ->orderBy('name');
+    }
+
+    /**
+     * @param  Builder<Tenant>  $query
+     * @return Builder<Tenant>
+     */
+    public function scopeForAdminBillingDetail(Builder $query): Builder
+    {
+        return $query->select([
+            'id',
+            'public_id',
+            'name',
+            'slug',
+            'status',
+            'subscription_state',
+            'settings',
+            'updated_at',
+        ]);
+    }
+
+    /**
+     * @param  Builder<Tenant>  $query
+     * @return Builder<Tenant>
+     */
+    public function scopeForSubscriptionState(Builder $query, string $state): Builder
+    {
+        $state = trim($state);
+
+        if ($state === '') {
+            return $query;
+        }
+
+        return $query->where('subscription_state', $state);
+    }
+
+    /**
+     * @param  Builder<Tenant>  $query
+     * @return Builder<Tenant>
+     */
     public function scopeMatchingAdminSearch(Builder $query, string $search): Builder
     {
         $search = trim($search);
@@ -120,5 +173,76 @@ final class Tenant extends Model
     {
         return $this->status instanceof TenantStatus
             && $this->status->isMobileSwitchable();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function billingSettings(): array
+    {
+        $settings = is_array($this->settings) ? $this->settings : [];
+        $billing = $settings['billing'] ?? [];
+
+        return is_array($billing) ? $billing : [];
+    }
+
+    public function billingPlanKey(): string
+    {
+        $plan = $this->billingSettings()['plan'] ?? null;
+
+        if (! is_string($plan) || trim($plan) === '') {
+            return 'foundation';
+        }
+
+        return str($plan)->lower()->trim()->replace([' ', '-'], '_')->toString();
+    }
+
+    public function billingPlanName(): string
+    {
+        $name = $this->billingSettings()['plan_name'] ?? null;
+
+        if (is_string($name) && trim($name) !== '') {
+            return trim($name);
+        }
+
+        return str($this->billingPlanKey())->replace('_', ' ')->title()->toString();
+    }
+
+    public function billingPlanTier(): string
+    {
+        $tier = $this->billingSettings()['plan_tier'] ?? null;
+
+        if (is_string($tier) && trim($tier) !== '') {
+            return str($tier)->lower()->trim()->replace([' ', '-'], '_')->toString();
+        }
+
+        return $this->billingPlanKey();
+    }
+
+    public function hasBillingPortal(): bool
+    {
+        $url = $this->billingSettings()['portal_url'] ?? null;
+
+        return is_string($url) && trim($url) !== '';
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function billingLimits(): array
+    {
+        $limits = $this->billingSettings()['limits'] ?? [];
+
+        return is_array($limits) ? $limits : [];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function billingUsage(): array
+    {
+        $usage = $this->billingSettings()['usage'] ?? [];
+
+        return is_array($usage) ? $usage : [];
     }
 }
