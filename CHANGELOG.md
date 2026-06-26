@@ -154,6 +154,13 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added the notification inbox and push-token foundation with tenant/user-safe
   API endpoints for listing, read/read-all, delete, unread bootstrap counts,
   push-token register/revoke, and a mobile notification API service.
+- Added a platform-admin mobile sync monitor for server replay outcomes,
+  conflict/rejection review, acknowledgement state, and sync event payload
+  inspection.
+- Added the support-ticket foundation with requester-scoped mobile API
+  endpoints for list/create/detail/message creation, metadata-only attachment
+  references, diagnostic references, tenant isolation, audit history, and a
+  mobile support API service.
 
 ### Added
 

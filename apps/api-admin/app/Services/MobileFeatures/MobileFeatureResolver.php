@@ -21,10 +21,10 @@ final class MobileFeatureResolver
      * @var array<string, array{state: MobileFeatureState, reason: string|null, offline_behavior: string}>
      */
     private const FOUNDATION_DEFAULTS = [
-        'records' => ['state' => MobileFeatureState::Disabled, 'reason' => 'records_api_pending', 'offline_behavior' => 'online_only'],
+        'records' => ['state' => MobileFeatureState::Disabled, 'reason' => 'disabled_by_default', 'offline_behavior' => 'online_only'],
         'offline_sync' => ['state' => MobileFeatureState::Visible, 'reason' => null, 'offline_behavior' => 'queue_and_replay'],
-        'notifications' => ['state' => MobileFeatureState::Disabled, 'reason' => 'notifications_api_pending', 'offline_behavior' => 'online_only'],
-        'support' => ['state' => MobileFeatureState::Disabled, 'reason' => 'support_api_pending', 'offline_behavior' => 'online_only'],
+        'notifications' => ['state' => MobileFeatureState::Disabled, 'reason' => 'disabled_by_default', 'offline_behavior' => 'online_only'],
+        'support' => ['state' => MobileFeatureState::Visible, 'reason' => null, 'offline_behavior' => 'draft_offline_submit_online'],
         'billing' => ['state' => MobileFeatureState::Disabled, 'reason' => 'billing_api_pending', 'offline_behavior' => 'online_only'],
         'reports' => ['state' => MobileFeatureState::Disabled, 'reason' => 'reports_api_pending', 'offline_behavior' => 'online_only'],
         'diagnostics' => ['state' => MobileFeatureState::Visible, 'reason' => null, 'offline_behavior' => 'upload_online_export_local'],

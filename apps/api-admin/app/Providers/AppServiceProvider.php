@@ -6,6 +6,7 @@ use App\Models\MobileAppVersionPolicy;
 use App\Models\MobileDiagnosticReport;
 use App\Models\MobileFeatureFlag;
 use App\Models\MobileRemoteConfig;
+use App\Models\MobileSyncEvent;
 use App\Models\Tenant;
 use App\Models\TenantFeatureOverride;
 use App\Models\TenantRemoteConfigOverride;
@@ -14,6 +15,7 @@ use App\Policies\MobileAppVersionPolicyPolicy;
 use App\Policies\MobileDiagnosticReportPolicy;
 use App\Policies\MobileFeatureFlagPolicy;
 use App\Policies\MobileRemoteConfigPolicy;
+use App\Policies\MobileSyncEventPolicy;
 use App\Policies\TenantFeatureOverridePolicy;
 use App\Policies\TenantPolicy;
 use App\Policies\TenantRemoteConfigOverridePolicy;
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(MobileFeatureFlag::class, MobileFeatureFlagPolicy::class);
         Gate::policy(MobileDiagnosticReport::class, MobileDiagnosticReportPolicy::class);
+        Gate::policy(MobileSyncEvent::class, MobileSyncEventPolicy::class);
         Gate::policy(TenantFeatureOverride::class, TenantFeatureOverridePolicy::class);
         Gate::policy(UserFeatureOverride::class, UserFeatureOverridePolicy::class);
         Gate::policy(MobileRemoteConfig::class, MobileRemoteConfigPolicy::class);

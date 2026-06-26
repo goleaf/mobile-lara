@@ -90,10 +90,10 @@ final class MobileBootstrapPayload
     private static function featureItems(): array
     {
         return [
-            'records' => self::feature('disabled', 'records_api_pending'),
+            'records' => self::feature('disabled', 'disabled_by_default'),
             'offline_sync' => self::feature('offline_limited', 'sync_api_pending'),
-            'notifications' => self::feature('disabled', 'notifications_api_pending'),
-            'support' => self::feature('disabled', 'support_api_pending'),
+            'notifications' => self::feature('disabled', 'disabled_by_default'),
+            'support' => self::feature('visible', null),
             'billing' => self::feature('disabled', 'billing_api_pending'),
             'reports' => self::feature('disabled', 'reports_api_pending'),
             'native_camera' => self::feature('visible', null),

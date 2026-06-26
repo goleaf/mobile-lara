@@ -405,6 +405,10 @@ Push stores a `mobile_sync_events` row per idempotency key and returns prior
 outcomes unchanged on duplicate replay. Stale `base_sync_version` values return
 conflicts with the remote record payload.
 
+Platform admins can review stored sync outcomes at `/admin/mobile/sync`,
+including accepted, rejected, conflict, and unacknowledged events with
+tenant/device/batch context and response payload inspection.
+
 ## Gates
 
 Sync is controlled by tenant status, user permissions, feature flags, app
@@ -428,9 +432,10 @@ Current policy and endpoint coverage:
 ```bash
 cd apps/api-admin && php artisan test --compact --filter=MobileSyncPolicyTest
 cd apps/api-admin && php artisan test --compact --filter=MobileSyncApiTest
+cd apps/api-admin && php artisan test --compact --filter=AdminMobileSyncEventsTest
 cd apps/mobile-client && php artisan test --compact --filter=MobileSyncApiServiceTest
 ```
 
-Remaining Phase 14 coverage should verify non-record collections, admin
-monitoring, richer retry windows, and full mobile worker integration with the
-dedicated push/pull/acknowledge service.
+Remaining Phase 14 coverage should verify non-record collections, richer retry
+windows, and full mobile worker integration with the dedicated
+push/pull/acknowledge service.

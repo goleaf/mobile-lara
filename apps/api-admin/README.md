@@ -469,6 +469,13 @@ Implemented foundation:
   push-token register/revoke endpoints provide tenant/user-safe notification
   inbox behavior with audit history. Admin notification creation and provider
   delivery remain pending.
+- `GET /api/v1/mobile/support/tickets`, `POST /support/tickets`,
+  `GET /support/tickets/{ticket}`, and
+  `POST /support/tickets/{ticket}/messages` provide requester-scoped mobile
+  support tickets, message creation, metadata-only attachment references,
+  diagnostic references, tenant isolation, and audit history. Admin support
+  queues, assignment/status controls, stored attachments, and support-agent
+  replies remain pending.
 - `App\Services\Sync\MobileSyncPolicyResolver` resolves tenant sync policy from
   tenant settings, remote config, permissions, subscription state, and
   maintenance policy and marks server replay endpoints ready when sync gates
@@ -478,9 +485,13 @@ Implemented foundation:
   `POST /api/v1/mobile/sync/acknowledge` provide records-only sync bootstrap,
   cursor pull, idempotent replay, conflict responses, sync event storage, and
   acknowledgement.
+- `/admin/mobile/sync` provides a platform-admin sync monitor for accepted,
+  rejected, conflict, and unacknowledged mobile replay events with searchable
+  tenant/device/batch context and response payload review.
 - Policies are registered for current mobile control-plane resources:
   feature flags, tenant/user feature overrides, remote config, tenant remote
-  config overrides, app-version policies, and mobile diagnostic reports.
+  config overrides, app-version policies, mobile diagnostic reports, and
+  mobile sync events.
 - `GET /admin/login` renders the admin login form.
 - `POST /admin/login` authenticates platform-admin users.
 - `POST /admin/logout` invalidates the admin session.
@@ -536,17 +547,18 @@ Implemented foundation:
   config resolution, feature maintenance/plan/cohort/device/emergency/app-version
   gates, tenant/cohort app version policy, app-version range resolution, mobile
   billing subscription resolution, mobile notification policy and endpoint
-  behavior, mobile sync policy resolution, tenant-scoped records API behavior,
-  resource policies, success envelope, error envelope, contract catalogue, and
-  contract Markdown file coverage.
+  behavior, mobile support ticket/message endpoint behavior, mobile sync policy
+  resolution, tenant-scoped records API behavior, resource policies, success
+  envelope, error envelope, contract catalogue, and contract Markdown file
+  coverage.
 
 Still pending:
 
 - Admin tenant management, invitations, full permission management UI,
   broader resource policy expansion, and broader control-plane audit.
 - Admin records/content management screens, standalone records subresource
-  endpoints, non-record sync replay, admin sync monitoring, notifications,
-  support, billing admin, and reports.
+  endpoints, non-record sync replay, notifications, support, billing admin, and
+  reports.
 - Protected domain routes for notifications, support, billing, reports, and
   remaining feature/config/version policy surfaces.
 

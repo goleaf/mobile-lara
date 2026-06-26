@@ -81,9 +81,10 @@ final class Dashboard extends Component
             ],
             [
                 'label' => 'Offline sync',
-                'status' => 'Planned',
-                'detail' => 'Replay windows, conflict modes, retry limits, and stale thresholds.',
-                'tone' => 'neutral',
+                'status' => 'Live',
+                'detail' => 'Replay outcomes, conflict records, rejection reasons, and acknowledgement state.',
+                'tone' => 'success',
+                'route' => 'admin.mobile.sync',
             ],
         ];
     }

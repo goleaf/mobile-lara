@@ -96,11 +96,11 @@ final class MobileContractRegistry
                 self::route('PATCH', '/notifications/{notification}/read', 'implemented', 'mobile-token'),
                 self::route('DELETE', '/notifications/{notification}', 'implemented', 'mobile-token'),
             ]),
-            self::group('support', 'v1-support.md', 'documented', 'Support tickets, messages, attachments, diagnostics context, assignment, and audit.', [
-                self::route('GET', '/support/tickets', 'planned', 'mobile-token'),
-                self::route('POST', '/support/tickets', 'planned', 'mobile-token'),
-                self::route('GET', '/support/tickets/{ticket}', 'planned', 'mobile-token'),
-                self::route('POST', '/support/tickets/{ticket}/messages', 'planned', 'mobile-token'),
+            self::group('support', 'v1-support.md', 'partial', 'Support tickets, messages, attachment metadata, diagnostics context, assignment, and audit.', [
+                self::route('GET', '/support/tickets', 'implemented', 'mobile-token'),
+                self::route('POST', '/support/tickets', 'implemented', 'mobile-token'),
+                self::route('GET', '/support/tickets/{ticket}', 'implemented', 'mobile-token'),
+                self::route('POST', '/support/tickets/{ticket}/messages', 'implemented', 'mobile-token'),
             ]),
             self::group('billing', 'v1-billing.md', 'partial', 'Plan, subscription, trial, expired, suspended, quota, invoice placeholder, and upgrade state.', [
                 self::route('GET', '/billing/subscription', 'implemented', 'mobile-token'),

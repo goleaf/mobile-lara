@@ -472,6 +472,9 @@ Implemented foundation:
 - `App\Services\MobileNotifications\MobileNotificationsApiService` calls the
   API/admin notification inbox, read/read-all/delete, and push-token
   register/revoke endpoints with the stored access token.
+- `App\Services\MobileSupport\MobileSupportApiService` calls the API/admin
+  support ticket list/create/detail and message-create endpoints with the
+  stored access token.
 - Returned access and refresh tokens are stored through `MobileTokenStore`,
   which defaults to NativePHP secure storage and uses the session adapter for
   tests or safe development fallback.

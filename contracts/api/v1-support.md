@@ -17,7 +17,12 @@ and future module expansion principles.
 
 Updated: 2026-06-26
 
-Status: documented. Endpoints are planned for Phase 24.
+Status: partially implemented. Mobile requester-scoped ticket list, ticket
+create, ticket detail, message create, attachment metadata, diagnostic
+reference, tenant isolation, permission checks, and audit history are
+implemented. Admin support queues, assignment/status controls, stored
+attachments, support-agent replies, notification orchestration, and offline
+draft replay remain planned.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps support operations centralized while mobile users receive clear help and
@@ -360,7 +365,7 @@ Support endpoints let mobile users create tickets, view tickets, add messages,
 attach allowed files, and share privacy-safe diagnostics while Admin/API owns
 assignment, status, priority, support visibility, and audit.
 
-## Planned Routes
+## Implemented Foundation Routes
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -373,6 +378,14 @@ assignment, status, priority, support visibility, and audit.
 
 Responses return ticket `id`, `subject`, `status`, `priority`, `assignment`,
 `messages`, `attachments`, `allowed_actions`, and `support_context`.
+Requester-scoped mobile responses only expose tickets created by the current
+mobile user for the current tenant. Support-agent queues and cross-user support
+visibility belong to the admin/support surface and are not exposed through the
+mobile requester endpoints.
+
+Attachment support is metadata-only in the foundation. File upload, storage,
+virus scanning, retention, preview, and download policy remain future support
+and media-workflow scope.
 
 ## Gates
 
@@ -392,5 +405,14 @@ priority, support access, and diagnostic export.
 
 ## Tests
 
-Phase 24 should verify tenant isolation, assignment/status transitions,
-attachment limits, privacy filtering, offline drafts, and audit events.
+Current foundation coverage:
+
+```bash
+cd apps/api-admin && php artisan test --compact --filter=MobileSupportApiTest
+cd apps/mobile-client && php artisan test --compact --filter=MobileSupportApiServiceTest
+```
+
+Future Phase 24 coverage should add admin support queues, support-agent
+replies, assignment/status transitions, stored attachment upload/download
+limits, offline draft replay, support notification delivery, and admin/support
+access audit views.

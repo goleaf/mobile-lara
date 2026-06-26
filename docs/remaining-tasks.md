@@ -381,7 +381,8 @@ before implementation scope is added.
   middleware, and tenant-local cache partition verification.
 - Complete admin role/permission management, admin billing management, admin
   notification creation/provider delivery, mobile push-token registration UI,
-  admin sync monitoring, and broader audit reporting views.
+  admin support queues, support assignment/status controls, stored support
+  attachments, support-agent replies, and broader audit reporting views.
 - Continue rewiring lower-level mobile-local actions so server-trusted behavior
   comes from API/bootstrap state instead of local placeholders. Primary
   navigation, dashboard/create/search shortcuts, and direct module routes now
@@ -415,14 +416,16 @@ before implementation scope is added.
   sharing now gates the NativePHP share handoff while local JSON export remains
   user-controlled and redacted. The API diagnostics upload endpoint now stores
   current-tenant snapshots after server-side redaction and audit, and
-  platform admins can review redacted diagnostics reports. Remaining
-  ticket-linked support queues, report native share flows, and billing browser
-  flows still need feature-specific policy gates.
+  platform admins can review redacted diagnostics reports. Requester-scoped
+  support ticket/message APIs now exist for mobile callers, but ticket-linked
+  support queues, mobile support screens, offline support drafts, report native
+  share flows, and billing browser flows still need feature-specific policy
+  gates.
 - Complete the records/content module beyond the API and records-only sync
   foundation: admin records management screens, standalone
   category/tag/note/attachment endpoints, upload/storage handling, richer
   hard-delete governance, non-record sync adapters, full mobile pull/reconcile
-  hydration from the authoritative records contract, and admin sync monitoring.
+  hydration from the authoritative records contract.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 
