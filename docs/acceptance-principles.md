@@ -1,5 +1,12 @@
 # Acceptance Principles
 
+Risk Map is defined in `risk-map.md`:
+API dependency, offline sync, tenant isolation, mobile secure storage,
+NativePHP plugin availability, app store releases, forced updates,
+feature flag mistakes, billing restrictions, admin misconfiguration,
+support access, privacy, and data conflicts must document prevention
+principles and documentation requirements before implementation.
+
 Updated: 2026-06-26
 
 This document defines acceptance principles for every Mobile Lara feature. It
@@ -14,8 +21,9 @@ queues, provider integrations, or application logic.
 Use this document with [Product Vision](product-vision.md), [Product
 Positioning](product-positioning.md), [Core Product
 Principles](product-principles.md), [Documentation-First
-Architecture](documentation-first-architecture.md), [Two-System Boundary
-Logic](two-system-boundary.md), [API-First Principles](api-first-principles.md),
+Architecture](documentation-first-architecture.md), [Risk Map](risk-map.md),
+[Two-System Boundary Logic](two-system-boundary.md), [API-First
+Principles](api-first-principles.md),
 [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client
 Responsibilities](mobile-client-responsibilities.md), [Admin Control Center
 Logic](admin-control-center-logic.md), [Feature Flag
@@ -66,7 +74,8 @@ Every feature must answer these questions before implementation:
 8. Which tenant owns the data, configuration, users, cache, and audit history?
 9. What does failure look like to admins, mobile users, support, and the API?
 10. What security and privacy boundaries protect the feature?
-11. Which Markdown documents record the answers?
+11. Which risk-map entries apply, and which prevention principles are required?
+12. Which Markdown documents record the answers?
 
 If any answer is unclear, the feature is not ready for implementation.
 

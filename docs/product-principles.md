@@ -23,6 +23,11 @@ control, mobile behavior, API dependency, offline behavior, permission
 behavior, feature flag behavior, tenant behavior, error behavior, security
 behavior, and documentation requirements before implementation planning begins.
 
+Use this document with [Risk Map](risk-map.md): product principles stay
+operationally safe when API dependency, offline sync, tenant isolation, secure
+storage, NativePHP availability, release, update, feature flag, billing, admin,
+support, privacy, and conflict risks are documented before implementation.
+
 Use this document with [Admin Safety Principles](admin-safety-principles.md):
 admin authority stays trustworthy only when dangerous controls are confirmed,
 audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated.
@@ -245,6 +250,13 @@ every feature must document purpose, admin control, mobile behavior,
 API dependency, offline behavior, permission behavior, feature flag
 behavior, tenant behavior, error behavior, security behavior, and
 documentation requirements before implementation planning begins.
+
+Risk Map is defined in `risk-map.md`:
+API dependency, offline sync, tenant isolation, mobile secure storage,
+NativePHP plugin availability, app store releases, forced updates,
+feature flag mistakes, billing restrictions, admin misconfiguration,
+support access, privacy, and data conflicts must document prevention
+principles and documentation requirements before implementation.
 
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,

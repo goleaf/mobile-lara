@@ -74,6 +74,13 @@ API dependency, offline behavior, permission behavior, feature flag
 behavior, tenant behavior, error behavior, security behavior, and
 documentation requirements before implementation planning begins.
 
+Risk Map is defined in `docs/risk-map.md`:
+API dependency, offline sync, tenant isolation, mobile secure storage,
+NativePHP plugin availability, app store releases, forced updates,
+feature flag mistakes, billing restrictions, admin misconfiguration,
+support access, privacy, and data conflicts must document prevention
+principles and documentation requirements before implementation.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -92,6 +99,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Risk Map documentation for API dependency, offline sync, tenant
+  isolation, mobile secure storage, NativePHP plugin availability, app store
+  releases, forced updates, feature flag mistakes, billing restrictions, admin
+  misconfiguration, support access, privacy, data conflicts, prevention
+  principles, and documentation requirements.
 - Added Acceptance Principles documentation for project-wide feature readiness
   across purpose, admin control, mobile behavior, API dependency, offline
   behavior, permission behavior, feature flags, tenant behavior, error

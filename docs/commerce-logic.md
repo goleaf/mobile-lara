@@ -761,5 +761,12 @@ API dependency, offline behavior, permission behavior, feature flag
 behavior, tenant behavior, error behavior, security behavior, and
 documentation requirements before implementation planning begins.
 
+Risk Map is defined in `risk-map.md`:
+API dependency, offline sync, tenant isolation, mobile secure storage,
+NativePHP plugin availability, app store releases, forced updates,
+feature flag mistakes, billing restrictions, admin misconfiguration,
+support access, privacy, and data conflicts must document prevention
+principles and documentation requirements before implementation.
+
 If any of those are unclear, the correct next step is more documentation, not
 application code.
