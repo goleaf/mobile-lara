@@ -91,6 +91,12 @@ resolution, acknowledgement, status communication, manual sync,
 background sync, and admin health monitoring while API authority remains
 responsible for acceptance, rejection, conflict decisions, and audit.
 
+Conflict Resolution Logic is defined in `conflict-resolution-logic.md`:
+conflicts happen when local mobile intent and current server truth no
+longer align, and resolution must protect user work while API/Admin
+authority decides auto-resolution, user choice, admin/support review,
+audit meaning, and data-loss prevention.
+
 ## Shell Statement
 
 The NativePHP mobile shell is the first product layer a mobile user experiences.

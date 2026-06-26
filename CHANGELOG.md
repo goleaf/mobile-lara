@@ -6,6 +6,9 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Conflict Resolution Logic documentation for conflict causes,
+  auto-resolution, user-choice recovery, admin/support review, mobile conflict
+  UX, admin monitoring, audit, and data-loss prevention.
 - Added Sync Lifecycle Logic documentation for bootstrap sync, pull changes,
   push local changes, retries, conflict detection, conflict resolution,
   acknowledgement, sync status communication, manual sync, background sync,

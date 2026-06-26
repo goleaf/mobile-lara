@@ -144,6 +144,12 @@ resolution, acknowledgement, status communication, manual sync,
 background sync, and admin health monitoring while API authority remains
 responsible for acceptance, rejection, conflict decisions, and audit.
 
+Conflict Resolution Logic is defined in `conflict-resolution-logic.md`:
+conflicts happen when local mobile intent and current server truth no
+longer align, and resolution must protect user work while API/Admin
+authority decides auto-resolution, user choice, admin/support review,
+audit meaning, and data-loss prevention.
+
 The mobile client should be calm, direct, and explicit about sync state.
 
 Mobile users should not need to understand tenant billing, feature rollout, support policy, or API versioning. The UI should translate those decisions into clear states such as enabled, disabled, blocked, deprecated, pending, synced, conflict, and offline.

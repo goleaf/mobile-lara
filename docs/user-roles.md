@@ -122,6 +122,12 @@ resolution, acknowledgement, status communication, manual sync,
 background sync, and admin health monitoring while API authority remains
 responsible for acceptance, rejection, conflict decisions, and audit.
 
+Conflict Resolution Logic is defined in `conflict-resolution-logic.md`:
+conflicts happen when local mobile intent and current server truth no
+longer align, and resolution must protect user work while API/Admin
+authority decides auto-resolution, user choice, admin/support review,
+audit meaning, and data-loss prevention.
+
 Roles define authority and visibility. The [SaaS Value Map](saas-value-map.md) defines product value. A stakeholder may receive value from a feature without receiving direct control over it; for example, a tenant business benefits from reports and offline sync, while the tenant admin or support team may be the role that actually sees the management surface.
 
 Roles also depend on [Two-System Boundary Logic](two-system-boundary.md). Admin/API enforces role authority, while mobile only renders API-derived capability state and account-state restrictions.

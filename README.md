@@ -30,6 +30,11 @@ pull, push, retry, conflict detection, conflict resolution, acknowledgement,
 status communication, manual sync, background sync, and admin health
 monitoring while API authority remains final for accepted server state.
 
+The conflict resolution model is explicit: conflicts happen when local mobile
+intent and current server truth no longer align; mobile preserves and explains
+the work, while API/Admin authority decides auto-resolution, user choice,
+admin/support review, audit meaning, and data-loss prevention.
+
 The value map is explicit too: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team each receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
 The two-system boundary is explicit: Admin/API owns SaaS authority, while mobile owns local execution, native capability use, cache, drafts, queues, and clear state presentation.
@@ -119,6 +124,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/multi-tenant-mobile-logic.md](docs/multi-tenant-mobile-logic.md) | Multi-tenant mobile logic for tenant choice, remembered tenant context, safe tenant switching, tenant-scoped cache, per-tenant permissions/features, sync after switch, and logout cleanup. |
 | [docs/offline-first-principles.md](docs/offline-first-principles.md) | Offline-first principles for offline mobile capability, online-only API authority, cache rules, never-cache rules, offline state messaging, queued action logic, pending-change UX, and admin-controlled offline limits. |
 | [docs/sync-lifecycle-logic.md](docs/sync-lifecycle-logic.md) | Sync lifecycle logic for bootstrap sync, pull changes, push local changes, retries, conflict detection, conflict resolution, acknowledgement, status communication, manual sync, background sync, and admin sync health monitoring. |
+| [docs/conflict-resolution-logic.md](docs/conflict-resolution-logic.md) | Conflict resolution logic for conflict causes, auto-resolution, user choice, admin/support review, mobile conflict UX, admin monitoring, audit, and data-loss prevention. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
 | [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
@@ -179,6 +185,7 @@ contracts.
 - Apply [multi-tenant mobile logic](docs/multi-tenant-mobile-logic.md) before planning mobile tenant choice, remembered tenant context, tenant switching, tenant-scoped cache, per-tenant permissions or features, sync after tenant switch, offline tenant behavior, or logout tenant cleanup.
 - Apply [offline-first principles](docs/offline-first-principles.md) before planning offline-capable mobile screens, local cache, drafts, queued actions, sync state, pending changes, conflict behavior, or admin-controlled offline limits.
 - Apply [sync lifecycle logic](docs/sync-lifecycle-logic.md) before planning bootstrap sync, pull, push, retry, conflict detection, conflict resolution, acknowledgement, sync status communication, manual sync, background sync, or admin sync health monitoring.
+- Apply [conflict resolution logic](docs/conflict-resolution-logic.md) before planning conflict detection, auto-resolution, user-choice recovery, admin/support review, mobile conflict messaging, conflict monitoring, audit, or data-loss prevention.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
 - Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.

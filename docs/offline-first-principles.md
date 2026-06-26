@@ -26,12 +26,15 @@ Logic](mobile-dashboard-logic.md), [Mobile Settings Logic](mobile-settings-logic
 Control Logic](mobile-version-control-logic.md), [Admin Control Center
 Logic](admin-control-center-logic.md), [Admin Safety Principles](admin-safety-principles.md),
 [Audit Logic](audit-logic.md), [Data Privacy Principles](data-privacy-principles.md),
-and [API v1 Sync Contract](../contracts/api/v1-sync.md): offline-first behavior
-keeps mobile users productive with cache, drafts, and queued intents while sync
-lifecycle behavior defines bootstrap, pull, push, retry, conflict,
-acknowledgement, status, manual sync, background sync, and health monitoring.
-Admin/API remains authoritative for access, validation, permission, billing,
-feature, tenant, sync, conflict, audit, and security decisions.
+[Conflict Resolution Logic](conflict-resolution-logic.md), and [API v1 Sync
+Contract](../contracts/api/v1-sync.md): offline-first behavior keeps mobile
+users productive with cache, drafts, and queued intents while sync lifecycle
+behavior defines bootstrap, pull, push, retry, conflict, acknowledgement,
+status, manual sync, background sync, and health monitoring. Conflict
+resolution defines auto-resolution, user choice, admin/support review, audit,
+and data-loss prevention. Admin/API remains authoritative for access,
+validation, permission, billing, feature, tenant, sync, conflict, audit, and
+security decisions.
 
 ## Offline-First Statement
 

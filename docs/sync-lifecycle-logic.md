@@ -25,7 +25,8 @@ Principles](mobile-app-lock-principles.md), [Mobile App Shell Logic](mobile-app-
 Control Logic](mobile-version-control-logic.md), [Admin Control Center
 Logic](admin-control-center-logic.md), [Admin Safety Principles](admin-safety-principles.md),
 [Audit Logic](audit-logic.md), [Data Privacy Principles](data-privacy-principles.md),
-and [API v1 Sync Contract](../contracts/api/v1-sync.md): sync exists so mobile
+[Conflict Resolution Logic](conflict-resolution-logic.md), and [API v1 Sync
+Contract](../contracts/api/v1-sync.md): sync exists so mobile
 can reconcile useful local work with server authority while Admin/API remains
 authoritative for access, validation, permissions, feature availability,
 tenant boundaries, billing, conflict decisions, audit, and canonical state.

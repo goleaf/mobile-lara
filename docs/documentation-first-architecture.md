@@ -96,6 +96,12 @@ resolution, acknowledgement, status communication, manual sync,
 background sync, and admin health monitoring while API authority remains
 responsible for acceptance, rejection, conflict decisions, and audit.
 
+Conflict Resolution Logic is defined in `conflict-resolution-logic.md`:
+conflicts happen when local mobile intent and current server truth no
+longer align, and resolution must protect user work while API/Admin
+authority decides auto-resolution, user choice, admin/support review,
+audit meaning, and data-loss prevention.
+
 ## Architecture Statement
 
 Mobile Lara is documentation-first because the product has two systems, tenant boundaries, offline behavior, feature control, mobile-local state, NativePHP capabilities, billing effects, support expectations, reports, audit needs, and security concerns.

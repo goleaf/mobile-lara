@@ -90,6 +90,12 @@ resolution, acknowledgement, status communication, manual sync,
 background sync, and admin health monitoring while API authority remains
 responsible for acceptance, rejection, conflict decisions, and audit.
 
+Conflict Resolution Logic is defined in `conflict-resolution-logic.md`:
+conflicts happen when local mobile intent and current server truth no
+longer align, and resolution must protect user work while API/Admin
+authority decides auto-resolution, user choice, admin/support review,
+audit meaning, and data-loss prevention.
+
 Updated: 2026-06-26
 
 This document defines mobile UX principles for the Mobile Lara NativePHP client. It explains mobile-first navigation, simple screens, clear loading states, clear offline states, thumb-friendly controls, minimum typing, fast actions, feature visibility based on admin rules, secure session behavior, and permission education before native permission prompts. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, or application logic.
