@@ -45,6 +45,12 @@ notes, attachments, activity, tags, categories, status, offline draft or
 sync behavior, admin controls, permissions, feature flags, audit, and
 reporting boundaries.
 
+Search Logic is defined in `search-logic.md`:
+search stays tenant-scoped, permission-aware, feature-controlled,
+privacy-preserving, and explicit about local-cache limits versus
+API-authoritative results, including recent searches, saved filters, filtering,
+sorting, scan-to-search, offline limits, and admin-controlled boundaries.
+
 ## Conflict Resolution Statement
 
 Conflict resolution protects user work without weakening server authority.

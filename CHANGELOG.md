@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Search Logic documentation for local search, API search, recent
+  searches, saved filters, filtering, sorting, scan-to-search, offline search
+  limitations, privacy, tenant isolation, admin controls, feature flags, and
+  safe result states.
 - Added Records/Content Module Logic documentation for record meaning,
   lifecycle actions, notes, attachments, activity, tags, categories, status,
   offline behavior, sync requirements, admin controls, permissions, feature

@@ -27,10 +27,16 @@ Principles](offline-first-principles.md), [Offline UX Logic](offline-ux-logic.md
 [Remote Configuration Logic](remote-configuration-logic.md), [Mobile Version
 Control Logic](mobile-version-control-logic.md), [Admin Control Center
 Logic](admin-control-center-logic.md), [Admin Safety Principles](admin-safety-principles.md),
-and [API v1 Records Contract](../contracts/api/v1-records.md): records are
-tenant-scoped business content, and Admin/API remains authoritative for access,
-validation, lifecycle state, sync acceptance, conflict decisions, audit,
-retention, reporting, and tenant boundaries.
+[Search Logic](search-logic.md), and [API v1 Records Contract](../contracts/api/v1-records.md):
+records are tenant-scoped business content, and Admin/API remains authoritative
+for access, validation, lifecycle state, sync acceptance, conflict decisions,
+audit, retention, reporting, search, and tenant boundaries.
+
+Search Logic is defined in `search-logic.md`:
+record discovery must stay tenant-scoped, permission-aware, feature-controlled,
+privacy-preserving, and explicit about local-cache limits versus
+API-authoritative results, including recent searches, saved filters, filtering,
+sorting, scan-to-search, offline limits, and admin-controlled boundaries.
 
 ## Module Statement
 

@@ -67,6 +67,12 @@ notes, attachments, activity, tags, categories, status, offline draft or
 sync behavior, admin controls, permissions, feature flags, audit, and
 reporting boundaries.
 
+Search Logic is defined in `docs/search-logic.md`:
+search stays tenant-scoped, permission-aware, feature-controlled,
+privacy-preserving, and explicit about local-cache limits versus
+API-authoritative results, including recent searches, saved filters, filtering,
+sorting, scan-to-search, offline limits, and admin-controlled boundaries.
+
 Sync Lifecycle Logic is defined in `docs/sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,
@@ -152,6 +158,7 @@ Use these docs before changing the product direction:
 - `docs/sync-lifecycle-logic.md`
 - `docs/conflict-resolution-logic.md`
 - `docs/records-content-module-logic.md`
+- `docs/search-logic.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -189,6 +196,7 @@ Use these docs before changing the product direction:
 - Sync lifecycle decisions must follow `docs/sync-lifecycle-logic.md`.
 - Conflict resolution decisions must follow `docs/conflict-resolution-logic.md`.
 - Records/content module decisions must follow `docs/records-content-module-logic.md`.
+- Search logic decisions must follow `docs/search-logic.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -225,6 +233,7 @@ Use these docs before changing the product direction:
 - Any bootstrap sync, pull, push, retry, conflict detection, conflict resolution, acknowledgement, sync status communication, manual sync, background sync, or admin sync health monitoring behavior must map to `docs/sync-lifecycle-logic.md`.
 - Any conflict cause, auto-resolution, user-choice recovery, admin/support review, mobile conflict message, conflict monitoring, conflict audit, or data-loss prevention behavior must map to `docs/conflict-resolution-logic.md`.
 - Any record create, view, edit, archive, restore, delete, note, attachment, activity, tag, category, status, offline draft, sync, admin control, permission, feature flag, audit, report, or support behavior must map to `docs/records-content-module-logic.md`.
+- Any local search, API search, recent search, saved filter, filtering, sorting, scan-to-search, offline search limit, search privacy, tenant search isolation, admin search control, or search result-state behavior must map to `docs/search-logic.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.
