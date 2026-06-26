@@ -3,7 +3,9 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Models\MobileLocalNotification;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\LocalNotificationRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,6 +17,7 @@ use Livewire\Component;
 class Notifications extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     private const FILTER_ALL = 'all';
 
@@ -54,9 +57,10 @@ class Notifications extends Component
 
     private LocalNotificationRepository $notifications;
 
-    public function boot(LocalNotificationRepository $notifications): void
+    public function boot(LocalNotificationRepository $notifications, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->notifications = $notifications;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(int $limit = 30, string $filter = self::FILTER_ALL, string $search = ''): void
@@ -83,6 +87,10 @@ class Notifications extends Component
 
     public function markAsRead(int $notificationId): void
     {
+        if ($this->notificationInboxDenied('Mark read unavailable')) {
+            return;
+        }
+
         try {
             $notification = $this->notifications->markAsRead($notificationId);
         } catch (QueryException) {
@@ -102,6 +110,10 @@ class Notifications extends Component
 
     public function markAsOpened(int $notificationId): void
     {
+        if ($this->notificationInboxDenied('Mark opened unavailable')) {
+            return;
+        }
+
         try {
             $notification = $this->notifications->markAsOpened($notificationId);
         } catch (QueryException) {
@@ -121,6 +133,10 @@ class Notifications extends Component
 
     public function markAllAsRead(): void
     {
+        if ($this->notificationInboxDenied('Mark all unavailable')) {
+            return;
+        }
+
         try {
             $markedCount = $this->notifications->markAllAsRead(
                 type: $this->typeFilter(),
@@ -142,6 +158,20 @@ class Notifications extends Component
 
     public function render(): View
     {
+        $notificationPolicy = $this->notificationInboxPolicy();
+
+        if (! $notificationPolicy['inbox']['allowed']) {
+            return view('livewire.mobile.notifications', [
+                'filters' => [],
+                'inboxCount' => 0,
+                'metrics' => [],
+                'notificationPolicy' => $notificationPolicy,
+                'notifications' => new Collection,
+                'storageAvailable' => true,
+                'unreadCount' => 0,
+            ]);
+        }
+
         try {
             $stats = $this->notifications->counts();
             $notifications = $this->notifications->recent(
@@ -170,6 +200,7 @@ class Notifications extends Component
             'filters' => $this->filters($stats),
             'inboxCount' => $notifications->count(),
             'metrics' => $this->metrics($stats),
+            'notificationPolicy' => $notificationPolicy,
             'notifications' => $notifications,
             'storageAvailable' => $storageAvailable,
             'unreadCount' => $stats['unread'],
@@ -295,5 +326,25 @@ class Notifications extends Component
     private function validFilter(string $filter): string
     {
         return in_array($filter, self::FILTERS, true) ? $filter : self::FILTER_ALL;
+    }
+
+    /**
+     * @return array{inbox: array{allowed: bool, message: string}}
+     */
+    private function notificationInboxPolicy(): array
+    {
+        $inbox = $this->mobileFeatureDecision('notifications', 'notifications.view');
+
+        return [
+            'inbox' => [
+                'allowed' => $inbox['allowed'],
+                'message' => $inbox['message'],
+            ],
+        ];
+    }
+
+    private function notificationInboxDenied(string $title): bool
+    {
+        return $this->mobileFeatureDenied('notifications', $title, 'notifications.view');
     }
 }

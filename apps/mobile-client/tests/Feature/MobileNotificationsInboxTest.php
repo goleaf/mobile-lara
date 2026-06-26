@@ -3,6 +3,7 @@
 use App\Livewire\Mobile\Notifications;
 use App\Models\MobileLocalNotification;
 use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -126,9 +127,144 @@ test('notification inbox marks one or all notifications as read and opened', fun
         ->and(MobileLocalNotification::query()->whereNull('read_at')->count())->toBe(0);
 });
 
+test('notification inbox blocks local mutations by disabled notification policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileNotificationPolicyBootstrapEnvelope([
+        'notifications' => mobileNotificationPolicyFeature(
+            enabled: false,
+            state: 'disabled',
+            message: 'Notifications are disabled by admin policy.',
+        ),
+    ], abilities: [
+        'notifications' => ['view' => true],
+    ]));
+
+    $notification = MobileLocalNotification::factory()->warning()->create([
+        'title' => 'Sync queued',
+    ]);
+
+    Livewire::test(Notifications::class)
+        ->assertSee('Notifications disabled')
+        ->assertDontSee('Sync queued')
+        ->assertDontSee('wire:click="markAllAsRead"', false)
+        ->assertDontSee('wire:click="markAsRead('.$notification->id.')"', false)
+        ->assertDontSee('wire:click="markAsOpened('.$notification->id.')"', false)
+        ->call('markAsRead', $notification->id)
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Mark read unavailable'
+                && ($params['message'] ?? null) === 'Notifications are disabled by admin policy.';
+        })
+        ->call('markAsOpened', $notification->id)
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Mark opened unavailable'
+                && ($params['message'] ?? null) === 'Notifications are disabled by admin policy.';
+        })
+        ->call('markAllAsRead')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Mark all unavailable'
+                && ($params['message'] ?? null) === 'Notifications are disabled by admin policy.';
+        });
+
+    $notification->refresh();
+
+    expect($notification->read_at)->toBeNull()
+        ->and($notification->opened_at)->toBeNull()
+        ->and(MobileLocalNotification::query()->whereNull('read_at')->count())->toBe(1);
+});
+
 test('notification inbox renders empty state without local rows', function (): void {
     Livewire::test(Notifications::class)
         ->assertSee('No notifications')
         ->assertSee('0 unread')
         ->assertSee('0 shown');
 });
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return array<string, mixed>
+ */
+function mobileNotificationPolicyBootstrapEnvelope(array $features = [], array $abilities = []): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => $abilities,
+                'ability_list' => mobileNotificationPolicyAbilityList($abilities),
+            ],
+            'features' => [
+                'version' => 'notification-policy',
+                'items' => array_replace([
+                    'notifications' => mobileNotificationPolicyFeature(enabled: true, state: 'visible'),
+                ], $features),
+            ],
+            'remote_config' => ['version' => 'notification-policy', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => true, 'reason' => null],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'notification-policy',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileNotificationPolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'test_policy',
+    ];
+}
+
+/**
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return list<string>
+ */
+function mobileNotificationPolicyAbilityList(array $abilities): array
+{
+    $abilityList = [];
+
+    foreach ($abilities as $group => $items) {
+        foreach ($items as $ability => $granted) {
+            if ($granted) {
+                $abilityList[] = $group.'.'.$ability;
+            }
+        }
+    }
+
+    return $abilityList;
+}

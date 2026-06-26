@@ -71,6 +71,16 @@ privacy-safe, purpose-limited, and Admin/API-authoritative.
   actions, location callbacks, check-in creation forms, and check-in history
   shortcuts so disabled location or sync policy stops direct Livewire calls
   before native location handoff or local check-in writes.
+- Added API-derived policy checks to mobile media capture and file manager
+  actions so disabled camera, file, or share features hide controls and stop
+  direct Livewire calls before native media handoff, local file writes, file
+  deletes, exports, imports, or native share handoff.
+- Added API-derived policy checks to scanner capture and saved scan-history
+  mutations so disabled scanner policy hides scan controls and stops direct
+  Livewire calls before local scan-history writes or deletes.
+- Added API-derived policy checks to the mobile notification inbox so disabled
+  notification policy hides cached inbox rows and stops direct Livewire calls
+  before local read/open/read-all mutations.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

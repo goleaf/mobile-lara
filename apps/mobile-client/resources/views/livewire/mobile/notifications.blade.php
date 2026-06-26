@@ -24,6 +24,11 @@
                 </x-mobile.button>
             </x-slot:action>
         </x-mobile.error-state>
+    @elseif (! $notificationPolicy['inbox']['allowed'])
+        <x-mobile.error-state
+            title="Notifications disabled"
+            :message="$notificationPolicy['inbox']['message']"
+        />
     @else
         <x-mobile.card title="Inbox summary" description="Unread, opened, and warning counts from local storage.">
             <div class="grid grid-cols-2 gap-3">

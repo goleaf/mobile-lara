@@ -272,9 +272,15 @@ before implementation scope is added.
   before local writes, file deletes, or queue writes. Native location
   permission/current-position calls, callbacks, check-in creation, and
   check-in history shortcuts now gate cached location and sync policy before
-  native handoff or local check-in writes. Media capture/file-manager actions,
-  scanner result mutations, lower-level NativePHP service calls, and remaining
-  offline queue writes still need per-action gates.
+  native handoff or local check-in writes. Media capture callbacks and file
+  manager read/write/copy/move/import/export/delete/share actions now gate
+  cached camera, file, and share policy before native handoff or local sandbox
+  changes. Scanner capture callbacks and scan-history delete/clear actions
+  now gate cached scanner policy before local scan-history writes or deletes.
+  Notification inbox rendering and read/open/read-all actions now gate cached
+  notification policy before local notification rows are shown or timestamped.
+  Lower-level NativePHP service calls and remaining offline queue writes still
+  need per-action gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 
