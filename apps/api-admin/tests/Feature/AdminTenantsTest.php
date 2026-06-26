@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\TenantStatus;
+use App\Enums\TenantUserRole;
+use App\Enums\TenantUserStatus;
 use App\Livewire\Admin\Tenants;
 use App\Models\SecurityAuditEvent;
 use App\Models\Tenant;
@@ -121,5 +123,121 @@ test('tenant management validates slug status subscription and json settings', f
             'form.status',
             'form.subscription_state',
             'form.settings_json',
+        ]);
+});
+
+test('platform admins can assign audited tenant memberships', function (): void {
+    $admin = User::factory()->platformAdmin()->create();
+    $tenant = Tenant::factory()->create([
+        'name' => 'Membership Tenant',
+        'slug' => 'membership-tenant',
+    ]);
+    $member = User::factory()->create([
+        'email' => 'worker@example.test',
+    ]);
+
+    Livewire::actingAs($admin)
+        ->test(Tenants::class)
+        ->set('membershipForm.tenant_id', (string) $tenant->id)
+        ->set('membershipForm.user_email', $member->email)
+        ->set('membershipForm.role', TenantUserRole::TenantManager->value)
+        ->set('membershipForm.status', TenantUserStatus::Invited->value)
+        ->set('membershipForm.is_current', false)
+        ->call('saveMembership')
+        ->assertHasNoErrors()
+        ->assertSet('membershipForm.user_email', '')
+        ->assertSee('worker@example.test')
+        ->assertSee('Tenant manager');
+
+    $membership = TenantUser::query()
+        ->whereBelongsTo($tenant)
+        ->whereBelongsTo($member, 'user')
+        ->first();
+
+    expect($membership)->not->toBeNull()
+        ->and($membership?->role)->toBe(TenantUserRole::TenantManager)
+        ->and($membership?->status)->toBe(TenantUserStatus::Invited)
+        ->and($membership?->is_current)->toBeFalse()
+        ->and($membership?->invited_at)->not->toBeNull()
+        ->and($membership?->accepted_at)->toBeNull()
+        ->and(SecurityAuditEvent::query()
+            ->where('event', 'admin_tenant_membership_created')
+            ->where('user_id', $admin->id)
+            ->where('metadata->tenant_id', $tenant->id)
+            ->where('metadata->member_user_id', $member->id)
+            ->exists())->toBeTrue();
+});
+
+test('platform admins can update tenant memberships and rotate current tenant', function (): void {
+    $admin = User::factory()->platformAdmin()->create();
+    $member = User::factory()->create([
+        'email' => 'manager@example.test',
+    ]);
+    $previousTenant = Tenant::factory()->create([
+        'name' => 'Previous Tenant',
+        'slug' => 'previous-tenant',
+    ]);
+    $currentTenant = Tenant::factory()->create([
+        'name' => 'Current Tenant',
+        'slug' => 'current-tenant',
+    ]);
+
+    $previousMembership = TenantUser::factory()
+        ->for($previousTenant)
+        ->for($member, 'user')
+        ->current()
+        ->create();
+
+    $membership = TenantUser::factory()
+        ->for($currentTenant)
+        ->for($member, 'user')
+        ->role(TenantUserRole::MobileUser)
+        ->create([
+            'is_current' => false,
+        ]);
+
+    Livewire::actingAs($admin)
+        ->test(Tenants::class)
+        ->set('membershipForm.tenant_id', (string) $currentTenant->id)
+        ->set('membershipForm.user_email', $member->email)
+        ->set('membershipForm.role', TenantUserRole::BillingManager->value)
+        ->set('membershipForm.status', TenantUserStatus::Active->value)
+        ->set('membershipForm.is_current', true)
+        ->call('saveMembership')
+        ->assertHasNoErrors()
+        ->assertSee('Billing manager')
+        ->assertSee('Current Tenant');
+
+    $previousMembership->refresh();
+    $membership->refresh();
+
+    expect($previousMembership->is_current)->toBeFalse()
+        ->and($membership->is_current)->toBeTrue()
+        ->and($membership->role)->toBe(TenantUserRole::BillingManager)
+        ->and($membership->status)->toBe(TenantUserStatus::Active)
+        ->and($membership->accepted_at)->not->toBeNull()
+        ->and(SecurityAuditEvent::query()
+            ->where('event', 'admin_tenant_membership_updated')
+            ->where('user_id', $admin->id)
+            ->where('metadata->tenant_id', $currentTenant->id)
+            ->where('metadata->member_user_id', $member->id)
+            ->exists())->toBeTrue();
+});
+
+test('tenant membership form validates tenant user role and status', function (): void {
+    $admin = User::factory()->platformAdmin()->create();
+
+    Livewire::actingAs($admin)
+        ->test(Tenants::class)
+        ->set('membershipForm.tenant_id', '')
+        ->set('membershipForm.user_email', 'not-an-email')
+        ->set('membershipForm.role', 'owner')
+        ->set('membershipForm.status', 'blocked')
+        ->call('saveMembership')
+        ->assertHasErrors([
+            'membershipForm.tenant_id',
+            'membershipForm.user_email',
+            'membershipForm.role',
+            'membershipForm.status',
         ]);
 });

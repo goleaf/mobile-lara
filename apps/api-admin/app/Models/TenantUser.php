@@ -7,6 +7,7 @@ use App\Enums\TenantUserRole;
 use App\Enums\TenantUserStatus;
 use Database\Factories\TenantUserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,6 +50,30 @@ final class TenantUser extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @param  Builder<TenantUser>  $query
+     * @return Builder<TenantUser>
+     */
+    public function scopeForAdminRecentList(Builder $query): Builder
+    {
+        return $query
+            ->select([
+                'id',
+                'tenant_id',
+                'user_id',
+                'role',
+                'status',
+                'is_current',
+                'updated_at',
+            ])
+            ->with([
+                'tenant:id,name,slug,public_id,status',
+                'user:id,name,email',
+            ])
+            ->latest('updated_at')
+            ->limit(10);
     }
 
     public function isSwitchable(): bool

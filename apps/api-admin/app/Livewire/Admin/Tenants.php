@@ -3,8 +3,12 @@
 namespace App\Livewire\Admin;
 
 use App\Actions\Admin\SaveTenantAction;
+use App\Actions\Admin\SaveTenantMembershipAction;
 use App\Enums\TenantStatus;
+use App\Enums\TenantUserRole;
+use App\Enums\TenantUserStatus;
 use App\Models\Tenant;
+use App\Models\TenantUser;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
@@ -35,6 +39,17 @@ final class Tenants extends Component
         'status' => 'active',
         'subscription_state' => 'active',
         'settings_json' => '{}',
+    ];
+
+    /**
+     * @var array{tenant_id: string, user_email: string, role: string, status: string, is_current: bool}
+     */
+    public array $membershipForm = [
+        'tenant_id' => '',
+        'user_email' => '',
+        'role' => 'mobile_user',
+        'status' => 'active',
+        'is_current' => false,
     ];
 
     public function updatedSearch(): void
@@ -115,6 +130,56 @@ final class Tenants extends Component
         $this->resetPage();
     }
 
+    public function saveMembership(): void
+    {
+        $admin = auth()->user();
+
+        abort_unless($admin instanceof User, 403);
+
+        /** @var array{membershipForm: array{tenant_id: int|string, user_email: string, role: string, status: string, is_current: bool}} $validated */
+        $validated = $this->validate($this->membershipRules(), attributes: $this->validationAttributes());
+        $membershipForm = $validated['membershipForm'];
+
+        $tenant = Tenant::query()
+            ->select([
+                'id',
+                'public_id',
+                'name',
+                'slug',
+                'status',
+                'subscription_state',
+                'settings',
+            ])
+            ->findOrFail((int) $membershipForm['tenant_id']);
+
+        Gate::authorize('update', $tenant);
+
+        $member = User::query()
+            ->select([
+                'id',
+                'name',
+                'email',
+            ])
+            ->where('email', $membershipForm['user_email'])
+            ->firstOrFail();
+
+        app(SaveTenantMembershipAction::class)->handle($tenant, $member, [
+            'role' => $membershipForm['role'],
+            'status' => $membershipForm['status'],
+            'is_current' => (bool) $membershipForm['is_current'],
+        ], $admin, request());
+
+        session()->flash('status', 'Tenant membership saved.');
+
+        $this->membershipForm = [
+            'tenant_id' => (string) $tenant->id,
+            'user_email' => '',
+            'role' => TenantUserRole::MobileUser->value,
+            'status' => TenantUserStatus::Active->value,
+            'is_current' => false,
+        ];
+    }
+
     public function statusTone(string $status): string
     {
         return match ($status) {
@@ -129,18 +194,46 @@ final class Tenants extends Component
         };
     }
 
+    public function membershipStatusTone(string $status): string
+    {
+        return match ($status) {
+            TenantUserStatus::Active->value => 'success',
+            TenantUserStatus::Invited->value => 'warning',
+            TenantUserStatus::Suspended->value => 'danger',
+            default => 'neutral',
+        };
+    }
+
     public function render(): View
     {
         return view('livewire.admin.tenants', [
+            'membershipStatusOptions' => $this->membershipStatusOptions(),
+            'recentMemberships' => TenantUser::query()->forAdminRecentList()->get(),
+            'roleOptions' => $this->roleOptions(),
             'statusOptions' => $this->statusOptions(),
             'subscriptionOptions' => $this->subscriptionOptions(),
             'summary' => $this->summary(),
+            'tenantOptions' => Tenant::query()->forAdminOptions()->get(),
             'tenants' => Tenant::query()
                 ->forAdminIndex()
                 ->matchingAdminSearch($this->search)
                 ->paginate(10)
                 ->withQueryString(),
         ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function membershipRules(): array
+    {
+        return [
+            'membershipForm.tenant_id' => ['required', 'integer', Rule::exists('tenants', 'id')],
+            'membershipForm.user_email' => ['required', 'email', Rule::exists('users', 'email')],
+            'membershipForm.role' => ['required', Rule::in(array_keys($this->roleOptions()))],
+            'membershipForm.status' => ['required', Rule::in(array_keys($this->membershipStatusOptions()))],
+            'membershipForm.is_current' => ['boolean'],
+        ];
     }
 
     /**
@@ -191,6 +284,11 @@ final class Tenants extends Component
             'form.status' => 'tenant status',
             'form.subscription_state' => 'subscription state',
             'form.settings_json' => 'tenant settings',
+            'membershipForm.tenant_id' => 'tenant',
+            'membershipForm.user_email' => 'member email',
+            'membershipForm.role' => 'member role',
+            'membershipForm.status' => 'member status',
+            'membershipForm.is_current' => 'current tenant flag',
         ];
     }
 
@@ -213,6 +311,30 @@ final class Tenants extends Component
     {
         return collect(TenantStatus::cases())
             ->mapWithKeys(static fn (TenantStatus $status): array => [
+                $status->value => str($status->value)->replace('_', ' ')->title()->toString(),
+            ])
+            ->all();
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function roleOptions(): array
+    {
+        return collect(TenantUserRole::cases())
+            ->mapWithKeys(static fn (TenantUserRole $role): array => [
+                $role->value => $role->label(),
+            ])
+            ->all();
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function membershipStatusOptions(): array
+    {
+        return collect(TenantUserStatus::cases())
+            ->mapWithKeys(static fn (TenantUserStatus $status): array => [
                 $status->value => str($status->value)->replace('_', ' ')->title()->toString(),
             ])
             ->all();

@@ -78,6 +78,21 @@ final class Tenant extends Model
      * @param  Builder<Tenant>  $query
      * @return Builder<Tenant>
      */
+    public function scopeForAdminOptions(Builder $query): Builder
+    {
+        return $query
+            ->select([
+                'id',
+                'name',
+                'slug',
+            ])
+            ->orderBy('name');
+    }
+
+    /**
+     * @param  Builder<Tenant>  $query
+     * @return Builder<Tenant>
+     */
     public function scopeMatchingAdminSearch(Builder $query, string $search): Builder
     {
         $search = trim($search);
