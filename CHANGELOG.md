@@ -44,6 +44,14 @@ and mobile offline limitations must remain tenant-enabled, plan-controlled,
 permission-aware, availability-safe, schedule-conflict-safe, reminder-safe,
 offline-limited, privacy-safe, auditable, and Admin/API-authoritative.
 
+Commerce Logic is defined in `docs/commerce-logic.md`:
+catalog browsing, cart behavior, checkout principles, hosted payment
+boundaries, order lifecycle, invoice/receipt principles, subscription
+upsell, admin product/control, and mobile offline limitations must remain
+tenant-enabled, plan-controlled, permission-aware, price-safe,
+inventory-safe, hosted-payment-safe, offline-limited, privacy-safe,
+auditable, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -62,6 +70,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Commerce Logic documentation for catalog browsing, cart behavior,
+  checkout principles, hosted payment boundaries, order lifecycle,
+  invoice/receipt principles, subscription upsell principles, admin
+  product/control principles, mobile offline limitations, privacy, risks, and
+  readiness checks.
 - Added Booking Logic documentation for service selection, availability logic,
   booking requests, confirmations, cancellations, reschedules, reminders,
   admin schedule control, tenant rules, mobile offline limitations, privacy,
@@ -168,6 +181,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added audited Admin/API tenant membership management so platform admins can
   assign existing users to tenant roles, rotate current tenant context, and
   review recent role/status changes from the tenant management screen.
+- Added authenticated mobile tenant invitation endpoints for listing pending
+  invitations, accepting into an active tenant membership, declining into a
+  fail-closed membership state, returning refreshed tenant context, and
+  auditing success or failed response attempts.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

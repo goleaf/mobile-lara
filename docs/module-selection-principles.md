@@ -14,6 +14,14 @@ and mobile offline limitations must remain tenant-enabled, plan-controlled,
 permission-aware, availability-safe, schedule-conflict-safe, reminder-safe,
 offline-limited, privacy-safe, auditable, and Admin/API-authoritative.
 
+Commerce Logic is defined in `commerce-logic.md`:
+catalog browsing, cart behavior, checkout principles, hosted payment
+boundaries, order lifecycle, invoice/receipt principles, subscription
+upsell, admin product/control, and mobile offline limitations must remain
+tenant-enabled, plan-controlled, permission-aware, price-safe,
+inventory-safe, hosted-payment-safe, offline-limited, privacy-safe,
+auditable, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -317,12 +325,13 @@ should own scan-first UX, local route context, offline stop updates, pending
 proof uploads, duplicate-scan warnings, and clear sync state. Offline behavior
 must separate local route progress from server-accepted delivery truth.
 
-### Ecommerce
+### Commerce
 
-Ecommerce supports product, order, return, customer-service, inventory, and
-fulfillment-related workflows. It should be selected when tenants need mobile
-access to commerce operations, not when a tenant only needs static product
-content.
+Commerce is defined in [Commerce Logic](commerce-logic.md). It supports
+product, order, return, customer-service, inventory, fulfillment, cart,
+checkout, hosted payment handoff, invoice/receipt, and subscription upsell
+workflows. It should be selected when tenants need mobile access to commerce
+operations, not when a tenant only needs static product content.
 
 Admin/API should own catalog authority, order state, pricing visibility,
 payment provider boundaries, inventory truth, plan limits, permissions,

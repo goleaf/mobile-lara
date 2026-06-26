@@ -792,5 +792,13 @@ every mobile booking action to:
 - A documented audit and reporting meaning.
 - A documented support visibility rule.
 
+Commerce Logic is defined in `commerce-logic.md`:
+catalog browsing, cart behavior, checkout principles, hosted payment
+boundaries, order lifecycle, invoice/receipt principles, subscription
+upsell, admin product/control, and mobile offline limitations must remain
+tenant-enabled, plan-controlled, permission-aware, price-safe,
+inventory-safe, hosted-payment-safe, offline-limited, privacy-safe,
+auditable, and Admin/API-authoritative.
+
 If any of those are unclear, the correct next step is more documentation, not
 application code.
