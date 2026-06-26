@@ -28,10 +28,11 @@ Principles](offline-first-principles.md), [Offline UX Logic](offline-ux-logic.md
 Control Logic](mobile-version-control-logic.md), [Admin Control Center
 Logic](admin-control-center-logic.md), [Admin Safety Principles](admin-safety-principles.md),
 [Search Logic](search-logic.md), [Forms And Drafts Logic](forms-drafts-logic.md),
-and [API v1 Records Contract](../contracts/api/v1-records.md): records are
-tenant-scoped business content, and Admin/API remains authoritative for access,
-validation, lifecycle state, sync acceptance, conflict decisions, audit,
-retention, reporting, search, forms, drafts, and tenant boundaries.
+[Notifications Logic](notifications-logic.md), and [API v1 Records
+Contract](../contracts/api/v1-records.md): records are tenant-scoped business
+content, and Admin/API remains authoritative for access, validation, lifecycle
+state, sync acceptance, conflict decisions, audit, retention, reporting, search,
+forms, drafts, record-related notifications, and tenant boundaries.
 
 Search Logic is defined in `search-logic.md`:
 record discovery must stay tenant-scoped, permission-aware, feature-controlled,
@@ -44,6 +45,11 @@ record create, edit, note, attachment, status, archive, restore, and delete
 forms must stay simple, validated, autosave-aware, offline-draft safe,
 API-submitted, admin-controlled, and explicit about local-save versus
 server-accepted state so user work is protected without bypassing authority.
+
+Notifications Logic is defined in `notifications-logic.md`:
+record assignment, status, reminder, conflict, support, and deep-link
+notifications must remain tenant-scoped, permission-aware, preference-aware,
+offline-safe, and API-authoritative before mobile displays or routes them.
 
 ## Module Statement
 

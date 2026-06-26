@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Notifications Logic documentation for admin-created notifications,
+  system notifications, security notifications, reminder notifications, push
+  principles, in-app inbox, read/unread behavior, deep links, preferences,
+  offline behavior, and tenant or permission boundaries.
 - Added Forms And Drafts Logic documentation for simple forms, multi-step
   forms, validation, autosave, offline drafts, online/offline submit behavior,
   submit feedback, admin-controlled form availability, and data-loss

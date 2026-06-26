@@ -60,6 +60,11 @@ mobile forms must stay simple, validated, autosave-aware, offline-draft
 safe, API-submitted, admin-controlled, and explicit about local-save versus
 server-accepted state so user work is protected without bypassing authority.
 
+Notifications Logic is defined in `notifications-logic.md`:
+notification targeting, delivery policy, push behavior, in-app inbox,
+read/unread state, deep links, preferences, offline behavior, and tenant or
+permission boundaries must remain Admin/API-authoritative and mobile-safe.
+
 ## Multi-Tenant Mobile Statement
 
 The mobile client may remember the current tenant, but it must not own tenant

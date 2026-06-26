@@ -26,10 +26,17 @@ Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration
 Logic](offline-ux-logic.md), [Sync Lifecycle Logic](sync-lifecycle-logic.md),
 [Conflict Resolution Logic](conflict-resolution-logic.md), [Records/Content
 Module Logic](records-content-module-logic.md), [Search Logic](search-logic.md),
-and [API v1 Records Contract](../contracts/api/v1-records.md): forms are the
-primary mobile input surface, drafts protect user work, and Admin/API remains
-authoritative for validation, authorization, submission acceptance, sync,
-conflict handling, audit, tenant boundaries, and feature availability.
+[Notifications Logic](notifications-logic.md), and [API v1 Records
+Contract](../contracts/api/v1-records.md): forms are the primary mobile input
+surface, drafts protect user work, and Admin/API remains authoritative for
+validation, authorization, submission acceptance, sync, conflict handling,
+audit, tenant boundaries, notification-triggered outcomes, and feature
+availability.
+
+Notifications Logic is defined in `notifications-logic.md`:
+form-submission notifications, draft reminders, validation/security notices,
+and deep links back to form-related work must remain Admin/API-authoritative,
+tenant-scoped, permission-aware, preference-aware, and mobile-safe.
 
 ## Forms And Drafts Statement
 

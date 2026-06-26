@@ -56,6 +56,11 @@ autosave-aware, offline-draft safe, API-submitted, admin-controlled, and clear
 about local-save versus server-accepted state so user work is protected without
 bypassing authority.
 
+The notifications model is explicit: notification targeting, delivery policy,
+push behavior, in-app inbox, read/unread state, deep links, preferences,
+offline behavior, and tenant or permission boundaries stay
+Admin/API-authoritative and mobile-safe.
+
 The value map is explicit too: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team each receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
 The two-system boundary is explicit: Admin/API owns SaaS authority, while mobile owns local execution, native capability use, cache, drafts, queues, and clear state presentation.
@@ -150,6 +155,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/records-content-module-logic.md](docs/records-content-module-logic.md) | Records/content module logic for record meaning, lifecycle, notes, attachments, activity, tags, categories, status, offline behavior, sync, admin controls, permissions, and feature flags. |
 | [docs/search-logic.md](docs/search-logic.md) | Search logic for local search, API search, recent searches, saved filters, filtering, sorting, scan-to-search, offline limits, privacy, tenant isolation, admin controls, and feature flags. |
 | [docs/forms-drafts-logic.md](docs/forms-drafts-logic.md) | Forms and drafts logic for simple forms, multi-step forms, validation, autosave, offline drafts, online/offline submit behavior, feedback, admin availability, and data-loss prevention. |
+| [docs/notifications-logic.md](docs/notifications-logic.md) | Notifications logic for admin-created, system, security, reminder, push, inbox, read/unread, deep-link, preference, offline, tenant, and permission behavior. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
 | [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
@@ -215,6 +221,7 @@ contracts.
 - Apply [records/content module logic](docs/records-content-module-logic.md) before planning record create/view/edit/archive/restore/delete flows, notes, attachments, activity, tags, categories, status, offline drafts, sync behavior, admin controls, permissions, feature flags, audit, reports, or support visibility.
 - Apply [search logic](docs/search-logic.md) before planning local search, API search, recent searches, saved filters, filters, sorting, scan-to-search, offline search limits, search privacy, tenant search isolation, search admin controls, or search result states.
 - Apply [forms and drafts logic](docs/forms-drafts-logic.md) before planning simple forms, multi-step forms, validation, autosave, offline drafts, online submit, offline submit, submit feedback, admin-controlled form availability, draft retention, or data-loss prevention.
+- Apply [notifications logic](docs/notifications-logic.md) before planning admin-created notifications, system notifications, security notifications, reminders, push delivery, in-app inbox, read/unread state, deep links, notification preferences, offline notification behavior, tenant targeting, or notification permission boundaries.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
 - Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.
