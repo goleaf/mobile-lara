@@ -1,5 +1,12 @@
 # Product Vision
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-25
 
 This document defines the product vision for Mobile Lara. It explains the problem, users, system split, admin control model, mobile technology choice, SaaS scalability logic, boundaries, and risks. It is documentation only and does not define database fields, migrations, controllers, components, or application logic.

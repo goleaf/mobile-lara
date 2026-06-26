@@ -1,5 +1,12 @@
 # Mobile Client Responsibilities
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 This document defines the logical responsibilities of the Mobile Lara mobile client. It explains what the NativePHP + Livewire client owns, what it may cache or perform locally, how it should present server-controlled behavior, and which authority it must never claim. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, NativePHP plugins, or application logic.

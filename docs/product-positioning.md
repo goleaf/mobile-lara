@@ -1,5 +1,12 @@
 # Product Positioning
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-25
 
 This document defines how Mobile Lara should be positioned as a product. It explains the product as a SaaS control center, mobile workforce/client platform, API-first system, offline-capable mobile system, feature-controlled platform, and tenant-based product. It is documentation only and does not define database fields, migrations, controllers, components, or application logic.

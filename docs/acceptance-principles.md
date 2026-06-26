@@ -1,5 +1,12 @@
 # Acceptance Principles
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Risk Map is defined in `risk-map.md`:
 API dependency, offline sync, tenant isolation, mobile secure storage,
 NativePHP plugin availability, app store releases, forced updates,
@@ -44,7 +51,9 @@ components, Filament resources, NativePHP plugins, policies, jobs, services,
 tests, local storage schemas, API endpoints, UI components, CSS, JavaScript,
 queues, provider integrations, or application logic.
 
-Use this document with [Product Vision](product-vision.md), [Product
+Use this document with [Final Optimized SaaS
+Blueprint](final-optimized-saas-blueprint.md), [Product
+Vision](product-vision.md), [Product
 Positioning](product-positioning.md), [Core Product
 Principles](product-principles.md), [Documentation-First
 Architecture](documentation-first-architecture.md), [Risk Map](risk-map.md),

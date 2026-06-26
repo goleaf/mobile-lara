@@ -1,5 +1,12 @@
 # Documentation Audit
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 Feature Dependency Map is defined in `feature-dependency-map.md`:
@@ -21,7 +28,9 @@ plugins, policies, jobs, services, tests, API endpoints, local storage schemas,
 UI components, CSS, JavaScript, queues, provider integrations, release
 automation, or application logic.
 
-Use this audit with [Product Vision](product-vision.md), [Product
+Use this audit with [Final Optimized SaaS
+Blueprint](final-optimized-saas-blueprint.md), [Product
+Vision](product-vision.md), [Product
 Positioning](product-positioning.md), [Core Product
 Principles](product-principles.md), [Documentation-First
 Architecture](documentation-first-architecture.md), [Acceptance
@@ -91,6 +100,7 @@ confusing local ownership with authority.
 
 | Topic | Consistent project meaning | Documents that own detail |
 | --- | --- | --- |
+| Final blueprint | The main planning document summarizes product vision, system architecture, Admin/API logic, mobile-client logic, API principles, tenant principles, permission principles, feature flags, remote config, offline sync, NativePHP features, notifications, billing, support, reporting, security, release, and future module expansion. | [Final Optimized SaaS Blueprint](final-optimized-saas-blueprint.md), [Documentation Audit](documentation-audit.md) |
 | Two-system architecture | Admin/API is the control plane; mobile is the managed NativePHP client. | [Two-System Boundary Logic](two-system-boundary.md), [SaaS Mobile Admin Platform](saas-mobile-admin-platform.md), [ADR-0001](decisions/0001-admin-api-control-plane-and-native-mobile-client.md) |
 | Admin/API responsibilities | Owns tenants, users, roles, permissions, API contracts, feature control, remote config, version rules, notifications, billing, support, reports, audit, conflicts, sync acceptance, and security. | [Admin/API Responsibilities](admin-api-responsibilities.md), [Admin Control Center Logic](admin-control-center-logic.md), [Admin Safety Principles](admin-safety-principles.md) |
 | Mobile-client responsibilities | Owns local mobile UX, secure local session presentation, local cache, drafts, queued intents, NativePHP device UX, navigation, permission education, sync status, and feature visibility presentation. | [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX Principles](mobile-ux-principles.md), [Mobile App Shell Logic](mobile-app-shell-logic.md) |

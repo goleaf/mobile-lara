@@ -1,5 +1,12 @@
 # Release And Versioning Principles
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 Documentation Audit is defined in `documentation-audit.md`:
@@ -26,7 +33,9 @@ Filament resources, NativePHP plugins, app-store configuration, provider
 integrations, policies, jobs, services, tests, API endpoints, local storage
 schemas, UI components, CSS, JavaScript, queues, or application logic.
 
-Use this document with [Acceptance Principles](acceptance-principles.md),
+Use this document with [Final Optimized SaaS
+Blueprint](final-optimized-saas-blueprint.md), [Acceptance
+Principles](acceptance-principles.md),
 [Risk Map](risk-map.md), [Testing Strategy
 Principles](testing-strategy-principles.md), [Documentation-First
 Architecture](documentation-first-architecture.md), [Feature Dependency

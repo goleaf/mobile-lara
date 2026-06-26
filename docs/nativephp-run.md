@@ -1,5 +1,12 @@
 # NativePHP Runbook
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-25
 
 This Laravel app is initialized for NativePHP Mobile. In the optimized SaaS product, NativePHP is the mobile shell and native capability bridge. The Admin/API system remains the source of tenant, permission, feature, billing, notification, app-version, and sync policy.

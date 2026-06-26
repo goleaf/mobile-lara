@@ -1,5 +1,12 @@
 # Admin Control Center Logic
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 This document defines the logic of the Mobile Lara Admin Control Center. It explains how admins should control tenants, users, roles, permissions, mobile features, remote config, app versions, maintenance mode, force update, sync behavior, notifications, reports, billing, and support. It is documentation only and does not define database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.

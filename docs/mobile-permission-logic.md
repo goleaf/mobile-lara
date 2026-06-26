@@ -1,5 +1,12 @@
 # Mobile Permission Logic
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 This document defines mobile permission logic for the Mobile Lara NativePHP client. It explains why the app should explain permissions before asking, which features need camera, microphone, location, notifications, files, scanner, biometrics, and secure storage, how disabled features should avoid requesting permissions, how users recover from denied permissions, how admin feature flags affect permissions, and how permission status should appear in settings. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, local storage schemas, or application logic.

@@ -1,5 +1,12 @@
 <project-product-contract>
 
+Final Optimized SaaS Blueprint is defined in `docs/final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 # Mobile Lara Product Contract
 
 This repository is the planning and implementation home for a two-system SaaS mobile platform. The product vision is remote control with local resilience: administrators govern mobile behavior centrally, while mobile users keep working through a focused NativePHP client.
@@ -300,6 +307,7 @@ When the user asks for planning, product concept, documentation, system design, 
 
 Use these docs before changing the product direction:
 
+- `docs/final-optimized-saas-blueprint.md`
 - `docs/saas-mobile-admin-platform.md`
 - `docs/product-vision.md`
 - `docs/product-positioning.md`
@@ -367,6 +375,7 @@ Use these docs before changing the product direction:
 
 - Admin/API is authoritative for SaaS rules.
 - Mobile owns only local presentation, local drafts, local queues, and native device interaction.
+- Product planning and system blueprint decisions must start from `docs/final-optimized-saas-blueprint.md`.
 - Documentation-first architecture decisions must follow `docs/documentation-first-architecture.md`.
 - Acceptance decisions must follow `docs/acceptance-principles.md`.
 - Risk decisions must follow `docs/risk-map.md`.
@@ -423,6 +432,7 @@ Use these docs before changing the product direction:
 - Local SQLite stores cache, drafts, and queued intents, not trusted server facts.
 - Secure tokens belong in secure storage, not SQLite.
 - Every replayable mobile write must be idempotent at the API boundary.
+- Any product vision, system architecture, Admin/API logic, mobile-client logic, API principle, tenant principle, permission principle, feature flag principle, remote config principle, offline sync principle, NativePHP feature principle, notification principle, billing principle, support principle, reporting principle, security principle, release principle, or future module expansion principle must map to `docs/final-optimized-saas-blueprint.md`.
 - Any feature must define admin behavior, API behavior, mobile behavior, offline behavior, support behavior, and audit behavior before implementation.
 - Any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change must be documented before implementation according to `docs/documentation-first-architecture.md`.
 - Any feature purpose, admin control, mobile behavior, API dependency, offline behavior, permission behavior, feature flag behavior, tenant behavior, error behavior, security behavior, or documentation requirement must map to `docs/acceptance-principles.md`.

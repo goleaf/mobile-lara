@@ -1,5 +1,12 @@
 # Admin Safety Principles
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 This document defines admin safety principles for Mobile Lara. It explains which admin actions are dangerous, which actions need confirmation, which actions need audit history, which actions should show impact before saving, how admins should preview mobile impact, how rollback should work, and how tenant-specific changes should be isolated. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.

@@ -1,5 +1,12 @@
 # Module Selection Principles
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Field Service Logic is defined in `field-service-logic.md`:
 work order lifecycle, technician mobile flow, check-in/check-out, photos,
 notes, future signatures, offline behavior, admin dispatch/control, and

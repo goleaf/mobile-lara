@@ -1,5 +1,12 @@
 # Testing Strategy Principles
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Release And Versioning Principles are defined in `release-versioning-principles.md`:
 API versioning, mobile app versioning, admin releases, feature rollout,
 rollback, app store release, forced update, documentation update, and Git
@@ -32,7 +39,9 @@ components, Filament resources, NativePHP plugins, policies, jobs, services,
 API endpoints, local storage schemas, UI components, CSS, JavaScript, queues,
 provider integrations, app-store configuration, or application logic.
 
-Use this document with [Acceptance Principles](acceptance-principles.md),
+Use this document with [Final Optimized SaaS
+Blueprint](final-optimized-saas-blueprint.md), [Acceptance
+Principles](acceptance-principles.md),
 [Risk Map](risk-map.md), [Release And Versioning
 Principles](release-versioning-principles.md), [Feature Dependency
 Map](feature-dependency-map.md), [Documentation-First

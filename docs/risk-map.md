@@ -1,5 +1,12 @@
 # Risk Map
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Testing Strategy Principles are defined in `testing-strategy-principles.md`:
 future tests for API contracts, admin controls, mobile feature visibility,
 permissions, feature flags, remote config, authentication, tenant isolation,
@@ -39,7 +46,9 @@ services, tests, local storage schemas, API endpoints, UI components, CSS,
 JavaScript, queues, provider integrations, app-store configuration, or
 application logic.
 
-Use this document with [Acceptance Principles](acceptance-principles.md),
+Use this document with [Final Optimized SaaS
+Blueprint](final-optimized-saas-blueprint.md), [Acceptance
+Principles](acceptance-principles.md),
 [Testing Strategy Principles](testing-strategy-principles.md),
 [Release And Versioning Principles](release-versioning-principles.md),
 [Feature Dependency Map](feature-dependency-map.md),

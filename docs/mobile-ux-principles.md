@@ -1,5 +1,12 @@
 # Mobile UX Principles
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
 shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
 switching, sync-in-progress, permission-blocked, and feature-disabled behavior

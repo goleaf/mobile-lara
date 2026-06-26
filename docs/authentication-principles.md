@@ -1,5 +1,12 @@
 # Authentication Principles
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 This document defines authentication principles for the Mobile Lara SaaS system. It explains mobile login through API only, secure token handling, refresh session behavior, logout, logout-all-devices, tenant selection after login, session expiry, offline behavior when already authenticated, and behavior when the server revokes access. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, local storage schemas, token tables, guards, or application logic.

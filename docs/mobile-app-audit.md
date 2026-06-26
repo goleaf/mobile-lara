@@ -1,5 +1,12 @@
 # Mobile App Audit
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Audit date: 2026-06-25
 
 Scope: documentation and planning only. This audit compares the current repository direction with the optimized SaaS mobile + admin concept. It does not request or create application logic, schema, migrations, or API endpoints.

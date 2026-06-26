@@ -1,5 +1,12 @@
 # Feature Flag Logic
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 This document defines the feature flag logic for Mobile Lara. It explains why important mobile features should be controlled by feature flags, how global, tenant, and user-level decisions should be prioritized, how disabled features should appear on mobile, how admins should understand impact, how flags support safe rollout, and how flags support plan limits. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.

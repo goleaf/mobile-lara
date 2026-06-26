@@ -1,5 +1,12 @@
 # Mobile App Shell Logic
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 This document defines mobile app shell logic for the Mobile Lara NativePHP client. It explains welcome state, authenticated state, locked state, offline state, maintenance state, forced update state, tenant switching state, sync-in-progress state, permission-blocked state, feature-disabled state, and how users move between those states. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, NativePHP plugins, policies, jobs, services, providers, local storage schemas, or application logic.

@@ -1,5 +1,12 @@
 # Admin/API Responsibilities
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 This document defines the logical responsibilities of the Admin/API system in Mobile Lara. It explains what the SaaS control plane owns, why it owns it, how that authority relates to the mobile client, and which risks the responsibility model prevents. It is documentation only and does not define database fields, migrations, controllers, components, policies, jobs, services, or application logic.

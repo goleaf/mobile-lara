@@ -1,5 +1,12 @@
 # Changelog
 
+Final Optimized SaaS Blueprint is defined in `docs/final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 All notable changes to Mobile Lara will be documented in this file.
 
 Scanner Logic is defined in `docs/scanner-logic.md`:
@@ -125,6 +132,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Final Optimized SaaS Blueprint as the main planning document for
+  product vision, system architecture, Admin/API logic, mobile-client logic,
+  API principles, tenant principles, permissions, feature flags, remote config,
+  offline sync, NativePHP features, notifications, billing, support,
+  reporting, security, release, and future module expansion.
 - Added Feature Dependency Map documentation for major feature dependencies on
   authentication, tenant context, permissions, feature flags, remote config,
   API availability, offline cache, NativePHP permissions, subscription plan,

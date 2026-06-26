@@ -1,5 +1,12 @@
 # Mobile Lara
 
+Final Optimized SaaS Blueprint is defined in `docs/final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Scanner Logic is defined in `docs/scanner-logic.md`:
 QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history,
 offline scanning, invalid scan handling, duplicate scan handling, admin
@@ -296,6 +303,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 
 | Document | Purpose |
 | --- | --- |
+| [docs/final-optimized-saas-blueprint.md](docs/final-optimized-saas-blueprint.md) | Main planning document for product vision, system architecture, Admin/API logic, mobile-client logic, API principles, tenant principles, permissions, feature flags, remote config, offline sync, NativePHP features, notifications, billing, support, reporting, security, release, and future module expansion. |
 | [docs/product-vision.md](docs/product-vision.md) | Plain-language product vision, users, problem, technology choice, and SaaS scale logic. |
 | [docs/product-positioning.md](docs/product-positioning.md) | Product positioning as SaaS control center, mobile client platform, API-first system, offline-capable system, feature-controlled platform, and tenant-based product. |
 | [docs/product-principles.md](docs/product-principles.md) | Core product principles for admin control, API-first mobile behavior, feature control, tenant isolation, offline use, security, documentation, and modular expansion. |
@@ -386,6 +394,7 @@ contracts.
 ## Operating Rules
 
 - Use Eloquent and Laravel resources for API-facing data. Do not use raw SQL strings.
+- Start from the [final optimized SaaS blueprint](docs/final-optimized-saas-blueprint.md) before changing product vision, system architecture, Admin/API logic, mobile-client logic, API principles, tenant principles, permissions, feature flags, remote config, offline sync, NativePHP features, notifications, billing, support, reporting, security, release, or future module expansion.
 - Apply [core product principles](docs/product-principles.md) before feature implementation.
 - Apply [documentation-first architecture](docs/documentation-first-architecture.md) before coding any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change.
 - Apply [acceptance principles](docs/acceptance-principles.md) before implementation planning for any feature purpose, admin control, mobile behavior, API dependency, offline behavior, permission behavior, feature flag behavior, tenant behavior, error behavior, security behavior, or documentation requirement.

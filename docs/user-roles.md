@@ -1,5 +1,12 @@
 # Target User Roles
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-25
 
 This document defines the main logical user roles for Mobile Lara. It describes responsibilities, limitations, and what each role should be able to see or control. It is documentation only and does not define database fields, migrations, seeders, policies, permissions, controllers, Livewire components, or application logic.

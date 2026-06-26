@@ -1,5 +1,12 @@
 # Mobile Version Control Logic
 
+Final Optimized SaaS Blueprint is defined in `final-optimized-saas-blueprint.md`:
+this is the main planning document for product vision, system architecture,
+Admin/API logic, mobile-client logic, API principles, tenant principles,
+permissions, feature flags, remote config, offline sync, NativePHP features,
+notifications, billing, support, reporting, security, release,
+and future module expansion principles.
+
 Updated: 2026-06-26
 
 This document defines the mobile app version control logic for Mobile Lara. It explains how admins control minimum supported versions, how optional updates work, how forced updates work, how maintenance mode works, how mobile behaves when API says the app is outdated, how store links and update messages are controlled, and how users are protected from broken old versions. It is documentation only and does not define database structure, database fields, migrations, routes, controllers, Livewire components, Filament resources, policies, jobs, services, providers, or application logic.
