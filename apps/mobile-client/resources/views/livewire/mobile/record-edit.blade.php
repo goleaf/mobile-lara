@@ -12,6 +12,13 @@
         />
     @endif
 
+    @if (! $recordActionPermissions['update'])
+        <x-mobile.error-state
+            title="Record editing disabled"
+            message="Your current workspace role cannot update this local record from this device."
+        />
+    @endif
+
     <x-mobile.card title="Record details" description="Update the local copy and mark it pending for future sync.">
         <form wire:submit="save" class="grid gap-4">
             <div
@@ -141,26 +148,28 @@
                 </p>
             </div>
 
-            <div class="grid gap-3 sm:grid-cols-2">
-                <x-mobile.button
-                    wire:click="saveAsDraft"
-                    wire:loading.attr="disabled"
-                    wire:target="saveAsDraft"
-                    variant="secondary"
-                    size="lg"
-                    full
-                >
-                    <span wire:loading.remove wire:target="saveAsDraft">Save as draft</span>
-                    <span wire:loading wire:target="saveAsDraft">Saving draft</span>
-                </x-mobile.button>
+            @if ($recordActionPermissions['update'])
+                <div class="grid gap-3 sm:grid-cols-2">
+                    <x-mobile.button
+                        wire:click="saveAsDraft"
+                        wire:loading.attr="disabled"
+                        wire:target="saveAsDraft"
+                        variant="secondary"
+                        size="lg"
+                        full
+                    >
+                        <span wire:loading.remove wire:target="saveAsDraft">Save as draft</span>
+                        <span wire:loading wire:target="saveAsDraft">Saving draft</span>
+                    </x-mobile.button>
 
-                <x-mobile.submit-button target="save" variant="accent" size="lg" loading-label="Saving record">
-                    Save changes
-                </x-mobile.submit-button>
-            </div>
+                    <x-mobile.submit-button target="save" variant="accent" size="lg" loading-label="Saving record">
+                        Save changes
+                    </x-mobile.submit-button>
+                </div>
+            @endif
 
             <div class="grid gap-3 border-t border-app-line pt-4 dark:border-zinc-800">
-                @if ($record->isArchived())
+                @if ($recordActionPermissions['archive'] && $record->isArchived())
                     <x-mobile.button
                         wire:click="restoreRecord"
                         wire:loading.attr="disabled"
@@ -171,7 +180,7 @@
                         <span wire:loading.remove wire:target="restoreRecord">Restore record</span>
                         <span wire:loading wire:target="restoreRecord">Restoring</span>
                     </x-mobile.button>
-                @else
+                @elseif ($recordActionPermissions['archive'])
                     <x-mobile.button
                         wire:click="archiveRecord"
                         wire:confirm="Archive this record locally?"
@@ -185,17 +194,19 @@
                     </x-mobile.button>
                 @endif
 
-                <x-mobile.button
-                    wire:click="deleteRecord"
-                    wire:confirm="Delete this record from local storage?"
-                    wire:loading.attr="disabled"
-                    wire:target="deleteRecord"
-                    variant="danger"
-                    full
-                >
-                    <span wire:loading.remove wire:target="deleteRecord">Delete record</span>
-                    <span wire:loading wire:target="deleteRecord">Deleting</span>
-                </x-mobile.button>
+                @if ($recordActionPermissions['delete'])
+                    <x-mobile.button
+                        wire:click="deleteRecord"
+                        wire:confirm="Delete this record from local storage?"
+                        wire:loading.attr="disabled"
+                        wire:target="deleteRecord"
+                        variant="danger"
+                        full
+                    >
+                        <span wire:loading.remove wire:target="deleteRecord">Delete record</span>
+                        <span wire:loading wire:target="deleteRecord">Deleting</span>
+                    </x-mobile.button>
+                @endif
             </div>
         </form>
     </x-mobile.card>

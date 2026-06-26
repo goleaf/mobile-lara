@@ -12,6 +12,13 @@
         />
     @endif
 
+    @if (! $recordActionPermissions['create'])
+        <x-mobile.error-state
+            title="Record creation disabled"
+            message="Your current workspace role cannot create local records from this device."
+        />
+    @endif
+
     <x-mobile.card title="Record details" description="Records stay on local SQLite first and can be synced later.">
         <form wire:submit="submitOffline" class="grid gap-4">
             <x-mobile.input
@@ -126,23 +133,25 @@
                 </p>
             </div>
 
-            <div class="grid gap-3 sm:grid-cols-2">
-                <x-mobile.button
-                    wire:click="saveDraft"
-                    wire:loading.attr="disabled"
-                    wire:target="saveDraft"
-                    variant="secondary"
-                    size="lg"
-                    full
-                >
-                    <span wire:loading.remove wire:target="saveDraft">Save draft</span>
-                    <span wire:loading wire:target="saveDraft">Saving draft</span>
-                </x-mobile.button>
+            @if ($recordActionPermissions['create'])
+                <div class="grid gap-3 sm:grid-cols-2">
+                    <x-mobile.button
+                        wire:click="saveDraft"
+                        wire:loading.attr="disabled"
+                        wire:target="saveDraft"
+                        variant="secondary"
+                        size="lg"
+                        full
+                    >
+                        <span wire:loading.remove wire:target="saveDraft">Save draft</span>
+                        <span wire:loading wire:target="saveDraft">Saving draft</span>
+                    </x-mobile.button>
 
-                <x-mobile.submit-button target="submitOffline" variant="accent" size="lg" loading-label="Submitting offline">
-                    Submit offline
-                </x-mobile.submit-button>
-            </div>
+                    <x-mobile.submit-button target="submitOffline" variant="accent" size="lg" loading-label="Submitting offline">
+                        Submit offline
+                    </x-mobile.submit-button>
+                </div>
+            @endif
         </form>
     </x-mobile.card>
 </section>

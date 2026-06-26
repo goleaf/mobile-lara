@@ -18,6 +18,7 @@ use App\Services\MobileLocal\ActivityLogRepository;
 use App\Services\MobileLocal\MediaItemRepository;
 use App\Services\MobileLocal\MobileLocalDatabase;
 use App\Services\MobileLocal\RecordRepository;
+use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -315,6 +316,56 @@ test('records screen supports bulk select all clear status category archive and 
         ->and(MobileLocalRecord::withTrashed()->count())->toBe(3);
 });
 
+test('records list mutation actions are hidden and blocked by cached api policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileRecordsPolicyBootstrapEnvelope([
+        'records' => [
+            'view' => true,
+            'create' => false,
+            'update' => false,
+            'archive' => false,
+            'delete' => false,
+        ],
+    ]));
+
+    $record = MobileLocalRecord::factory()->active()->create([
+        'title' => 'List policy protected record',
+        'category_id' => 1,
+        'status' => MobileLocalRecord::STATUS_ACTIVE,
+    ]);
+
+    Livewire::test(Records::class)
+        ->assertSee('List policy protected record')
+        ->assertDontSee('New record')
+        ->assertDontSee('href="http://localhost/records/'.$record->id.'/edit"', false)
+        ->assertDontSee('wire:click="archiveRecord('.$record->id.')"', false)
+        ->assertDontSee('wire:click="deleteRecord('.$record->id.')"', false)
+        ->call('archiveRecord', $record->id)
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Archive unavailable';
+        })
+        ->set('selectedRecordIds', [$record->id])
+        ->call('changeSelectedStatus')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Status unchanged';
+        })
+        ->call('deleteSelected')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Delete unavailable';
+        });
+
+    $freshRecord = $record->fresh();
+
+    expect($freshRecord?->status)->toBe(MobileLocalRecord::STATUS_ACTIVE)
+        ->and($freshRecord?->isArchived())->toBeFalse()
+        ->and($freshRecord?->trashed())->toBeFalse();
+});
+
 test('tag picker searches creates selects and removes local tags', function (): void {
     $existing = MobileLocalTag::factory()->create([
         'name' => 'field',
@@ -434,6 +485,30 @@ test('record create form validates category priority location and tag length', f
         ->assertHasErrors(['title', 'categoryId', 'priority', 'dueAt', 'tags', 'latitude', 'longitude']);
 });
 
+test('record create action is blocked by cached api policy before local write', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileRecordsPolicyBootstrapEnvelope([
+        'records' => ['view' => true, 'create' => false],
+    ]));
+
+    Livewire::test(RecordCreate::class)
+        ->assertSee('Record creation disabled')
+        ->assertDontSee('Save draft')
+        ->assertDontSee('Submit offline')
+        ->set('title', 'Blocked record')
+        ->set('categoryId', 1)
+        ->set('priority', MobileLocalRecord::PRIORITY_NORMAL)
+        ->call('submitOffline')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Record not saved'
+                && ($params['message'] ?? null) === 'Your current workspace role cannot open this mobile feature.';
+        })
+        ->assertNoRedirect();
+
+    expect(MobileLocalRecord::query()->count())->toBe(0);
+});
+
 test('edit record screen updates local record content', function (): void {
     $record = MobileLocalRecord::factory()->active()->create([
         'title' => 'Draft record',
@@ -529,6 +604,56 @@ test('edit record form validates required values and constrained fields', functi
     expect($record->fresh()?->title)->toBe('Valid title')
         ->and($record->fresh()?->status)->toBe(MobileLocalRecord::STATUS_ACTIVE)
         ->and($record->fresh()?->priority)->toBe(MobileLocalRecord::PRIORITY_NORMAL);
+});
+
+test('record edit actions are blocked by cached api policy before local mutation', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileRecordsPolicyBootstrapEnvelope([
+        'records' => [
+            'view' => true,
+            'update' => false,
+            'archive' => false,
+            'delete' => false,
+        ],
+    ]));
+
+    $record = MobileLocalRecord::factory()->active()->create([
+        'title' => 'Policy protected record',
+        'category_id' => 1,
+        'status' => MobileLocalRecord::STATUS_ACTIVE,
+    ]);
+
+    Livewire::test(RecordEdit::class, ['record' => $record])
+        ->assertSee('Record editing disabled')
+        ->assertDontSee('Save changes')
+        ->assertDontSee('Archive record')
+        ->assertDontSee('Delete record')
+        ->set('title', 'Attempted policy bypass')
+        ->call('save')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Record not saved'
+                && ($params['message'] ?? null) === 'Your current workspace role cannot open this mobile feature.';
+        })
+        ->call('archiveRecord')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Record not archived';
+        })
+        ->call('deleteRecord')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Record not deleted';
+        })
+        ->assertNoRedirect();
+
+    $freshRecord = $record->fresh();
+
+    expect($freshRecord?->title)->toBe('Policy protected record')
+        ->and($freshRecord?->isArchived())->toBeFalse()
+        ->and($freshRecord?->trashed())->toBeFalse();
 });
 
 test('edit record screen can save drafts archive restore and delete with confirmation controls', function (): void {
@@ -661,3 +786,87 @@ test('record routes render detail and edit pages for authenticated users', funct
         ->assertSeeLivewire(RecordEdit::class)
         ->assertSee('Edit record');
 });
+
+/**
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return array<string, mixed>
+ */
+function mobileRecordsPolicyBootstrapEnvelope(array $abilities): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => $abilities,
+                'ability_list' => mobileRecordsPolicyAbilityList($abilities),
+            ],
+            'features' => [
+                'version' => 'mobile-records-policy-test',
+                'items' => [
+                    'records' => mobileRecordsPolicyFeature(enabled: true, state: 'visible'),
+                ],
+            ],
+            'remote_config' => ['version' => 'mobile-records-policy-test', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => true, 'reason' => null],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'mobile-records-policy-test',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileRecordsPolicyFeature(bool $enabled, string $state): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => null,
+        'message' => null,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'mobile_records_policy_test',
+    ];
+}
+
+/**
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return list<string>
+ */
+function mobileRecordsPolicyAbilityList(array $abilities): array
+{
+    $abilityList = [];
+
+    foreach ($abilities as $group => $items) {
+        foreach ($items as $ability => $granted) {
+            if ($granted) {
+                $abilityList[] = $group.'.'.$ability;
+            }
+        }
+    }
+
+    return $abilityList;
+}

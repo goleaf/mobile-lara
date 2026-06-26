@@ -3,7 +3,9 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileRecordActions;
 use App\Models\MobileLocalRecord;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\RecordRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
@@ -16,6 +18,7 @@ use Livewire\Component;
 class RecordEdit extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileRecordActions;
 
     public MobileLocalRecord $record;
 
@@ -47,9 +50,10 @@ class RecordEdit extends Component
 
     private RecordRepository $records;
 
-    public function boot(RecordRepository $records): void
+    public function boot(RecordRepository $records, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->records = $records;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(MobileLocalRecord $record): void
@@ -96,6 +100,10 @@ class RecordEdit extends Component
 
     public function archiveRecord(): void
     {
+        if ($this->recordActionDenied('records.archive', 'Record not archived')) {
+            return;
+        }
+
         try {
             $this->record = $this->records->archive($this->record);
         } catch (QueryException) {
@@ -110,6 +118,10 @@ class RecordEdit extends Component
 
     public function restoreRecord(): void
     {
+        if ($this->recordActionDenied('records.archive', 'Record not restored')) {
+            return;
+        }
+
         try {
             $this->record = $this->records->restore($this->record);
         } catch (QueryException) {
@@ -124,6 +136,10 @@ class RecordEdit extends Component
 
     public function deleteRecord(): void
     {
+        if ($this->recordActionDenied('records.delete', 'Record not deleted')) {
+            return;
+        }
+
         try {
             $deleted = $this->records->delete($this->record);
         } catch (QueryException) {
@@ -163,6 +179,7 @@ class RecordEdit extends Component
             'storageAvailable' => $this->storageError === null,
             'tagPickerContext' => $this->tagPickerContext(),
             'tagValues' => $this->tagList($this->tags),
+            'recordActionPermissions' => $this->recordActionPermissions(),
         ]);
     }
 
@@ -189,6 +206,10 @@ class RecordEdit extends Component
 
     private function persistRecord(string $status, string $submitMode, string $successMessage, string $successTitle): void
     {
+        if ($this->recordActionDenied('records.update', 'Record not saved')) {
+            return;
+        }
+
         $this->status = $status;
         $validated = $this->validate();
 

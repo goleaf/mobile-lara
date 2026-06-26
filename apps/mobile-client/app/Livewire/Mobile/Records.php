@@ -3,7 +3,9 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileRecordActions;
 use App\Models\MobileLocalRecord;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\RecordRepository;
 use App\Services\MobileLocal\TagRepository;
 use Illuminate\Contracts\View\View;
@@ -19,6 +21,7 @@ use Livewire\Component;
 class Records extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileRecordActions;
 
     private const FILTER_CURRENT = 'current';
 
@@ -76,10 +79,11 @@ class Records extends Component
 
     private TagRepository $tagRepository;
 
-    public function boot(RecordRepository $records, TagRepository $tagRepository): void
+    public function boot(RecordRepository $records, TagRepository $tagRepository, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->records = $records;
         $this->tagRepository = $tagRepository;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(int $limit = 30, string $filter = self::FILTER_CURRENT, string $search = ''): void
@@ -134,6 +138,10 @@ class Records extends Component
 
     public function archiveRecord(int $recordId): void
     {
+        if ($this->recordActionDenied('records.archive', 'Archive unavailable')) {
+            return;
+        }
+
         try {
             $record = $this->records->find($recordId);
             $this->records->archive($record);
@@ -152,6 +160,10 @@ class Records extends Component
 
     public function restoreRecord(int $recordId): void
     {
+        if ($this->recordActionDenied('records.archive', 'Restore unavailable')) {
+            return;
+        }
+
         try {
             $record = $this->records->find($recordId);
             $this->records->restore($record);
@@ -170,6 +182,10 @@ class Records extends Component
 
     public function deleteRecord(int $recordId): void
     {
+        if ($this->recordActionDenied('records.delete', 'Delete unavailable')) {
+            return;
+        }
+
         try {
             $record = $this->records->find($recordId);
             $deleted = $this->records->delete($record);
@@ -215,6 +231,10 @@ class Records extends Component
 
     public function archiveSelected(): void
     {
+        if ($this->recordActionDenied('records.archive', 'Archive unavailable')) {
+            return;
+        }
+
         $selectedIds = $this->selectedIds();
 
         if ($selectedIds === []) {
@@ -237,6 +257,10 @@ class Records extends Component
 
     public function deleteSelected(): void
     {
+        if ($this->recordActionDenied('records.delete', 'Delete unavailable')) {
+            return;
+        }
+
         $selectedIds = $this->selectedIds();
 
         if ($selectedIds === []) {
@@ -259,6 +283,10 @@ class Records extends Component
 
     public function changeSelectedStatus(): void
     {
+        if ($this->recordActionDenied('records.update', 'Status unchanged')) {
+            return;
+        }
+
         $this->validate([
             'bulkStatus' => ['required', Rule::in(MobileLocalRecord::STATUSES)],
         ]);
@@ -286,6 +314,10 @@ class Records extends Component
 
     public function changeSelectedCategory(): void
     {
+        if ($this->recordActionDenied('records.update', 'Category unchanged')) {
+            return;
+        }
+
         $this->validate([
             'bulkCategoryId' => ['nullable', 'integer', 'min:0'],
         ]);
@@ -346,6 +378,7 @@ class Records extends Component
             'metrics' => $this->metrics($stats),
             'records' => $records,
             'recordsCount' => $records->count(),
+            'recordActionPermissions' => $this->recordActionPermissions(),
             'selectedCount' => $this->selectedCount(),
             'selectedRecordKeys' => array_fill_keys($this->selectedIds(), true),
             'storageAvailable' => $storageAvailable,

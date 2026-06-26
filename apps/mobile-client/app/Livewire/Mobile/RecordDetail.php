@@ -3,8 +3,10 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileRecordActions;
 use App\Models\MobileLocalMediaItem;
 use App\Models\MobileLocalRecord;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\MediaItemRepository;
 use App\Services\MobileLocal\RecordRepository;
 use App\Services\Native\ShareService;
@@ -19,6 +21,7 @@ use Livewire\Component;
 class RecordDetail extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileRecordActions;
 
     public MobileLocalRecord $record;
 
@@ -32,10 +35,12 @@ class RecordDetail extends Component
         RecordRepository $records,
         MediaItemRepository $mediaItems,
         ShareService $shares,
+        MobileAccessPolicy $mobileAccessPolicy,
     ): void {
         $this->records = $records;
         $this->mediaItems = $mediaItems;
         $this->shares = $shares;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(MobileLocalRecord $record): void
@@ -45,6 +50,10 @@ class RecordDetail extends Component
 
     public function archiveRecord(): void
     {
+        if ($this->recordActionDenied('records.archive', 'Archive unavailable')) {
+            return;
+        }
+
         try {
             $this->record = $this->records->archive($this->record);
         } catch (QueryException) {
@@ -58,6 +67,10 @@ class RecordDetail extends Component
 
     public function restoreRecord(): void
     {
+        if ($this->recordActionDenied('records.archive', 'Restore unavailable')) {
+            return;
+        }
+
         try {
             $this->record = $this->records->restore($this->record);
         } catch (QueryException) {
@@ -71,6 +84,10 @@ class RecordDetail extends Component
 
     public function deleteRecord(): void
     {
+        if ($this->recordActionDenied('records.delete', 'Delete unavailable')) {
+            return;
+        }
+
         try {
             $deleted = $this->records->delete($this->record);
         } catch (QueryException) {
@@ -115,6 +132,7 @@ class RecordDetail extends Component
             'commentsPlaceholder' => $this->commentsPlaceholder(),
             'detailRows' => $this->detailRows(),
             'metadataRows' => $this->metadataRows(),
+            'recordActionPermissions' => $this->recordActionPermissions(),
             'relatedStorageAvailable' => $relatedStorageAvailable,
             'tags' => $this->record->tagList(),
         ]);

@@ -112,13 +112,15 @@
                             Categories
                         </a>
 
-                        <a
-                            href="{{ route('mobile.records.create') }}"
-                            wire:navigate
-                            class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-accent px-3 text-sm font-semibold text-app-accent-ink shadow-sm transition hover:bg-app-accent/90 active:bg-app-accent/80 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
-                        >
-                            New record
-                        </a>
+                        @if ($recordActionPermissions['create'])
+                            <a
+                                href="{{ route('mobile.records.create') }}"
+                                wire:navigate
+                                class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-accent px-3 text-sm font-semibold text-app-accent-ink shadow-sm transition hover:bg-app-accent/90 active:bg-app-accent/80 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+                            >
+                                New record
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -240,15 +242,17 @@
                                 Detail
                             </a>
 
-                            <a
-                                href="{{ route('mobile.records.edit', $record) }}"
-                                wire:navigate
-                                class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
-                            >
-                                Edit
-                            </a>
+                            @if ($recordActionPermissions['update'])
+                                <a
+                                    href="{{ route('mobile.records.edit', $record) }}"
+                                    wire:navigate
+                                    class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+                                >
+                                    Edit
+                                </a>
+                            @endif
 
-                            @if ($record->isArchived())
+                            @if ($recordActionPermissions['archive'] && $record->isArchived())
                                 <x-mobile.button
                                     wire:click="restoreRecord({{ $record->id }})"
                                     wire:loading.attr="disabled"
@@ -260,7 +264,7 @@
                                     <span wire:loading.remove wire:target="restoreRecord({{ $record->id }})">Restore</span>
                                     <span wire:loading wire:target="restoreRecord({{ $record->id }})">Restoring</span>
                                 </x-mobile.button>
-                            @else
+                            @elseif ($recordActionPermissions['archive'])
                                 <x-mobile.button
                                     wire:click="archiveRecord({{ $record->id }})"
                                     wire:loading.attr="disabled"
@@ -274,18 +278,20 @@
                                 </x-mobile.button>
                             @endif
 
-                            <x-mobile.button
-                                wire:click="deleteRecord({{ $record->id }})"
-                                wire:confirm="Delete this record from local storage?"
-                                wire:loading.attr="disabled"
-                                wire:target="deleteRecord({{ $record->id }})"
-                                variant="danger"
-                                size="sm"
-                                full
-                            >
-                                <span wire:loading.remove wire:target="deleteRecord({{ $record->id }})">Delete</span>
-                                <span wire:loading wire:target="deleteRecord({{ $record->id }})">Deleting</span>
-                            </x-mobile.button>
+                            @if ($recordActionPermissions['delete'])
+                                <x-mobile.button
+                                    wire:click="deleteRecord({{ $record->id }})"
+                                    wire:confirm="Delete this record from local storage?"
+                                    wire:loading.attr="disabled"
+                                    wire:target="deleteRecord({{ $record->id }})"
+                                    variant="danger"
+                                    size="sm"
+                                    full
+                                >
+                                    <span wire:loading.remove wire:target="deleteRecord({{ $record->id }})">Delete</span>
+                                    <span wire:loading wire:target="deleteRecord({{ $record->id }})">Deleting</span>
+                                </x-mobile.button>
+                            @endif
                         </div>
                     </article>
                 @empty
@@ -317,78 +323,86 @@
                         </x-mobile.button>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <x-mobile.button
-                            wire:click="archiveSelected"
-                            wire:loading.attr="disabled"
-                            wire:target="archiveSelected"
-                            variant="secondary"
-                            size="sm"
-                            full
-                        >
-                            Archive selected
-                        </x-mobile.button>
+                    @if ($recordActionPermissions['archive'] || $recordActionPermissions['delete'])
+                        <div class="grid grid-cols-2 gap-2">
+                            @if ($recordActionPermissions['archive'])
+                                <x-mobile.button
+                                    wire:click="archiveSelected"
+                                    wire:loading.attr="disabled"
+                                    wire:target="archiveSelected"
+                                    variant="secondary"
+                                    size="sm"
+                                    full
+                                >
+                                    Archive selected
+                                </x-mobile.button>
+                            @endif
 
-                        <x-mobile.button
-                            wire:click="deleteSelected"
-                            wire:confirm="Delete selected records from local storage?"
-                            wire:loading.attr="disabled"
-                            wire:target="deleteSelected"
-                            variant="danger"
-                            size="sm"
-                            full
-                        >
-                            Delete selected
-                        </x-mobile.button>
-                    </div>
-
-                    <div class="grid gap-2 sm:grid-cols-2">
-                        <div class="grid gap-2 sm:grid-cols-[1fr_auto]">
-                            <label class="sr-only" for="bulkStatus">Change status</label>
-                            <select
-                                id="bulkStatus"
-                                wire:model.live="bulkStatus"
-                                class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
-                            >
-                                @foreach ($bulkStatusOptions as $statusValue => $statusLabel)
-                                    <option value="{{ $statusValue }}">{{ $statusLabel }}</option>
-                                @endforeach
-                            </select>
-
-                            <x-mobile.button
-                                wire:click="changeSelectedStatus"
-                                wire:loading.attr="disabled"
-                                wire:target="changeSelectedStatus"
-                                variant="accent"
-                                size="sm"
-                            >
-                                Change status
-                            </x-mobile.button>
+                            @if ($recordActionPermissions['delete'])
+                                <x-mobile.button
+                                    wire:click="deleteSelected"
+                                    wire:confirm="Delete selected records from local storage?"
+                                    wire:loading.attr="disabled"
+                                    wire:target="deleteSelected"
+                                    variant="danger"
+                                    size="sm"
+                                    full
+                                >
+                                    Delete selected
+                                </x-mobile.button>
+                            @endif
                         </div>
+                    @endif
 
-                        <div class="grid gap-2 sm:grid-cols-[1fr_auto]">
-                            <label class="sr-only" for="bulkCategoryId">Change category</label>
-                            <select
-                                id="bulkCategoryId"
-                                wire:model.live="bulkCategoryId"
-                                class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
-                            >
-                                @foreach ($bulkCategoryOptions as $categoryValue => $categoryLabel)
-                                    <option value="{{ $categoryValue }}">{{ $categoryLabel }}</option>
-                                @endforeach
-                            </select>
+                    @if ($recordActionPermissions['update'])
+                        <div class="grid gap-2 sm:grid-cols-2">
+                            <div class="grid gap-2 sm:grid-cols-[1fr_auto]">
+                                <label class="sr-only" for="bulkStatus">Change status</label>
+                                <select
+                                    id="bulkStatus"
+                                    wire:model.live="bulkStatus"
+                                    class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+                                >
+                                    @foreach ($bulkStatusOptions as $statusValue => $statusLabel)
+                                        <option value="{{ $statusValue }}">{{ $statusLabel }}</option>
+                                    @endforeach
+                                </select>
 
-                            <x-mobile.button
-                                wire:click="changeSelectedCategory"
-                                wire:loading.attr="disabled"
-                                wire:target="changeSelectedCategory"
-                                variant="secondary"
-                                size="sm"
-                            >
-                                Change category
-                            </x-mobile.button>
+                                <x-mobile.button
+                                    wire:click="changeSelectedStatus"
+                                    wire:loading.attr="disabled"
+                                    wire:target="changeSelectedStatus"
+                                    variant="accent"
+                                    size="sm"
+                                >
+                                    Change status
+                                </x-mobile.button>
+                            </div>
+
+                            <div class="grid gap-2 sm:grid-cols-[1fr_auto]">
+                                <label class="sr-only" for="bulkCategoryId">Change category</label>
+                                <select
+                                    id="bulkCategoryId"
+                                    wire:model.live="bulkCategoryId"
+                                    class="min-h-10 rounded-lg border border-app-line bg-white px-3 text-sm font-semibold text-app-ink shadow-sm focus:border-app-accent focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+                                >
+                                    @foreach ($bulkCategoryOptions as $categoryValue => $categoryLabel)
+                                        <option value="{{ $categoryValue }}">{{ $categoryLabel }}</option>
+                                    @endforeach
+                                </select>
+
+                                <x-mobile.button
+                                    wire:click="changeSelectedCategory"
+                                    wire:loading.attr="disabled"
+                                    wire:target="changeSelectedCategory"
+                                    variant="secondary"
+                                    size="sm"
+                                >
+                                    Change category
+                                </x-mobile.button>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         @endif

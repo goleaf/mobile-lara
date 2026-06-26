@@ -165,13 +165,15 @@
 
     <x-mobile.card title="Actions" description="Edit, share, archive, restore, or delete this local record.">
         <div class="grid gap-3">
-            <a
-                href="{{ route('mobile.records.edit', $record) }}"
-                wire:navigate
-                class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 active:bg-app-ink/80 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-            >
-                Edit record
-            </a>
+            @if ($recordActionPermissions['update'])
+                <a
+                    href="{{ route('mobile.records.edit', $record) }}"
+                    wire:navigate
+                    class="inline-flex min-h-12 items-center justify-center rounded-lg bg-app-ink px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-app-ink/90 active:bg-app-ink/80 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
+                >
+                    Edit record
+                </a>
+            @endif
 
             <x-mobile.button
                 wire:click="shareRecord"
@@ -184,7 +186,7 @@
                 <span wire:loading wire:target="shareRecord">Sharing</span>
             </x-mobile.button>
 
-            @if ($record->isArchived())
+            @if ($recordActionPermissions['archive'] && $record->isArchived())
                 <x-mobile.button
                     wire:click="restoreRecord"
                     wire:loading.attr="disabled"
@@ -195,7 +197,7 @@
                     <span wire:loading.remove wire:target="restoreRecord">Restore record</span>
                     <span wire:loading wire:target="restoreRecord">Restoring</span>
                 </x-mobile.button>
-            @else
+            @elseif ($recordActionPermissions['archive'])
                 <x-mobile.button
                     wire:click="archiveRecord"
                     wire:loading.attr="disabled"
@@ -208,17 +210,26 @@
                 </x-mobile.button>
             @endif
 
-            <x-mobile.button
-                wire:click="deleteRecord"
-                wire:confirm="Delete this record from local storage?"
-                wire:loading.attr="disabled"
-                wire:target="deleteRecord"
-                variant="danger"
-                full
-            >
-                <span wire:loading.remove wire:target="deleteRecord">Delete record</span>
-                <span wire:loading wire:target="deleteRecord">Deleting</span>
-            </x-mobile.button>
+            @if ($recordActionPermissions['delete'])
+                <x-mobile.button
+                    wire:click="deleteRecord"
+                    wire:confirm="Delete this record from local storage?"
+                    wire:loading.attr="disabled"
+                    wire:target="deleteRecord"
+                    variant="danger"
+                    full
+                >
+                    <span wire:loading.remove wire:target="deleteRecord">Delete record</span>
+                    <span wire:loading wire:target="deleteRecord">Deleting</span>
+                </x-mobile.button>
+            @endif
+
+            @if (! $recordActionPermissions['update'] && ! $recordActionPermissions['archive'] && ! $recordActionPermissions['delete'])
+                <x-mobile.empty-state
+                    title="No record actions available"
+                    description="Your current workspace role can view this record but cannot mutate it locally."
+                />
+            @endif
         </div>
     </x-mobile.card>
 </section>

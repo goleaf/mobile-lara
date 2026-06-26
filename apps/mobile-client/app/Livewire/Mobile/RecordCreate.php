@@ -3,7 +3,9 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileRecordActions;
 use App\Models\MobileLocalRecord;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\RecordRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
@@ -16,6 +18,7 @@ use Livewire\Component;
 class RecordCreate extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileRecordActions;
 
     public string $title = '';
 
@@ -45,9 +48,10 @@ class RecordCreate extends Component
 
     private RecordRepository $records;
 
-    public function boot(RecordRepository $records): void
+    public function boot(RecordRepository $records, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->records = $records;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function save(): void
@@ -91,6 +95,7 @@ class RecordCreate extends Component
             'attachmentPlaceholder' => $this->attachmentPlaceholder(),
             'categoryOptions' => $this->records->categoryOptions(),
             'priorityOptions' => $this->records->priorityOptions(),
+            'recordActionPermissions' => $this->recordActionPermissions(),
             'storageAvailable' => $this->storageError === null,
             'tagPickerContext' => $this->tagPickerContext(),
             'tagValues' => $this->tagList($this->tags),
@@ -120,6 +125,10 @@ class RecordCreate extends Component
 
     private function persistRecord(string $status, string $submitMode, string $successMessage, string $successTitle): void
     {
+        if ($this->recordActionDenied('records.create', 'Record not saved')) {
+            return;
+        }
+
         $this->status = $status;
         $validated = $this->validate();
 
