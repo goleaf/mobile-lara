@@ -285,19 +285,21 @@ check-in writes. Media capture actions and callbacks are checked against
 cached camera policy before native handoff or local media-list changes. File
 manager writes, reads, copies, moves, imports, exports, deletes, and share
 handoffs are checked against cached file/share policy before local sandbox
-changes or native share handoff. Scanner capture callbacks and saved
-scan-history deletes/clears are checked against cached scanner policy before
-local scan-history writes or deletes. Notification inbox rendering and
-read/open/read-all actions are checked against cached notification policy
-before local inbox rows are shown or mutated. Manual sync and conflict
-resolution actions are checked against cached sync policy before local sync
-timestamps or conflict queue statuses change, and the offline-first queue
-service refuses new replay intents when offline sync is disabled. Core recovery
-surfaces such as dashboard, profile, settings, workspace switching, support,
-and billing stay reachable so users can recover when a tenant or policy state
-blocks a workflow. Developer debug native-action examples use the same cached
-policy before camera, notification, share, browser, device, dialog, or secure
-storage wrapper calls.
+changes or native share handoff. Profile sharing, record-detail sharing, and
+media-gallery sharing are also checked against cached native share policy
+before user-facing share controls render or direct Livewire calls can reach the
+native wrapper. Scanner capture callbacks and saved scan-history deletes/clears
+are checked against cached scanner policy before local scan-history writes or
+deletes. Notification inbox rendering and read/open/read-all actions are
+checked against cached notification policy before local inbox rows are shown or
+mutated. Manual sync and conflict resolution actions are checked against cached
+sync policy before local sync timestamps or conflict queue statuses change, and
+the offline-first queue service refuses new replay intents when offline sync is
+disabled. Core recovery surfaces such as dashboard, profile, settings,
+workspace switching, support, and billing stay reachable so users can recover
+when a tenant or policy state blocks a workflow. Developer debug native-action
+examples use the same cached policy before camera, notification, share,
+browser, device, dialog, or secure storage wrapper calls.
 
 Admin Control Center logic in `../../docs/admin-control-center-logic.md`
 defines the server-side controls that mobile receives as API outcomes:

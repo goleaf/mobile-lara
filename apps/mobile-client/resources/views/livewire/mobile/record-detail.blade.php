@@ -175,16 +175,18 @@
                 </a>
             @endif
 
-            <x-mobile.button
-                wire:click="shareRecord"
-                wire:loading.attr="disabled"
-                wire:target="shareRecord"
-                variant="accent"
-                full
-            >
-                <span wire:loading.remove wire:target="shareRecord">Share record</span>
-                <span wire:loading wire:target="shareRecord">Sharing</span>
-            </x-mobile.button>
+            @if ($recordActionPermissions['share'])
+                <x-mobile.button
+                    wire:click="shareRecord"
+                    wire:loading.attr="disabled"
+                    wire:target="shareRecord"
+                    variant="accent"
+                    full
+                >
+                    <span wire:loading.remove wire:target="shareRecord">Share record</span>
+                    <span wire:loading wire:target="shareRecord">Sharing</span>
+                </x-mobile.button>
+            @endif
 
             @if ($recordActionPermissions['archive'] && $record->isArchived())
                 <x-mobile.button
@@ -224,7 +226,7 @@
                 </x-mobile.button>
             @endif
 
-            @if (! $recordActionPermissions['update'] && ! $recordActionPermissions['archive'] && ! $recordActionPermissions['delete'])
+            @if (! $recordActionPermissions['update'] && ! $recordActionPermissions['share'] && ! $recordActionPermissions['archive'] && ! $recordActionPermissions['delete'])
                 <x-mobile.empty-state
                     title="No record actions available"
                     description="Your current workspace role can view this record but cannot mutate it locally."

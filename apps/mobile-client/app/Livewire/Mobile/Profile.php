@@ -3,6 +3,8 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileApi\MobileApiException;
 use App\Services\MobileAuth\MobileAuthApiService;
 use App\Services\MobileAuth\MobileSessionService;
@@ -18,6 +20,7 @@ use Livewire\Component;
 class Profile extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     public string $displayName = 'Mobile Lara';
 
@@ -52,11 +55,13 @@ class Profile extends Component
         MobileAuthApiService $authApi,
         AvatarStorageService $avatarStorage,
         ShareService $shares,
+        MobileAccessPolicy $mobileAccessPolicy,
     ): void {
         $this->mobileSessions = $mobileSessions;
         $this->authApi = $authApi;
         $this->avatarStorage = $avatarStorage;
         $this->shares = $shares;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(): void
@@ -98,6 +103,10 @@ class Profile extends Component
 
     public function shareProfile(): void
     {
+        if ($this->mobileFeatureDenied('native_share', 'Share unavailable')) {
+            return;
+        }
+
         $this->refreshDerivedProfileState();
 
         $result = $this->shares->shareUrl(
@@ -135,6 +144,7 @@ class Profile extends Component
     public function render(): View
     {
         return view('livewire.mobile.profile', [
+            'profileSharePolicy' => $this->mobileFeatureDecision('native_share'),
             'profileRows' => $this->profileRows(),
             'profileShortcuts' => $this->profileShortcuts(),
         ]);

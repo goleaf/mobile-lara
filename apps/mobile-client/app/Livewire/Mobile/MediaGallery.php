@@ -3,7 +3,9 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Models\MobileLocalMediaItem;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\MediaItemRepository;
 use App\Services\Native\ShareService;
 use Illuminate\Contracts\View\View;
@@ -16,6 +18,7 @@ use Livewire\Component;
 final class MediaGallery extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     private const FILTER_ALL = 'all';
 
@@ -46,10 +49,11 @@ final class MediaGallery extends Component
 
     private ShareService $shares;
 
-    public function boot(MediaItemRepository $mediaItems, ShareService $shares): void
+    public function boot(MediaItemRepository $mediaItems, ShareService $shares, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->mediaItems = $mediaItems;
         $this->shares = $shares;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(int $limit = 24, string $filter = self::FILTER_ALL): void
@@ -70,6 +74,10 @@ final class MediaGallery extends Component
 
     public function shareMediaItem(int $mediaItemId): void
     {
+        if ($this->mobileFeatureDenied('native_share', 'Share unavailable')) {
+            return;
+        }
+
         try {
             $mediaItem = MobileLocalMediaItem::query()
                 ->select(MobileLocalMediaItem::SELECT_COLUMNS)
@@ -119,6 +127,7 @@ final class MediaGallery extends Component
         return view('livewire.mobile.media-gallery', [
             'filters' => $this->filters($stats),
             'galleryCount' => $mediaItems->count(),
+            'mediaSharePolicy' => $this->mobileFeatureDecision('native_share'),
             'mediaItems' => $mediaItems,
             'metrics' => $this->metrics($stats),
             'storageAvailable' => $storageAvailable,

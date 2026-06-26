@@ -62,16 +62,18 @@
                                 Edit profile
                             </a>
 
-                            <x-mobile.button
-                                wire:click="shareProfile"
-                                wire:loading.attr="disabled"
-                                wire:target="shareProfile"
-                                variant="secondary"
-                                full
-                            >
-                                <span wire:loading.remove wire:target="shareProfile">Share profile</span>
-                                <span wire:loading wire:target="shareProfile">Sharing</span>
-                            </x-mobile.button>
+                            @if ($profileSharePolicy['allowed'])
+                                <x-mobile.button
+                                    wire:click="shareProfile"
+                                    wire:loading.attr="disabled"
+                                    wire:target="shareProfile"
+                                    variant="secondary"
+                                    full
+                                >
+                                    <span wire:loading.remove wire:target="shareProfile">Share profile</span>
+                                    <span wire:loading wire:target="shareProfile">Sharing</span>
+                                </x-mobile.button>
+                            @endif
                         </div>
                     </x-slot:footer>
                 </x-mobile.card>

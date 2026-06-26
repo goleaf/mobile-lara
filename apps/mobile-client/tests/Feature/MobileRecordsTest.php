@@ -768,6 +768,43 @@ test('record detail renders actions and can archive restore and delete', functio
     expect($record->fresh()?->trashed())->toBeTrue();
 });
 
+test('record detail share action is hidden and blocked by disabled share policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileRecordsPolicyBootstrapEnvelope(
+        abilities: [
+            'records' => [
+                'view' => true,
+                'update' => true,
+                'archive' => true,
+                'delete' => true,
+            ],
+        ],
+        features: [
+            'native_share' => mobileRecordsPolicyFeature(
+                enabled: false,
+                state: 'hidden',
+                message: 'Record sharing is disabled by admin policy.',
+            ),
+        ],
+    ));
+
+    $record = MobileLocalRecord::factory()->active()->create([
+        'title' => 'Share policy protected record',
+        'category_id' => 1,
+    ]);
+
+    Livewire::test(RecordDetail::class, ['record' => $record])
+        ->assertSee('Share policy protected record')
+        ->assertDontSee('Share record')
+        ->assertDontSee('wire:click="shareRecord"', false)
+        ->call('shareRecord')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Share unavailable'
+                && ($params['message'] ?? null) === 'Record sharing is disabled by admin policy.';
+        });
+});
+
 test('record routes render detail and edit pages for authenticated users', function (): void {
     $this->withoutVite();
     $this->actingAs(User::factory()->create());
@@ -789,9 +826,10 @@ test('record routes render detail and edit pages for authenticated users', funct
 
 /**
  * @param  array<string, array<string, bool>>  $abilities
+ * @param  array<string, array<string, mixed>>  $features
  * @return array<string, mixed>
  */
-function mobileRecordsPolicyBootstrapEnvelope(array $abilities): array
+function mobileRecordsPolicyBootstrapEnvelope(array $abilities, array $features = []): array
 {
     return [
         'success' => true,
@@ -814,7 +852,7 @@ function mobileRecordsPolicyBootstrapEnvelope(array $abilities): array
                 'version' => 'mobile-records-policy-test',
                 'items' => [
                     'records' => mobileRecordsPolicyFeature(enabled: true, state: 'visible'),
-                ],
+                ] + $features,
             ],
             'remote_config' => ['version' => 'mobile-records-policy-test', 'values' => []],
             'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
@@ -839,14 +877,14 @@ function mobileRecordsPolicyBootstrapEnvelope(array $abilities): array
 /**
  * @return array<string, mixed>
  */
-function mobileRecordsPolicyFeature(bool $enabled, string $state): array
+function mobileRecordsPolicyFeature(bool $enabled, string $state, ?string $message = null): array
 {
     return [
         'state' => $state,
         'visible' => $state !== 'hidden',
         'enabled' => $enabled,
-        'reason' => null,
-        'message' => null,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
         'next_action' => $enabled ? null : 'contact_admin',
         'source' => 'mobile_records_policy_test',
     ];

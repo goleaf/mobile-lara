@@ -296,8 +296,11 @@ before implementation scope is added.
   native handoff or local check-in writes. Media capture callbacks and file
   manager read/write/copy/move/import/export/delete/share actions now gate
   cached camera, file, and share policy before native handoff or local sandbox
-  changes. Scanner capture callbacks and scan-history delete/clear actions
-  now gate cached scanner policy before local scan-history writes or deletes.
+  changes. Profile sharing, record-detail sharing, and media-gallery sharing
+  now gate cached native share policy before user-facing controls render or
+  direct Livewire calls reach the native wrapper. Scanner capture callbacks
+  and scan-history delete/clear actions now gate cached scanner policy before
+  local scan-history writes or deletes.
   Notification inbox rendering and read/open/read-all actions now gate cached
   notification policy before local notification rows are shown or timestamped.
   Manual sync and conflict resolution now gate cached sync policy before local
@@ -305,8 +308,8 @@ before implementation scope is added.
   now gates cached sync policy before writing new replay intents. Developer
   debug native-action wrappers now gate cached camera, notification, share,
   browser, device, dialog, and secure-storage policy before native wrapper
-  handoff. Remaining non-debug NativePHP service calls still need per-action
-  gates.
+  handoff. Remaining diagnostics/support/report native share and browser flows
+  still need feature-specific policy gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

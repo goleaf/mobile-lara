@@ -6,10 +6,14 @@ use App\Models\User;
 use App\Services\MobileAuth\AccessTokenService;
 use App\Services\MobileAuth\AppUnlockStateService;
 use App\Services\MobileAuth\MobileSessionService;
+use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -28,6 +32,14 @@ beforeEach(function (): void {
     ]);
 
     Http::preventStrayRequests();
+});
+
+afterEach(function (): void {
+    $mobileProfileLocalDatabasePath = storage_path('framework/testing/mobile-profile-policy.sqlite');
+
+    if (File::exists($mobileProfileLocalDatabasePath)) {
+        File::delete($mobileProfileLocalDatabasePath);
+    }
 });
 
 test('profile page renders authenticated account overview and shortcuts', function (): void {
@@ -62,6 +74,35 @@ test('profile page renders authenticated account overview and shortcuts', functi
         ->assertSee(route('mobile.profile.edit'), false)
         ->assertSee(route('mobile.settings.security'), false)
         ->assertSee(route('mobile.settings.notifications'), false);
+});
+
+test('profile share action is hidden and blocked by disabled share policy', function (): void {
+    migrateMobileProfileLocalDatabase();
+
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileProfilePolicyBootstrapEnvelope([
+        'native_share' => mobileProfilePolicyFeature(
+            enabled: false,
+            state: 'hidden',
+            message: 'Profile sharing is disabled by admin policy.',
+        ),
+    ]));
+
+    $user = User::factory()->create([
+        'name' => 'Taylor Mobile',
+        'email' => 'taylor@example.test',
+    ]);
+
+    Livewire::actingAs($user)
+        ->test(Profile::class)
+        ->assertDontSee('Share profile')
+        ->assertDontSee('wire:click="shareProfile"', false)
+        ->call('shareProfile')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Share unavailable'
+                && ($params['message'] ?? null) === 'Profile sharing is disabled by admin policy.';
+        });
 });
 
 test('profile share button reports browser fallback outside NativePHP', function (): void {
@@ -329,3 +370,91 @@ test('profile logout redirects and clears local mobile state', function (): void
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/logout'
         && $request->hasHeader('Authorization', 'Bearer profile-logout-access-token'));
 });
+
+function migrateMobileProfileLocalDatabase(): void
+{
+    $mobileProfileLocalDatabasePath = storage_path('framework/testing/mobile-profile-policy.sqlite');
+
+    File::ensureDirectoryExists(dirname($mobileProfileLocalDatabasePath));
+
+    if (File::exists($mobileProfileLocalDatabasePath)) {
+        File::delete($mobileProfileLocalDatabasePath);
+    }
+
+    config([
+        'database.connections.mobile_local.database' => $mobileProfileLocalDatabasePath,
+        'mobile_local.database' => $mobileProfileLocalDatabasePath,
+        'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
+    ]);
+
+    app(MobileLocalDatabase::class)->ensureFileExists();
+
+    Artisan::call('migrate', [
+        '--database' => 'mobile_local',
+        '--path' => 'database/migrations/mobile-local',
+        '--force' => true,
+    ]);
+}
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @return array<string, mixed>
+ */
+function mobileProfilePolicyBootstrapEnvelope(array $features): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => [],
+                'ability_list' => [],
+            ],
+            'features' => [
+                'version' => 'mobile-profile-policy-test',
+                'items' => $features,
+            ],
+            'remote_config' => ['version' => 'mobile-profile-policy-test', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => true, 'reason' => null],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'mobile-profile-policy-test',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileProfilePolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'mobile_profile_policy_test',
+    ];
+}

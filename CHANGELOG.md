@@ -108,6 +108,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   actions so disabled camera, file, or share features hide controls and stop
   direct Livewire calls before native media handoff, local file writes, file
   deletes, exports, imports, or native share handoff.
+- Added API-derived policy checks to profile, record-detail, and media-gallery
+  share actions so disabled native share policy hides user-facing controls and
+  blocks direct Livewire calls before native share handoff.
 - Added API-derived policy checks to scanner capture and saved scan-history
   mutations so disabled scanner policy hides scan controls and stops direct
   Livewire calls before local scan-history writes or deletes.

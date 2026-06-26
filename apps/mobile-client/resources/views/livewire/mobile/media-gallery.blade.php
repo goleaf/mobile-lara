@@ -143,18 +143,20 @@
                             </x-mobile.badge>
                         </div>
 
-                        <div class="flex justify-end">
-                            <x-mobile.button
-                                size="sm"
-                                variant="secondary"
-                                wire:click="shareMediaItem({{ $mediaItem->id }})"
-                                wire:loading.attr="disabled"
-                                wire:target="shareMediaItem({{ $mediaItem->id }})"
-                            >
-                                <span wire:loading.remove wire:target="shareMediaItem({{ $mediaItem->id }})">Share</span>
-                                <span wire:loading wire:target="shareMediaItem({{ $mediaItem->id }})">Sharing</span>
-                            </x-mobile.button>
-                        </div>
+                        @if ($mediaSharePolicy['allowed'])
+                            <div class="flex justify-end">
+                                <x-mobile.button
+                                    size="sm"
+                                    variant="secondary"
+                                    wire:click="shareMediaItem({{ $mediaItem->id }})"
+                                    wire:loading.attr="disabled"
+                                    wire:target="shareMediaItem({{ $mediaItem->id }})"
+                                >
+                                    <span wire:loading.remove wire:target="shareMediaItem({{ $mediaItem->id }})">Share</span>
+                                    <span wire:loading wire:target="shareMediaItem({{ $mediaItem->id }})">Sharing</span>
+                                </x-mobile.button>
+                            </div>
+                        @endif
                     </article>
                 @empty
                     <x-mobile.empty-state

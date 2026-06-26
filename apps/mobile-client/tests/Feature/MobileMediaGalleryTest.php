@@ -3,6 +3,7 @@
 use App\Livewire\Mobile\MediaGallery;
 use App\Models\MobileLocalMediaItem;
 use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -103,6 +104,34 @@ test('media gallery share button reports browser fallback outside NativePHP', fu
         });
 });
 
+test('media gallery share action is hidden and blocked by disabled share policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileMediaGalleryPolicyBootstrapEnvelope([
+        'native_share' => mobileMediaGalleryPolicyFeature(
+            enabled: false,
+            state: 'hidden',
+            message: 'Media sharing is disabled by admin policy.',
+        ),
+    ]));
+
+    $mediaItem = MobileLocalMediaItem::factory()->create([
+        'path' => '/tmp/media/share-blocked.jpg',
+        'caption' => 'Share blocked',
+        'sync_status' => MobileLocalMediaItem::SYNC_PENDING,
+        'created_at' => CarbonImmutable::now(),
+    ]);
+
+    Livewire::test(MediaGallery::class)
+        ->assertSee('share-blocked.jpg')
+        ->assertDontSee('wire:click="shareMediaItem('.$mediaItem->id.')"', false)
+        ->call('shareMediaItem', $mediaItem->id)
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Share unavailable'
+                && ($params['message'] ?? null) === 'Media sharing is disabled by admin policy.';
+        });
+});
+
 test('media gallery filters by type and sync state', function (): void {
     MobileLocalMediaItem::factory()->create([
         'path' => '/tmp/media/photo-filter.jpg',
@@ -142,3 +171,66 @@ test('media gallery renders an empty state without local media', function (): vo
         ->assertSee('No media items')
         ->assertSee('0 shown');
 });
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @return array<string, mixed>
+ */
+function mobileMediaGalleryPolicyBootstrapEnvelope(array $features): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => [],
+                'ability_list' => [],
+            ],
+            'features' => [
+                'version' => 'mobile-media-gallery-policy-test',
+                'items' => $features,
+            ],
+            'remote_config' => ['version' => 'mobile-media-gallery-policy-test', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => true, 'reason' => null],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'mobile-media-gallery-policy-test',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileMediaGalleryPolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'mobile_media_gallery_policy_test',
+    ];
+}

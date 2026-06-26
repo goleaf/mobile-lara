@@ -108,6 +108,14 @@ class RecordDetail extends Component
 
     public function shareRecord(): void
     {
+        $shareDecision = $this->mobileAccessPolicy->decision('native_share');
+
+        if (! $shareDecision['allowed']) {
+            $this->toastWarning($shareDecision['message'], 'Share unavailable');
+
+            return;
+        }
+
         $result = $this->shares->shareUrl(
             title: "Record: {$this->record->title}",
             text: $this->recordShareText(),
@@ -132,7 +140,7 @@ class RecordDetail extends Component
             'commentsPlaceholder' => $this->commentsPlaceholder(),
             'detailRows' => $this->detailRows(),
             'metadataRows' => $this->metadataRows(),
-            'recordActionPermissions' => $this->recordActionPermissions(),
+            'recordActionPermissions' => $this->recordDetailActionPermissions(),
             'relatedStorageAvailable' => $relatedStorageAvailable,
             'tags' => $this->record->tagList(),
         ]);
@@ -227,6 +235,17 @@ class RecordDetail extends Component
         ])
             ->filter()
             ->implode(PHP_EOL);
+    }
+
+    /**
+     * @return array{create: bool, update: bool, archive: bool, delete: bool, share: bool}
+     */
+    private function recordDetailActionPermissions(): array
+    {
+        return [
+            ...$this->recordActionPermissions(),
+            'share' => $this->mobileAccessPolicy->allows('native_share'),
+        ];
     }
 
     /**
