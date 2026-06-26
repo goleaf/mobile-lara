@@ -435,8 +435,8 @@ Implemented foundation:
   report metadata, and writes a security audit event.
 - `/admin/mobile/diagnostics` lets platform admins search and review redacted
   diagnostics reports without exposing mobile-user emails or raw support
-  secrets. Ticket-linked support queues and support-agent scoping remain
-  pending.
+  secrets. Ticket-linked diagnostics and role-specific support-agent scoping
+  remain pending.
 - `GET /api/v1/mobile/tenants` returns the authenticated user's tenant context.
 - `POST /api/v1/mobile/tenants/current` switches the current tenant after
   membership/lifecycle checks and records a security audit event.
@@ -473,9 +473,11 @@ Implemented foundation:
   `GET /support/tickets/{ticket}`, and
   `POST /support/tickets/{ticket}/messages` provide requester-scoped mobile
   support tickets, message creation, metadata-only attachment references,
-  diagnostic references, tenant isolation, and audit history. Admin support
-  queues, assignment/status controls, stored attachments, and support-agent
-  replies remain pending.
+  diagnostic references, tenant isolation, and audit history. `/admin/support`
+  provides platform-admin queue triage, status/priority/assignment controls,
+  requester-visible support replies, and audit history. Stored attachment files,
+  role-specific support-agent queues, ticket-linked diagnostics, and support
+  notification orchestration remain pending.
 - `App\Services\Sync\MobileSyncPolicyResolver` resolves tenant sync policy from
   tenant settings, remote config, permissions, subscription state, and
   maintenance policy and marks server replay endpoints ready when sync gates

@@ -381,8 +381,8 @@ before implementation scope is added.
   middleware, and tenant-local cache partition verification.
 - Complete admin role/permission management, admin billing management, admin
   notification creation/provider delivery, mobile push-token registration UI,
-  admin support queues, support assignment/status controls, stored support
-  attachments, support-agent replies, and broader audit reporting views.
+  stored support attachments, role-specific support-agent scoping, support
+  notifications, offline support drafts, and broader audit reporting views.
 - Continue rewiring lower-level mobile-local actions so server-trusted behavior
   comes from API/bootstrap state instead of local placeholders. Primary
   navigation, dashboard/create/search shortcuts, and direct module routes now
@@ -418,9 +418,11 @@ before implementation scope is added.
   current-tenant snapshots after server-side redaction and audit, and
   platform admins can review redacted diagnostics reports. Requester-scoped
   support ticket/message APIs and mobile support ticket list/create/detail/reply
-  screens now exist for mobile callers, but ticket-linked support queues,
-  offline support drafts, report native share flows, and billing browser flows
-  still need feature-specific policy gates.
+  screens now exist for mobile callers, and platform-admin support queue triage
+  now covers status, priority, assignment, requester-visible replies, and audit.
+  Stored support attachments, role-specific support-agent scoping, ticket-linked
+  diagnostics, offline support drafts, report native share flows, and billing
+  browser flows still need feature-specific policy gates.
 - Complete the records/content module beyond the API and records-only sync
   foundation: admin records management screens, standalone
   category/tag/note/attachment endpoints, upload/storage handling, richer

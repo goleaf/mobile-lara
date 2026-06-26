@@ -86,6 +86,13 @@ final class Dashboard extends Component
                 'tone' => 'success',
                 'route' => 'admin.mobile.sync',
             ],
+            [
+                'label' => 'Support queue',
+                'status' => 'Live',
+                'detail' => 'Requester-safe ticket triage, assignment, status, priority, replies, and audit history.',
+                'tone' => 'success',
+                'route' => 'admin.support',
+            ],
         ];
     }
 

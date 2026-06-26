@@ -19,10 +19,11 @@ Updated: 2026-06-26
 
 Status: partially implemented. Mobile requester-scoped ticket list, ticket
 create, ticket detail, message create, attachment metadata, diagnostic
-reference, tenant isolation, permission checks, audit history, and mobile
-Livewire ticket list/create/detail/reply screens are implemented. Admin support
-queues, assignment/status controls, stored attachments, support-agent replies,
-notification orchestration, and offline draft replay remain planned.
+reference, tenant isolation, permission checks, audit history, mobile Livewire
+ticket list/create/detail/reply screens, and the platform-admin support queue
+for status/priority/assignment/replies are implemented. Stored attachments,
+role-specific support-agent scoping, notification orchestration, and offline
+draft replay remain planned.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps support operations centralized while mobile users receive clear help and
@@ -409,11 +410,12 @@ Current foundation coverage:
 
 ```bash
 cd apps/api-admin && php artisan test --compact --filter=MobileSupportApiTest
+cd apps/api-admin && php artisan test --compact tests/Feature/AdminMobileSupportTicketsTest.php
 cd apps/mobile-client && php artisan test --compact --filter=MobileSupportApiServiceTest
 cd apps/mobile-client && php artisan test --compact tests/Feature/MobileSupportScreensTest.php
 ```
 
-Future Phase 24 coverage should add admin support queues, support-agent
-replies, assignment/status transitions, stored attachment upload/download
-limits, offline draft replay, support notification delivery, and admin/support
-access audit views.
+Future Phase 24 coverage should add stored attachment upload/download limits,
+offline draft replay, support notification delivery, role-specific support-agent
+queues, ticket-linked diagnostics, and admin/support access audit reporting
+views.

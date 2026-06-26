@@ -167,6 +167,58 @@ final class MobileSupportTicket extends Model
      * @param  Builder<MobileSupportTicket>  $query
      * @return Builder<MobileSupportTicket>
      */
+    public function scopeForAdminIndex(Builder $query): Builder
+    {
+        return $query
+            ->select(self::SELECT_COLUMNS)
+            ->with([
+                'tenant:id,public_id,name,slug',
+                'requester:id,name',
+                'assignedAgent:id,name',
+            ])
+            ->withCount('messages')
+            ->orderByDesc('last_message_at')
+            ->orderByDesc('updated_at')
+            ->orderByDesc('id');
+    }
+
+    /**
+     * @param  Builder<MobileSupportTicket>  $query
+     * @return Builder<MobileSupportTicket>
+     */
+    public function scopeForAdminDetail(Builder $query): Builder
+    {
+        return $query
+            ->select(self::SELECT_COLUMNS)
+            ->with([
+                'tenant:id,public_id,name,slug',
+                'requester:id,name',
+                'assignedAgent:id,name',
+                'messages:id,tenant_id,mobile_support_ticket_id,author_user_id,public_id,body,direction,visibility,attachments,diagnostic_report_id,metadata,created_at,updated_at',
+                'messages.author:id,name',
+            ])
+            ->withCount('messages');
+    }
+
+    /**
+     * @param  Builder<MobileSupportTicket>  $query
+     * @return Builder<MobileSupportTicket>
+     */
+    public function scopeForStatus(Builder $query, ?string $status): Builder
+    {
+        $status = trim((string) $status);
+
+        if ($status === '' || ! in_array($status, self::statuses(), true)) {
+            return $query;
+        }
+
+        return $query->where('status', $status);
+    }
+
+    /**
+     * @param  Builder<MobileSupportTicket>  $query
+     * @return Builder<MobileSupportTicket>
+     */
     public function scopeMatchingSearch(Builder $query, ?string $search): Builder
     {
         $search = trim((string) $search);
@@ -184,8 +236,65 @@ final class MobileSupportTicket extends Model
         });
     }
 
+    /**
+     * @param  Builder<MobileSupportTicket>  $query
+     * @return Builder<MobileSupportTicket>
+     */
+    public function scopeMatchingAdminSearch(Builder $query, ?string $search): Builder
+    {
+        $search = trim((string) $search);
+
+        if ($search === '') {
+            return $query;
+        }
+
+        return $query->where(function (Builder $query) use ($search): void {
+            $query
+                ->where('public_id', 'like', '%'.$search.'%')
+                ->orWhere('subject', 'like', '%'.$search.'%')
+                ->orWhere('status', 'like', '%'.$search.'%')
+                ->orWhere('priority', 'like', '%'.$search.'%')
+                ->orWhere('category', 'like', '%'.$search.'%')
+                ->orWhereHas('tenant', function (Builder $query) use ($search): void {
+                    $query
+                        ->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('slug', 'like', '%'.$search.'%');
+                })
+                ->orWhereHas('requester', function (Builder $query) use ($search): void {
+                    $query->where('name', 'like', '%'.$search.'%');
+                });
+        });
+    }
+
     public function acceptsUserMessages(): bool
     {
         return ! in_array($this->status, [self::STATUS_RESOLVED, self::STATUS_CLOSED], true);
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function statuses(): array
+    {
+        return [
+            self::STATUS_OPEN,
+            self::STATUS_IN_PROGRESS,
+            self::STATUS_WAITING_ON_USER,
+            self::STATUS_RESOLVED,
+            self::STATUS_CLOSED,
+        ];
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function priorities(): array
+    {
+        return [
+            self::PRIORITY_LOW,
+            self::PRIORITY_NORMAL,
+            self::PRIORITY_HIGH,
+            self::PRIORITY_URGENT,
+        ];
     }
 }

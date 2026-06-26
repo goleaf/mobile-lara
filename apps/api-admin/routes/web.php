@@ -6,6 +6,7 @@ use App\Livewire\Admin\AppVersionPolicies;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\FeatureFlags;
 use App\Livewire\Admin\MobileDiagnosticReports;
+use App\Livewire\Admin\MobileSupportTickets;
 use App\Livewire\Admin\MobileSyncEvents;
 use App\Livewire\Admin\RemoteConfigs;
 use App\Livewire\Admin\TenantFeatureOverrides;
@@ -38,6 +39,7 @@ Route::middleware(['web'])
                     Route::livewire('/mobile/app-versions', AppVersionPolicies::class)->name('mobile.app-versions');
                     Route::livewire('/mobile/diagnostics', MobileDiagnosticReports::class)->name('mobile.diagnostics');
                     Route::livewire('/mobile/sync', MobileSyncEvents::class)->name('mobile.sync');
+                    Route::livewire('/support', MobileSupportTickets::class)->name('support');
                     Route::post('/logout', LogoutController::class)->name('logout');
                 });
             });

@@ -164,6 +164,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added mobile support ticket list, create, detail, and reply screens wired to
   the support API service, protected by cached support feature/permission
   policy, and covered by focused Livewire route/action tests.
+- Added a platform-admin support queue at `/admin/support` with requester-safe
+  ticket search/filter, status/priority/assignment controls, requester-visible
+  support replies, policy checks, dashboard navigation, and audit events.
 
 ### Added
 
