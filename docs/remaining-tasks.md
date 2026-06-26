@@ -244,9 +244,10 @@ before implementation scope is added.
   navigation, dashboard/create/search shortcuts, and direct module routes now
   use cached Admin/API policy, and the permissions center blocks native prompts
   for disabled features. Record create/update/archive/delete and bulk local
-  mutations now deny direct Livewire calls before SQLite writes; attachments,
-  lower-level NativePHP service calls, voice notes, check-ins, and offline
-  queue writes still need per-action gates.
+  mutations now deny direct Livewire calls before SQLite writes. Attachment
+  management and attachment sharing now gate local writes and native share
+  handoff; lower-level NativePHP service calls, voice notes, check-ins, and
+  offline queue writes still need per-action gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

@@ -369,7 +369,7 @@ Status values:
 | Protected admin routes | tested | `/admin/dashboard` and current control pages are protected by session auth, platform-admin middleware, and resource policies for current mobile control-plane actions. |
 | Protected API routes | partial | Auth, bootstrap, tenant list/switch, and profile routes are mobile-token protected; resource permission middleware/policies remain pending. |
 | Mobile permission payload | tested | Bootstrap returns nested role-derived ability state for the current active tenant and fails closed for invited/suspended memberships. |
-| Mobile permission-aware UI | tested | Permission settings/center exists for NativePHP device permissions and now uses `MobileAccessPolicy` before offering camera, microphone, location, notification, file, or biometric prompts. `MobileAccessPolicy` also consumes cached Admin/API bootstrap permissions to hide blocked shortcuts and route-block records, notifications, sync conflicts, media/files, scanner, and location screens; record create/update/archive/delete and bulk mutations now deny direct Livewire calls before local SQLite writes. Attachments, voice notes, check-ins, lower-level NativePHP service calls, and offline queue writes still need per-action gates. |
+| Mobile permission-aware UI | tested | Permission settings/center exists for NativePHP device permissions and now uses `MobileAccessPolicy` before offering camera, microphone, location, notification, file, or biometric prompts. `MobileAccessPolicy` also consumes cached Admin/API bootstrap permissions to hide blocked shortcuts and route-block records, notifications, sync conflicts, media/files, scanner, and location screens; record create/update/archive/delete, bulk mutations, attachment management, and attachment sharing now deny direct Livewire calls before local SQLite writes or native share handoff. Voice notes, check-ins, lower-level NativePHP service calls, and offline queue writes still need per-action gates. |
 
 ## Phase 8 - Feature Flags
 
@@ -668,7 +668,7 @@ Status values:
 | API routes verification | tested | `php artisan route:list --except-vendor` shows 20 app routes including app-version, auth, bootstrap, config, contracts, features, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
 | Mobile formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/mobile-client`. |
-| Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 438 tests / 3495 assertions. |
+| Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 440 tests / 3510 assertions. |
 | Mobile frontend build | tested | `npm run build` passes in `apps/mobile-client`. |
 | Mobile navigation verification | tested | `php artisan route:list --name=mobile` shows 53 named mobile routes and route tests cover authenticated/guest rendering. Browser/native manual verification remains future. |
 | NativePHP fallback verification | tested | `php artisan native:plugin:validate --no-interaction` exits successfully with two non-fatal third-party manifest warnings; simulator/emulator release verification remains external-tooling dependent. |
@@ -679,8 +679,8 @@ Status values:
 ## Highest-Priority Implementation Order
 
 1. Continue migrating lower-level mobile actions and NativePHP service calls
-   behind `MobileAccessPolicy`, especially attachments, voice notes, check-ins,
-   and offline queue writes.
+   behind `MobileAccessPolicy`, especially voice notes, check-ins, and offline
+   queue writes.
 
 ## Current Blocking Risks
 
