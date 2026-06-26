@@ -24,6 +24,8 @@ Native build and release work must follow [Admin Safety Principles](admin-safety
 
 Native build and release work must follow [Mobile UX Principles](mobile-ux-principles.md): NativePHP navigation, simple screens, loading/offline states, thumb-friendly controls, minimum typing, fast actions, secure sessions, feature visibility, and native permission education must stay clear across releases.
 
+Native build and release work must follow [Native Feature Strategy](native-feature-strategy.md): plugin-backed capabilities, browser/development fallbacks, permission education, feature flags, failure UX, diagnostics, and offline sync behavior must be documented before a native feature ships.
+
 Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
 shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
 switching, sync-in-progress, permission-blocked, and feature-disabled behavior
@@ -152,6 +154,12 @@ admin measurements, tenant-admin measurements, mobile-visible summaries,
 privacy boundaries, date ranges, exports, feature usage, sync health,
 notification, support, and billing reports must remain tenant-scoped,
 permission-aware, privacy-safe, auditable, and Admin/API-authoritative.
+
+Native Feature Strategy is defined in `native-feature-strategy.md`:
+NativePHP capability use, logical service boundaries, browser/development
+fallbacks, permission education, admin feature-flag control, native failure
+UX, and offline sync behavior must remain feature-scoped, tenant-safe,
+privacy-aware, fallback-safe, and Admin/API-authoritative.
 
 Sync Lifecycle Logic is defined in `sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict

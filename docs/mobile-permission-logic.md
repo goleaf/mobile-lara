@@ -6,6 +6,11 @@ This document defines mobile permission logic for the Mobile Lara NativePHP clie
 
 Use this document with [Product Vision](product-vision.md), [Product Positioning](product-positioning.md), [Core Product Principles](product-principles.md), [Target User Roles](user-roles.md), [SaaS Value Map](saas-value-map.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX Principles](mobile-ux-principles.md), [Mobile App Shell Logic](mobile-app-shell-logic.md), [Mobile Dashboard Logic](mobile-dashboard-logic.md), [Mobile Settings Logic](mobile-settings-logic.md), [Authentication Principles](authentication-principles.md), [API-First Principles](api-first-principles.md), [Documentation-First Architecture](documentation-first-architecture.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), [Mobile Version Control Logic](mobile-version-control-logic.md), [Admin Safety Principles](admin-safety-principles.md), [Mobile And Admin Design System](design-system.md), [NativePHP Local Storage](nativephp-local-storage.md), and [NativePHP Run Notes](nativephp-run.md): permissions are the user's trust boundary between native device capability, local app behavior, and Admin/API-controlled feature eligibility.
 
+Use [Native Feature Strategy](native-feature-strategy.md) before planning any
+permission-dependent NativePHP capability. Permission prompts must be connected
+to documented product boundaries, development fallback behavior, admin feature
+flags, native failure UX, and offline sync rules.
+
 Authentication Principles are defined in [Authentication Principles](authentication-principles.md): mobile login must happen through the API only; access and refresh tokens must use secure storage; refresh, logout, logout-all-devices, tenant selection, session expiry, offline already-authenticated behavior, and server revocation must preserve Admin/API authority before implementation.
 
 Mobile App Lock Principles are defined in `mobile-app-lock-principles.md`:
@@ -106,6 +111,12 @@ admin measurements, tenant-admin measurements, mobile-visible summaries,
 privacy boundaries, date ranges, exports, feature usage, sync health,
 notification, support, and billing reports must remain tenant-scoped,
 permission-aware, privacy-safe, auditable, and Admin/API-authoritative.
+
+Native Feature Strategy is defined in `native-feature-strategy.md`:
+NativePHP capability use, logical service boundaries, browser/development
+fallbacks, permission education, admin feature-flag control, native failure
+UX, and offline sync behavior must remain feature-scoped, tenant-safe,
+privacy-aware, fallback-safe, and Admin/API-authoritative.
 
 Sync Lifecycle Logic is defined in `sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict

@@ -34,9 +34,10 @@ Logic](offline-ux-logic.md), [Sync Lifecycle Logic](sync-lifecycle-logic.md),
 [Notifications Logic](notifications-logic.md), [Support System
 Logic](support-system-logic.md), [Billing And Plan
 Logic](billing-and-plan-logic.md), [SaaS Value Map](saas-value-map.md), and
-[API v1 Reports Contract](../contracts/api/v1-reports.md): reporting is an
-Admin/API-owned truth layer, and mobile receives only role-appropriate,
-tenant-scoped, privacy-safe, freshness-aware summaries.
+[Native Feature Strategy](native-feature-strategy.md), and [API v1 Reports
+Contract](../contracts/api/v1-reports.md): reporting is an Admin/API-owned
+truth layer, and mobile receives only role-appropriate, tenant-scoped,
+privacy-safe, freshness-aware summaries.
 
 ## Reporting Statement
 

@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Native Feature Strategy documentation for NativePHP capability
+  boundaries, logical service wrapping principles, browser/development
+  fallbacks, permission education, admin feature-flag control, native failure
+  UX, native diagnostics, and offline sync behavior.
 - Added Reporting Logic documentation for admin measurements, tenant-admin
   measurements, mobile-visible summaries, report privacy boundaries, date
   ranges, exports, feature usage reporting, sync health reporting,

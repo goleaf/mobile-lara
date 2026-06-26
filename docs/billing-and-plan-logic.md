@@ -31,7 +31,8 @@ Principles](admin-safety-principles.md), [Data Privacy Principles](data-privacy-
 [Support System Logic](support-system-logic.md), [Offline-First
 Principles](offline-first-principles.md), [Offline UX Logic](offline-ux-logic.md),
 [Sync Lifecycle Logic](sync-lifecycle-logic.md), [Reporting
-Logic](reporting-logic.md), and [API v1 Billing
+Logic](reporting-logic.md), [Native Feature
+Strategy](native-feature-strategy.md), and [API v1 Billing
 Contract](../contracts/api/v1-billing.md): billing is an Admin/API-owned
 commercial authority layer, and mobile receives only safe entitlement, plan,
 limit, blocked-state, contact-admin, support, reporting, and freshness

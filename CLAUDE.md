@@ -100,6 +100,12 @@ privacy boundaries, date ranges, exports, feature usage, sync health,
 notification, support, and billing reports must remain tenant-scoped,
 permission-aware, privacy-safe, auditable, and Admin/API-authoritative.
 
+Native Feature Strategy is defined in `docs/native-feature-strategy.md`:
+NativePHP capability use, logical service boundaries, browser/development
+fallbacks, permission education, admin feature-flag control, native failure
+UX, and offline sync behavior must remain feature-scoped, tenant-safe,
+privacy-aware, fallback-safe, and Admin/API-authoritative.
+
 Sync Lifecycle Logic is defined in `docs/sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,
@@ -191,6 +197,7 @@ Use these docs before changing the product direction:
 - `docs/support-system-logic.md`
 - `docs/billing-and-plan-logic.md`
 - `docs/reporting-logic.md`
+- `docs/native-feature-strategy.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -234,6 +241,7 @@ Use these docs before changing the product direction:
 - Support system decisions must follow `docs/support-system-logic.md`.
 - Billing and plan decisions must follow `docs/billing-and-plan-logic.md`.
 - Reporting decisions must follow `docs/reporting-logic.md`.
+- Native feature decisions must follow `docs/native-feature-strategy.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -276,6 +284,7 @@ Use these docs before changing the product direction:
 - Any mobile support request, support agent review, support message, support attachment, tenant support context, support visibility, support audit, support notification, or offline support draft behavior must map to `docs/support-system-logic.md`.
 - Any plan-based access, trial behavior, active/expired/suspended subscription state, plan limit, feature-flag entitlement ceiling, mobile plan-blocked state, manual billing control, billing support context, or billing audit behavior must map to `docs/billing-and-plan-logic.md`.
 - Any admin report, tenant-admin report, mobile-visible report, report privacy boundary, date range, export, feature usage report, sync health report, notification report, support report, or billing report must map to `docs/reporting-logic.md`.
+- Any NativePHP capability, native feature boundary, browser/development fallback, native permission education, native feature flag, native failure state, native diagnostic, or native/offline sync behavior must map to `docs/native-feature-strategy.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.

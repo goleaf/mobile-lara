@@ -84,6 +84,12 @@ privacy boundaries, date ranges, exports, feature usage, sync health,
 notification, support, and billing reports must remain tenant-scoped,
 permission-aware, privacy-safe, auditable, and Admin/API-authoritative.
 
+Native Feature Strategy is defined in `native-feature-strategy.md`:
+NativePHP capability use, logical service boundaries, browser/development
+fallbacks, permission education, admin feature-flag control, native failure
+UX, and offline sync behavior must remain feature-scoped, tenant-safe,
+privacy-aware, fallback-safe, and Admin/API-authoritative.
+
 ## Offline-First Statement
 
 Offline-first means useful offline, not trusted offline.
