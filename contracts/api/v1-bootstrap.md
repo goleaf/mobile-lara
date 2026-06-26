@@ -5,9 +5,9 @@ Updated: 2026-06-26
 Status: implemented as the Phase 10 foundation endpoint with Phase 7
 role-derived permission payloads, Phase 8 feature-flag resolution, Phase 9
 remote-config resolution, and Phase 11 app-version/maintenance resolution.
-Domain-specific sync and full permission-management modules still need to
-replace the remaining explicit foundation defaults. Subscription status and
-notification preferences now come from Admin/API-owned tenant state.
+Full permission-management modules still need to replace the remaining role
+registry foundation. Subscription status, notification preferences, and sync
+policy now come from Admin/API-owned tenant state.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract is
 the main API path for turning central SaaS control into mobile operating
@@ -215,10 +215,10 @@ The current foundation implementation returns real authenticated user,
 device-session, current tenant, available tenant membership context, a
 server-derived permission payload based on the current active tenant role,
 resolved feature-flag outcomes, resolved remote config, and resolved
-app-version/maintenance policy, and resolved subscription state. It still
-returns explicit disabled or pending states for sync modules whose
-authoritative Admin/API data models are not implemented yet. Mobile must treat
-those states as fail-closed outcomes.
+app-version/maintenance policy, resolved subscription state, resolved
+notification preferences, and resolved sync policy. Dedicated sync replay
+endpoints are still pending, so mobile must treat `server_replay_enabled:
+false` as a fail-closed API outcome.
 
 `permissions` includes:
 
@@ -234,7 +234,8 @@ those states as fail-closed outcomes.
 
 `meta` should include `api_version`, `server_time`, `bootstrap_version`,
 `config_version`, `features_version`, `subscription_version`,
-`notification_policy_version`, `sync_cursor`, and freshness timestamps.
+`notification_policy_version`, `sync_policy_version`, `sync_cursor`, and
+freshness timestamps.
 
 ## Gates
 

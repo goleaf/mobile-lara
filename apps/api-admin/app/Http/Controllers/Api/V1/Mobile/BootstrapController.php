@@ -11,6 +11,7 @@ use App\Services\MobileFeatures\MobileFeatureResolver;
 use App\Services\MobilePermissions\MobilePermissionResolver;
 use App\Services\MobileVersion\MobileAppVersionPolicyResolver;
 use App\Services\Notifications\MobileNotificationPolicyResolver;
+use App\Services\Sync\MobileSyncPolicyResolver;
 use App\Services\Tenancy\MobileTenantContextResolver;
 use App\Support\Api\MobileApiResponse;
 use App\Support\Api\MobileBootstrapPayload;
@@ -27,6 +28,7 @@ final class BootstrapController extends Controller
         private MobileAppVersionPolicyResolver $versions,
         private MobileSubscriptionResolver $subscriptions,
         private MobileNotificationPolicyResolver $notifications,
+        private MobileSyncPolicyResolver $syncPolicies,
     ) {}
 
     /**
@@ -58,6 +60,7 @@ final class BootstrapController extends Controller
         $appVersion = $this->versions->resolve($request, $tenantContext);
         $features = $this->features->resolve($user, $tenantContextWithSubscription, $permissions, $request, $appVersion);
         $remoteConfig = $this->config->resolve($user, $tenantContext);
+        $syncPolicy = $this->syncPolicies->resolve($tenantContext, $permissions, $remoteConfig, $subscription, $appVersion);
 
         return MobileApiResponse::success(
             MobileBootstrapPayload::make(
@@ -71,8 +74,9 @@ final class BootstrapController extends Controller
                 $appVersion,
                 $subscription,
                 $notificationPolicy,
+                $syncPolicy,
             ),
-            MobileBootstrapPayload::meta($features, $remoteConfig, $subscription, $notificationPolicy),
+            MobileBootstrapPayload::meta($features, $remoteConfig, $subscription, $notificationPolicy, $syncPolicy),
         );
     }
 }

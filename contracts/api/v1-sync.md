@@ -2,7 +2,10 @@
 
 Updated: 2026-06-26
 
-Status: documented. Endpoints are planned for Phase 14.
+Status: partially implemented. Bootstrap now returns resolved sync policy from
+tenant settings, remote config, permission state, subscription state, and
+maintenance policy. Dedicated sync bootstrap, push, pull, acknowledgement,
+conflict tracking, and admin monitoring endpoints remain planned for Phase 14.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 supports offline-capable mobile work while Admin/API remains authoritative for
@@ -202,6 +205,13 @@ Responses return `accepted`, `rejected`, `conflicts`, `server_changes`,
 
 Push items require stable client intent IDs and idempotency keys.
 
+Bootstrap currently returns `sync` with `enabled`, `manual_sync_enabled`,
+`offline_queue_enabled`, `server_replay_enabled`, `mode`, `reason`,
+`max_batch_size`, `retry_after_seconds`, `stale_after_seconds`,
+`conflict_policy`, `server_endpoints`, `source`, `resolved_at`, and
+`policy_version`. `server_replay_enabled` stays `false` until the Phase 14
+sync replay endpoints exist.
+
 ## Gates
 
 Sync is controlled by tenant status, user permissions, feature flags, app
@@ -220,5 +230,12 @@ resolution, replay abuse, and sync disabling.
 
 ## Tests
 
-Phase 14 should verify idempotency, tenant isolation, cursor behavior,
-conflict states, retry behavior, and fail-closed stale policy.
+Current policy coverage:
+
+```bash
+cd apps/api-admin && php artisan test --compact --filter=MobileSyncPolicyTest
+```
+
+Future Phase 14 coverage should verify idempotency, tenant isolation, cursor
+behavior, conflict states, retry behavior, admin monitoring, and fail-closed
+stale policy.

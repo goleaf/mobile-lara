@@ -239,8 +239,7 @@ Implemented foundation:
   operating context with real user, device-session, current tenant, and
   available tenant data, role-derived permission payloads, resolved feature
   flags, resolved remote config, resolved subscription state, resolved
-  notification preferences, and explicit foundation defaults for the pending
-  sync module.
+  notification preferences, and resolved sync policy.
 - `GET /api/v1/mobile/app-version` returns resolved app-version, update, and
   maintenance policy for the reported mobile platform/version context.
 - `GET /api/v1/mobile/config` returns resolved mobile-safe remote config with
@@ -278,6 +277,9 @@ Implemented foundation:
 - `App\Services\Notifications\MobileNotificationPolicyResolver` resolves
   tenant notification preferences, quiet hours, push-registration hints, and
   fail-closed no-tenant behavior for bootstrap.
+- `App\Services\Sync\MobileSyncPolicyResolver` resolves tenant sync policy from
+  tenant settings, remote config, permissions, subscription state, and
+  maintenance policy while marking server replay endpoints as pending.
 - Policies are registered for current mobile control-plane resources:
   feature flags, tenant/user feature overrides, remote config, tenant remote
   config overrides, and app-version policies.
@@ -330,8 +332,8 @@ Implemented foundation:
   config resolution, feature maintenance/plan/cohort/device/emergency/app-version
   gates, tenant/cohort app version policy, app-version range resolution, mobile
   billing subscription resolution, mobile notification policy resolution,
-  resource policies, success envelope, error envelope, contract catalogue, and
-  contract Markdown file coverage.
+  mobile sync policy resolution, resource policies, success envelope, error
+  envelope, contract catalogue, and contract Markdown file coverage.
 
 Still pending:
 

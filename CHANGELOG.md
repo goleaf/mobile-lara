@@ -244,3 +244,6 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added bootstrap notification policy resolution from tenant settings with
   quiet-hours metadata, push-registration hints, fail-closed no-tenant behavior,
   and notification policy version metadata.
+- Added bootstrap sync policy resolution from tenant settings and remote config,
+  with permission/subscription/maintenance gates, server-endpoint-pending
+  metadata, and sync policy version metadata.

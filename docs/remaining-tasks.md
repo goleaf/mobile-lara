@@ -194,8 +194,6 @@ before implementation scope is added.
 
 - Decide when to remove or rewire the root Laravel app now that
   `apps/api-admin` and `apps/mobile-client` both exist as Laravel apps.
-- Replace the remaining mobile bootstrap foundation defaults with a real sync
-  policy module.
 - Complete tenancy beyond the foundation tenant list/switch API and mobile
   workspace switcher: admin tenant management screens, invitations, tenant
   settings policy, tenant-scoped resource middleware, and tenant-local cache
