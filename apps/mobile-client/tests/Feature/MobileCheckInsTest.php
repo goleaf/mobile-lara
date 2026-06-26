@@ -6,6 +6,7 @@ use App\Models\MobileLocalCheckIn;
 use App\Models\MobileLocalMediaItem;
 use App\Models\User;
 use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -141,6 +142,66 @@ test('create check-in screen saves a pending local check-in', function (): void 
         ->and($checkIn?->sync_status)->toBe(MobileLocalCheckIn::SYNC_PENDING);
 });
 
+test('check-in creation is hidden and blocked by disabled location policy', function (): void {
+    $this->actingAs(User::factory()->create());
+
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileCheckInsPolicyBootstrapEnvelope([
+        'native_location' => mobileCheckInsPolicyFeature(
+            enabled: false,
+            state: 'disabled',
+            message: 'Location check-ins are disabled by admin policy.',
+        ),
+    ]));
+
+    Livewire::test(CheckInHistory::class)
+        ->assertDontSee(route('mobile.check-ins.create'), false);
+
+    Livewire::test(CheckInCreate::class)
+        ->assertSee('Check-in creation disabled')
+        ->assertDontSee('Save check-in')
+        ->set('latitude', '54.687157')
+        ->set('longitude', '25.279652')
+        ->call('save')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Check-in not saved'
+                && ($params['message'] ?? null) === 'Location check-ins are disabled by admin policy.';
+        });
+
+    expect(MobileLocalCheckIn::query()->count())->toBe(0);
+});
+
+test('check-in creation is hidden and blocked when sync policy is disabled', function (): void {
+    $this->actingAs(User::factory()->create());
+
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileCheckInsPolicyBootstrapEnvelope(
+        features: [
+            'native_location' => mobileCheckInsPolicyFeature(enabled: true, state: 'visible'),
+        ],
+        syncEnabled: false,
+        syncReason: 'check_in_sync_paused_by_admin',
+    ));
+
+    Livewire::test(CheckInHistory::class)
+        ->assertDontSee(route('mobile.check-ins.create'), false);
+
+    Livewire::test(CheckInCreate::class)
+        ->assertSee('Check-in creation disabled')
+        ->assertDontSee('Save check-in')
+        ->set('latitude', '54.687157')
+        ->set('longitude', '25.279652')
+        ->call('save')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Check-in not saved'
+                && ($params['message'] ?? null) === 'Sync is disabled by the current workspace policy.';
+        });
+
+    expect(MobileLocalCheckIn::query()->count())->toBe(0);
+});
+
 test('create check-in screen validates coordinates and local photo selection', function (): void {
     $this->actingAs(User::factory()->create());
 
@@ -157,3 +218,68 @@ test('create check-in screen validates coordinates and local photo selection', f
         ->call('save')
         ->assertHasErrors(['photoId']);
 });
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @return array<string, mixed>
+ */
+function mobileCheckInsPolicyBootstrapEnvelope(array $features = [], bool $syncEnabled = true, ?string $syncReason = null): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => [],
+                'ability_list' => [],
+            ],
+            'features' => [
+                'version' => 'check-ins-policy',
+                'items' => array_replace([
+                    'native_location' => mobileCheckInsPolicyFeature(enabled: true, state: 'visible'),
+                ], $features),
+            ],
+            'remote_config' => ['version' => 'check-ins-policy', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => $syncEnabled, 'reason' => $syncReason],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'check-ins-policy',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileCheckInsPolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'test_policy',
+    ];
+}

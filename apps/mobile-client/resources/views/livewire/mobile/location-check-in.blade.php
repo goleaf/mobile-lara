@@ -47,7 +47,13 @@
     </x-mobile.card>
 
     <x-mobile.card title="Permission status" description="Read or request location permission from the native runtime.">
-        <div class="grid gap-3">
+        @if (! $locationPolicy['location']['allowed'])
+            <x-mobile.error-state
+                title="Location access disabled"
+                :message="$locationPolicy['location']['message']"
+            />
+        @else
+            <div class="grid gap-3">
             <div class="flex min-h-16 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
                 <span class="min-w-0">
                     <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">Overall permission</span>
@@ -106,48 +112,56 @@
                     <span wire:loading wire:target="requestLocationPermission">Requesting</span>
                 </x-mobile.button>
             </div>
-        </div>
+            </div>
+        @endif
     </x-mobile.card>
 
     <x-mobile.card title="Current location" description="Capture one check-in result with accuracy and timestamp metadata.">
-        <div class="grid gap-4">
-            <label class="flex min-h-14 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                <span class="min-w-0">
-                    <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">High accuracy</span>
-                    <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">Use GPS precision when the device allows it.</span>
-                </span>
+        @if (! $locationPolicy['location']['allowed'])
+            <x-mobile.error-state
+                title="Location check-in disabled"
+                :message="$locationPolicy['location']['message']"
+            />
+        @else
+            <div class="grid gap-4">
+                <label class="flex min-h-14 items-center justify-between gap-4 rounded-lg border border-app-line bg-app-bg px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
+                    <span class="min-w-0">
+                        <span class="block text-base font-semibold text-app-ink dark:text-zinc-100">High accuracy</span>
+                        <span class="mt-1 block text-sm leading-5 text-app-muted dark:text-zinc-400">Use GPS precision when the device allows it.</span>
+                    </span>
 
-                <input
-                    wire:model.live="fineAccuracy"
-                    type="checkbox"
-                    class="size-5 rounded border-app-line text-app-ink focus:ring-app-ink dark:border-zinc-700 dark:bg-zinc-950 dark:focus:ring-zinc-200"
+                    <input
+                        wire:model.live="fineAccuracy"
+                        type="checkbox"
+                        class="size-5 rounded border-app-line text-app-ink focus:ring-app-ink dark:border-zinc-700 dark:bg-zinc-950 dark:focus:ring-zinc-200"
+                    >
+                </label>
+
+                <x-mobile.button
+                    wire:click="checkIn"
+                    wire:loading.attr="disabled"
+                    wire:target="checkIn"
+                    variant="accent"
+                    size="lg"
+                    full
                 >
-            </label>
+                    <span wire:loading.remove wire:target="checkIn">Check in now</span>
+                    <span wire:loading wire:target="checkIn">Locating</span>
+                </x-mobile.button>
 
-            <x-mobile.button
-                wire:click="checkIn"
-                wire:loading.attr="disabled"
-                wire:target="checkIn"
-                variant="accent"
-                size="lg"
-                full
-            >
-                <span wire:loading.remove wire:target="checkIn">Check in now</span>
-                <span wire:loading wire:target="checkIn">Locating</span>
-            </x-mobile.button>
-
-            <div aria-live="polite" class="min-h-6">
-                @if ($locationError)
-                    <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700 dark:border-red-400/20 dark:bg-red-400/15 dark:text-red-200">
-                        {{ $locationError }}
-                    </p>
-                @elseif ($locationStatus)
-                    <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
-                        {{ $locationStatus }}
-                    </p>
-                @endif
+                <div aria-live="polite" class="min-h-6">
+                    @if ($locationError)
+                        <p class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700 dark:border-red-400/20 dark:bg-red-400/15 dark:text-red-200">
+                            {{ $locationError }}
+                        </p>
+                    @elseif ($locationStatus)
+                        <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200">
+                            {{ $locationStatus }}
+                        </p>
+                    @endif
+                </div>
             </div>
-        </div>
+        @endif
     </x-mobile.card>
 
     <x-mobile.card title="Last check-in" description="The most recent location payload returned by NativePHP.">

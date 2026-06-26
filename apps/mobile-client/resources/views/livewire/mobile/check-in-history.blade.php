@@ -6,15 +6,17 @@
         description="Local location check-ins stored on this device."
         :back-href="route('mobile.dashboard')"
     >
-        <x-slot:action>
-            <a
-                href="{{ route('mobile.check-ins.create') }}"
-                wire:navigate
-                class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
-            >
-                Create
-            </a>
-        </x-slot:action>
+        @if ($canCreateCheckIn)
+            <x-slot:action>
+                <a
+                    href="{{ route('mobile.check-ins.create') }}"
+                    wire:navigate
+                    class="inline-flex min-h-10 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+                >
+                    Create
+                </a>
+            </x-slot:action>
+        @endif
     </x-mobile.page-header>
 
     @if (! $storageAvailable)

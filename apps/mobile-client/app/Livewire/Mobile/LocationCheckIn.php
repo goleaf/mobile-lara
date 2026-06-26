@@ -3,6 +3,8 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\Native\LocationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
@@ -17,6 +19,7 @@ use Native\Mobile\Events\Geolocation\PermissionStatusReceived;
 class LocationCheckIn extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     public ?string $pendingOperationId = null;
 
@@ -56,13 +59,18 @@ class LocationCheckIn extends Component
 
     private LocationService $locations;
 
-    public function boot(LocationService $locations): void
+    public function boot(LocationService $locations, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->locations = $locations;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function checkPermissionStatus(): void
     {
+        if ($this->locationFeatureDenied('Location unavailable')) {
+            return;
+        }
+
         $this->startNativeOperation(
             operation: 'permission_status',
             launcher: fn (string $id): array => $this->locations->permissionStatus($id),
@@ -71,6 +79,10 @@ class LocationCheckIn extends Component
 
     public function requestLocationPermission(): void
     {
+        if ($this->locationFeatureDenied('Location unavailable')) {
+            return;
+        }
+
         $this->startNativeOperation(
             operation: 'permission_request',
             launcher: fn (string $id): array => $this->locations->requestPermission($id),
@@ -79,6 +91,10 @@ class LocationCheckIn extends Component
 
     public function checkIn(): void
     {
+        if ($this->locationFeatureDenied('Location unavailable')) {
+            return;
+        }
+
         $this->startNativeOperation(
             operation: 'current_location',
             launcher: fn (string $id): array => $this->locations->currentLocation($id, $this->fineAccuracy),
@@ -109,6 +125,12 @@ class LocationCheckIn extends Component
             return;
         }
 
+        if ($this->locationFeatureDenied('Location unavailable')) {
+            $this->clearPendingOperation();
+
+            return;
+        }
+
         $this->applyPermissionResult($this->locations->normalizePermissionStatus(
             location: $location,
             coarseLocation: $coarseLocation,
@@ -127,6 +149,12 @@ class LocationCheckIn extends Component
         ?string $id = null,
     ): void {
         if (! $this->matchesPendingOperation($id, 'permission_request')) {
+            return;
+        }
+
+        if ($this->locationFeatureDenied('Location unavailable')) {
+            $this->clearPendingOperation();
+
             return;
         }
 
@@ -152,6 +180,12 @@ class LocationCheckIn extends Component
         ?string $id = null,
     ): void {
         if (! $this->matchesPendingOperation($id, 'current_location')) {
+            return;
+        }
+
+        if ($this->locationFeatureDenied('Location unavailable')) {
+            $this->clearPendingOperation();
+
             return;
         }
 
@@ -200,6 +234,7 @@ class LocationCheckIn extends Component
             'coarsePermissionStatusLabel' => $this->formatStatusLabel($this->coarsePermissionStatus),
             'finePermissionStatusLabel' => $this->formatStatusLabel($this->finePermissionStatus),
             'locationHasCoordinates' => $this->locationLatitude !== null && $this->locationLongitude !== null,
+            'locationPolicy' => $this->locationPolicy(),
         ]);
     }
 
@@ -228,6 +263,13 @@ class LocationCheckIn extends Component
         $this->pendingOperation = null;
         $this->operationError = $result['message'];
         $this->toastWarning($this->operationError, 'Native location unavailable');
+    }
+
+    private function clearPendingOperation(): void
+    {
+        $this->pendingOperationId = null;
+        $this->pendingOperation = null;
+        $this->operationStatus = null;
     }
 
     /**
@@ -297,5 +339,34 @@ class LocationCheckIn extends Component
         }
 
         return str($status)->headline()->toString();
+    }
+
+    /**
+     * @return array{location: array{allowed: bool, message: string}}
+     */
+    private function locationPolicy(): array
+    {
+        $location = $this->mobileFeatureDecision('native_location');
+
+        return [
+            'location' => [
+                'allowed' => $location['allowed'],
+                'message' => $location['message'],
+            ],
+        ];
+    }
+
+    private function locationFeatureDenied(string $title): bool
+    {
+        $decision = $this->mobileFeatureDecision('native_location');
+
+        if ($decision['allowed']) {
+            return false;
+        }
+
+        $this->operationError = $decision['message'];
+        $this->toastWarning($decision['message'], $title);
+
+        return true;
     }
 }

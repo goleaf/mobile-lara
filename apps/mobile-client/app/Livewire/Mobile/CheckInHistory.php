@@ -3,6 +3,7 @@
 namespace App\Livewire\Mobile;
 
 use App\Models\MobileLocalCheckIn;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\CheckInRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,9 +39,12 @@ class CheckInHistory extends Component
 
     private CheckInRepository $checkIns;
 
-    public function boot(CheckInRepository $checkIns): void
+    private MobileAccessPolicy $mobileAccessPolicy;
+
+    public function boot(CheckInRepository $checkIns, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->checkIns = $checkIns;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(int $limit = 24, string $filter = self::FILTER_ALL): void
@@ -88,6 +92,7 @@ class CheckInHistory extends Component
             'historyCount' => $checkIns->count(),
             'metrics' => $this->metrics($stats),
             'storageAvailable' => $storageAvailable,
+            'canCreateCheckIn' => $this->canCreateCheckIn(),
         ]);
     }
 
@@ -168,5 +173,11 @@ class CheckInHistory extends Component
     private function validFilter(string $filter): string
     {
         return in_array($filter, self::FILTERS, true) ? $filter : self::FILTER_ALL;
+    }
+
+    private function canCreateCheckIn(): bool
+    {
+        return $this->mobileAccessPolicy->allows('native_location')
+            && $this->mobileAccessPolicy->allows('offline_sync');
     }
 }

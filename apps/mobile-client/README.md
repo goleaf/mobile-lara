@@ -243,7 +243,10 @@ against cached API permissions before local SQLite writes or native share
 handoff. Voice-note recording, native microphone callbacks, local voice-note
 save/delete actions, and upload queue placeholders are checked against cached
 microphone and sync policy before local SQLite writes, file deletes, or offline
-queue writes. Core recovery surfaces such as dashboard, profile, settings,
+queue writes. Native location permission/current-position calls, location
+callbacks, check-in creation, and check-in history create shortcuts are checked
+against cached location and sync policy before native handoff or local
+check-in writes. Core recovery surfaces such as dashboard, profile, settings,
 workspace switching, support, and billing stay reachable so users can recover
 when a tenant or policy state blocks a workflow.
 

@@ -45,6 +45,10 @@ All notable changes to Mobile Lara will be documented in this file.
   microphone callbacks, local save/delete mutations, and upload queue
   placeholders so disabled microphone or sync policy stops direct Livewire
   calls before local SQLite writes, file deletes, or offline queue writes.
+- Added API-derived policy checks to NativePHP location permission/check-in
+  actions, location callbacks, check-in creation forms, and check-in history
+  shortcuts so disabled location or sync policy stops direct Livewire calls
+  before native location handoff or local check-in writes.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

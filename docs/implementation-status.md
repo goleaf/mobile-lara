@@ -261,7 +261,7 @@ Status values:
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, registered policies for current mobile control-plane resources, audited global feature flag controls, audited global remote config controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 442 tests / 3533 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, tenant workspace behavior, and cached policy guards for mobile record, attachment, and voice-note mutations. `apps/api-admin` passes `php artisan test --compact` with 97 tests / 812 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, mobile notification policy state, mobile sync policy state, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 445 tests / 3557 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, tenant workspace behavior, and cached policy guards for mobile record, attachment, voice-note, and check-in mutations. `apps/api-admin` passes `php artisan test --compact` with 97 tests / 812 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, mobile notification policy state, mobile sync policy state, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -376,7 +376,7 @@ Status values:
 | Protected admin routes | tested | `/admin/dashboard` and current control pages are protected by session auth, platform-admin middleware, and resource policies for current mobile control-plane actions. |
 | Protected API routes | partial | Auth, bootstrap, tenant list/switch, and profile routes are mobile-token protected; resource permission middleware/policies remain pending. |
 | Mobile permission payload | tested | Bootstrap returns nested role-derived ability state for the current active tenant and fails closed for invited/suspended memberships. |
-| Mobile permission-aware UI | tested | Permission settings/center exists for NativePHP device permissions and now uses `MobileAccessPolicy` before offering camera, microphone, location, notification, file, or biometric prompts. `MobileAccessPolicy` also consumes cached Admin/API bootstrap permissions to hide blocked shortcuts and route-block records, notifications, sync conflicts, media/files, scanner, and location screens; record create/update/archive/delete, bulk mutations, attachment management, attachment sharing, voice-note recording callbacks, local voice-note save/delete, and voice-note upload queue placeholders now deny direct Livewire calls before local SQLite writes, native share handoff, file deletes, or offline queue writes. Check-ins, media capture, file manager actions, and lower-level NativePHP service calls still need per-action gates. |
+| Mobile permission-aware UI | tested | Permission settings/center exists for NativePHP device permissions and now uses `MobileAccessPolicy` before offering camera, microphone, location, notification, file, or biometric prompts. `MobileAccessPolicy` also consumes cached Admin/API bootstrap permissions to hide blocked shortcuts and route-block records, notifications, sync conflicts, media/files, scanner, and location screens; record create/update/archive/delete, bulk mutations, attachment management, attachment sharing, voice-note recording callbacks, local voice-note save/delete, voice-note upload queue placeholders, NativePHP location callbacks, and local check-in creation now deny direct Livewire calls before local SQLite writes, native share/location handoff, file deletes, or offline queue writes. Media capture, file manager actions, and remaining lower-level NativePHP service calls still need per-action gates. |
 
 ## Phase 8 - Feature Flags
 
@@ -483,7 +483,7 @@ Status values:
 | Share | partial | Service exists; diagnostics/report sharing policy incomplete. |
 | Browser | partial | Service exists. |
 | Microphone | partial | Audio/voice service exists, and the Livewire voice-note surface is now gated by cached `native_microphone` and `offline_sync` policy before recording callbacks, local writes, deletes, or upload queue placeholders. API upload/replay policy is still missing. |
-| Location | partial | Location service/check-in screens exist; API acceptance missing. |
+| Location | partial | Location service/check-in screens exist, and NativePHP permission/current-position calls plus location callbacks are gated by cached `native_location` policy. API acceptance remains missing. |
 | Scanner | partial | Scanner service and screens exist; API/search/create integration incomplete. |
 | Push notifications | not started | Local notifications exist; push token registration is missing. |
 | Biometrics | partial | Biometric unlock service/tests exist. |
@@ -529,11 +529,11 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Location permission UX | partial | Permission/service surfaces exist. |
-| Geolocation check-ins | partial | Check-in screens and local model exist. |
-| Accuracy display | partial | Needs verification against UI/tests. |
+| Location permission UX | tested | Permission/service surfaces exist and direct permission status/request actions are hidden and blocked when cached `native_location` policy is disabled. |
+| Geolocation check-ins | tested | Check-in screens and local model exist; native current-location calls, location callbacks, local create forms, and history create shortcuts are gated by cached `native_location` and `offline_sync` policy. |
+| Accuracy display | tested | Current-location event tests verify accuracy display formatting. |
 | Attach location to records/support | not started | API/support integration missing. |
-| Offline location queue | partial | Local check-ins exist; server sync missing. |
+| Offline location queue | partial | Local check-ins exist and direct local writes are blocked when sync policy is disabled; server sync/replay is still missing. |
 | Privacy principles | documented | Needs enforcement in API/support diagnostics. |
 
 ## Phase 20 - Voice Notes
@@ -675,7 +675,7 @@ Status values:
 | API routes verification | tested | `php artisan route:list --except-vendor` shows 20 app routes including app-version, auth, bootstrap, config, contracts, features, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
 | Mobile formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/mobile-client`. |
-| Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 442 tests / 3533 assertions. |
+| Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 445 tests / 3557 assertions. |
 | Mobile frontend build | tested | `npm run build` passes in `apps/mobile-client`. |
 | Mobile navigation verification | tested | `php artisan route:list --name=mobile` shows 53 named mobile routes and route tests cover authenticated/guest rendering. Browser/native manual verification remains future. |
 | NativePHP fallback verification | tested | `php artisan native:plugin:validate --no-interaction` exits successfully with two non-fatal third-party manifest warnings; simulator/emulator release verification remains external-tooling dependent. |
@@ -686,8 +686,8 @@ Status values:
 ## Highest-Priority Implementation Order
 
 1. Continue migrating lower-level mobile actions and NativePHP service calls
-   behind `MobileAccessPolicy`, especially check-ins, media capture/file
-   manager actions, and remaining offline queue writes.
+   behind `MobileAccessPolicy`, especially media capture/file manager actions,
+   scanner result mutations, and remaining offline queue writes.
 
 ## Current Blocking Risks
 

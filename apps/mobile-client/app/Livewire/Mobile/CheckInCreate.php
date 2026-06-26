@@ -3,7 +3,9 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Models\MobileLocalMediaItem;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\CheckInRepository;
 use App\Services\MobileLocal\MediaItemRepository;
 use Illuminate\Contracts\View\View;
@@ -16,6 +18,7 @@ use Livewire\Component;
 class CheckInCreate extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     public ?string $latitude = null;
 
@@ -33,14 +36,22 @@ class CheckInCreate extends Component
 
     private MediaItemRepository $mediaItems;
 
-    public function boot(CheckInRepository $checkIns, MediaItemRepository $mediaItems): void
-    {
+    public function boot(
+        CheckInRepository $checkIns,
+        MediaItemRepository $mediaItems,
+        MobileAccessPolicy $mobileAccessPolicy,
+    ): void {
         $this->checkIns = $checkIns;
         $this->mediaItems = $mediaItems;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function save(): void
     {
+        if ($this->checkInCreationDenied('Check-in not saved')) {
+            return;
+        }
+
         $validated = $this->validate();
 
         $userId = Auth::id();
@@ -90,6 +101,7 @@ class CheckInCreate extends Component
         return view('livewire.mobile.check-in-create', [
             'photoOptions' => $photoOptions,
             'storageAvailable' => $storageAvailable,
+            'checkInPolicy' => $this->checkInPolicy(),
         ]);
     }
 
@@ -149,5 +161,25 @@ class CheckInCreate extends Component
                 (string) $mediaItem->getKey() => $mediaItem->displayName(),
             ])
             ->all();
+    }
+
+    /**
+     * @return array{can_save: bool, message: string}
+     */
+    private function checkInPolicy(): array
+    {
+        $location = $this->mobileFeatureDecision('native_location');
+        $sync = $this->mobileFeatureDecision('offline_sync');
+
+        return [
+            'can_save' => $location['allowed'] && $sync['allowed'],
+            'message' => ! $location['allowed'] ? $location['message'] : $sync['message'],
+        ];
+    }
+
+    private function checkInCreationDenied(string $title): bool
+    {
+        return $this->mobileFeatureDenied('native_location', $title)
+            || $this->mobileFeatureDenied('offline_sync', $title);
     }
 }

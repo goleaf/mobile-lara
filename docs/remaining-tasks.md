@@ -255,9 +255,12 @@ before implementation scope is added.
   management and attachment sharing now gate local writes and native share
   handoff. Voice-note recording, native callbacks, local save/delete actions,
   and upload queue placeholders now gate cached microphone and sync policy
-  before local writes, file deletes, or queue writes. Check-ins, media
-  capture/file-manager actions, lower-level NativePHP service calls, and
-  remaining offline queue writes still need per-action gates.
+  before local writes, file deletes, or queue writes. Native location
+  permission/current-position calls, callbacks, check-in creation, and
+  check-in history shortcuts now gate cached location and sync policy before
+  native handoff or local check-in writes. Media capture/file-manager actions,
+  scanner result mutations, lower-level NativePHP service calls, and remaining
+  offline queue writes still need per-action gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 
