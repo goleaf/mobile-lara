@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Mobile;
 
+use App\Services\MobileAccess\MobileAccessPolicy;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -16,6 +17,13 @@ class Dashboard extends Component
     public bool $hasDashboardContent = true;
 
     public bool $isOffline = false;
+
+    private MobileAccessPolicy $accessPolicy;
+
+    public function boot(MobileAccessPolicy $accessPolicy): void
+    {
+        $this->accessPolicy = $accessPolicy;
+    }
 
     public function refreshDashboard(): void
     {
@@ -116,11 +124,11 @@ class Dashboard extends Component
     }
 
     /**
-     * @return array<int, array{key: string, label: string, description: string, route: string}>
+     * @return list<array<string, mixed>>
      */
     private function quickActions(): array
     {
-        return [
+        return $this->accessPolicy->filterActions([
             [
                 'key' => 'search',
                 'label' => 'Search',
@@ -138,12 +146,16 @@ class Dashboard extends Component
                 'label' => 'Records',
                 'description' => 'Manage local-first generic records.',
                 'route' => 'mobile.records.index',
+                'feature' => 'records',
+                'permission' => 'records.view',
             ],
             [
                 'key' => 'notifications',
                 'label' => 'Notifications',
                 'description' => 'Review alerts waiting on this device.',
                 'route' => 'mobile.notifications',
+                'feature' => 'notifications',
+                'permission' => 'notifications.view',
             ],
             [
                 'key' => 'sessions',
@@ -157,7 +169,7 @@ class Dashboard extends Component
                 'description' => 'Manage biometrics, PIN, and consent.',
                 'route' => 'mobile.settings',
             ],
-        ];
+        ]);
     }
 
     /**

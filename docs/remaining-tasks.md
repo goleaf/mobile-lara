@@ -216,8 +216,11 @@ before implementation scope is added.
   partition verification.
 - Complete admin role/permission management, admin billing management, push
   notification inbox/token workflows, sync policy, and audit foundations.
-- Rewire existing mobile-local screens so server-trusted behavior comes from
-  API/bootstrap state instead of local placeholders.
+- Continue rewiring lower-level mobile-local actions so server-trusted behavior
+  comes from API/bootstrap state instead of local placeholders. Primary
+  navigation, dashboard/create/search shortcuts, and direct module routes now
+  use cached Admin/API policy; record mutations, attachments, NativePHP prompts,
+  voice notes, check-ins, and offline queue writes still need per-action gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

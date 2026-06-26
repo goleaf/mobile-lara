@@ -6,6 +6,11 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added mobile API-derived access policy that reads cached bootstrap feature,
+  permission, subscription, maintenance, notification, and sync outcomes to
+  gate primary navigation, dashboard/create/search shortcuts, and direct module
+  routes for records, notifications, sync conflicts, NativePHP media/files,
+  scanner, and location screens.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

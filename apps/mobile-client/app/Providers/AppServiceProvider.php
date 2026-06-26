@@ -5,12 +5,14 @@ namespace App\Providers;
 use App\Contracts\MobileAuth\MobileTokenStore;
 use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Contracts\Native\LocalNotificationDriver;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileAuth\NativeSecureMobileTokenStore;
 use App\Services\MobileAuth\SessionMobileTokenStore;
 use App\Services\MobileLocal\MobileLocalDatabase;
 use App\Services\MobileLocal\NativeMobileNetworkState;
 use App\Services\Native\LocalNotifications\NativePhpLocalNotificationDriver;
 use App\Services\Native\LocalNotifications\PlaceholderLocalNotificationDriver;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
 
@@ -49,6 +51,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(MobileLocalDatabase $mobileLocalDatabase): void
     {
         $mobileLocalDatabase->ensureFileExists();
+
+        View::composer('components.mobile.bottom-navigation', function ($view): void {
+            $view->with('items', $this->app->make(MobileAccessPolicy::class)->primaryNavigationItems());
+        });
     }
 
     private function localNotificationAutoDriver(): LocalNotificationDriver

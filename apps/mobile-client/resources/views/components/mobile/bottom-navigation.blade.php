@@ -1,14 +1,21 @@
 @php
-    $items = [
+    $items = $items ?? [
         ['route' => 'mobile.dashboard', 'label' => 'Dashboard', 'icon' => 'dashboard', 'primary' => false],
         ['route' => 'mobile.search', 'label' => 'Search', 'icon' => 'search', 'primary' => false],
         ['route' => 'mobile.create', 'label' => 'Create', 'icon' => 'plus', 'primary' => true],
         ['route' => 'mobile.notifications', 'label' => 'Notifications', 'icon' => 'bell', 'primary' => false],
         ['route' => 'mobile.profile', 'label' => 'Profile', 'icon' => 'user', 'primary' => false],
     ];
+    $columnClass = match (count($items)) {
+        1 => 'grid-cols-1',
+        2 => 'grid-cols-2',
+        3 => 'grid-cols-3',
+        4 => 'grid-cols-4',
+        default => 'grid-cols-5',
+    };
 @endphp
 
-<div {{ $attributes->class(['grid grid-cols-5 items-end gap-1 text-center text-[11px] font-semibold']) }}>
+<div {{ $attributes->class(['grid items-end gap-1 text-center text-[11px] font-semibold', $columnClass]) }}>
     @foreach ($items as $item)
         @php
             $active = request()->routeIs($item['route']);

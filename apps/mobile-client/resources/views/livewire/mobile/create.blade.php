@@ -6,11 +6,7 @@
 
     <x-mobile.card title="Quick create" description="Start a local-first creation workflow.">
         <div class="grid gap-3">
-            @foreach ([
-                ['label' => 'New record', 'description' => 'Capture a generic local record and sync it later.', 'badge' => 'Offline ready', 'route' => 'mobile.records.create'],
-                ['label' => 'Scan item', 'description' => 'Prepare scanner-based creation for NativePHP.', 'badge' => 'Scanner', 'route' => 'mobile.scanner'],
-                ['label' => 'Upload file', 'description' => 'Queue file input for the mobile file plugin.', 'badge' => 'Files', 'route' => 'mobile.files'],
-            ] as $item)
+            @forelse ($createActions as $item)
                 <a
                     href="{{ route($item['route']) }}"
                     wire:navigate
@@ -25,7 +21,12 @@
                         {{ $item['badge'] }}
                     </x-mobile.badge>
                 </a>
-            @endforeach
+            @empty
+                <x-mobile.empty-state
+                    title="No create actions"
+                    description="Admin/API policy has not enabled any create workflow for this workspace."
+                />
+            @endforelse
         </div>
     </x-mobile.card>
 </section>

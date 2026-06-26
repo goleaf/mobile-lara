@@ -199,6 +199,15 @@ The mobile client must never own tenant authority, permission authority,
 billing authority, feature flag authority, app-version authority, server audit
 truth, or final conflict decisions.
 
+Current implementation note: `MobileBootstrapService` caches the Admin/API
+bootstrap envelope in local settings, and `MobileAccessPolicy` reads that
+cached context to shape the app shell. Primary navigation, dashboard quick
+actions, create actions, search results, and guarded module routes now respect
+API-derived feature state, permissions, subscription limits, maintenance mode,
+notification policy, and sync policy. Core recovery surfaces such as dashboard,
+profile, settings, workspace switching, support, and billing stay reachable so
+users can recover when a tenant or policy state blocks a workflow.
+
 Admin Control Center logic in `../../docs/admin-control-center-logic.md`
 defines the server-side controls that mobile receives as API outcomes:
 tenant, user, role, permission, feature, remote config, app version,

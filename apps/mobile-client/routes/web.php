@@ -98,24 +98,58 @@ Route::middleware(['web'])
                 Route::livewire('/sessions', Sessions::class)->name('sessions');
                 Route::livewire('/account/delete', AccountDeletion::class)->name('account.delete');
                 Route::livewire('/activity', ActivityFeed::class)->name('activity');
-                Route::livewire('/notifications', Notifications::class)->name('notifications');
+                Route::livewire('/notifications', Notifications::class)
+                    ->middleware('mobile.feature:notifications,notifications.view')
+                    ->name('notifications');
                 Route::livewire('/search', Search::class)->name('search');
-                Route::livewire('/sync/conflicts', ConflictList::class)->name('conflicts.index');
-                Route::livewire('/sync/conflicts/{offlineAction}', ConflictDetail::class)->name('conflicts.show');
-                Route::livewire('/media-capture', MediaCapture::class)->name('media.capture');
-                Route::livewire('/media-gallery', MediaGallery::class)->name('media.gallery');
-                Route::livewire('/voice-notes', VoiceNotes::class)->name('voice-notes');
-                Route::livewire('/files', FileManager::class)->name('files');
-                Route::livewire('/records', Records::class)->name('records.index');
-                Route::livewire('/records/categories', RecordCategories::class)->name('records.categories');
-                Route::livewire('/records/create', RecordCreate::class)->name('records.create');
-                Route::livewire('/records/{record}', RecordDetail::class)->name('records.show');
-                Route::livewire('/records/{record}/edit', RecordEdit::class)->name('records.edit');
-                Route::livewire('/scanner', ScannerDemo::class)->name('scanner');
-                Route::livewire('/scan-history', ScanHistory::class)->name('scan-history');
-                Route::livewire('/location-check-in', LocationCheckIn::class)->name('location.check-in');
-                Route::livewire('/check-ins', CheckInHistory::class)->name('check-ins.index');
-                Route::livewire('/check-ins/create', CheckInCreate::class)->name('check-ins.create');
+                Route::livewire('/sync/conflicts', ConflictList::class)
+                    ->middleware('mobile.feature:offline_sync,sync.view')
+                    ->name('conflicts.index');
+                Route::livewire('/sync/conflicts/{offlineAction}', ConflictDetail::class)
+                    ->middleware('mobile.feature:offline_sync,sync.view')
+                    ->name('conflicts.show');
+                Route::livewire('/media-capture', MediaCapture::class)
+                    ->middleware('mobile.feature:native_camera')
+                    ->name('media.capture');
+                Route::livewire('/media-gallery', MediaGallery::class)
+                    ->middleware('mobile.feature:native_files')
+                    ->name('media.gallery');
+                Route::livewire('/voice-notes', VoiceNotes::class)
+                    ->middleware('mobile.feature:native_microphone')
+                    ->name('voice-notes');
+                Route::livewire('/files', FileManager::class)
+                    ->middleware('mobile.feature:native_files')
+                    ->name('files');
+                Route::livewire('/records', Records::class)
+                    ->middleware('mobile.feature:records,records.view')
+                    ->name('records.index');
+                Route::livewire('/records/categories', RecordCategories::class)
+                    ->middleware('mobile.feature:records,records.view')
+                    ->name('records.categories');
+                Route::livewire('/records/create', RecordCreate::class)
+                    ->middleware('mobile.feature:records,records.create')
+                    ->name('records.create');
+                Route::livewire('/records/{record}', RecordDetail::class)
+                    ->middleware('mobile.feature:records,records.view')
+                    ->name('records.show');
+                Route::livewire('/records/{record}/edit', RecordEdit::class)
+                    ->middleware('mobile.feature:records,records.update')
+                    ->name('records.edit');
+                Route::livewire('/scanner', ScannerDemo::class)
+                    ->middleware('mobile.feature:native_scanner')
+                    ->name('scanner');
+                Route::livewire('/scan-history', ScanHistory::class)
+                    ->middleware('mobile.feature:native_scanner')
+                    ->name('scan-history');
+                Route::livewire('/location-check-in', LocationCheckIn::class)
+                    ->middleware('mobile.feature:native_location')
+                    ->name('location.check-in');
+                Route::livewire('/check-ins', CheckInHistory::class)
+                    ->middleware('mobile.feature:native_location')
+                    ->name('check-ins.index');
+                Route::livewire('/check-ins/create', CheckInCreate::class)
+                    ->middleware('mobile.feature:native_location')
+                    ->name('check-ins.create');
                 Route::livewire('/debug', Debug::class)->name('debug');
                 Route::livewire('/pin/change', PinChange::class)->name('pin.change');
                 Route::livewire('/pin/remove', PinRemove::class)->name('pin.remove');

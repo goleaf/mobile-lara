@@ -16,6 +16,22 @@
             </x-mobile.empty-state>
         @else
             <div class="grid gap-5">
+                @if (session('mobile_policy_denial'))
+                    <x-mobile.card title="Feature unavailable" description="{{ session('mobile_policy_denial') }}">
+                        <div class="flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 dark:border-amber-400/30 dark:bg-amber-400/10">
+                            <p class="text-sm font-medium text-amber-900 dark:text-amber-100">
+                                Admin/API policy blocked that screen for the current workspace.
+                            </p>
+
+                            @if (session('mobile_policy_denial_reason'))
+                                <x-mobile.badge variant="warning" size="sm">
+                                    {{ session('mobile_policy_denial_reason') }}
+                                </x-mobile.badge>
+                            @endif
+                        </div>
+                    </x-mobile.card>
+                @endif
+
                 <div class="rounded-lg border border-app-line bg-app-surface p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
                     <div class="flex items-start justify-between gap-4">
                         <div class="min-w-0">

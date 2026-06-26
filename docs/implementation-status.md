@@ -346,7 +346,7 @@ Status values:
 | Protected admin routes | tested | `/admin/dashboard` and current control pages are protected by session auth, platform-admin middleware, and resource policies for current mobile control-plane actions. |
 | Protected API routes | partial | Auth, bootstrap, tenant list/switch, and profile routes are mobile-token protected; resource permission middleware/policies remain pending. |
 | Mobile permission payload | tested | Bootstrap returns nested role-derived ability state for the current active tenant and fails closed for invited/suspended memberships. |
-| Mobile permission-aware UI | partial | Permission settings/center exists for NativePHP device permissions, not SaaS permissions. |
+| Mobile permission-aware UI | partial | Permission settings/center exists for NativePHP device permissions. `MobileAccessPolicy` now also consumes cached Admin/API bootstrap permissions to hide blocked shortcuts and route-block records, notifications, sync conflicts, media/files, scanner, and location screens; deeper per-action SaaS permission wiring remains pending. |
 
 ## Phase 8 - Feature Flags
 
@@ -357,8 +357,8 @@ Status values:
 | User feature overrides | tested | `UserFeatureOverride` schema/model/factory, resolver coverage, and `/admin/mobile/user-feature-overrides` audited admin controls exist for membership-safe user overrides. |
 | Resolution order user override -> tenant override -> global default, then emergency/maintenance/plan/cohort/device/permission/version gates | tested | Initial resolver follows the explicit requested override order and applies emergency, maintenance, plan, cohort, device, permission, and minimum-app-version gates before returning mobile-safe state; richer billing authority remains pending. |
 | Admin feature flag UI | tested | `/admin/mobile/features` manages audited global mobile feature defaults, required plans, allowed cohorts, and device constraints; `/admin/mobile/feature-overrides` manages audited tenant overrides, and `/admin/mobile/user-feature-overrides` manages audited user overrides with search, validation, create/update actions, impact previews, dashboard/nav entry points, and Livewire coverage. Maintenance gates are driven by app-version policy controls. |
-| Mobile feature store/cache | not started | Required after bootstrap exists. |
-| Feature-gated mobile navigation/actions | partial | Mobile routes exist; not API/feature controlled yet. |
+| Mobile feature store/cache | partial | `MobileBootstrapService` caches the API bootstrap envelope in local settings, and `MobileAccessPolicy` reads cached `features`, `permissions`, `subscription`, `maintenance`, `notification_preferences`, and `sync` outcomes for mobile presentation. A dedicated per-tenant feature cache and freshness UI remain pending. |
+| Feature-gated mobile navigation/actions | tested | Primary navigation, dashboard quick actions, create actions, search results, and direct module routes now use cached Admin/API bootstrap policy for records, notifications, sync conflicts, NativePHP media/files/scanner/location screens, and disabled-feature recovery messaging. |
 
 ## Phase 9 - Remote Config
 
@@ -645,7 +645,7 @@ Status values:
 | API routes verification | tested | `php artisan route:list --except-vendor` shows 20 app routes including app-version, auth, bootstrap, config, contracts, features, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
 | Mobile formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/mobile-client`. |
-| Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 431 tests / 3427 assertions. |
+| Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 434 tests / 3459 assertions. |
 | Mobile frontend build | tested | `npm run build` passes in `apps/mobile-client`. |
 | Mobile navigation verification | tested | `php artisan route:list --name=mobile` shows 53 named mobile routes and route tests cover authenticated/guest rendering. Browser/native manual verification remains future. |
 | NativePHP fallback verification | tested | `php artisan native:plugin:validate --no-interaction` exits successfully with two non-fatal third-party manifest warnings; simulator/emulator release verification remains external-tooling dependent. |
@@ -655,8 +655,9 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Migrate existing mobile-local features behind API-derived policy instead of
-   letting local screens remain standalone authority.
+1. Continue migrating lower-level mobile actions and NativePHP prompts behind
+   `MobileAccessPolicy`, especially record mutations, attachments, voice notes,
+   check-ins, permission prompts, and offline queue writes.
 
 ## Current Blocking Risks
 
