@@ -9,10 +9,21 @@ feature flags, and camera/permission dependency behavior must remain
 tenant-scoped, permission-aware, fallback-safe, offline-clear,
 duplicate-safe, privacy-safe, and Admin/API-authoritative.
 
+Geolocation Logic is defined in `docs/geolocation-logic.md`:
+check-ins, location-attached records, accuracy display, permission
+explanation, offline location behavior, privacy boundaries, admin feature
+flags, user-facing location understanding, and never-collect rules must
+remain tenant-scoped, permission-aware, fallback-safe, offline-clear,
+privacy-safe, purpose-limited, and Admin/API-authoritative.
+
 ## Unreleased
 
 ### Added
 
+- Added Geolocation Logic documentation for check-ins, location-attached
+  records, accuracy display, permission explanation, offline location behavior,
+  privacy boundaries, admin feature-flag control, user-facing location
+  understanding, and never-collect rules.
 - Added Scanner Logic documentation for QR/barcode scan-to-search,
   scan-to-create, scan-to-validate, scan history, offline scanning, invalid
   scan behavior, duplicate scan behavior, admin feature-flag control, and

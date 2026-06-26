@@ -120,6 +120,13 @@ feature flags, and camera/permission dependency behavior must remain
 tenant-scoped, permission-aware, fallback-safe, offline-clear,
 duplicate-safe, privacy-safe, and Admin/API-authoritative.
 
+Geolocation Logic is defined in `docs/geolocation-logic.md`:
+check-ins, location-attached records, accuracy display, permission
+explanation, offline location behavior, privacy boundaries, admin feature
+flags, user-facing location understanding, and never-collect rules must
+remain tenant-scoped, permission-aware, fallback-safe, offline-clear,
+privacy-safe, purpose-limited, and Admin/API-authoritative.
+
 Sync Lifecycle Logic is defined in `docs/sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,
@@ -214,6 +221,7 @@ Use these docs before changing the product direction:
 - `docs/native-feature-strategy.md`
 - `docs/camera-media-logic.md`
 - `docs/scanner-logic.md`
+- `docs/geolocation-logic.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -260,6 +268,7 @@ Use these docs before changing the product direction:
 - Native feature decisions must follow `docs/native-feature-strategy.md`.
 - Camera and media decisions must follow `docs/camera-media-logic.md`.
 - Scanner decisions must follow `docs/scanner-logic.md`.
+- Geolocation decisions must follow `docs/geolocation-logic.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -305,6 +314,7 @@ Use these docs before changing the product direction:
 - Any NativePHP capability, native feature boundary, browser/development fallback, native permission education, native feature flag, native failure state, native diagnostic, or native/offline sync behavior must map to `docs/native-feature-strategy.md`.
 - Any photo capture, media selection, media preview, record/support attachment, offline media storage, upload queue, media feature flag, permission-denied media state, media size rule, media privacy rule, media support visibility, or media sync behavior must map to `docs/camera-media-logic.md`.
 - Any QR/barcode scan, scan-to-search, scan-to-create, scan-to-validate, scan history, offline scanning, invalid scan, duplicate scan, scanner feature flag, scanner permission state, camera dependency, manual fallback, or scanner privacy behavior must map to `docs/scanner-logic.md`.
+- Any check-in, check-out, location-attached record, accuracy display, location permission explanation, offline location capture, location privacy boundary, location feature flag, user-facing location explanation, or never-collect rule must map to `docs/geolocation-logic.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.

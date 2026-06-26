@@ -9,6 +9,13 @@ feature flags, and camera/permission dependency behavior must remain
 tenant-scoped, permission-aware, fallback-safe, offline-clear,
 duplicate-safe, privacy-safe, and Admin/API-authoritative.
 
+Geolocation Logic is defined in `geolocation-logic.md`:
+check-ins, location-attached records, accuracy display, permission
+explanation, offline location behavior, privacy boundaries, admin feature
+flags, user-facing location understanding, and never-collect rules must
+remain tenant-scoped, permission-aware, fallback-safe, offline-clear,
+privacy-safe, purpose-limited, and Admin/API-authoritative.
+
 This document defines camera and media logic for the Mobile Lara NativePHP
 client. It explains taking photos, choosing media, previewing media, attaching
 media to records or support, offline media storage principles, upload queue

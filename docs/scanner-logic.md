@@ -2,6 +2,13 @@
 
 Updated: 2026-06-26
 
+Geolocation Logic is defined in `geolocation-logic.md`:
+check-ins, location-attached records, accuracy display, permission
+explanation, offline location behavior, privacy boundaries, admin feature
+flags, user-facing location understanding, and never-collect rules must
+remain tenant-scoped, permission-aware, fallback-safe, offline-clear,
+privacy-safe, purpose-limited, and Admin/API-authoritative.
+
 This document defines QR/barcode scanner logic for the Mobile Lara NativePHP
 client. It explains scan-to-search, scan-to-create, scan-to-validate, scan
 history principles, offline scanning, invalid scan behavior, duplicate scan
