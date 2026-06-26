@@ -377,6 +377,12 @@ The mobile app has a dedicated SQLite connection named `mobile_local`.
 
 The local database file is intentionally stored under `storage/app/mobile` so it is writable in a packaged NativePHP mobile runtime.
 
+Implementation note: browser-selected record attachments are copied into the
+mobile attachment sandbox before local attachment metadata is queued. Avatar
+files may also exist locally as presentation mirrors, but the profile avatar
+state is synchronized through the Admin/API profile endpoint when a valid
+mobile token exists.
+
 ## Offline State Model
 
 Every locally stored item should fit one of these states:

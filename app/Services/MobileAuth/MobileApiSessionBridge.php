@@ -47,6 +47,13 @@ final class MobileApiSessionBridge
             'email_verified_at' => $emailVerifiedAt,
         ];
 
+        if (array_key_exists('avatar_path', $payload)) {
+            $avatarPath = $payload['avatar_path'];
+            $attributes['avatar_path'] = is_string($avatarPath) && trim($avatarPath) !== ''
+                ? trim($avatarPath)
+                : null;
+        }
+
         if (! $user instanceof User) {
             $attributes['password'] = Hash::make('api-session-'.Str::random(48));
         }

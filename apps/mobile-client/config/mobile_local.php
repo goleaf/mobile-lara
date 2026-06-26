@@ -20,6 +20,8 @@ return [
         'export_path' => storage_path('app/mobile/mobile-local-export.json'),
         'file_manager_path' => storage_path('app/mobile/files'),
         'file_export_path' => storage_path('app/mobile/exports'),
+        'media_path' => storage_path('app/mobile/media'),
+        'attachment_path' => storage_path('app/mobile/attachments'),
         'file_preview_bytes' => 65536,
     ],
 

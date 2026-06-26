@@ -138,6 +138,12 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Added API-backed mobile avatar upload/removal through `PATCH /auth/profile`,
+  including Admin/API public-disk storage, avatar path/url payloads, mobile
+  multipart profile sync, and local mirror preservation for the current device.
+- Added real record attachment uploads in the mobile client: browser-selected
+  files are copied into the mobile attachment sandbox before attachment
+  metadata is queued for sync.
 - Removed duplicate page-level floating Create actions from the mobile dashboard,
   search, and notification inbox so the single Create action lives in the
   centered bottom navigation item.

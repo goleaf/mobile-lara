@@ -101,6 +101,33 @@ final class AvatarStorageService
         return Storage::disk(self::DISK)->url($path);
     }
 
+    public function absolutePath(?string $path): ?string
+    {
+        if (! is_string($path) || ! Str::startsWith($path, self::DIRECTORY.'/')) {
+            return null;
+        }
+
+        $absolutePath = Storage::disk(self::DISK)->path($path);
+
+        return is_file($absolutePath) && is_readable($absolutePath) ? $absolutePath : null;
+    }
+
+    public function copyWithinDisk(?string $sourcePath, ?string $targetPath): bool
+    {
+        if (
+            ! is_string($sourcePath)
+            || ! is_string($targetPath)
+            || $sourcePath === $targetPath
+            || ! Str::startsWith($sourcePath, self::DIRECTORY.'/')
+            || ! Str::startsWith($targetPath, self::DIRECTORY.'/')
+            || ! Storage::disk(self::DISK)->exists($sourcePath)
+        ) {
+            return false;
+        }
+
+        return Storage::disk(self::DISK)->copy($sourcePath, $targetPath);
+    }
+
     private function normalizeNativePath(string $path): string
     {
         $path = trim($path);

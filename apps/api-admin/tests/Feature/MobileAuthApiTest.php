@@ -6,6 +6,8 @@ use App\Models\MobileRefreshToken;
 use App\Models\SecurityAuditEvent;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 uses(RefreshDatabase::class);
@@ -125,6 +127,8 @@ test('mobile refresh rotates refresh and access tokens', function (): void {
 });
 
 test('mobile profile update is protected and audited', function (): void {
+    Storage::fake('public');
+
     User::factory()->create([
         'email' => 'worker@example.com',
         'password' => 'password-secret',
@@ -137,13 +141,29 @@ test('mobile profile update is protected and audited', function (): void {
     ])->json('data.tokens.access_token');
 
     $this->withToken($accessToken)
-        ->patchJson('/api/v1/mobile/auth/profile', [
+        ->patch('/api/v1/mobile/auth/profile', [
             'name' => 'Updated Worker',
             'email' => 'updated-worker@example.com',
+            'avatar' => UploadedFile::fake()->image('avatar.png', 256, 256),
+        ], [
+            'Accept' => 'application/json',
         ])
         ->assertOk()
         ->assertJsonPath('data.user.name', 'Updated Worker')
-        ->assertJsonPath('data.user.email', 'updated-worker@example.com');
+        ->assertJsonPath('data.user.email', 'updated-worker@example.com')
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->where('success', true)
+            ->where('data.user.avatar_url', fn (?string $url): bool => is_string($url) && str_contains($url, '/storage/avatars/'))
+            ->where('data.next_bootstrap_required', true)
+            ->has('data.user.avatar_path')
+            ->etc()
+        );
+
+    $avatarPath = User::query()->where('email', 'updated-worker@example.com')->value('avatar_path');
+
+    expect($avatarPath)->toBeString();
+
+    Storage::disk('public')->assertExists((string) $avatarPath);
 
     expect(SecurityAuditEvent::query()->where('event', 'mobile_profile_updated')->exists())->toBeTrue();
 });

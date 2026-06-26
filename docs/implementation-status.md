@@ -461,7 +461,7 @@ Status values:
 | Dashboard | tested | `Mobile\Dashboard` exists and renders in `apps/mobile-client`; Admin/API bootstrap integration is missing. |
 | Bottom navigation | tested | `<x-mobile.bottom-navigation>` exists and is covered by shell tests; feature-gated navigation is not API-controlled yet. |
 | Settings | tested | Settings index and sections exist; workspace settings now reads cached bootstrap tenant context and switches tenants through API. Remote config policy remains pending. |
-| Profile | tested | Profile and edit profile screens exist; edit profile syncs the account name through the API profile endpoint when a valid access token exists. |
+| Profile | tested | Profile and edit profile screens exist; edit profile syncs the account name, optional avatar upload, and avatar removal through the API profile endpoint when a valid access token exists. |
 | Notifications page | tested | Local notification inbox exists, server notification authority exists for inbox/read/delete/push-token endpoints, and native push permission/token capture UI remains pending. |
 | Debug/diagnostics page | tested | Debug screen includes privacy-safe diagnostics preview, local JSON export, and native share handoff with redaction coverage. |
 | Reusable mobile UI components | tested | Components exist and are covered by mobile UI component tests. |
@@ -498,7 +498,7 @@ Status values:
 | Logout | tested | tested | API/admin logout revokes the current device session; mobile profile/sessions screens call the endpoint and clear local session/token state. |
 | Logout all devices | tested | tested | API/admin logout-all revokes active mobile sessions; mobile sessions screen calls the endpoint and clears local session/token state. |
 | Current user endpoint | tested | tested | `GET /api/v1/mobile/auth/user` exists and the mobile service calls it with a bearer token. |
-| Profile update endpoint | tested | tested | `PATCH /api/v1/mobile/auth/profile` exists and the edit-profile Livewire screen syncs the profile name through it when a valid access token exists. Avatar storage remains local until a media/upload API slice. |
+| Profile update endpoint | tested | tested | `PATCH /api/v1/mobile/auth/profile` exists and the edit-profile Livewire screen syncs the profile name, optional avatar upload, and avatar removal through it when a valid access token exists. API/admin stores avatar files on the public disk and returns avatar path/url; mobile keeps a local display mirror. |
 | Device/session logic | tested | tested | API/admin device sessions are persisted, last-seen tracked, and revocable; mobile auth service sends a stable device context from the client session. Tenant/device trust policy remains pending. |
 | Security audit events | tested | partial | API/admin writes auth audit events; broader admin/control-plane audit remains pending. |
 
@@ -592,7 +592,7 @@ Status values:
 | Categories | partial | partial | API create/update can resolve tenant-scoped categories from payloads. Standalone category admin/API screens remain pending. |
 | Tags | partial | partial | API create/update resolves tenant-scoped tags and attaches them to records. Standalone tag admin/API screens remain pending. |
 | Notes | partial | partial | API create/update can append record notes and includes detail note payloads. Standalone note editing/deleting remains pending. |
-| Attachment metadata | partial | partial | API create can persist attachment metadata without trusting local file state. Upload/storage workflows remain pending. |
+| Attachment metadata | partial | partial | API create can persist attachment metadata without trusting local file state. Mobile record attachment uploads now copy browser-selected files into the local attachment sandbox before queueing metadata; server-side attachment binary upload/replay remains pending. |
 | Activity timeline | tested | partial | API create/update/archive/restore write activity timeline entries and security audit events, and sync replay outcomes write sync events plus audit history. Rich mobile timeline hydration from sync events remains pending. |
 | Admin records management | tested | n/a | `/admin/records` lets platform admins search, filter, inspect, create, update, archive, and restore tenant records with eager-loaded categories, tags, notes, attachment metadata, activity timelines, policy checks, dashboard/navigation links, and admin-specific audit events. Standalone category/tag/note/attachment management remains pending. |
 | Records API endpoints | tested | partial | `GET/POST/PATCH/DELETE /api/v1/mobile/records`, detail, restore, records-only `/sync/pull`, and records-only `/sync/push` endpoints are implemented and covered by feature tests. Mobile direct mutation and dedicated sync API service consumption are implemented; full pull/reconcile UI consumption remains pending. |
@@ -658,8 +658,8 @@ Status values:
 | Camera capture | tested | Mobile service/screen exists; direct capture action and native callback paths are hidden and blocked when cached `native_camera` policy is disabled. |
 | Gallery selection | tested | Media capture picker actions and callbacks are hidden and blocked by cached camera policy; durable API upload remains pending. |
 | Media preview | partial | Mobile media surfaces exist. |
-| Attach media to records/support | partial | Record attachment surfaces exist; support/API missing. |
-| Offline media queue | partial | Local media models exist; API upload/replay missing. |
+| Attach media to records/support | partial | Record attachment surfaces can save uploaded files locally and queue attachment metadata; support attachment binary upload and server replay remain pending. |
+| Offline media queue | partial | Local media/attachment models exist and record attachment uploads are copied into the local sandbox; API upload/replay is still missing. |
 | File import/export | partial | File manager exists and local import/export actions are gated by cached `native_files` policy; API policy remains missing. |
 | Native share | partial | Share service exists and profile, record-detail, media-gallery, file-manager, and diagnostics share actions are gated by cached `native_share` policy; report flows remain incomplete. |
 

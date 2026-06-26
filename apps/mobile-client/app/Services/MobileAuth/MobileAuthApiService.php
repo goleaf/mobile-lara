@@ -7,6 +7,7 @@ use App\Services\MobileApi\MobileApiClient;
 use App\Services\MobileApi\MobileApiException;
 use App\Services\MobileApi\MobileDeviceContext;
 use Carbon\CarbonImmutable;
+use Illuminate\Http\UploadedFile;
 
 final class MobileAuthApiService
 {
@@ -107,9 +108,19 @@ final class MobileAuthApiService
      * @param  array{name?: string, email?: string}  $attributes
      * @return array<string, mixed>
      */
-    public function updateProfile(array $attributes): array
+    public function updateProfile(array $attributes, UploadedFile|string|null $avatar = null, bool $removeAvatar = false): array
     {
-        return $this->api->patch('/auth/profile', $attributes, $this->accessToken());
+        if ($removeAvatar) {
+            $attributes['remove_avatar'] = true;
+        }
+
+        if ($avatar === null) {
+            return $this->api->patch('/auth/profile', $attributes, $this->accessToken());
+        }
+
+        return $this->api->patchMultipart('/auth/profile', $attributes, [
+            'avatar' => $this->avatarFilePayload($avatar),
+        ], $this->accessToken());
     }
 
     private function accessToken(): string
@@ -121,6 +132,51 @@ final class MobileAuthApiService
         }
 
         return $accessToken;
+    }
+
+    /**
+     * @return array{contents: string, filename: string, headers: array<string, string>}
+     */
+    private function avatarFilePayload(UploadedFile|string $avatar): array
+    {
+        $path = $avatar instanceof UploadedFile
+            ? ($avatar->getRealPath() ?: $avatar->getPathname())
+            : $avatar;
+
+        if (! is_string($path) || ! is_readable($path) || ! is_file($path)) {
+            throw new MobileApiException(
+                mobileCode: 'mobile_avatar_unreadable',
+                message: 'The selected avatar file could not be read.',
+                category: 'validation',
+                nextAction: 'choose_file',
+                status: 422,
+            );
+        }
+
+        $contents = file_get_contents($path);
+
+        if (! is_string($contents)) {
+            throw new MobileApiException(
+                mobileCode: 'mobile_avatar_unreadable',
+                message: 'The selected avatar file could not be read.',
+                category: 'validation',
+                nextAction: 'choose_file',
+                status: 422,
+            );
+        }
+
+        $filename = $avatar instanceof UploadedFile
+            ? $avatar->getClientOriginalName()
+            : basename($path);
+        $mimeType = $avatar instanceof UploadedFile
+            ? ($avatar->getMimeType() ?: 'application/octet-stream')
+            : (mime_content_type($path) ?: 'application/octet-stream');
+
+        return [
+            'contents' => $contents,
+            'filename' => $filename,
+            'headers' => ['Content-Type' => $mimeType],
+        ];
     }
 
     /**

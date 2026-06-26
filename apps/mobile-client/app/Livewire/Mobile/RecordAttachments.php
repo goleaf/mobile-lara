@@ -8,18 +8,23 @@ use App\Models\MobileLocalAttachment;
 use App\Models\MobileLocalRecord;
 use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\AttachmentRepository;
+use App\Services\MobileLocal\MobileLocalFileStorage;
 use App\Services\Native\ShareService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
+use InvalidArgumentException;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class RecordAttachments extends Component
 {
     use DispatchesToasts;
     use GuardsMobileRecordActions;
+    use WithFileUploads;
 
     public MobileLocalRecord $record;
 
@@ -35,20 +40,26 @@ class RecordAttachments extends Component
 
     public string $caption = '';
 
+    public mixed $attachmentUpload = null;
+
     public ?int $previewAttachmentId = null;
 
     public ?string $storageError = null;
 
     private AttachmentRepository $attachments;
 
+    private MobileLocalFileStorage $localFiles;
+
     private ShareService $shares;
 
     public function boot(
         AttachmentRepository $attachments,
+        MobileLocalFileStorage $localFiles,
         ShareService $shares,
         MobileAccessPolicy $mobileAccessPolicy,
     ): void {
         $this->attachments = $attachments;
+        $this->localFiles = $localFiles;
         $this->shares = $shares;
         $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
@@ -64,8 +75,11 @@ class RecordAttachments extends Component
             return;
         }
 
+        $hasUpload = $this->attachmentUpload instanceof UploadedFile;
+
         $validated = $this->validate([
-            'path' => ['required', 'string', 'max:500'],
+            'attachmentUpload' => ['nullable', 'file', 'max:10240'],
+            'path' => [$hasUpload ? 'nullable' : 'required', 'string', 'max:500'],
             'name' => ['nullable', 'string', 'max:255'],
             'mime' => ['nullable', 'string', 'max:120'],
             'type' => ['required', Rule::in(MobileLocalAttachment::TYPES)],
@@ -73,15 +87,31 @@ class RecordAttachments extends Component
             'caption' => ['nullable', 'string', 'max:1000'],
         ]);
 
+        $storedUpload = null;
+
+        if ($hasUpload) {
+            try {
+                $storedUpload = $this->localFiles->storeUploaded($this->attachmentUpload, 'attachments');
+            } catch (InvalidArgumentException $exception) {
+                $this->addError('attachmentUpload', $exception->getMessage());
+                $this->toastError($exception->getMessage(), 'Attachment not saved');
+
+                return;
+            }
+        }
+
         try {
             $this->attachments->attachFile(
                 record: $this->record,
-                path: $validated['path'],
-                name: $validated['name'] ?? null,
-                mime: $validated['mime'] ?? null,
-                type: $validated['type'],
-                size: $this->validatedSize($validated['size'] ?? null),
+                path: is_array($storedUpload) ? $storedUpload['path'] : $validated['path'],
+                name: $validated['name'] ?? ($storedUpload['name'] ?? null),
+                mime: $validated['mime'] ?? ($storedUpload['mime'] ?? null),
+                type: $this->attachmentType($validated['type'], $hasUpload),
+                size: is_array($storedUpload) ? $storedUpload['size'] : $this->validatedSize($validated['size'] ?? null),
                 caption: $validated['caption'] ?? null,
+                metadata: is_array($storedUpload)
+                    ? ['source' => 'local_upload', 'original_name' => $this->attachmentUpload->getClientOriginalName()]
+                    : [],
             );
         } catch (QueryException) {
             $this->storageError = 'Attachment storage is unavailable. Run the local mobile migrations first.';
@@ -222,6 +252,7 @@ class RecordAttachments extends Component
         $this->type = MobileLocalAttachment::TYPE_FILE;
         $this->size = '';
         $this->caption = '';
+        $this->attachmentUpload = null;
         $this->resetValidation();
     }
 
@@ -275,6 +306,15 @@ class RecordAttachments extends Component
         }
 
         return (int) $size;
+    }
+
+    private function attachmentType(string $type, bool $hasUpload): ?string
+    {
+        if ($hasUpload && $type === MobileLocalAttachment::TYPE_FILE) {
+            return null;
+        }
+
+        return $type;
     }
 
     /**

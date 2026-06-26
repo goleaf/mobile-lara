@@ -38,6 +38,16 @@ final class MobileApiClient
 
     /**
      * @param  array<string, mixed>  $payload
+     * @param  array<string, array{contents: string, filename: string, headers?: array<string, string>}>  $files
+     * @return array<string, mixed>
+     */
+    public function patchMultipart(string $path, array $payload = [], array $files = [], ?string $accessToken = null): array
+    {
+        return $this->send('patch', $path, $payload, $accessToken, $files);
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
      * @return array<string, mixed>
      */
     public function delete(string $path, array $payload = [], ?string $accessToken = null): array
@@ -47,14 +57,24 @@ final class MobileApiClient
 
     /**
      * @param  array<string, mixed>  $payload
+     * @param  array<string, array{contents: string, filename: string, headers?: array<string, string>}>  $files
      * @return array<string, mixed>
      */
-    private function send(string $method, string $path, array $payload = [], ?string $accessToken = null): array
+    private function send(string $method, string $path, array $payload = [], ?string $accessToken = null, array $files = []): array
     {
-        $request = $this->request();
+        $request = $this->request(asJson: $files === []);
 
         if (is_string($accessToken) && trim($accessToken) !== '') {
             $request = $request->withToken($accessToken);
+        }
+
+        foreach ($files as $name => $file) {
+            $request = $request->attach(
+                $name,
+                $file['contents'],
+                $file['filename'],
+                $file['headers'] ?? [],
+            );
         }
 
         try {
@@ -72,17 +92,18 @@ final class MobileApiClient
         return $this->envelope($response);
     }
 
-    private function request(): PendingRequest
+    private function request(bool $asJson = true): PendingRequest
     {
-        return Http::baseUrl($this->baseUrl())
+        $request = Http::baseUrl($this->baseUrl())
             ->acceptJson()
-            ->asJson()
             ->timeout(max(1, (int) config('mobile_auth.api.timeout_seconds', 10)))
             ->connectTimeout(max(1, (int) config('mobile_auth.api.connect_timeout_seconds', 3)))
             ->withHeaders([
                 'X-Mobile-App-Version' => (string) config('nativephp.version', '1.0.0'),
                 'X-Mobile-App-Version-Code' => (string) config('nativephp.version_code', '1'),
             ]);
+
+        return $asJson ? $request->asJson() : $request;
     }
 
     private function baseUrl(): string

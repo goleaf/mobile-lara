@@ -491,9 +491,9 @@ Implemented foundation:
   local presentation-only Laravel session from the API user payload.
 - Profile logout and sessions logout/logout-all call the API service before
   clearing local session/token state.
-- Edit profile syncs the account name through `PATCH /auth/profile` when a
-  valid access token exists; avatar storage remains local until a media/upload
-  API slice.
+- Edit profile syncs the account name, optional avatar upload, and avatar
+  removal through `PATCH /auth/profile` when a valid access token exists; local
+  avatar files are presentation mirrors of the API-authoritative account state.
 - `App\Services\MobileBootstrap\MobileBootstrapService` calls
   `GET /bootstrap` with the stored access token and caches the response in the
   mobile-local settings row.

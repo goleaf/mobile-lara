@@ -132,15 +132,19 @@ final class EditProfile extends Component
         $user = Auth::user();
         $previousAvatarPath = $user instanceof User ? $user->avatar_path : $this->savedAvatarPath;
         $avatarPath = $previousAvatarPath;
+        $avatarPathForApi = null;
+        $removeAvatarInApi = false;
         $avatarChanged = false;
 
         if ($this->avatar instanceof UploadedFile) {
             $avatarPath = $this->avatarStorage->storeUploaded($this->avatar, $previousAvatarPath);
+            $avatarPathForApi = $avatarPath;
             $this->avatarUploadName = $this->avatar->getClientOriginalName();
             $this->clearPendingNativeAvatar(except: $avatarPath);
             $avatarChanged = true;
         } elseif (is_string($this->pendingNativeAvatarPath)) {
             $avatarPath = $this->pendingNativeAvatarPath;
+            $avatarPathForApi = $avatarPath;
             $this->avatarStorage->delete($previousAvatarPath, except: $avatarPath);
             $this->pendingNativeAvatarPath = null;
             $this->pendingNativeAvatarUrl = null;
@@ -148,6 +152,7 @@ final class EditProfile extends Component
         } elseif ($this->avatarMarkedForRemoval) {
             $this->avatarStorage->delete($previousAvatarPath);
             $avatarPath = null;
+            $removeAvatarInApi = true;
             $this->avatarUploadName = null;
             $avatarChanged = true;
         }
@@ -158,7 +163,24 @@ final class EditProfile extends Component
             $user->save();
         }
 
-        $syncedWithApi = $this->syncProfileWithApi();
+        $syncResult = $this->syncProfileWithApi($avatarPathForApi, $removeAvatarInApi);
+        $syncedWithApi = $syncResult['synced'];
+
+        if (array_key_exists('avatar_path', $syncResult)) {
+            $apiAvatarPath = $syncResult['avatar_path'];
+
+            if (is_string($apiAvatarPath) && $apiAvatarPath !== $avatarPath) {
+                $this->avatarStorage->copyWithinDisk($avatarPath, $apiAvatarPath);
+                $this->avatarStorage->delete($avatarPath);
+            }
+
+            $avatarPath = $apiAvatarPath;
+
+            if ($user instanceof User) {
+                $user->avatar_path = $avatarPath;
+                $user->save();
+            }
+        }
 
         $this->savedAvatarPath = $avatarPath;
         $this->savedAvatarUrl = $this->avatarStorage->url($avatarPath);
@@ -437,21 +459,36 @@ final class EditProfile extends Component
         $this->avatarInitials = $initials === '' ? 'ML' : $initials;
     }
 
-    private function syncProfileWithApi(): bool
+    /**
+     * @return array{synced: bool, avatar_path?: string|null}
+     */
+    private function syncProfileWithApi(?string $avatarPath = null, bool $removeAvatar = false): array
     {
         try {
-            $envelope = $this->authApi->updateProfile([
-                'name' => $this->name,
-            ]);
+            $envelope = $this->authApi->updateProfile(
+                ['name' => $this->name],
+                $this->avatarStorage->absolutePath($avatarPath),
+                $removeAvatar,
+            );
             $this->apiSessions->syncUser($envelope);
 
-            return true;
+            $payload = $envelope['data']['user'] ?? [];
+            $result = ['synced' => true];
+
+            if (is_array($payload) && array_key_exists('avatar_path', $payload)) {
+                $apiAvatarPath = $payload['avatar_path'];
+                $result['avatar_path'] = is_string($apiAvatarPath) && trim($apiAvatarPath) !== ''
+                    ? trim($apiAvatarPath)
+                    : null;
+            }
+
+            return $result;
         } catch (MobileApiException $exception) {
             if ($exception->mobileCode !== 'missing_access_token') {
                 $this->toastWarning('Profile saved locally and will need API retry when the session is healthy.', 'Profile sync pending');
             }
 
-            return false;
+            return ['synced' => false];
         }
     }
 }

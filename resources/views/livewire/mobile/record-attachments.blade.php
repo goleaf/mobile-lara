@@ -15,11 +15,33 @@
     @else
         <x-mobile.card title="Attachment picker" description="Record attachments saved locally and queued for upload.">
             <form wire:submit="createAttachment" class="grid gap-4">
+                <div class="grid gap-2">
+                    <label for="attachmentUpload" class="text-sm font-medium text-app-ink dark:text-zinc-100">
+                        Upload file
+                    </label>
+                    <input
+                        id="attachmentUpload"
+                        name="attachmentUpload"
+                        type="file"
+                        wire:model="attachmentUpload"
+                        class="block min-h-12 w-full rounded-lg border border-app-line bg-white px-3 py-2 text-sm text-app-ink shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-app-ink file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white focus:border-app-accent focus:outline-none focus:ring-2 focus:ring-app-accent/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:file:bg-zinc-100 dark:file:text-zinc-950"
+                    >
+                    <p class="text-sm leading-5 text-app-muted dark:text-zinc-400">
+                        Browser uploads are copied into the mobile attachment sandbox. Local paths still work for NativePHP file picker results.
+                    </p>
+                    <p wire:loading wire:target="attachmentUpload" class="text-sm font-medium text-app-ink dark:text-zinc-100">
+                        Preparing file...
+                    </p>
+                    @error('attachmentUpload')
+                        <p class="text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <x-mobile.input
                     name="path"
                     label="File path"
                     placeholder="/tmp/mobile-attachments/document.pdf"
-                    hint="A local path, exported file path, or future NativePHP file picker result."
+                    hint="Optional when uploading a file; required for manual or NativePHP paths."
                     wire:model.live="path"
                 />
 

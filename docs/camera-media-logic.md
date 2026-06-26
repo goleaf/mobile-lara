@@ -192,6 +192,11 @@ work until the API accepts it. Local presence on the device does not mean the
 media is authorized, stored, attached, reportable, visible to admins, visible
 to support, or part of server truth.
 
+Implementation note: the mobile record attachment picker copies
+browser-selected files into the local attachment sandbox before queueing
+attachment metadata. That local saved state is still pending work until the API
+upload/replay contract accepts the attachment.
+
 ## Goals
 
 Camera and media logic should:

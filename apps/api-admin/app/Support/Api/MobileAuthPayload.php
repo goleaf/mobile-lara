@@ -4,6 +4,7 @@ namespace App\Support\Api;
 
 use App\Models\MobileDeviceSession;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 final class MobileAuthPayload
 {
@@ -16,6 +17,8 @@ final class MobileAuthPayload
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
+            'avatar_path' => $user->avatar_path,
+            'avatar_url' => is_string($user->avatar_path) ? Storage::disk('public')->url($user->avatar_path) : null,
             'email_verified_at' => $user->email_verified_at?->toIso8601String(),
         ];
     }

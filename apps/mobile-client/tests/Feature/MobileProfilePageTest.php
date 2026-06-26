@@ -255,6 +255,57 @@ test('edit profile syncs account name through api when access token exists', fun
         && $request['name'] === 'API Updated Person');
 });
 
+test('edit profile syncs uploaded avatar through api when access token exists', function (): void {
+    Storage::fake('public');
+
+    $user = User::factory()->create([
+        'name' => 'Taylor Mobile',
+        'email' => 'taylor@example.test',
+    ]);
+
+    app(AccessTokenService::class)->put('profile-avatar-access-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response([
+            'success' => true,
+            'data' => [
+                'user' => [
+                    'id' => 123,
+                    'name' => 'Avatar Person',
+                    'email' => 'taylor@example.test',
+                    'avatar_path' => 'avatars/api-avatar.png',
+                    'avatar_url' => 'https://api-admin.example.test/storage/avatars/api-avatar.png',
+                    'email_verified_at' => '2026-06-25T12:00:00+00:00',
+                ],
+                'session' => ['id' => 99, 'status' => 'active'],
+                'next_bootstrap_required' => true,
+            ],
+            'meta' => ['api_version' => 'v1'],
+        ]),
+    ]);
+
+    Livewire::actingAs($user)
+        ->test(EditProfile::class)
+        ->set('name', 'Avatar Person')
+        ->set('avatar', UploadedFile::fake()->image('avatar.png', 256, 256))
+        ->call('saveProfile')
+        ->assertSet('successMessage', 'Profile details and avatar saved with API.')
+        ->assertSet('savedAvatarPath', 'avatars/api-avatar.png')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'success'
+                && ($params['title'] ?? null) === 'Profile saved'
+                && ($params['message'] ?? null) === 'Profile details and avatar saved with API.';
+        });
+
+    expect($user->refresh()->avatar_path)->toBe('avatars/api-avatar.png');
+
+    Storage::disk('public')->assertExists('avatars/api-avatar.png');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
+        && $request->hasHeader('Authorization', 'Bearer profile-avatar-access-token'));
+});
+
 test('native camera photo can be previewed and saved as avatar', function (): void {
     Storage::fake('public');
 

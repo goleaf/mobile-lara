@@ -9,8 +9,10 @@ use App\Services\MobileLocal\MobileLocalDatabase;
 use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 
 uses(LazilyRefreshDatabase::class);
@@ -19,8 +21,10 @@ beforeEach(function (): void {
     CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-06-25 12:00:00'));
 
     $this->mobileLocalDatabasePath = storage_path('framework/testing/mobile-record-attachments.sqlite');
+    $this->mobileAttachmentPath = storage_path('framework/testing/mobile-record-attachments/files');
 
     File::ensureDirectoryExists(dirname($this->mobileLocalDatabasePath));
+    File::deleteDirectory($this->mobileAttachmentPath);
 
     if (File::exists($this->mobileLocalDatabasePath)) {
         File::delete($this->mobileLocalDatabasePath);
@@ -30,6 +34,7 @@ beforeEach(function (): void {
         'database.connections.mobile_local.database' => $this->mobileLocalDatabasePath,
         'mobile_local.database' => $this->mobileLocalDatabasePath,
         'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
+        'mobile_local.storage.attachment_path' => $this->mobileAttachmentPath,
     ]);
 
     app(MobileLocalDatabase::class)->ensureFileExists();
@@ -47,6 +52,8 @@ afterEach(function (): void {
     if (File::exists($this->mobileLocalDatabasePath)) {
         File::delete($this->mobileLocalDatabasePath);
     }
+
+    File::deleteDirectory(storage_path('framework/testing/mobile-record-attachments'));
 });
 
 test('attachment repository attaches files links media lists and soft deletes queued rows', function (): void {
@@ -113,6 +120,7 @@ test('record attachments component creates links previews shares deletes and exp
     Livewire::test(RecordAttachments::class, ['record' => $record])
         ->assertSee('Record attachments')
         ->assertSee('Attachment picker')
+        ->assertSee('Upload file')
         ->assertSee('Media picker')
         ->assertSee('field-photo.jpg')
         ->assertSee('Upload queue placeholder')
@@ -152,6 +160,31 @@ test('record attachments component creates links previews shares deletes and exp
         ->assertDontSee('manual.pdf');
 
     expect(MobileLocalAttachment::withTrashed()->where('name', 'manual.pdf')->first()?->trashed())->toBeTrue();
+});
+
+test('record attachments component stores uploaded images before queueing attachment metadata', function (): void {
+    $record = MobileLocalRecord::factory()->active()->create();
+
+    Livewire::test(RecordAttachments::class, ['record' => $record])
+        ->set('attachmentUpload', UploadedFile::fake()->image('Field Photo.JPG', 64, 64))
+        ->set('caption', 'Uploaded field photo')
+        ->call('createAttachment')
+        ->assertHasNoErrors()
+        ->assertSet('attachmentUpload', null)
+        ->assertSee('field-photo.jpg')
+        ->assertSee('Queued upload');
+
+    $attachment = MobileLocalAttachment::query()->latest('id')->firstOrFail();
+
+    expect($attachment->displayName())->toBe('field-photo.jpg')
+        ->and($attachment->isImage())->toBeTrue()
+        ->and($attachment->caption)->toBe('Uploaded field photo')
+        ->and(Str::startsWith($attachment->path, $this->mobileAttachmentPath))->toBeTrue()
+        ->and(File::exists($attachment->path))->toBeTrue()
+        ->and($attachment->metadata)->toBe([
+            'source' => 'local_upload',
+            'original_name' => 'Field Photo.JPG',
+        ]);
 });
 
 test('record attachment management is hidden and blocked by cached api policy', function (): void {

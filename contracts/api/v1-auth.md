@@ -431,8 +431,10 @@ final mobile client:
   bootstrap context remain Admin/API authority.
 - Profile and sessions logout actions call the API service before clearing
   local session/token state; sessions also exposes logout-all-devices.
-- Edit profile syncs the account name through `PATCH /auth/profile` when a
-  valid access token exists.
+- Edit profile syncs the account name, optional avatar upload, and avatar
+  removal through `PATCH /auth/profile` when a valid access token exists.
+  API responses include `avatar_path` and `avatar_url`; the mobile client keeps
+  a local presentation mirror but treats the API payload as account authority.
 
 Password reset and email verification screens remain local validation
 placeholders until that API behavior is documented and delivered through a
