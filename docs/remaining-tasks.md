@@ -21,6 +21,33 @@ This file tracks active work left after the current implementation pass. It is
 not a substitute for `docs/implementation-status.md`; the status checklist is
 the source of truth for feature state.
 
+## 2026-06-26 API Boundary Recheck
+
+Completed in this pass:
+
+- Root and nested mobile profile logout now call the Admin/API auth logout
+  endpoint before local session cleanup.
+- Root sessions logout and logout-all now call the Admin/API auth endpoints
+  before local session cleanup.
+- Record list, edit, and detail actions now route server-backed
+  create/update/archive/restore/delete and bulk mutations through the records
+  API service before updating server-trusted local mirrors.
+- Notification read, open-as-read, and read-all actions now call the
+  notifications API for server-backed inbox rows before local read-state
+  mutation.
+- Tests cover API requests, bearer-token headers, stray-request prevention for
+  focused suites, and failed API record delete preserving the local cache row.
+
+Still remaining:
+
+- Add dedicated Admin/API contracts and endpoints for record notes, categories,
+  tags, attachment metadata, attachment upload replay, media links, check-ins,
+  scan history, and voice notes.
+- Keep PIN/app-lock, secure storage, cache reset, local exports, local file
+  manager actions, native share/browser/dialog wrappers, and permission probes
+  local because those are device-local responsibilities, not server-trusted
+  SaaS state.
+
 Product Vision is defined in `docs/product-vision.md`. Remaining work should
 protect the vision before adding implementation scope.
 

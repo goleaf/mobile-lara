@@ -8,6 +8,8 @@ use App\Models\MobileLocalRecord;
 use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\RecordRepository;
 use App\Services\MobileLocal\TagRepository;
+use App\Services\MobileRecords\MobileRecordSyncResult;
+use App\Services\MobileRecords\MobileRecordSyncService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -79,11 +81,18 @@ class Records extends Component
 
     private TagRepository $tagRepository;
 
-    public function boot(RecordRepository $records, TagRepository $tagRepository, MobileAccessPolicy $mobileAccessPolicy): void
-    {
+    private MobileRecordSyncService $recordSync;
+
+    public function boot(
+        RecordRepository $records,
+        TagRepository $tagRepository,
+        MobileAccessPolicy $mobileAccessPolicy,
+        MobileRecordSyncService $recordSync,
+    ): void {
         $this->records = $records;
         $this->tagRepository = $tagRepository;
         $this->mobileAccessPolicy = $mobileAccessPolicy;
+        $this->recordSync = $recordSync;
     }
 
     public function mount(int $limit = 30, string $filter = self::FILTER_CURRENT, string $search = ''): void
@@ -144,7 +153,7 @@ class Records extends Component
 
         try {
             $record = $this->records->find($recordId);
-            $this->records->archive($record);
+            $record = $this->records->archive($record);
         } catch (ModelNotFoundException) {
             $this->toastWarning('Record is no longer available on this device.', 'Archive unavailable');
 
@@ -155,7 +164,7 @@ class Records extends Component
             return;
         }
 
-        $this->toastSuccess('Record archived locally.', 'Record archived');
+        $this->toastForSyncResult($this->recordSync->archive($record), 'Record archived locally.', 'Record archived');
     }
 
     public function restoreRecord(int $recordId): void
@@ -166,7 +175,7 @@ class Records extends Component
 
         try {
             $record = $this->records->find($recordId);
-            $this->records->restore($record);
+            $record = $this->records->restore($record);
         } catch (ModelNotFoundException) {
             $this->toastWarning('Record is no longer available on this device.', 'Restore unavailable');
 
@@ -177,7 +186,7 @@ class Records extends Component
             return;
         }
 
-        $this->toastSuccess('Record restored locally.', 'Record restored');
+        $this->toastForSyncResult($this->recordSync->restore($record), 'Record restored locally.', 'Record restored');
     }
 
     public function deleteRecord(int $recordId): void
@@ -188,6 +197,14 @@ class Records extends Component
 
         try {
             $record = $this->records->find($recordId);
+            $syncResult = $this->recordSync->delete($record);
+
+            if ($syncResult->failed()) {
+                $this->toastWarning("API delete needs retry: {$syncResult->message}", 'Delete unavailable');
+
+                return;
+            }
+
             $deleted = $this->records->delete($record);
         } catch (ModelNotFoundException) {
             $this->toastWarning('Record is no longer available on this device.', 'Delete unavailable');
@@ -205,7 +222,7 @@ class Records extends Component
             return;
         }
 
-        $this->toastSuccess('Record deleted locally.', 'Record deleted');
+        $this->toastForSyncResult($syncResult, 'Record deleted locally.', 'Record deleted');
     }
 
     public function selectAllVisible(): void
@@ -245,6 +262,7 @@ class Records extends Component
 
         try {
             $count = $this->records->archiveSelected($selectedIds);
+            $syncSummary = $this->syncSelectedRecords($selectedIds, 'archive');
         } catch (QueryException) {
             $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Archive unavailable');
 
@@ -252,7 +270,7 @@ class Records extends Component
         }
 
         $this->clearSelection();
-        $this->toastSuccess("Archived {$count} selected records locally.", 'Records archived');
+        $this->toastForBulkSync($syncSummary, "Archived {$count} selected records locally.", 'Records archived');
     }
 
     public function deleteSelected(): void
@@ -270,7 +288,9 @@ class Records extends Component
         }
 
         try {
-            $count = $this->records->deleteSelected($selectedIds);
+            $syncSummary = $this->syncSelectedRecords($selectedIds, 'delete');
+            $deletableIds = $this->idsWithoutApiFailures($selectedIds, $syncSummary['failed_ids']);
+            $count = $this->records->deleteSelected($deletableIds);
         } catch (QueryException) {
             $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Delete unavailable');
 
@@ -278,7 +298,7 @@ class Records extends Component
         }
 
         $this->clearSelection();
-        $this->toastSuccess("Deleted {$count} selected records locally.", 'Records deleted');
+        $this->toastForBulkSync($syncSummary, "Deleted {$count} selected records locally.", 'Records deleted');
     }
 
     public function changeSelectedStatus(): void
@@ -301,6 +321,7 @@ class Records extends Component
 
         try {
             $count = $this->records->changeSelectedStatus($selectedIds, $this->bulkStatus);
+            $syncSummary = $this->syncSelectedRecords($selectedIds, 'save');
         } catch (QueryException) {
             $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Status unchanged');
 
@@ -309,7 +330,7 @@ class Records extends Component
 
         $label = $this->records->statusOptions()[$this->bulkStatus] ?? 'selected status';
         $this->clearSelection();
-        $this->toastSuccess("Changed {$count} selected records to {$label}.", 'Status changed');
+        $this->toastForBulkSync($syncSummary, "Changed {$count} selected records to {$label}.", 'Status changed');
     }
 
     public function changeSelectedCategory(): void
@@ -333,6 +354,7 @@ class Records extends Component
         try {
             $categoryId = $this->bulkCategoryId === '' ? null : (int) $this->bulkCategoryId;
             $count = $this->records->changeSelectedCategory($selectedIds, $categoryId);
+            $syncSummary = $this->syncSelectedRecords($selectedIds, 'save');
         } catch (QueryException) {
             $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Category unchanged');
 
@@ -340,7 +362,7 @@ class Records extends Component
         }
 
         $this->clearSelection();
-        $this->toastSuccess("Changed category on {$count} selected records.", 'Category changed');
+        $this->toastForBulkSync($syncSummary, "Changed category on {$count} selected records.", 'Category changed');
     }
 
     public function render(): View
@@ -416,6 +438,109 @@ class Records extends Component
             ['label' => 'Archived', 'value' => $stats['archived'], 'description' => 'Recoverable'],
             ['label' => 'Done', 'value' => $stats['done'], 'description' => 'Completed'],
         ];
+    }
+
+    private function toastForSyncResult(MobileRecordSyncResult $syncResult, string $fallbackMessage, string $fallbackTitle): void
+    {
+        if ($syncResult->synced) {
+            $this->toastSuccess('Record action synced with Admin/API and cached locally.', 'Record synced');
+
+            return;
+        }
+
+        if ($syncResult->failed()) {
+            $this->toastWarning("Saved locally. API sync needs retry: {$syncResult->message}", 'Record saved locally');
+
+            return;
+        }
+
+        $this->toastWarning($fallbackMessage.' API sync is pending.', $fallbackTitle);
+    }
+
+    /**
+     * @param  list<int>  $selectedIds
+     * @return array{synced: int, pending: int, failed: int, failed_ids: list<int>}
+     */
+    private function syncSelectedRecords(array $selectedIds, string $operation): array
+    {
+        $summary = [
+            'synced' => 0,
+            'pending' => 0,
+            'failed' => 0,
+            'failed_ids' => [],
+        ];
+
+        foreach ($selectedIds as $recordId) {
+            try {
+                $record = $this->records->find($recordId);
+            } catch (ModelNotFoundException|QueryException) {
+                $summary['pending']++;
+
+                continue;
+            }
+
+            $result = match ($operation) {
+                'archive' => $this->recordSync->archive($record),
+                'delete' => $this->recordSync->delete($record),
+                default => $this->recordSync->save($record),
+            };
+
+            if ($result->synced) {
+                $summary['synced']++;
+            } elseif ($result->failed()) {
+                $summary['failed']++;
+                $summary['failed_ids'][] = (int) $recordId;
+            } else {
+                $summary['pending']++;
+            }
+        }
+
+        return $summary;
+    }
+
+    /**
+     * @param  array{synced: int, pending: int, failed: int, failed_ids: list<int>}  $summary
+     */
+    private function toastForBulkSync(array $summary, string $fallbackMessage, string $fallbackTitle): void
+    {
+        if ($summary['failed'] > 0) {
+            $this->toastWarning(
+                "{$fallbackMessage} {$summary['synced']} API request(s) synced, {$summary['failed']} need retry.",
+                $fallbackTitle,
+            );
+
+            return;
+        }
+
+        if ($summary['pending'] > 0) {
+            $this->toastWarning(
+                "{$fallbackMessage} {$summary['synced']} API request(s) synced, {$summary['pending']} pending.",
+                $fallbackTitle,
+            );
+
+            return;
+        }
+
+        $this->toastSuccess("{$fallbackMessage} Synced {$summary['synced']} API request(s).", $fallbackTitle);
+    }
+
+    /**
+     * @param  list<int>  $selectedIds
+     * @param  list<int>  $failedIds
+     * @return list<int>
+     */
+    private function idsWithoutApiFailures(array $selectedIds, array $failedIds): array
+    {
+        if ($failedIds === []) {
+            return $selectedIds;
+        }
+
+        $failedLookup = array_fill_keys($failedIds, true);
+
+        return collect($selectedIds)
+            ->reject(fn (int $recordId): bool => isset($failedLookup[$recordId]))
+            ->values()
+            ->all();
     }
 
     private function statusFilter(): ?string

@@ -359,6 +359,21 @@ class MobileLocalRecord extends Model
         return $metadata[$key] ?? $default;
     }
 
+    public function serverRecordId(): ?string
+    {
+        $serverRecord = $this->metadataValue('server_record', []);
+
+        if (! is_array($serverRecord)) {
+            return null;
+        }
+
+        $serverRecordId = $serverRecord['id'] ?? null;
+
+        return is_string($serverRecordId) && trim($serverRecordId) !== ''
+            ? trim($serverRecordId)
+            : null;
+    }
+
     /**
      * @return array<string, mixed>
      */

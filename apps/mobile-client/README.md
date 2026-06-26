@@ -494,6 +494,17 @@ Implemented foundation:
 - Edit profile syncs the account name, optional avatar upload, and avatar
   removal through `PATCH /auth/profile` when a valid access token exists; local
   avatar files are presentation mirrors of the API-authoritative account state.
+- Record create, edit, list-row, detail, and bulk actions now call the
+  records API service for server-backed create/update/archive/restore/delete
+  mutations before changing local cache rows. A failed API delete keeps the
+  server-backed local row in place and shows a blocked delete state.
+- Notification inbox read, open-as-read, and read-all actions now call the
+  notifications API for server-backed rows before updating local read/open
+  cache state.
+- Device-local actions remain intentionally local: PIN/app-lock state, secure
+  storage, local cache reset, local file import/export/delete, native
+  permission probes, native share/browser/dialog wrappers, diagnostics export,
+  and offline drafts/queues until their replay endpoint accepts them.
 - `App\Services\MobileBootstrap\MobileBootstrapService` calls
   `GET /bootstrap` with the stored access token and caches the response in the
   mobile-local settings row.

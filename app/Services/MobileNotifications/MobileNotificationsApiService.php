@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\MobileRecords;
+namespace App\Services\MobileNotifications;
 
 use App\Services\MobileApi\MobileApiClient;
 use App\Services\MobileApi\MobileApiException;
 use App\Services\MobileAuth\AccessTokenService;
 
-final class MobileRecordApiService
+final class MobileNotificationsApiService
 {
     public function __construct(
         private readonly MobileApiClient $api,
@@ -19,49 +19,48 @@ final class MobileRecordApiService
      */
     public function list(array $query = []): array
     {
-        return $this->api->get('/records', $query, $this->accessToken());
+        return $this->data($this->api->get('/notifications', $query, $this->accessToken()));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function markRead(string $notificationId): array
+    {
+        return $this->data($this->api->patch("/notifications/{$notificationId}/read", accessToken: $this->accessToken()));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function markAllRead(): array
+    {
+        return $this->data($this->api->patch('/notifications/read-all', accessToken: $this->accessToken()));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function delete(string $notificationId): array
+    {
+        return $this->data($this->api->delete("/notifications/{$notificationId}", accessToken: $this->accessToken()));
     }
 
     /**
      * @param  array<string, mixed>  $payload
      * @return array<string, mixed>
      */
-    public function create(array $payload): array
+    public function registerPushToken(array $payload): array
     {
-        return $this->recordFromEnvelope($this->api->post('/records', $payload, $this->accessToken()));
-    }
-
-    /**
-     * @param  array<string, mixed>  $payload
-     * @return array<string, mixed>
-     */
-    public function update(string $recordId, array $payload): array
-    {
-        return $this->recordFromEnvelope($this->api->patch("/records/{$recordId}", $payload, $this->accessToken()));
+        return $this->data($this->api->post('/notifications/push-tokens', $payload, $this->accessToken()));
     }
 
     /**
      * @return array<string, mixed>
      */
-    public function archive(string $recordId): array
+    public function revokePushToken(string $pushTokenId): array
     {
-        return $this->recordFromEnvelope($this->api->delete("/records/{$recordId}", accessToken: $this->accessToken()));
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function delete(string $recordId): array
-    {
-        return $this->archive($recordId);
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function restore(string $recordId): array
-    {
-        return $this->recordFromEnvelope($this->api->post("/records/{$recordId}/restore", accessToken: $this->accessToken()));
+        return $this->data($this->api->delete("/notifications/push-tokens/{$pushTokenId}", accessToken: $this->accessToken()));
     }
 
     private function accessToken(): string
@@ -79,14 +78,14 @@ final class MobileRecordApiService
      * @param  array<string, mixed>  $envelope
      * @return array<string, mixed>
      */
-    private function recordFromEnvelope(array $envelope): array
+    private function data(array $envelope): array
     {
-        $record = $envelope['data']['record'] ?? null;
+        $data = $envelope['data'] ?? null;
 
-        if (! is_array($record)) {
+        if (! is_array($data)) {
             throw MobileApiException::malformedResponse($envelope);
         }
 
-        return $record;
+        return $data;
     }
 }

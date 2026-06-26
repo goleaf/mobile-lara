@@ -2,13 +2,18 @@
 
 use App\Livewire\Mobile\Notifications;
 use App\Models\MobileLocalNotification;
+use App\Services\MobileAuth\AccessTokenService;
 use App\Services\MobileLocal\MobileLocalDatabase;
 use Carbon\CarbonImmutable;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 
 beforeEach(function (): void {
+    $this->startSession();
+
     CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-06-25 12:00:00'));
 
     $this->mobileLocalDatabasePath = storage_path('framework/testing/mobile-notifications-inbox.sqlite');
@@ -21,6 +26,10 @@ beforeEach(function (): void {
 
     config([
         'database.connections.mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_auth.api.base_url' => 'https://api-admin.example.test/api/v1/mobile',
+        'mobile_auth.storage.driver' => 'session',
+        'mobile_auth.storage.session_key' => 'testing.mobile_notifications_inbox.tokens',
+        'mobile_auth.storage.revoked_session_key' => 'testing.mobile_notifications_inbox.revoked_tokens',
         'mobile_local.database' => $this->mobileLocalDatabasePath,
         'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
     ]);
@@ -126,9 +135,55 @@ test('notification inbox marks one or all notifications as read and opened', fun
         ->and(MobileLocalNotification::query()->whereNull('read_at')->count())->toBe(0);
 });
 
+test('notification inbox syncs server backed read actions through api before local mutation', function (): void {
+    app(AccessTokenService::class)->put('notifications-inbox-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/notifications/notification-001/read' => Http::response(mobileNotificationsInboxApiEnvelope([
+            'notification' => ['id' => 'notification-001', 'read_at' => '2026-06-25T12:00:00+00:00'],
+        ])),
+        'https://api-admin.example.test/api/v1/mobile/notifications/read-all' => Http::response(mobileNotificationsInboxApiEnvelope([
+            'marked_count' => 1,
+            'unread_count' => 0,
+        ])),
+    ]);
+
+    $notification = MobileLocalNotification::factory()->warning()->create([
+        'title' => 'Server notification',
+        'data' => ['server_notification_id' => 'notification-001'],
+    ]);
+
+    Livewire::test(Notifications::class)
+        ->call('markAsRead', $notification->id)
+        ->assertDispatched('mobile-toast')
+        ->call('markAllAsRead')
+        ->assertDispatched('mobile-toast');
+
+    expect($notification->refresh()->read_at)->not->toBeNull();
+
+    Http::assertSent(fn (Request $request): bool => $request->method() === 'PATCH'
+        && $request->url() === 'https://api-admin.example.test/api/v1/mobile/notifications/notification-001/read'
+        && $request->hasHeader('Authorization', 'Bearer notifications-inbox-token'));
+    Http::assertSent(fn (Request $request): bool => $request->method() === 'PATCH'
+        && $request->url() === 'https://api-admin.example.test/api/v1/mobile/notifications/read-all');
+});
+
 test('notification inbox renders empty state without local rows', function (): void {
     Livewire::test(Notifications::class)
         ->assertSee('No notifications')
         ->assertSee('0 unread')
         ->assertSee('0 shown');
 });
+
+/**
+ * @param  array<string, mixed>  $data
+ * @return array<string, mixed>
+ */
+function mobileNotificationsInboxApiEnvelope(array $data): array
+{
+    return [
+        'success' => true,
+        'data' => $data,
+        'meta' => ['api_version' => 'v1'],
+    ];
+}

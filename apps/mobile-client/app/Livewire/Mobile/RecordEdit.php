@@ -155,6 +155,14 @@ class RecordEdit extends Component
         }
 
         try {
+            $syncResult = $this->recordSync->delete($this->record);
+
+            if ($syncResult->failed()) {
+                $this->toastWarning("API delete needs retry: {$syncResult->message}", 'Record not deleted');
+
+                return;
+            }
+
             $deleted = $this->records->delete($this->record);
         } catch (QueryException) {
             $this->storageError = 'Record storage is unavailable. Run the local mobile migrations first.';
@@ -169,7 +177,12 @@ class RecordEdit extends Component
             return;
         }
 
-        $this->toastSuccess('Record deleted from local storage.', 'Record deleted');
+        if ($syncResult->synced) {
+            $this->toastSuccess('Record deleted through Admin/API and removed from this device.', 'Record deleted');
+        } else {
+            $this->toastWarning('Record removed from this device. API delete is pending for this local-only record.', 'Record deleted locally');
+        }
+
         $this->redirectRoute('mobile.records.index', navigate: true);
     }
 

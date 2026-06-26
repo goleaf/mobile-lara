@@ -5,6 +5,8 @@ namespace App\Livewire\Mobile;
 use App\Livewire\Concerns\DispatchesToasts;
 use App\Models\MobileLocalRecord;
 use App\Services\MobileLocal\RecordRepository;
+use App\Services\MobileRecords\MobileRecordSyncResult;
+use App\Services\MobileRecords\MobileRecordSyncService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
@@ -47,9 +49,12 @@ class RecordEdit extends Component
 
     private RecordRepository $records;
 
-    public function boot(RecordRepository $records): void
+    private MobileRecordSyncService $recordSync;
+
+    public function boot(RecordRepository $records, MobileRecordSyncService $recordSync): void
     {
         $this->records = $records;
+        $this->recordSync = $recordSync;
     }
 
     public function mount(MobileLocalRecord $record): void
@@ -105,7 +110,7 @@ class RecordEdit extends Component
             return;
         }
 
-        $this->toastSuccess('Record archived locally.', 'Record archived');
+        $this->toastForSyncResult($this->recordSync->archive($this->record), 'Record archived locally.', 'Record archived');
     }
 
     public function restoreRecord(): void
@@ -119,12 +124,20 @@ class RecordEdit extends Component
             return;
         }
 
-        $this->toastSuccess('Record restored locally.', 'Record restored');
+        $this->toastForSyncResult($this->recordSync->restore($this->record), 'Record restored locally.', 'Record restored');
     }
 
     public function deleteRecord(): void
     {
         try {
+            $syncResult = $this->recordSync->delete($this->record);
+
+            if ($syncResult->failed()) {
+                $this->toastWarning("API delete needs retry: {$syncResult->message}", 'Record not deleted');
+
+                return;
+            }
+
             $deleted = $this->records->delete($this->record);
         } catch (QueryException) {
             $this->storageError = 'Record storage is unavailable. Run the local mobile migrations first.';
@@ -139,7 +152,12 @@ class RecordEdit extends Component
             return;
         }
 
-        $this->toastSuccess('Record deleted from local storage.', 'Record deleted');
+        if ($syncResult->synced) {
+            $this->toastSuccess('Record deleted through Admin/API and removed from this device.', 'Record deleted');
+        } else {
+            $this->toastWarning('Record removed from this device. API delete is pending for this local-only record.', 'Record deleted locally');
+        }
+
         $this->redirectRoute('mobile.records.index', navigate: true);
     }
 
@@ -213,8 +231,31 @@ class RecordEdit extends Component
             return;
         }
 
-        $this->toastSuccess($successMessage, $successTitle);
+        $syncResult = $submitMode === 'draft' ? null : $this->recordSync->save($this->record);
+        $this->record = $syncResult?->record ?? $this->record;
+
+        $this->toastForSyncResult($syncResult, $successMessage, $successTitle);
         $this->redirectRoute('mobile.records.show', ['record' => $this->record], navigate: true);
+    }
+
+    private function toastForSyncResult(
+        ?MobileRecordSyncResult $syncResult,
+        string $fallbackMessage,
+        string $fallbackTitle,
+    ): void {
+        if ($syncResult?->synced) {
+            $this->toastSuccess('Record synced with Admin/API and cached locally.', 'Record synced');
+
+            return;
+        }
+
+        if ($syncResult?->failed()) {
+            $this->toastWarning("Saved locally. API sync needs retry: {$syncResult->message}", 'Record saved locally');
+
+            return;
+        }
+
+        $this->toastSuccess($fallbackMessage, $fallbackTitle);
     }
 
     /**

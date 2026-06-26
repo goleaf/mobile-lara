@@ -78,7 +78,7 @@ final class LocalNotificationRepository
     {
         $this->mobileLocalDatabase->ensureFileExists();
 
-        $notification = $this->findForInbox($notificationId);
+        $notification = $this->find($notificationId);
 
         if ($notification === null) {
             return null;
@@ -97,7 +97,7 @@ final class LocalNotificationRepository
     {
         $this->mobileLocalDatabase->ensureFileExists();
 
-        $notification = $this->findForInbox($notificationId);
+        $notification = $this->find($notificationId);
 
         if ($notification === null) {
             return null;
@@ -129,12 +129,28 @@ final class LocalNotificationRepository
         return $count;
     }
 
-    private function findForInbox(int|string $notificationId): ?MobileLocalNotification
+    public function find(int|string $notificationId): ?MobileLocalNotification
     {
         return MobileLocalNotification::query()
             ->select(MobileLocalNotification::SELECT_COLUMNS)
             ->whereKey($notificationId)
             ->first();
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function serverIdsForFilter(?string $type = null, ?string $state = null, ?string $search = null, int $limit = 100): array
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+
+        return $this->filteredQuery($type, $state, $search)
+            ->limit($this->boundedLimit($limit))
+            ->get()
+            ->map(fn (MobileLocalNotification $notification): ?string => $notification->serverNotificationId())
+            ->filter(fn (?string $notificationId): bool => is_string($notificationId) && $notificationId !== '')
+            ->values()
+            ->all();
     }
 
     private function filteredQuery(?string $type, ?string $state, ?string $search): Builder

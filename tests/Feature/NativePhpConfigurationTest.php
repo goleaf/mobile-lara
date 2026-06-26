@@ -37,6 +37,9 @@ test('nativephp mobile is configured for this app', function () {
         ->and(file_exists(base_path(config('nativephp.icons.source'))))->toBeTrue()
         ->and(getimagesize(base_path(config('nativephp.icons.source'))))->toMatchArray([1024, 1024])
         ->and(config('nativephp.runtime.mode'))->toBe('persistent')
+        ->and(config('nativephp.android.compile_sdk'))->toBe(36)
+        ->and(config('nativephp.android.min_sdk'))->toBe(29)
+        ->and(config('nativephp.android.target_sdk'))->toBe(36)
         ->and(config('nativephp.android.theme.color_primary'))->toBe('#04ABA6')
         ->and(config('nativephp.permissions'))->toHaveKeys([
             'NSCameraUsageDescription',

@@ -18,9 +18,10 @@ and future module expansion principles.
 Updated: 2026-06-26
 
 Status: partially implemented. API/admin endpoints, mobile local-to-API
-create/update/archive/restore attempts, and records-only sync
-pull/push/acknowledgement/conflict responses are implemented. Standalone
-subresource, upload/storage, and admin-management endpoints remain pending.
+create/update/archive/restore/delete attempts, record detail/list/bulk mutation
+calls, and records-only sync pull/push/acknowledgement/conflict responses are
+implemented. Standalone notes/category/tag/attachment subresource,
+upload/storage replay, and admin-management endpoints remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 lets mobile users do tenant-scoped work while Admin/API remains the source of

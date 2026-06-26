@@ -14,19 +14,24 @@ use App\Models\MobileLocalMediaItem;
 use App\Models\MobileLocalRecord;
 use App\Models\MobileLocalTag;
 use App\Models\User;
+use App\Services\MobileAuth\AccessTokenService;
 use App\Services\MobileLocal\ActivityLogRepository;
 use App\Services\MobileLocal\MediaItemRepository;
 use App\Services\MobileLocal\MobileLocalDatabase;
 use App\Services\MobileLocal\RecordRepository;
 use Carbon\CarbonImmutable;
+use Illuminate\Http\Client\Request;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 
 uses(LazilyRefreshDatabase::class);
 
 beforeEach(function (): void {
+    $this->startSession();
+
     CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-06-25 12:00:00'));
 
     $this->mobileLocalDatabasePath = storage_path('framework/testing/mobile-records.sqlite');
@@ -39,6 +44,10 @@ beforeEach(function (): void {
 
     config([
         'database.connections.mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_auth.api.base_url' => 'https://api-admin.example.test/api/v1/mobile',
+        'mobile_auth.storage.driver' => 'session',
+        'mobile_auth.storage.session_key' => 'testing.mobile_records.tokens',
+        'mobile_auth.storage.revoked_session_key' => 'testing.mobile_records.revoked_tokens',
         'mobile_local.database' => $this->mobileLocalDatabasePath,
         'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
     ]);
@@ -50,6 +59,8 @@ beforeEach(function (): void {
         '--path' => 'database/migrations/mobile-local',
         '--force' => true,
     ]);
+
+    Http::preventStrayRequests();
 });
 
 afterEach(function (): void {
@@ -172,6 +183,74 @@ test('records screen renders list filters and local row actions', function (): v
         ->assertDontSee('Current customer record');
 
     expect($active->fresh()?->trashed())->toBeTrue();
+});
+
+test('records screen delete action sends api request before removing local cache', function (): void {
+    app(AccessTokenService::class)->put('records-ui-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/records/srv-delete-001' => Http::response(mobileRecordsApiEnvelope('srv-delete-001')),
+    ]);
+
+    $record = MobileLocalRecord::factory()->active()->create([
+        'title' => 'Server backed delete record',
+        'metadata' => [
+            'server_record' => [
+                'id' => 'srv-delete-001',
+                'tenant_id' => 'tenant-001',
+                'sync_version' => 'sync-v1',
+            ],
+        ],
+    ]);
+
+    Livewire::test(Records::class)
+        ->call('deleteRecord', $record->id)
+        ->assertDispatched('mobile-toast');
+
+    expect($record->fresh()?->trashed())->toBeTrue();
+
+    Http::assertSent(fn (Request $request): bool => $request->method() === 'DELETE'
+        && $request->url() === 'https://api-admin.example.test/api/v1/mobile/records/srv-delete-001'
+        && $request->hasHeader('Authorization', 'Bearer records-ui-token'));
+});
+
+test('records screen bulk status action syncs each selected server record through api', function (): void {
+    app(AccessTokenService::class)->put('records-ui-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/records/srv-bulk-*' => Http::response(mobileRecordsApiEnvelope('srv-bulk-response')),
+    ]);
+
+    $first = MobileLocalRecord::factory()->active()->create([
+        'title' => 'Server backed first bulk record',
+        'metadata' => [
+            'server_record' => ['id' => 'srv-bulk-001', 'tenant_id' => 'tenant-001', 'sync_version' => 'sync-v1'],
+        ],
+    ]);
+    $second = MobileLocalRecord::factory()->active()->create([
+        'title' => 'Server backed second bulk record',
+        'metadata' => [
+            'server_record' => ['id' => 'srv-bulk-002', 'tenant_id' => 'tenant-001', 'sync_version' => 'sync-v1'],
+        ],
+    ]);
+
+    Livewire::test(Records::class)
+        ->set('selectedRecordIds', [$first->id, $second->id])
+        ->set('bulkStatus', MobileLocalRecord::STATUS_REVIEW)
+        ->call('changeSelectedStatus')
+        ->assertHasNoErrors()
+        ->assertSet('selectedRecordIds', []);
+
+    expect($first->fresh()?->status)->toBe(MobileLocalRecord::STATUS_REVIEW)
+        ->and($second->fresh()?->status)->toBe(MobileLocalRecord::STATUS_REVIEW);
+
+    Http::assertSent(fn (Request $request): bool => $request->method() === 'PATCH'
+        && $request->url() === 'https://api-admin.example.test/api/v1/mobile/records/srv-bulk-001'
+        && $request['status'] === MobileLocalRecord::STATUS_REVIEW
+        && $request->hasHeader('Authorization', 'Bearer records-ui-token'));
+    Http::assertSent(fn (Request $request): bool => $request->method() === 'PATCH'
+        && $request->url() === 'https://api-admin.example.test/api/v1/mobile/records/srv-bulk-002'
+        && $request['status'] === MobileLocalRecord::STATUS_REVIEW);
 });
 
 test('records screen filters by selected tag picker slugs', function (): void {
@@ -566,6 +645,13 @@ test('edit record screen can save drafts archive restore and delete with confirm
 });
 
 test('record detail renders actions and can archive restore and delete', function (): void {
+    app(AccessTokenService::class)->put('records-detail-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/records/srv-detail-001' => Http::response(mobileRecordsApiEnvelope('srv-detail-001')),
+        'https://api-admin.example.test/api/v1/mobile/records/srv-detail-001/restore' => Http::response(mobileRecordsApiEnvelope('srv-detail-001')),
+    ]);
+
     $record = MobileLocalRecord::factory()->active()->create([
         'title' => 'Detail record',
         'description' => 'Detail description',
@@ -574,6 +660,11 @@ test('record detail renders actions and can archive restore and delete', functio
             'tags' => ['detail'],
             'notes' => 'Detail notes',
             'source' => 'field app',
+            'server_record' => [
+                'id' => 'srv-detail-001',
+                'tenant_id' => 'tenant-001',
+                'sync_version' => 'sync-v1',
+            ],
         ],
     ]);
 
@@ -641,6 +732,46 @@ test('record detail renders actions and can archive restore and delete', functio
         ->assertRedirect(route('mobile.records.index'));
 
     expect($record->fresh()?->trashed())->toBeTrue();
+
+    Http::assertSent(fn (Request $request): bool => $request->method() === 'DELETE'
+        && $request->url() === 'https://api-admin.example.test/api/v1/mobile/records/srv-detail-001'
+        && $request->hasHeader('Authorization', 'Bearer records-detail-token'));
+    Http::assertSent(fn (Request $request): bool => $request->method() === 'POST'
+        && $request->url() === 'https://api-admin.example.test/api/v1/mobile/records/srv-detail-001/restore'
+        && $request->hasHeader('Authorization', 'Bearer records-detail-token'));
+});
+
+test('record detail keeps local cache when api delete fails', function (): void {
+    app(AccessTokenService::class)->put('records-detail-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/records/srv-detail-fail' => Http::response(mobileRecordsApiFailureEnvelope(), 503),
+    ]);
+
+    $record = MobileLocalRecord::factory()->active()->create([
+        'title' => 'Server delete failure detail record',
+        'metadata' => [
+            'server_record' => [
+                'id' => 'srv-detail-fail',
+                'tenant_id' => 'tenant-001',
+                'sync_version' => 'sync-v1',
+            ],
+        ],
+    ]);
+
+    Livewire::test(RecordDetail::class, ['record' => $record])
+        ->call('deleteRecord')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Delete blocked';
+        });
+
+    expect($record->fresh()?->trashed())->toBeFalse();
+
+    Http::assertSent(fn (Request $request): bool => $request->method() === 'DELETE'
+        && $request->url() === 'https://api-admin.example.test/api/v1/mobile/records/srv-detail-fail'
+        && $request->hasHeader('Authorization', 'Bearer records-detail-token'));
 });
 
 test('record routes render detail and edit pages for authenticated users', function (): void {
@@ -661,3 +792,59 @@ test('record routes render detail and edit pages for authenticated users', funct
         ->assertSeeLivewire(RecordEdit::class)
         ->assertSee('Edit record');
 });
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileRecordsApiEnvelope(string $recordId): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'record' => [
+                'id' => $recordId,
+                'tenant_id' => 'tenant-001',
+                'title' => 'Server record',
+                'status' => 'active',
+                'priority' => 'normal',
+                'category' => ['id' => 'cat-001', 'name' => 'Field'],
+                'tags' => [],
+                'notes_count' => 0,
+                'attachments_count' => 0,
+                'activities_count' => 1,
+                'sync_version' => 'server-version-1',
+                'updated_at' => '2026-06-25T12:00:00+00:00',
+                'created_at' => '2026-06-25T12:00:00+00:00',
+                'actions' => [
+                    'view' => true,
+                    'update' => true,
+                    'archive' => true,
+                    'restore' => true,
+                    'delete' => false,
+                    'attachments_manage' => true,
+                ],
+            ],
+        ],
+        'meta' => ['api_version' => 'v1'],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileRecordsApiFailureEnvelope(): array
+{
+    return [
+        'success' => false,
+        'error' => [
+            'code' => 'record_delete_unavailable',
+            'message' => 'The record could not be deleted by the API.',
+            'category' => 'server_error',
+            'next_action' => 'retry',
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}

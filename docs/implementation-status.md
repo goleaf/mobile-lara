@@ -807,6 +807,7 @@ Status values:
 | Architecture docs | documented | Need updates after monorepo/control-plane implementation. |
 | Local development docs | partial | Commands exist in README/docs; per-app docs missing. |
 | API contracts | tested | `contracts/api` exists with all required v1 contract files and catalogue coverage. |
+| Mobile API boundary recheck | tested | 2026-06-26 pass verified root and nested mobile business actions that have API contracts: auth login/register/logout/logout-all, profile update/avatar sync, records list/edit/detail/bulk mutations, notifications read/read-all/open state, workspace tenant switching, billing subscription, support tickets/messages, bootstrap, diagnostics upload, and records sync all route through API services before changing server-trusted local mirrors. Device-local actions remain local only when they are explicitly cache, draft, secure-storage, PIN/app-lock, export/share, native permission, local-file, or offline-queue behavior. |
 | Admin panel docs | documented | Principles only; implementation docs missing. |
 | Mobile client docs | documented | Principles plus audit exist. |
 | NativePHP docs | documented | Runbook exists. |
@@ -830,13 +831,17 @@ Status values:
 | Mobile frontend build | tested | `npm run build` passes in `apps/mobile-client`. |
 | Mobile navigation verification | tested | `php artisan route:list --name=mobile` confirms 59 named `mobile.*` routes and route tests cover authenticated/guest rendering plus the support ticket and billing routes. Browser/native manual verification remains future. |
 | NativePHP fallback verification | tested | `php artisan native:plugin:validate --no-interaction` exits successfully with two non-fatal third-party manifest warnings; simulator/emulator release verification remains external-tooling dependent. |
-| Offline/sync verification | partial | Local worker tests, server records-only sync endpoint tests, mobile dedicated sync API service tests, and admin sync monitor tests exist. Full worker-to-dedicated-sync integration remains pending. |
+| Offline/sync verification | partial | Local worker tests, server records-only sync endpoint tests, mobile dedicated sync API service tests, admin sync monitor tests, and record/notification API-boundary Livewire tests exist. Full worker-to-dedicated-sync integration and subresource upload replay remain pending. |
 | Root monorepo scripts | not started | Scripts missing. |
 | Final git status | not started | Must be clean after commits. |
 
 ## Highest-Priority Implementation Order
 
-1. Continue migrating lower-level mobile actions and NativePHP service calls
+1. Add dedicated API contracts/endpoints for remaining record subresources that
+   are still local pending work: notes, categories, tags, attachment metadata,
+   attachment binary upload replay, media links, check-ins, scan history, and
+   voice notes.
+2. Continue migrating lower-level mobile actions and NativePHP service calls
    behind `MobileAccessPolicy`, especially remaining offline queue writes and
    lower-level service calls.
 
@@ -847,6 +852,6 @@ Status values:
 | Root transition app still exists | partial | Login/register are now rewired to the Admin/API auth contract, but the root app should still be removed or folded into `apps/mobile-client` after the final monorepo boundary is stable. |
 | Admin/API domain modules do not exist yet | partial | Build auth, tenancy, policy, feature, config, version, and audit foundations before business modules. |
 | API contracts are documented but most endpoints are planned | partial | Implement endpoints in phase order and keep each contract updated before code changes. |
-| Mobile features are mostly local-only | partial | Route all server-trusted behavior through API contracts as they land. |
+| Mobile subresources still need dedicated API contracts | partial | Core auth/profile/records/notifications/support/billing/bootstrap/sync paths are API-backed. Record notes, local categories/tags, attachment replay, scan history, check-ins, voice notes, and media links still need dedicated API endpoints before they can become server-trusted. Until then they must remain clearly local pending/cache behavior. |
 | Native build tooling incomplete | partial | Keep NativePHP service fallbacks tested; treat simulator/emulator release verification as external blocker until tooling is installed. |
 | Full completion scope is very large | partial | Continue in small commits by phase; keep this checklist authoritative. |

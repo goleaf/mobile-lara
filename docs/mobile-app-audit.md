@@ -63,6 +63,31 @@ The mobile responsibility standard is [Mobile Client Responsibilities](mobile-cl
 
 The mobile UX standard is [Mobile UX Principles](mobile-ux-principles.md). Audits should verify mobile-first navigation, simple screens, clear loading/offline states, thumb-friendly controls, minimum typing, fast actions, admin-rule-based feature visibility, secure session behavior, and native permission education.
 
+## 2026-06-26 API Boundary Recheck
+
+Root `mobile-lara.test` and `apps/mobile-client` were rechecked for
+user-visible business actions that could mutate server-trusted local mirrors.
+The following contracted paths are API-backed and covered by focused tests:
+
+- Authentication and session actions: login, register, profile logout,
+  sessions logout, and sessions logout-all.
+- Profile update and avatar sync through `PATCH /auth/profile`.
+- Records create, update, archive, restore, delete, detail delete, and bulk
+  list mutations through the records API/sync service when a server record id
+  exists.
+- Notification read, open-as-read, and read-all state through the notifications
+  API when a local inbox row is server-backed.
+- Bootstrap, tenant switch, billing subscription, support tickets/messages,
+  diagnostics upload, and records-only sync services.
+
+The remaining local-only surfaces are not server truth yet: PIN/app-lock,
+secure storage, local cache reset, local file manager actions, diagnostics
+export/share, native permission probes, native share/browser/dialog wrappers,
+offline drafts, record notes, local categories/tags, attachment metadata and
+binary replay, media links, check-ins, scan history, and voice notes. These
+must stay labeled as local, draft, queued, pending, failed, or cache state
+until a dedicated API endpoint accepts them.
+
 Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
 shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
 switching, sync-in-progress, permission-blocked, and feature-disabled behavior

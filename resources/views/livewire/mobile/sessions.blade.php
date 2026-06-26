@@ -9,7 +9,7 @@
         back-href="{{ route('mobile.settings') }}"
     />
 
-    <x-mobile.loading-state target="logout, retryRemoteSessions" message="Updating sessions..." />
+    <x-mobile.loading-state target="logout, logoutAllDevices, retryRemoteSessions" message="Updating sessions..." />
 
     <x-mobile.card title="Current device session" description="Local session details for this app install.">
         <div class="grid gap-4">
@@ -54,11 +54,19 @@
         </div>
 
         <x-slot:footer>
-            <form wire:submit="logout">
-                <x-mobile.submit-button variant="danger" target="logout" loading-label="Logging out...">
-                    Logout
-                </x-mobile.submit-button>
-            </form>
+            <div class="grid gap-3">
+                <form wire:submit="logout">
+                    <x-mobile.submit-button variant="danger" target="logout" loading-label="Logging out...">
+                        Logout
+                    </x-mobile.submit-button>
+                </form>
+
+                <form wire:submit="logoutAllDevices">
+                    <x-mobile.submit-button variant="secondary" target="logoutAllDevices" loading-label="Logging out all devices...">
+                        Logout all devices
+                    </x-mobile.submit-button>
+                </form>
+            </div>
         </x-slot:footer>
     </x-mobile.card>
 

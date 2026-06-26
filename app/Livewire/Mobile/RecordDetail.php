@@ -7,6 +7,8 @@ use App\Models\MobileLocalMediaItem;
 use App\Models\MobileLocalRecord;
 use App\Services\MobileLocal\MediaItemRepository;
 use App\Services\MobileLocal\RecordRepository;
+use App\Services\MobileRecords\MobileRecordSyncResult;
+use App\Services\MobileRecords\MobileRecordSyncService;
 use App\Services\Native\ShareService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,14 +30,18 @@ class RecordDetail extends Component
 
     private ShareService $shares;
 
+    private MobileRecordSyncService $recordSync;
+
     public function boot(
         RecordRepository $records,
         MediaItemRepository $mediaItems,
         ShareService $shares,
+        MobileRecordSyncService $recordSync,
     ): void {
         $this->records = $records;
         $this->mediaItems = $mediaItems;
         $this->shares = $shares;
+        $this->recordSync = $recordSync;
     }
 
     public function mount(MobileLocalRecord $record): void
@@ -53,7 +59,10 @@ class RecordDetail extends Component
             return;
         }
 
-        $this->toastSuccess('Record archived locally.', 'Record archived');
+        $syncResult = $this->recordSync->archive($this->record);
+        $this->record = $syncResult->record;
+
+        $this->toastForSyncResult($syncResult, 'Record archived locally.', 'Record archived');
     }
 
     public function restoreRecord(): void
@@ -66,12 +75,23 @@ class RecordDetail extends Component
             return;
         }
 
-        $this->toastSuccess('Record restored locally.', 'Record restored');
+        $syncResult = $this->recordSync->restore($this->record);
+        $this->record = $syncResult->record;
+
+        $this->toastForSyncResult($syncResult, 'Record restored locally.', 'Record restored');
     }
 
     public function deleteRecord(): void
     {
         try {
+            $syncResult = $this->recordSync->delete($this->record);
+
+            if ($syncResult->failed()) {
+                $this->toastWarning("Record was not deleted because API sync failed: {$syncResult->message}", 'Delete blocked');
+
+                return;
+            }
+
             $deleted = $this->records->delete($this->record);
         } catch (QueryException) {
             $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Delete unavailable');
@@ -85,7 +105,7 @@ class RecordDetail extends Component
             return;
         }
 
-        $this->toastSuccess('Record deleted locally.', 'Record deleted');
+        $this->toastForSyncResult($syncResult, 'Record deleted locally.', 'Record deleted');
         $this->redirectRoute('mobile.records.index', navigate: true);
     }
 
@@ -195,6 +215,26 @@ class RecordDetail extends Component
             'description' => 'Threaded comments will appear here after the remote comments API is connected.',
             'badge' => 'API pending',
         ];
+    }
+
+    private function toastForSyncResult(
+        MobileRecordSyncResult $syncResult,
+        string $fallbackMessage,
+        string $fallbackTitle,
+    ): void {
+        if ($syncResult->synced) {
+            $this->toastSuccess('Record synced with Admin/API and cached locally.', 'Record synced');
+
+            return;
+        }
+
+        if ($syncResult->failed()) {
+            $this->toastWarning("Saved locally. API sync needs retry: {$syncResult->message}", 'Record saved locally');
+
+            return;
+        }
+
+        $this->toastSuccess($fallbackMessage, $fallbackTitle);
     }
 
     private function recordShareText(): string

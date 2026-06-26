@@ -149,6 +149,25 @@ class MobileLocalNotification extends Model
         return Str::of((string) ($host ?: $deepLink))->limit($limit)->toString();
     }
 
+    public function serverNotificationId(): ?string
+    {
+        $data = $this->data;
+
+        if (! is_array($data)) {
+            return null;
+        }
+
+        foreach (['server_notification_id', 'notification_id', 'id'] as $key) {
+            $value = $data[$key] ?? null;
+
+            if (is_scalar($value) && trim((string) $value) !== '') {
+                return trim((string) $value);
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @return list<array{key: string, value: string}>
      */

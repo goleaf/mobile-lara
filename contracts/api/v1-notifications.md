@@ -20,10 +20,10 @@ Updated: 2026-06-26
 Status: partially implemented. Bootstrap returns resolved tenant notification
 preferences, unread count, quiet-hours metadata, push-registration hints,
 fail-closed no-tenant behavior, and notification policy version metadata.
-Inbox listing, push token registration/revocation, read state, read-all, and
-delete actions are implemented. Admin notification creation, external delivery
-providers, mobile push registration UI, deep-link handling, and full
-delivery/open tracking remain planned.
+Inbox listing, push token registration/revocation, read state, open-as-read
+state, read-all, and delete actions are implemented. Admin notification
+creation, external delivery providers, mobile push registration UI, deep-link
+handling, and full delivery/open tracking remain planned.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps notification orchestration centralized while mobile handles device

@@ -121,6 +121,14 @@ class RecordDetail extends Component
         }
 
         try {
+            $syncResult = $this->recordSync->delete($this->record);
+
+            if ($syncResult->failed()) {
+                $this->toastWarning("Record was not deleted because API sync failed: {$syncResult->message}", 'Delete blocked');
+
+                return;
+            }
+
             $deleted = $this->records->delete($this->record);
         } catch (QueryException) {
             $this->toastWarning('Record storage is unavailable. Run the local mobile migrations first.', 'Delete unavailable');
@@ -134,7 +142,7 @@ class RecordDetail extends Component
             return;
         }
 
-        $this->toastSuccess('Record deleted locally.', 'Record deleted');
+        $this->toastForSyncResult($syncResult, 'Record deleted locally.', 'Record deleted');
         $this->redirectRoute('mobile.records.index', navigate: true);
     }
 

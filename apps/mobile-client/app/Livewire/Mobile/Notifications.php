@@ -6,7 +6,9 @@ use App\Livewire\Concerns\DispatchesToasts;
 use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Models\MobileLocalNotification;
 use App\Services\MobileAccess\MobileAccessPolicy;
+use App\Services\MobileApi\MobileApiException;
 use App\Services\MobileLocal\LocalNotificationRepository;
+use App\Services\MobileNotifications\MobileNotificationsApiService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
@@ -57,10 +59,16 @@ class Notifications extends Component
 
     private LocalNotificationRepository $notifications;
 
-    public function boot(LocalNotificationRepository $notifications, MobileAccessPolicy $mobileAccessPolicy): void
-    {
+    private MobileNotificationsApiService $notificationsApi;
+
+    public function boot(
+        LocalNotificationRepository $notifications,
+        MobileAccessPolicy $mobileAccessPolicy,
+        MobileNotificationsApiService $notificationsApi,
+    ): void {
         $this->notifications = $notifications;
         $this->mobileAccessPolicy = $mobileAccessPolicy;
+        $this->notificationsApi = $notificationsApi;
     }
 
     public function mount(int $limit = 30, string $filter = self::FILTER_ALL, string $search = ''): void
@@ -92,6 +100,18 @@ class Notifications extends Component
         }
 
         try {
+            $existingNotification = $this->notifications->find($notificationId);
+
+            if ($existingNotification === null) {
+                $this->toastWarning('Notification is no longer available on this device.', 'Notification missing');
+
+                return;
+            }
+
+            if (! $this->syncNotificationRead($existingNotification, 'Mark read unavailable')) {
+                return;
+            }
+
             $notification = $this->notifications->markAsRead($notificationId);
         } catch (QueryException) {
             $this->toastWarning('Notification storage is unavailable. Run the local mobile migrations first.', 'Inbox unavailable');
@@ -115,6 +135,18 @@ class Notifications extends Component
         }
 
         try {
+            $existingNotification = $this->notifications->find($notificationId);
+
+            if ($existingNotification === null) {
+                $this->toastWarning('Notification is no longer available on this device.', 'Notification missing');
+
+                return;
+            }
+
+            if (! $this->syncNotificationRead($existingNotification, 'Mark opened unavailable')) {
+                return;
+            }
+
             $notification = $this->notifications->markAsOpened($notificationId);
         } catch (QueryException) {
             $this->toastWarning('Notification storage is unavailable. Run the local mobile migrations first.', 'Inbox unavailable');
@@ -138,6 +170,16 @@ class Notifications extends Component
         }
 
         try {
+            $serverNotificationIds = $this->notifications->serverIdsForFilter(
+                type: $this->typeFilter(),
+                state: $this->stateFilter(),
+                search: $this->searchFilter(),
+            );
+
+            if ($serverNotificationIds !== [] && ! $this->syncAllNotificationsRead()) {
+                return;
+            }
+
             $markedCount = $this->notifications->markAllAsRead(
                 type: $this->typeFilter(),
                 state: $this->stateFilter(),
@@ -346,5 +388,37 @@ class Notifications extends Component
     private function notificationInboxDenied(string $title): bool
     {
         return $this->mobileFeatureDenied('notifications', $title, 'notifications.view');
+    }
+
+    private function syncNotificationRead(MobileLocalNotification $notification, string $title): bool
+    {
+        $serverNotificationId = $notification->serverNotificationId();
+
+        if ($serverNotificationId === null) {
+            return true;
+        }
+
+        try {
+            $this->notificationsApi->markRead($serverNotificationId);
+
+            return true;
+        } catch (MobileApiException $exception) {
+            $this->toastWarning($exception->getMessage(), $title);
+
+            return false;
+        }
+    }
+
+    private function syncAllNotificationsRead(): bool
+    {
+        try {
+            $this->notificationsApi->markAllRead();
+
+            return true;
+        } catch (MobileApiException $exception) {
+            $this->toastWarning($exception->getMessage(), 'Mark all unavailable');
+
+            return false;
+        }
     }
 }

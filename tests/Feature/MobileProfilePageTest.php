@@ -306,6 +306,14 @@ test('profile logout redirects and clears local mobile state', function (): void
     app(AppUnlockStateService::class)->unlock();
     app(AccessTokenService::class)->put('profile-logout-access-token', CarbonImmutable::now()->addMinutes(15));
 
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/logout' => Http::response([
+            'success' => true,
+            'data' => ['revoked' => true],
+            'meta' => ['api_version' => 'v1'],
+        ]),
+    ]);
+
     session()->put(
         MobileSessionService::LAST_LOGIN_AT_SESSION_KEY,
         CarbonImmutable::now()->toIso8601String(),
@@ -320,4 +328,7 @@ test('profile logout redirects and clears local mobile state', function (): void
         ->and(app(AppUnlockStateService::class)->isUnlocked())->toBeFalse();
 
     $this->assertGuest();
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/logout'
+        && $request->hasHeader('Authorization', 'Bearer profile-logout-access-token'));
 });

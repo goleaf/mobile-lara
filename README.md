@@ -314,6 +314,17 @@ The admin system is the source of authority. The mobile client is a resilient lo
 
 If a capability is disabled, unlicensed, blocked by version policy, denied by permission, or outside tenant scope, the mobile client must treat that as final even if local UI state still contains stale cached data.
 
+2026-06-26 API boundary recheck: contracted mobile business actions now call
+Admin/API services before mutating server-trusted local mirrors in both the
+root transition app and `apps/mobile-client`. This includes auth/profile
+logout, session logout/logout-all, records create/update/archive/restore/delete
+and bulk mutations, notification read/read-all/open state, support, billing,
+tenant switching, bootstrap, diagnostics upload, and records sync. Remaining
+device-local actions such as PIN/app-lock, secure storage, local cache reset,
+local file manager work, native permission probes, native share/export, and
+offline drafts/queues stay local until a dedicated API replay endpoint accepts
+them.
+
 ## Documentation Map
 
 | Document | Purpose |
