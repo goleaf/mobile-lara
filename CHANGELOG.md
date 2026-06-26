@@ -37,6 +37,13 @@ report visibility must remain tenant-enabled, plan-controlled,
 permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
 and Admin/API-authoritative.
 
+Booking Logic is defined in `docs/booking-logic.md`:
+service selection, availability logic, booking requests, confirmation,
+cancellation, reschedule, reminders, admin schedule control, tenant rules,
+and mobile offline limitations must remain tenant-enabled, plan-controlled,
+permission-aware, availability-safe, schedule-conflict-safe, reminder-safe,
+offline-limited, privacy-safe, auditable, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -55,6 +62,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Booking Logic documentation for service selection, availability logic,
+  booking requests, confirmations, cancellations, reschedules, reminders,
+  admin schedule control, tenant rules, mobile offline limitations, privacy,
+  risks, and readiness checks.
 - Added Logistics Delivery Logic documentation for delivery job lifecycle,
   pickup flow, drop-off flow, proof of delivery, scan validation, location
   check-in, failed delivery reasons, offline behavior, admin monitoring,
@@ -154,6 +165,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added audited Admin/API tenant management for platform admins, including
   tenant create/update controls for lifecycle status, subscription state, slug,
   and JSON settings.
+- Added audited Admin/API tenant membership management so platform admins can
+  assign existing users to tenant roles, rotate current tenant context, and
+  review recent role/status changes from the tenant management screen.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

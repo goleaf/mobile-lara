@@ -2,6 +2,13 @@
 
 Updated: 2026-06-26
 
+Booking Logic is defined in `booking-logic.md`:
+service selection, availability logic, booking requests, confirmation,
+cancellation, reschedule, reminders, admin schedule control, tenant rules,
+and mobile offline limitations must remain tenant-enabled, plan-controlled,
+permission-aware, availability-safe, schedule-conflict-safe, reminder-safe,
+offline-limited, privacy-safe, auditable, and Admin/API-authoritative.
+
 This document defines logistics and delivery module logic for Mobile Lara. It
 explains delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline behavior,

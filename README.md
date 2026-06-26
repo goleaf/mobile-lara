@@ -35,6 +35,13 @@ report visibility must remain tenant-enabled, plan-controlled,
 permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
 and Admin/API-authoritative.
 
+Booking Logic is defined in `docs/booking-logic.md`:
+service selection, availability logic, booking requests, confirmation,
+cancellation, reschedule, reminders, admin schedule control, tenant rules,
+and mobile offline limitations must remain tenant-enabled, plan-controlled,
+permission-aware, availability-safe, schedule-conflict-safe, reminder-safe,
+offline-limited, privacy-safe, auditable, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -250,6 +257,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/reporting-logic.md](docs/reporting-logic.md) | Reporting logic for admin, tenant-admin, and mobile-visible reporting, privacy boundaries, date ranges, exports, feature usage, sync health, notification, support, and billing reports. |
 | [docs/field-service-logic.md](docs/field-service-logic.md) | Field service module logic for work order lifecycle, technician mobile flow, check-in/check-out, photos, notes, future signatures, offline behavior, admin dispatch/control, and report visibility. |
 | [docs/logistics-delivery-logic.md](docs/logistics-delivery-logic.md) | Logistics/delivery module logic for delivery job lifecycle, pickup, drop-off, proof of delivery, scan validation, location check-in, failed delivery reasons, offline behavior, and admin monitoring. |
+| [docs/booking-logic.md](docs/booking-logic.md) | Booking module logic for service selection, availability, booking requests, confirmation, cancellation, reschedule, reminders, admin schedule control, tenant rules, and mobile offline limitations. |
 | [docs/native-feature-strategy.md](docs/native-feature-strategy.md) | NativePHP native feature strategy for logical service boundaries, browser/development fallbacks, permission education, admin feature flags, failure UX, and offline sync. |
 | [docs/camera-media-logic.md](docs/camera-media-logic.md) | Camera and media logic for taking photos, choosing media, previewing media, attaching to records/support, offline storage, upload queues, feature flags, permission denial, size limits, and privacy. |
 | [docs/scanner-logic.md](docs/scanner-logic.md) | QR/barcode scanner logic for scan-to-search, scan-to-create, scan-to-validate, scan history, offline scanning, invalid and duplicate scan behavior, feature flags, and camera permission dependency. |
@@ -328,6 +336,7 @@ contracts.
 - Apply [reporting logic](docs/reporting-logic.md) before planning admin reports, tenant-admin reports, mobile-visible summaries, report privacy, date ranges, exports, feature usage reporting, sync health reporting, notification reporting, support reporting, or billing reporting.
 - Apply [field service logic](docs/field-service-logic.md) before planning work order lifecycle, technician mobile flow, check-in/check-out, photos, notes, future signatures, offline behavior, admin dispatch/control, or report visibility.
 - Apply [logistics delivery logic](docs/logistics-delivery-logic.md) before planning delivery job lifecycle, pickup flow, drop-off flow, proof of delivery, scan validation, location check-in, failed delivery reasons, offline behavior, or admin monitoring.
+- Apply [booking logic](docs/booking-logic.md) before planning service selection, availability logic, booking requests, confirmations, cancellations, reschedules, reminders, admin schedule control, tenant rules, or mobile offline limitations.
 - Apply [native feature strategy](docs/native-feature-strategy.md) before planning NativePHP capability use, logical service boundaries, browser/development fallbacks, permission education, admin feature flags, native failure UX, or native/offline sync behavior.
 - Apply [camera and media logic](docs/camera-media-logic.md) before planning photo capture, media selection, media preview, record/support attachments, offline media storage, upload queues, media feature flags, permission-denied media states, media size rules, or media privacy behavior.
 - Apply [scanner logic](docs/scanner-logic.md) before planning QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history, offline scanning, invalid scan behavior, duplicate scan behavior, scanner feature flags, camera dependency, or scanner permission prompts.

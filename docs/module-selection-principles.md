@@ -7,6 +7,13 @@ report visibility must remain tenant-enabled, plan-controlled,
 permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
 and Admin/API-authoritative.
 
+Booking Logic is defined in `booking-logic.md`:
+service selection, availability logic, booking requests, confirmation,
+cancellation, reschedule, reminders, admin schedule control, tenant rules,
+and mobile offline limitations must remain tenant-enabled, plan-controlled,
+permission-aware, availability-safe, schedule-conflict-safe, reminder-safe,
+offline-limited, privacy-safe, auditable, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -326,10 +333,11 @@ be owned by mobile cache.
 
 ### Booking
 
-Booking supports availability, reservations, appointments, attendance,
-rescheduling, cancellation, reminders, and capacity rules. It should be
-selected when tenants need time-slot coordination with mobile visibility or
-mobile-side updates.
+Booking is defined in [Booking Logic](booking-logic.md). It supports
+availability, reservations, appointments, attendance, rescheduling,
+cancellation, reminders, and capacity rules. It should be selected when
+tenants need time-slot coordination with mobile visibility or mobile-side
+updates.
 
 Admin/API should own availability truth, double-booking prevention, capacity,
 cancellation policy, reminders, conflict decisions, and reports. Mobile should

@@ -148,6 +148,13 @@ report visibility must remain tenant-enabled, plan-controlled,
 permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
 and Admin/API-authoritative.
 
+Booking Logic is defined in `docs/booking-logic.md`:
+service selection, availability logic, booking requests, confirmation,
+cancellation, reschedule, reminders, admin schedule control, tenant rules,
+and mobile offline limitations must remain tenant-enabled, plan-controlled,
+permission-aware, availability-safe, schedule-conflict-safe, reminder-safe,
+offline-limited, privacy-safe, auditable, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -255,6 +262,7 @@ Use these docs before changing the product direction:
 - `docs/reporting-logic.md`
 - `docs/field-service-logic.md`
 - `docs/logistics-delivery-logic.md`
+- `docs/booking-logic.md`
 - `docs/native-feature-strategy.md`
 - `docs/camera-media-logic.md`
 - `docs/scanner-logic.md`
@@ -308,6 +316,7 @@ Use these docs before changing the product direction:
 - Module selection decisions must follow `docs/module-selection-principles.md`.
 - Field service decisions must follow `docs/field-service-logic.md`.
 - Logistics delivery decisions must follow `docs/logistics-delivery-logic.md`.
+- Booking decisions must follow `docs/booking-logic.md`.
 - Native feature decisions must follow `docs/native-feature-strategy.md`.
 - Camera and media decisions must follow `docs/camera-media-logic.md`.
 - Scanner decisions must follow `docs/scanner-logic.md`.
@@ -363,6 +372,7 @@ Use these docs before changing the product direction:
 - Any optional industry module, including field service, logistics, ecommerce, booking, education, events, support, community/messaging, reports, or AI assistant, must map to `docs/module-selection-principles.md`.
 - Any field service work order lifecycle, technician mobile flow, check-in/check-out, photo, note, future signature, offline behavior, admin dispatch/control, or report visibility behavior must map to `docs/field-service-logic.md`.
 - Any logistics delivery job lifecycle, pickup flow, drop-off flow, proof of delivery, scan validation, location check-in, failed delivery reason, offline behavior, or admin monitoring behavior must map to `docs/logistics-delivery-logic.md`.
+- Any booking service selection, availability logic, booking request, confirmation, cancellation, reschedule, reminder, admin schedule control, tenant rule, or mobile offline limitation behavior must map to `docs/booking-logic.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.
