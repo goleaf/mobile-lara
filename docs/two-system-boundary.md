@@ -165,6 +165,12 @@ local drafts, pending indicators, retry, sync success or failure,
 saved-local versus synced state, and data-loss prevention whenever
 connection changes.
 
+Records/Content Module Logic is defined in `records-content-module-logic.md`:
+records are tenant-scoped business content with API-owned lifecycle,
+notes, attachments, activity, tags, categories, status, offline draft or
+sync behavior, admin controls, permissions, feature flags, audit, and
+reporting boundaries.
+
 Sync Lifecycle Logic is defined in `sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,

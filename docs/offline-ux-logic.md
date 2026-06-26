@@ -24,11 +24,18 @@ Logic](two-system-boundary.md), [API-First Principles](api-first-principles.md),
 [Remote Configuration Logic](remote-configuration-logic.md), [Mobile Version
 Control Logic](mobile-version-control-logic.md), [Authentication Principles](authentication-principles.md),
 [Mobile App Lock Principles](mobile-app-lock-principles.md), [Data Privacy
-Principles](data-privacy-principles.md), [Audit Logic](audit-logic.md), and
-[API v1 Sync Contract](../contracts/api/v1-sync.md): offline UX is the human
-layer over offline-first and sync behavior, and Admin/API remains
+Principles](data-privacy-principles.md), [Audit Logic](audit-logic.md),
+[Records/Content Module Logic](records-content-module-logic.md), and [API v1
+Sync Contract](../contracts/api/v1-sync.md): offline UX is the human
+layer over offline-first, records/content, and sync behavior, and Admin/API remains
 authoritative for what can be cached, queued, retried, synced, blocked,
 resolved, audited, or trusted.
+
+Records/Content Module Logic is defined in `records-content-module-logic.md`:
+records are tenant-scoped business content with API-owned lifecycle,
+notes, attachments, activity, tags, categories, status, offline draft or
+sync behavior, admin controls, permissions, feature flags, audit, and
+reporting boundaries.
 
 ## Offline UX Statement
 

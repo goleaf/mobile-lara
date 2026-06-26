@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Records/Content Module Logic documentation for record meaning,
+  lifecycle actions, notes, attachments, activity, tags, categories, status,
+  offline behavior, sync requirements, admin controls, permissions, feature
+  flags, audit, reporting, and support boundaries.
 - Added Offline UX Logic documentation for offline banners, pending action
   indicators, disabled online-only actions, local drafts, retry behavior, sync
   success/failure feedback, saved-local versus synced status, and calm
