@@ -71,6 +71,8 @@ class Profile extends Component
 
         $this->displayName = (string) $user->name;
         $this->email = (string) $user->email;
+        $this->phone = is_string($user->phone) ? $user->phone : '';
+        $this->bio = is_string($user->bio) ? $user->bio : '';
         $this->accountStatus = $user->email_verified_at === null ? 'Active' : 'Verified';
         $this->avatarUrl = $this->avatarStorage->url($user->avatar_path);
 

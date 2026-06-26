@@ -38,7 +38,7 @@ final class MobileApiSessionBridge
         $emailVerifiedAt = $this->optionalDate($payload['email_verified_at'] ?? null);
 
         $user = User::query()
-            ->select(['id', 'name', 'email', 'email_verified_at', 'password', 'avatar_path'])
+            ->select(['id', 'name', 'email', 'email_verified_at', 'password', 'avatar_path', 'username', 'phone', 'bio', 'location', 'website'])
             ->where('email', $email)
             ->first();
 
@@ -52,6 +52,12 @@ final class MobileApiSessionBridge
             $attributes['avatar_path'] = is_string($avatarPath) && trim($avatarPath) !== ''
                 ? trim($avatarPath)
                 : null;
+        }
+
+        foreach (['username', 'phone', 'bio', 'location', 'website'] as $profileField) {
+            if (array_key_exists($profileField, $payload)) {
+                $attributes[$profileField] = $this->optionalString($payload[$profileField]);
+            }
         }
 
         if (! $user instanceof User) {
@@ -98,5 +104,14 @@ final class MobileApiSessionBridge
         }
 
         return CarbonImmutable::parse($value);
+    }
+
+    private function optionalString(mixed $value): ?string
+    {
+        if (! is_string($value) || trim($value) === '') {
+            return null;
+        }
+
+        return trim($value);
     }
 }

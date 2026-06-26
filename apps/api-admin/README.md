@@ -414,7 +414,9 @@ Implemented foundation:
 - `POST /api/v1/mobile/auth/logout-all` revokes all active mobile sessions for
   the current user.
 - `GET /api/v1/mobile/auth/user` returns current user/session context.
-- `PATCH /api/v1/mobile/auth/profile` updates allowed profile fields.
+- `PATCH /api/v1/mobile/auth/profile` updates allowed profile fields,
+  including `name`, `email`, `username`, `phone`, `bio`, `location`,
+  `website`, avatar upload, and avatar removal.
 - `GET /api/v1/mobile/bootstrap` returns the first authenticated mobile
   operating context with real user, device-session, current tenant, and
   available tenant data, role-derived permission payloads, resolved feature

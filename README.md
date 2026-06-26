@@ -325,6 +325,11 @@ local file manager work, native permission probes, native share/export, and
 offline drafts/queues stay local until a dedicated API replay endpoint accepts
 them.
 
+2026-06-26 profile persistence fix: mobile profile details (`username`,
+`phone`, `bio`, `location`, and `website`) now round-trip through
+`PATCH /api/v1/mobile/auth/profile`; the local mobile user row mirrors the API
+payload only after the API accepts the update.
+
 ## Documentation Map
 
 | Document | Purpose |

@@ -461,7 +461,7 @@ Status values:
 | Dashboard | tested | `Mobile\Dashboard` exists and renders in `apps/mobile-client`; Admin/API bootstrap integration is missing. |
 | Bottom navigation | tested | `<x-mobile.bottom-navigation>` exists and is covered by shell tests; feature-gated navigation is not API-controlled yet. |
 | Settings | tested | Settings index and sections exist; workspace settings now reads cached bootstrap tenant context and switches tenants through API. Remote config policy remains pending. |
-| Profile | tested | Profile and edit profile screens exist; edit profile syncs the account name, optional avatar upload, and avatar removal through the API profile endpoint when a valid access token exists. |
+| Profile | tested | Profile and edit profile screens exist; edit profile syncs account details (`name`, `username`, `phone`, `bio`, `location`, `website`), optional avatar upload, and avatar removal through the API profile endpoint when a valid access token exists. |
 | Notifications page | tested | Local notification inbox exists, server notification authority exists for inbox/read/delete/push-token endpoints, and native push permission/token capture UI remains pending. |
 | Debug/diagnostics page | tested | Debug screen includes privacy-safe diagnostics preview, local JSON export, and native share handoff with redaction coverage. |
 | Reusable mobile UI components | tested | Components exist and are covered by mobile UI component tests. |
@@ -498,7 +498,7 @@ Status values:
 | Logout | tested | tested | API/admin logout revokes the current device session; mobile profile/sessions screens call the endpoint and clear local session/token state. |
 | Logout all devices | tested | tested | API/admin logout-all revokes active mobile sessions; mobile sessions screen calls the endpoint and clears local session/token state. |
 | Current user endpoint | tested | tested | `GET /api/v1/mobile/auth/user` exists and the mobile service calls it with a bearer token. |
-| Profile update endpoint | tested | tested | `PATCH /api/v1/mobile/auth/profile` exists and the edit-profile Livewire screen syncs the profile name, optional avatar upload, and avatar removal through it when a valid access token exists. API/admin stores avatar files on the public disk and returns avatar path/url; mobile keeps a local display mirror. |
+| Profile update endpoint | tested | tested | `PATCH /api/v1/mobile/auth/profile` exists and the edit-profile Livewire screen syncs editable profile details, optional avatar upload, and avatar removal through it when a valid access token exists. API/admin stores profile detail fields and avatar files, returns the full profile payload plus avatar path/url, and mobile keeps a local display mirror only after API success. |
 | Device/session logic | tested | tested | API/admin device sessions are persisted, last-seen tracked, and revocable; mobile auth service sends a stable device context from the client session. Tenant/device trust policy remains pending. |
 | Security audit events | tested | partial | API/admin writes auth audit events; broader admin/control-plane audit remains pending. |
 

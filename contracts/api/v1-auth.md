@@ -385,6 +385,17 @@ applicable, and `next_bootstrap_required`.
 Tokens must include access token expiry and refresh token expiry metadata.
 Secure token values belong in secure storage on mobile, not local SQLite.
 
+## Profile Payload
+
+`PATCH /api/v1/mobile/auth/profile` accepts the API-authoritative editable
+profile fields `name`, `email`, `username`, `phone`, `bio`, `location`,
+`website`, optional `avatar`, and optional `remove_avatar`.
+
+The returned `data.user` payload includes `id`, `name`, `email`, `username`,
+`phone`, `bio`, `location`, `website`, `avatar_path`, `avatar_url`, and
+`email_verified_at`. Mobile clients may mirror those values locally for
+presentation, but must not treat local profile data as account authority.
+
 ## Error States
 
 Use the standard error envelope with categories `validation`,
@@ -431,10 +442,11 @@ final mobile client:
   bootstrap context remain Admin/API authority.
 - Profile and sessions logout actions call the API service before clearing
   local session/token state; sessions also exposes logout-all-devices.
-- Edit profile syncs the account name, optional avatar upload, and avatar
+- Edit profile syncs account details, optional avatar upload, and avatar
   removal through `PATCH /auth/profile` when a valid access token exists.
-  API responses include `avatar_path` and `avatar_url`; the mobile client keeps
-  a local presentation mirror but treats the API payload as account authority.
+  API responses include the editable profile fields plus `avatar_path` and
+  `avatar_url`; the mobile client keeps a local presentation mirror but treats
+  the API payload as account authority.
 
 Password reset and email verification screens remain local validation
 placeholders until that API behavior is documented and delivered through a

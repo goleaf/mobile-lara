@@ -89,7 +89,13 @@ final class EditProfile extends Component
         $user = Auth::user();
 
         $this->name = $user instanceof User ? (string) $user->name : 'Mobile Lara';
-        $this->username = $this->defaultUsername($user instanceof User ? (string) $user->email : $this->name);
+        $this->username = $user instanceof User && is_string($user->username) && trim($user->username) !== ''
+            ? trim($user->username)
+            : $this->defaultUsername($user instanceof User ? (string) $user->email : $this->name);
+        $this->phone = $user instanceof User && is_string($user->phone) ? trim($user->phone) : '';
+        $this->bio = $user instanceof User && is_string($user->bio) ? trim($user->bio) : '';
+        $this->location = $user instanceof User && is_string($user->location) ? trim($user->location) : '';
+        $this->website = $user instanceof User && is_string($user->website) ? trim($user->website) : '';
         $this->savedAvatarPath = $user instanceof User ? $user->avatar_path : null;
         $this->savedAvatarUrl = $this->avatarStorage->url($this->savedAvatarPath);
         $this->refreshAvatarInitials();
@@ -181,6 +187,8 @@ final class EditProfile extends Component
             $avatarPath = $apiAvatarPath;
         }
 
+        $this->applySyncedProfile(is_array($syncResult['profile'] ?? null) ? $syncResult['profile'] : []);
+
         if ($avatarChanged) {
             $this->avatarStorage->delete($previousAvatarPath, except: $avatarPath);
         }
@@ -191,6 +199,11 @@ final class EditProfile extends Component
 
         if ($user instanceof User) {
             $user->name = $this->name;
+            $user->username = $this->username;
+            $user->phone = $this->phone === '' ? null : $this->phone;
+            $user->bio = $this->bio === '' ? null : $this->bio;
+            $user->location = $this->location === '' ? null : $this->location;
+            $user->website = $this->website === '' ? null : $this->website;
             $user->avatar_path = $avatarPath;
             $user->save();
         }
@@ -472,20 +485,20 @@ final class EditProfile extends Component
     }
 
     /**
-     * @return array{synced: bool, avatar_path?: string|null, message?: string}
+     * @return array{synced: bool, avatar_path?: string|null, profile?: array<string, mixed>, message?: string}
      */
     private function syncProfileWithApi(?string $avatarPath = null, bool $removeAvatar = false): array
     {
         try {
             $envelope = $this->authApi->updateProfile(
-                ['name' => $this->name],
+                $this->profileApiPayload(),
                 $this->avatarStorage->absolutePath($avatarPath),
                 $removeAvatar,
             );
             $this->apiSessions->syncUser($envelope);
 
             $payload = $envelope['data']['user'] ?? [];
-            $result = ['synced' => true];
+            $result = ['synced' => true, 'profile' => is_array($payload) ? $payload : []];
 
             if (is_array($payload) && array_key_exists('avatar_path', $payload)) {
                 $apiAvatarPath = $payload['avatar_path'];
@@ -498,5 +511,65 @@ final class EditProfile extends Component
         } catch (MobileApiException $exception) {
             return ['synced' => false, 'message' => $exception->getMessage()];
         }
+    }
+
+    /**
+     * @return array{name: string, username: string, phone: string|null, bio: string|null, location: string|null, website: string|null}
+     */
+    private function profileApiPayload(): array
+    {
+        return [
+            'name' => $this->name,
+            'username' => $this->username,
+            'phone' => $this->nullableProfileValue($this->phone),
+            'bio' => $this->nullableProfileValue($this->bio),
+            'location' => $this->nullableProfileValue($this->location),
+            'website' => $this->nullableProfileValue($this->website),
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $profile
+     */
+    private function applySyncedProfile(array $profile): void
+    {
+        $this->name = $this->syncedProfileString($profile, 'name', $this->name, allowEmpty: false);
+        $this->username = Str::lower($this->syncedProfileString($profile, 'username', $this->username, allowEmpty: false));
+        $this->phone = $this->syncedProfileString($profile, 'phone', $this->phone);
+        $this->bio = $this->syncedProfileString($profile, 'bio', $this->bio);
+        $this->location = $this->syncedProfileString($profile, 'location', $this->location);
+        $this->website = $this->syncedProfileString($profile, 'website', $this->website);
+        $this->refreshAvatarInitials();
+    }
+
+    private function nullableProfileValue(string $value): ?string
+    {
+        $value = trim($value);
+
+        return $value === '' ? null : $value;
+    }
+
+    /**
+     * @param  array<string, mixed>  $profile
+     */
+    private function syncedProfileString(array $profile, string $key, string $fallback, bool $allowEmpty = true): string
+    {
+        if (! array_key_exists($key, $profile)) {
+            return $fallback;
+        }
+
+        $value = $profile[$key];
+
+        if (! is_string($value)) {
+            return $allowEmpty ? '' : $fallback;
+        }
+
+        $value = trim($value);
+
+        if ($value === '' && ! $allowEmpty) {
+            return $fallback;
+        }
+
+        return $value;
     }
 }

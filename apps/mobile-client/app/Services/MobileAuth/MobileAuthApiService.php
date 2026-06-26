@@ -105,7 +105,7 @@ final class MobileAuthApiService
     }
 
     /**
-     * @param  array{name?: string, email?: string}  $attributes
+     * @param  array{name?: string, email?: string, username?: string|null, phone?: string|null, bio?: string|null, location?: string|null, website?: string|null}  $attributes
      * @return array<string, mixed>
      */
     public function updateProfile(array $attributes, UploadedFile|string|null $avatar = null, bool $removeAvatar = false): array

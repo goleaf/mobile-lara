@@ -144,6 +144,11 @@ test('mobile profile update is protected and audited', function (): void {
         ->patch('/api/v1/mobile/auth/profile', [
             'name' => 'Updated Worker',
             'email' => 'updated-worker@example.com',
+            'username' => 'updated.worker',
+            'phone' => '+370 600 99999',
+            'bio' => 'Tenant mobile worker',
+            'location' => 'Vilnius',
+            'website' => 'https://worker.example.com',
             'avatar' => UploadedFile::fake()->image('avatar.png', 256, 256),
         ], [
             'Accept' => 'application/json',
@@ -151,6 +156,11 @@ test('mobile profile update is protected and audited', function (): void {
         ->assertOk()
         ->assertJsonPath('data.user.name', 'Updated Worker')
         ->assertJsonPath('data.user.email', 'updated-worker@example.com')
+        ->assertJsonPath('data.user.username', 'updated.worker')
+        ->assertJsonPath('data.user.phone', '+370 600 99999')
+        ->assertJsonPath('data.user.bio', 'Tenant mobile worker')
+        ->assertJsonPath('data.user.location', 'Vilnius')
+        ->assertJsonPath('data.user.website', 'https://worker.example.com')
         ->assertJson(fn (AssertableJson $json) => $json
             ->where('success', true)
             ->where('data.user.avatar_url', fn (?string $url): bool => is_string($url) && str_contains($url, '/storage/avatars/'))
@@ -160,8 +170,17 @@ test('mobile profile update is protected and audited', function (): void {
         );
 
     $avatarPath = User::query()->where('email', 'updated-worker@example.com')->value('avatar_path');
+    $profile = User::query()
+        ->select(['username', 'phone', 'bio', 'location', 'website'])
+        ->where('email', 'updated-worker@example.com')
+        ->first();
 
     expect($avatarPath)->toBeString();
+    expect($profile?->username)->toBe('updated.worker')
+        ->and($profile?->phone)->toBe('+370 600 99999')
+        ->and($profile?->bio)->toBe('Tenant mobile worker')
+        ->and($profile?->location)->toBe('Vilnius')
+        ->and($profile?->website)->toBe('https://worker.example.com');
 
     Storage::disk('public')->assertExists((string) $avatarPath);
 

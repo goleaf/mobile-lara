@@ -138,6 +138,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Fixed mobile profile detail persistence through the API: `username`, `phone`,
+  `bio`, `location`, and `website` now validate and save in Admin/API,
+  round-trip in auth/profile payloads, hydrate the mobile edit/profile screens,
+  and update the local presentation mirror only after `PATCH /auth/profile`
+  succeeds.
 - Rechecked the mobile API boundary and tightened user-visible business
   actions so root and nested mobile clients call the Admin/API services before
   mutating server-trusted local mirrors: profile logout, sessions logout and
