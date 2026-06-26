@@ -17,11 +17,13 @@ and future module expansion principles.
 
 Updated: 2026-06-26
 
-Status: partially implemented. Bootstrap now returns resolved tenant
-notification preferences, quiet-hours metadata, push-registration hints,
+Status: partially implemented. Bootstrap returns resolved tenant notification
+preferences, unread count, quiet-hours metadata, push-registration hints,
 fail-closed no-tenant behavior, and notification policy version metadata.
-Inbox, push token registration/revocation, read state, delete actions, deep
-links, and delivery/open tracking remain planned for Phase 21.
+Inbox listing, push token registration/revocation, read state, read-all, and
+delete actions are implemented. Admin notification creation, external delivery
+providers, mobile push registration UI, deep-link handling, and full
+delivery/open tracking remain planned.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps notification orchestration centralized while mobile handles device
@@ -377,24 +379,29 @@ Notification endpoints manage notification preferences, push token
 registration, token revocation, inbox state, unread count, mark-read actions,
 deletes, and deep-link payloads.
 
-## Planned Routes
+## Implemented Foundation Routes
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
 | GET | `/api/v1/mobile/notifications` | List notification inbox items. | mobile token |
 | POST | `/api/v1/mobile/notifications/push-tokens` | Register a push token. | mobile token |
 | DELETE | `/api/v1/mobile/notifications/push-tokens/{token}` | Revoke a push token. | mobile token |
+| PATCH | `/api/v1/mobile/notifications/read-all` | Mark all user-scoped unread notifications read. | mobile token |
 | PATCH | `/api/v1/mobile/notifications/{notification}/read` | Mark a notification read. | mobile token |
+| DELETE | `/api/v1/mobile/notifications/{notification}` | Soft-delete a user-scoped notification. | mobile token |
 
 ## Success Data
 
 Responses return notification `id`, `type`, `title`, `body`, `read_at`,
 `deep_link`, `created_at`, `actions`, and `unread_count` where useful.
+Tenant broadcast rows may appear in the inbox, but they are read-only for an
+individual user until delivery receipts are implemented; read/delete mutations
+only target user-scoped rows to avoid cross-user state changes.
 
 Bootstrap currently returns `notification_preferences` with `push_enabled`,
 `in_app_enabled`, `email_enabled`, `quiet_hours`,
-`push_registration_required`, and `status`. `unread_notification_count` remains
-`0` until server-side inbox storage is implemented.
+`push_registration_required`, and `status`. `unread_notification_count` is
+computed from user-scoped unread server inbox rows.
 
 ## Gates
 
@@ -415,12 +422,14 @@ required.
 
 ## Tests
 
-Current preference coverage:
+Current foundation coverage:
 
 ```bash
 cd apps/api-admin && php artisan test --compact --filter=MobileNotificationPolicyTest
+cd apps/api-admin && php artisan test --compact --filter=MobileNotificationsApiTest
+cd apps/mobile-client && php artisan test --compact --filter=MobileNotificationsApiServiceTest
 ```
 
-Future Phase 21 coverage should verify token ownership, tenant isolation,
-unread counts, read/delete actions, delivery/open tracking, and deep-link
-safety.
+Future Phase 21 coverage should add admin notification creation, provider
+delivery/open tracking, mobile push permission registration UI, deep-link
+handling, and delivery receipt behavior for tenant broadcast rows.

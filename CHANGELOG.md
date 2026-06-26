@@ -151,6 +151,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   acknowledgement contract with the stored access token.
 - Updated sync policy payloads so server replay endpoints are advertised as
   ready when tenant sync gates pass.
+- Added the notification inbox and push-token foundation with tenant/user-safe
+  API endpoints for listing, read/read-all, delete, unread bootstrap counts,
+  push-token register/revoke, and a mobile notification API service.
 
 ### Added
 
@@ -553,6 +556,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added the authenticated API diagnostics upload endpoint with current-tenant
   permission checks, server-side allowlisting/redaction, mobile diagnostic
   report persistence, standard mobile envelopes, and security audit history.
+- Added a platform-admin mobile diagnostics review page for searching and
+  inspecting redacted uploaded diagnostics without exposing mobile-user emails
+  or raw support secrets.
 - Added the API/admin app version and maintenance foundation with
   minimum-version force updates, optional update states, public `/app-version`
   API output, bootstrap maintenance integration, and focused policy coverage.

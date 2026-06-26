@@ -17,9 +17,9 @@ and future module expansion principles.
 
 Updated: 2026-06-26
 
-Status: partial. Mobile-local diagnostics export/share and the authenticated
-API upload endpoint are implemented; support-ticket linking and admin support
-views remain planned.
+Status: partial. Mobile-local diagnostics export/share, the authenticated API
+upload endpoint, and platform-admin diagnostics review are implemented.
+Support-ticket linking and role-specific support queues remain planned.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 supports scalable SaaS operations by giving support safe mobile context without

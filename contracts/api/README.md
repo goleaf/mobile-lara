@@ -392,6 +392,9 @@ through app-version policy before old mobile clients lose support.
 - [v1-sync.md](v1-sync.md) defines the partial implemented sync foundation for
   sync bootstrap, records-only pull, idempotent records push, conflict
   responses, sync event storage, and acknowledgement.
+- [v1-notifications.md](v1-notifications.md) defines the partial implemented
+  notifications foundation for tenant/user-safe inbox reads, unread counts,
+  read/read-all/delete state, and push-token register/revoke behavior.
 - [v1-diagnostics.md](v1-diagnostics.md) defines the partial implemented
   diagnostics foundation for mobile-local export/share and authenticated
   current-tenant upload with server-side redaction and audit history.

@@ -469,6 +469,9 @@ Implemented foundation:
   `GET /sync/bootstrap`, `GET /sync/pull`, `POST /sync/push`, and
   `POST /sync/acknowledge` with the stored access token so the mobile client
   can consume the dedicated records-only sync contract.
+- `App\Services\MobileNotifications\MobileNotificationsApiService` calls the
+  API/admin notification inbox, read/read-all/delete, and push-token
+  register/revoke endpoints with the stored access token.
 - Returned access and refresh tokens are stored through `MobileTokenStore`,
   which defaults to NativePHP secure storage and uses the session adapter for
   tests or safe development fallback.

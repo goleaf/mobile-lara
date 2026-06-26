@@ -402,14 +402,14 @@ Status values:
 | --- | --- |
 | Root application | A Laravel 13 + Livewire 4 + NativePHP Mobile app remains at the repository root as a transition mirror. |
 | Requested monorepo paths | `apps/api-admin` and `apps/mobile-client` are now separate Laravel applications. |
-| API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status`, `GET /api/v1/mobile/contracts`, public `GET /api/v1/mobile/app-version`, auth endpoints, authenticated `GET /api/v1/mobile/bootstrap`, `GET /api/v1/mobile/config`, `GET /api/v1/mobile/features`, `GET /api/v1/mobile/billing/subscription`, `POST /api/v1/mobile/diagnostics`, sync bootstrap/pull/push/acknowledge endpoints, `GET /api/v1/mobile/tenants`, `POST /api/v1/mobile/tenants/current`, authenticated tenant invitation list/accept/decline endpoints, and tenant-scoped records list/create/detail/update/archive/restore endpoints. |
+| API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status`, `GET /api/v1/mobile/contracts`, public `GET /api/v1/mobile/app-version`, auth endpoints, authenticated `GET /api/v1/mobile/bootstrap`, `GET /api/v1/mobile/config`, `GET /api/v1/mobile/features`, `GET /api/v1/mobile/billing/subscription`, `POST /api/v1/mobile/diagnostics`, notification inbox/read/delete/push-token endpoints, sync bootstrap/pull/push/acknowledge endpoints, `GET /api/v1/mobile/tenants`, `POST /api/v1/mobile/tenants/current`, authenticated tenant invitation list/accept/decline endpoints, and tenant-scoped records list/create/detail/update/archive/restore endpoints. |
 | Mobile routes | The root transition app remains as a transition mirror; `apps/mobile-client/routes/web.php` now exposes 55 named `mobile.*` routes. |
-| Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, security audit events, tenants, tenant-user memberships, feature flag tables, remote config tables, app-version policy tables, mobile diagnostic reports, mobile sync events, and tenant-scoped record/category/tag/note/attachment/activity tables. Broader control-plane domain schema remains pending. |
+| Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, security audit events, tenants, tenant-user memberships, feature flag tables, remote config tables, app-version policy tables, mobile diagnostic reports, mobile sync events, mobile notifications, mobile push tokens, and tenant-scoped record/category/tag/note/attachment/activity tables. Broader control-plane domain schema remains pending. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
-| Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, registered policies for current mobile control-plane resources, audited tenant lifecycle/settings/membership controls, audited global feature flag controls, audited global remote config controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, foundation tenant list/switch endpoints, privacy-safe diagnostics upload endpoint, platform-admin diagnostics review page, records-only sync endpoints, sync event storage, and tenant-scoped records API foundation. Broader SaaS modules remain pending. |
+| Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, registered policies for current mobile control-plane resources, audited tenant lifecycle/settings/membership controls, audited global feature flag controls, audited global remote config controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, foundation tenant list/switch endpoints, privacy-safe diagnostics upload endpoint, platform-admin diagnostics review page, notification inbox/read/delete/push-token endpoints, records-only sync endpoints, sync event storage, and tenant-scoped records API foundation. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 494 tests / 3872 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, tenant workspace behavior, mobile invitation check/accept/decline actions, cached app-version/maintenance screens, optional-update dashboard banners, mobile records API/sync services, dedicated mobile sync API service calls, mobile remote config store/settings consumers, privacy-safe diagnostics export/share, and cached policy guards for mobile record, attachment, profile share, record-detail share, media-gallery share, support-center browser handoff, diagnostics share, voice-note, check-in, media-capture, file-manager, scanner, notification inbox, manual sync, conflict resolution, offline queue writes, and developer native debug actions. `apps/api-admin` passes `php artisan test --compact` with 131 tests / 1116 assertions covering admin routing, tenant lifecycle/membership management controls, authenticated tenant invitation list/accept/decline flows, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, mobile notification policy state, mobile sync policy state and endpoints, privacy-safe diagnostics upload and admin review, tenant-scoped records API behavior, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 496 tests / 3886 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, tenant workspace behavior, mobile invitation check/accept/decline actions, cached app-version/maintenance screens, optional-update dashboard banners, mobile records API/sync services, dedicated mobile sync API service calls, dedicated mobile notifications API service calls, mobile remote config store/settings consumers, privacy-safe diagnostics export/share, and cached policy guards for mobile record, attachment, profile share, record-detail share, media-gallery share, support-center browser handoff, diagnostics share, voice-note, check-in, media-capture, file-manager, scanner, notification inbox, manual sync, conflict resolution, offline queue writes, and developer native debug actions. `apps/api-admin` passes `php artisan test --compact` with 136 tests / 1163 assertions covering admin routing, tenant lifecycle/membership management controls, authenticated tenant invitation list/accept/decline flows, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, mobile notification policy state and endpoints, mobile sync policy state and endpoints, privacy-safe diagnostics upload and admin review, tenant-scoped records API behavior, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -478,7 +478,7 @@ Status values:
 | Features contract | tested | `v1-features.md` defines resolved feature states and gates; `GET /features` is implemented for global default, tenant override, user override, plan-gated, device-gated, permission-gated, and app-version-gated mobile-safe outcomes. |
 | Remote config contract | tested | `v1-remote-config.md` defines receive/cache/offline/fallback rules; `GET /config` returns resolved foundation/global/tenant config with freshness and version metadata. |
 | App version/maintenance contract | tested | `v1-app-version-maintenance.md` defines version, force update, and maintenance states; `GET /app-version` returns resolved policy outcomes, public cohort checks and version-range policy targeting are supported, and bootstrap consumes tenant-aware resolver output. |
-| Notifications contract | partial | `v1-notifications.md` defines inbox, push token, and read-state routes; bootstrap notification preferences are implemented from tenant policy settings. Inbox and push endpoints remain pending. |
+| Notifications contract | tested | `v1-notifications.md` defines implemented tenant/user-safe inbox, push-token registration/revocation, unread count, read/read-all, and delete behavior. Admin notification center, campaigns, delivery providers, and mobile push registration UI remain pending. |
 | Records/content contract | tested | `v1-records.md` defines implemented tenant-scoped list, create, detail, update, archive, restore, category/tag resolution, note append, attachment metadata, activity timeline, and remaining sync/subresource gaps. |
 | Sync contract | tested | `v1-sync.md` defines implemented sync bootstrap, records-only push, records-only pull, acknowledgement, idempotent replay, sync event storage, and conflict behavior. Admin monitoring and non-record collection replay remain pending. |
 | Support contract | documented | `v1-support.md` defines support ticket/message behavior; API is not implemented. |
@@ -563,9 +563,9 @@ Status values:
 | App version rules | tested | Bootstrap returns resolved version policy from foundation defaults or active tenant, cohort, platform, and global policies. |
 | Maintenance mode | tested | Bootstrap returns maintenance state, message, support URL, and retry timing from active version policy. |
 | Subscription status | tested | Bootstrap returns current tenant subscription state, plan, trial, limits, usage, billing portal state, feature impacts, and subscription metadata from Admin/API-owned tenant data. |
-| Notification preferences | tested | Bootstrap returns tenant notification preferences, quiet hours, push-registration hints, fail-closed no-tenant behavior, and notification policy version metadata. |
+| Notification preferences | tested | Bootstrap returns tenant notification preferences, quiet hours, push-registration hints, unread count, fail-closed no-tenant behavior, and notification policy version metadata. |
 | Sync settings | tested | Bootstrap returns tenant sync policy from settings, remote config, permissions, subscription state, and maintenance policy, and now advertises server replay endpoints when sync gates pass. |
-| Unread notification count | partial | Bootstrap intentionally returns `0` until server notification inbox storage exists. |
+| Unread notification count | tested | Bootstrap returns the user-scoped unread server inbox count for the current tenant. |
 | Mobile bootstrap service/cache | tested | `MobileBootstrapService` calls `GET /bootstrap` with the stored access token and caches the envelope in mobile-local settings; login/register refresh it after authentication, and the workspace settings screen consumes/refetches that cached context after tenant switches. |
 
 ## Phase 11 - App Version, Force Update, And Maintenance Mode
@@ -633,7 +633,7 @@ Status values:
 | Microphone | partial | Audio/voice service exists, and the Livewire voice-note surface is now gated by cached `native_microphone` and `offline_sync` policy before recording callbacks, local writes, deletes, or upload queue placeholders. API upload/replay policy is still missing. |
 | Location | partial | Location service/check-in screens exist, and NativePHP permission/current-position calls plus location callbacks are gated by cached `native_location` policy. API acceptance remains missing. |
 | Scanner | partial | Scanner service and screens exist, and scanner capture/history mutation actions are gated by cached `native_scanner` policy. API/search/create integration remains incomplete. |
-| Push notifications | not started | Local notifications exist; push token registration is missing. |
+| Push notifications | partial | Local notifications exist, API push-token register/revoke endpoints exist, and the mobile API service can call them. Native push permission/token capture and registration UI remain pending. |
 | Biometrics | partial | Biometric unlock service/tests exist. |
 | Secure storage | partial | Native secure storage and session fallback exist, and developer debug storage calls are gated by cached `native_secure_storage` policy. |
 | System/settings | partial | System service exists. |
@@ -699,28 +699,28 @@ Status values:
 
 | Feature | Admin/API Status | Mobile Status | Notes |
 | --- | --- | --- | --- |
-| Notifications | not started | partial | Local notification inbox exists; server notifications missing. |
-| Notification preferences | not started | partial | Mobile settings exist; API authority missing. |
-| Push token registration/revocation | not started | not started | Required for push. |
+| Notifications | tested | partial | Server tenant/user-safe inbox endpoints exist and local notification inbox exists. Admin notification creation/orchestration remains pending. |
+| Notification preferences | tested | partial | Bootstrap returns tenant notification preferences and unread count from API-owned notification state; mobile settings exist. |
+| Push token registration/revocation | tested | partial | API endpoints hash/register/revoke push tokens when tenant policy allows push. Mobile service calls exist; native permission/token capture and registration UI remain pending. |
 | Admin notification center | not started | n/a | Admin shell exists; notification center screens are not implemented yet. |
 | Campaign placeholders | not started | n/a | Not implemented. |
-| Delivery/open tracking | not started | partial | Local history exists; server truth missing. |
-| Mark read/all read/delete | partial | tested | Local read/open/read-all behavior exists, and cached notification policy now hides inbox rows and blocks direct read/open/read-all calls before local timestamp writes. API read/delete endpoints remain pending. |
-| Deep links | not started | partial | Native config has scheme; notification deep link handling incomplete. |
+| Delivery/open tracking | partial | partial | Server stores delivery/open timestamps but external provider delivery and mobile open tracking integration remain pending. |
+| Mark read/all read/delete | tested | tested | API read, read-all, and soft-delete endpoints exist; local read/open/read-all behavior exists and cached notification policy gates local actions. |
+| Deep links | partial | partial | API returns notification `deep_link` values and Native config has scheme; full mobile deep-link handling remains incomplete. |
 
 ## Phase 22 - Security And Privacy
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Server audit logic | partial | Auth, tenant, feature/config/version, records, and diagnostics events write security audit history; broader support/report/admin audit views remain pending. |
+| Server audit logic | partial | Auth, tenant, feature/config/version, records, diagnostics, notifications, and sync replay/acknowledgement events write security audit history; broader support/report/admin audit views remain pending. |
 | Sensitive action confirmation | partial | Mobile account deletion/PIN/biometric flows exist; admin confirmations missing. |
 | Mobile app lock PIN/biometric | partial | Implemented locally with tests in existing suite; fresh run pending. |
 | Privacy settings | partial | Legal/privacy screens exist; API privacy settings missing. |
 | Secure token handling | partial | Native secure storage fallback exists; server token authority missing. |
 | Data export principles/features | documented | Implementation missing. |
 | Local data reset | partial | Storage settings exist; needs verification. |
-| Diagnostics privacy protection | tested | Mobile export/share and API upload both apply redaction; API stores reports under server-resolved tenant/user/session authority. Support/admin visibility limits remain pending. |
-| Support/admin access limits | not started | No support/admin implementation yet. |
+| Diagnostics privacy protection | tested | Mobile export/share, API upload, and platform-admin review all use redacted diagnostics data; API stores reports under server-resolved tenant/user/session authority and the admin page avoids exposing mobile-user email or raw support secrets. |
+| Support/admin access limits | partial | Platform-admin diagnostics review is implemented with policy checks. Role-specific support queues, support-agent scoping, and ticket-linked diagnostics remain pending. |
 
 ## Phase 23 - Billing And Subscriptions
 
@@ -796,6 +796,7 @@ Status values:
 | Native share diagnostics | tested | Debug share action now shares the same redacted diagnostics JSON through the NativePHP share wrapper and remains gated by cached `native_share` policy. |
 | Private data protection | tested | Redaction removes tokens, API credentials, bearer values, emails, queued payloads, and headers; coverage verifies secrets are absent from exported JSON. |
 | API diagnostics upload | tested | `POST /api/v1/mobile/diagnostics` accepts authenticated snapshots for the current active tenant, re-applies server-side redaction, stores report metadata, and writes audit history. |
+| Admin diagnostics review | tested | `/admin/mobile/diagnostics` lets platform admins search and review redacted diagnostics reports without exposing mobile-user emails or raw support secrets. |
 
 ## Phase 29 - Documentation Completion
 
@@ -819,12 +820,12 @@ Status values:
 | Check | Status | Notes |
 | --- | --- | --- |
 | API/admin formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/api-admin`. |
-| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 131 tests / 1116 assertions. |
+| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 136 tests / 1163 assertions. |
 | API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
-| API routes verification | tested | `php artisan route:list --except-vendor` shows 35 app routes including app-version, auth, bootstrap, config, contracts, diagnostics, features, status, sync, tenant context, tenant invitation, and records routes. |
+| API routes verification | tested | `php artisan route:list --except-vendor` shows 41 app routes including app-version, auth, bootstrap, config, contracts, diagnostics, features, notifications, status, sync, tenant context, tenant invitation, and records routes; `--path=api/v1/mobile` shows 36 mobile API routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
 | Mobile formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/mobile-client`. |
-| Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 494 tests / 3872 assertions. |
+| Mobile tests | tested | `php artisan test --compact` passes in `apps/mobile-client` with 496 tests / 3886 assertions. |
 | Mobile frontend build | tested | `npm run build` passes in `apps/mobile-client`. |
 | Mobile navigation verification | tested | `php artisan route:list --name=mobile` shows 55 named mobile routes and route tests cover authenticated/guest rendering. Browser/native manual verification remains future. |
 | NativePHP fallback verification | tested | `php artisan native:plugin:validate --no-interaction` exits successfully with two non-fatal third-party manifest warnings; simulator/emulator release verification remains external-tooling dependent. |

@@ -52,7 +52,7 @@ final class BootstrapController extends Controller
         $tenantContext = $this->tenants->resolve($user);
         $permissions = $this->permissions->resolve($user, $tenantContext);
         $subscription = $this->subscriptions->resolve($tenantContext);
-        $notificationPolicy = $this->notifications->resolve($tenantContext);
+        $notificationPolicy = $this->notifications->resolve($tenantContext, $user);
         $tenantContextWithSubscription = [
             ...$tenantContext,
             'subscription' => $subscription,

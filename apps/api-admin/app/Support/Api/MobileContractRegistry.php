@@ -88,11 +88,13 @@ final class MobileContractRegistry
                 self::route('GET', '/sync/pull', 'implemented-records-only', 'mobile-token'),
                 self::route('POST', '/sync/acknowledge', 'implemented', 'mobile-token'),
             ]),
-            self::group('notifications', 'v1-notifications.md', 'documented', 'Notification preferences, push tokens, inbox, read state, deletes, and deep links.', [
-                self::route('GET', '/notifications', 'planned', 'mobile-token'),
-                self::route('POST', '/notifications/push-tokens', 'planned', 'mobile-token'),
-                self::route('DELETE', '/notifications/push-tokens/{token}', 'planned', 'mobile-token'),
-                self::route('PATCH', '/notifications/{notification}/read', 'planned', 'mobile-token'),
+            self::group('notifications', 'v1-notifications.md', 'partial', 'Notification preferences, push tokens, inbox, read state, deletes, and deep links.', [
+                self::route('GET', '/notifications', 'implemented', 'mobile-token'),
+                self::route('POST', '/notifications/push-tokens', 'implemented', 'mobile-token'),
+                self::route('DELETE', '/notifications/push-tokens/{token}', 'implemented', 'mobile-token'),
+                self::route('PATCH', '/notifications/read-all', 'implemented', 'mobile-token'),
+                self::route('PATCH', '/notifications/{notification}/read', 'implemented', 'mobile-token'),
+                self::route('DELETE', '/notifications/{notification}', 'implemented', 'mobile-token'),
             ]),
             self::group('support', 'v1-support.md', 'documented', 'Support tickets, messages, attachments, diagnostics context, assignment, and audit.', [
                 self::route('GET', '/support/tickets', 'planned', 'mobile-token'),

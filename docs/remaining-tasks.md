@@ -379,8 +379,9 @@ before implementation scope is added.
   pre-login signed invitation links, invitation resend/revoke/expiry, email
   delivery, dedicated tenant settings policy, tenant-scoped resource
   middleware, and tenant-local cache partition verification.
-- Complete admin role/permission management, admin billing management, push
-  notification inbox/token workflows, sync policy, and audit foundations.
+- Complete admin role/permission management, admin billing management, admin
+  notification creation/provider delivery, mobile push-token registration UI,
+  admin sync monitoring, and broader audit reporting views.
 - Continue rewiring lower-level mobile-local actions so server-trusted behavior
   comes from API/bootstrap state instead of local placeholders. Primary
   navigation, dashboard/create/search shortcuts, and direct module routes now
@@ -413,9 +414,10 @@ before implementation scope is added.
   configured terms/privacy URLs before native browser handoff, and diagnostics
   sharing now gates the NativePHP share handoff while local JSON export remains
   user-controlled and redacted. The API diagnostics upload endpoint now stores
-  current-tenant snapshots after server-side redaction and audit. Remaining
-  report native share flows and billing browser flows still need
-  feature-specific policy gates.
+  current-tenant snapshots after server-side redaction and audit, and
+  platform admins can review redacted diagnostics reports. Remaining
+  ticket-linked support queues, report native share flows, and billing browser
+  flows still need feature-specific policy gates.
 - Complete the records/content module beyond the API and records-only sync
   foundation: admin records management screens, standalone
   category/tag/note/attachment endpoints, upload/storage handling, richer

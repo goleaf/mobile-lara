@@ -433,6 +433,10 @@ Implemented foundation:
   snapshot for the current active tenant when support diagnostics are enabled
   by remote config, re-applies server-side redaction, stores only support-safe
   report metadata, and writes a security audit event.
+- `/admin/mobile/diagnostics` lets platform admins search and review redacted
+  diagnostics reports without exposing mobile-user emails or raw support
+  secrets. Ticket-linked support queues and support-agent scoping remain
+  pending.
 - `GET /api/v1/mobile/tenants` returns the authenticated user's tenant context.
 - `POST /api/v1/mobile/tenants/current` switches the current tenant after
   membership/lifecycle checks and records a security audit event.
@@ -459,8 +463,12 @@ Implemented foundation:
   subscription state and mobile-safe plan/limit hints from Admin/API-owned
   tenant data.
 - `App\Services\Notifications\MobileNotificationPolicyResolver` resolves
-  tenant notification preferences, quiet hours, push-registration hints, and
-  fail-closed no-tenant behavior for bootstrap.
+  tenant notification preferences, quiet hours, push-registration hints,
+  unread counts, and fail-closed no-tenant behavior for bootstrap.
+- `GET /api/v1/mobile/notifications`, read/read-all/delete endpoints, and
+  push-token register/revoke endpoints provide tenant/user-safe notification
+  inbox behavior with audit history. Admin notification creation and provider
+  delivery remain pending.
 - `App\Services\Sync\MobileSyncPolicyResolver` resolves tenant sync policy from
   tenant settings, remote config, permissions, subscription state, and
   maintenance policy and marks server replay endpoints ready when sync gates
@@ -472,7 +480,7 @@ Implemented foundation:
   acknowledgement.
 - Policies are registered for current mobile control-plane resources:
   feature flags, tenant/user feature overrides, remote config, tenant remote
-  config overrides, and app-version policies.
+  config overrides, app-version policies, and mobile diagnostic reports.
 - `GET /admin/login` renders the admin login form.
 - `POST /admin/login` authenticates platform-admin users.
 - `POST /admin/logout` invalidates the admin session.
@@ -527,10 +535,10 @@ Implemented foundation:
   controls, tenant remote config controls, app version admin controls, remote
   config resolution, feature maintenance/plan/cohort/device/emergency/app-version
   gates, tenant/cohort app version policy, app-version range resolution, mobile
-  billing subscription resolution, mobile notification policy resolution,
-  mobile sync policy resolution, tenant-scoped records API behavior, resource
-  policies, success envelope, error envelope, contract catalogue, and contract
-  Markdown file coverage.
+  billing subscription resolution, mobile notification policy and endpoint
+  behavior, mobile sync policy resolution, tenant-scoped records API behavior,
+  resource policies, success envelope, error envelope, contract catalogue, and
+  contract Markdown file coverage.
 
 Still pending:
 

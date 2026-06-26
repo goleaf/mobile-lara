@@ -2,7 +2,9 @@
 
 namespace App\Services\Notifications;
 
+use App\Models\MobileNotification;
 use App\Models\Tenant;
+use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
 
@@ -12,7 +14,7 @@ final class MobileNotificationPolicyResolver
      * @param  array{current_tenant?: array<string, mixed>|null}  $tenantContext
      * @return array<string, mixed>
      */
-    public function resolve(array $tenantContext): array
+    public function resolve(array $tenantContext, ?User $user = null): array
     {
         $tenant = $this->tenantFromContext($tenantContext);
         $now = CarbonImmutable::now();
@@ -30,21 +32,36 @@ final class MobileNotificationPolicyResolver
 
         $settings = is_array($tenant->settings) ? $tenant->settings : [];
         $notificationSettings = $this->arrayValue(Arr::get($settings, 'notifications'));
+        $preferences = $this->preferences(
+            $this->boolValue($notificationSettings['push_enabled'] ?? null, false),
+            $this->boolValue($notificationSettings['in_app_enabled'] ?? null, true),
+            $this->boolValue($notificationSettings['email_enabled'] ?? null, false),
+            $this->quietHours($notificationSettings['quiet_hours'] ?? []),
+            'tenant_notification_settings',
+        );
 
         return [
             'status' => 'resolved',
-            'preferences' => $this->preferences(
-                $this->boolValue($notificationSettings['push_enabled'] ?? null, false),
-                $this->boolValue($notificationSettings['in_app_enabled'] ?? null, true),
-                $this->boolValue($notificationSettings['email_enabled'] ?? null, false),
-                $this->quietHours($notificationSettings['quiet_hours'] ?? []),
-                'tenant_notification_settings',
-            ),
-            'unread_count' => 0,
+            'preferences' => $preferences,
+            'unread_count' => $this->unreadCount($tenant, $user, $preferences),
             'source' => 'tenant_notification_settings',
             'resolved_at' => $now->toIso8601String(),
             'policy_version' => $this->version($tenant, $notificationSettings),
         ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $preferences
+     */
+    private function unreadCount(Tenant $tenant, ?User $user, array $preferences): int
+    {
+        if (! $user instanceof User || Arr::get($preferences, 'in_app_enabled') !== true) {
+            return 0;
+        }
+
+        return MobileNotification::query()
+            ->forMobileUnreadCounter($tenant, $user)
+            ->count();
     }
 
     /**
