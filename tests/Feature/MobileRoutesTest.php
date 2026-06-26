@@ -192,7 +192,7 @@ test('mobile routes render the shared livewire app shell', function (): void {
     $this->withoutVite();
     $this->actingAs(User::factory()->create());
 
-    $this->get(route('mobile.dashboard'))
+    $response = $this->get(route('mobile.dashboard'))
         ->assertOk()
         ->assertSee('Dashboard')
         ->assertSeeLivewire(OfflineBanner::class)
@@ -210,6 +210,9 @@ test('mobile routes render the shared livewire app shell', function (): void {
         ->assertSee('wire:key="mobile-tab-mobile.notifications"', false)
         ->assertSee('wire:key="mobile-tab-mobile.profile"', false)
         ->assertDontSee('wire:key="mobile-tab-mobile.settings"', false)
+        ->assertDontSee('bottom-24', false)
         ->assertSee('safe-pt', false)
         ->assertSee('safe-pb', false);
+
+    expect(substr_count($response->getContent(), '>Create</span>'))->toBe(1);
 });

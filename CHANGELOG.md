@@ -138,6 +138,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Removed duplicate page-level floating Create actions from the mobile dashboard,
+  search, and notification inbox so the single Create action lives in the
+  centered bottom navigation item.
 - Rewired the root mobile transition shell login and registration screens to
   use the versioned Admin/API mobile auth endpoints before opening a local
   Laravel session mirror, including API token storage, bootstrap refresh, API

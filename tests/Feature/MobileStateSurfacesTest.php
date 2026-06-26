@@ -24,7 +24,8 @@ test('dashboard renders loading empty network and retry surfaces', function (): 
         ->assertSee('Notification preview')
         ->assertSee('Pending sync')
         ->assertSee('Background sync prepared')
-        ->assertSee('aria-label="Create"', false);
+        ->assertDontSee('aria-label="Create"', false)
+        ->assertDontSee('bottom-24', false);
 
     Livewire::test(Dashboard::class)
         ->set('hasNetworkError', true)
@@ -34,16 +35,16 @@ test('dashboard renders loading empty network and retry surfaces', function (): 
         ->assertSet('isOffline', false);
 });
 
-test('list pages render the floating create action', function (): void {
+test('list pages rely on the bottom navigation create action only', function (): void {
     Livewire::test(Search::class)
-        ->assertSee('aria-label="Create"', false)
-        ->assertSee('bottom-24', false)
-        ->assertSee(route('mobile.create'), false);
+        ->assertDontSee('aria-label="Create"', false)
+        ->assertDontSee('bottom-24', false)
+        ->assertDontSee(route('mobile.create'), false);
 
     Livewire::test(Notifications::class)
-        ->assertSee('aria-label="Create"', false)
-        ->assertSee('bottom-24', false)
-        ->assertSee(route('mobile.create'), false);
+        ->assertDontSee('aria-label="Create"', false)
+        ->assertDontSee('bottom-24', false)
+        ->assertDontSee(route('mobile.create'), false);
 });
 
 test('profile renders submit spinner empty network and retry surfaces', function (): void {
