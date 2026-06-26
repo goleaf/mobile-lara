@@ -3,11 +3,11 @@ $shell-phone-width: 28rem;
 $shell-wide-phone-width: 32rem;
 $shell-tablet-width: 44rem;
 $shell-phone-header-height: 5.25rem;
-$shell-phone-footer-height: 6.875rem;
+$shell-phone-footer-height: 8.25rem;
 $shell-wide-phone-header-height: 5.75rem;
-$shell-wide-phone-footer-height: 7.25rem;
+$shell-wide-phone-footer-height: 8.75rem;
 $shell-tablet-header-height: 6rem;
-$shell-tablet-footer-height: 7.5rem;
+$shell-tablet-footer-height: 9rem;
 $shell-phone-block-padding: 0.75rem;
 $shell-wide-block-padding: 1rem;
 $breakpoint-wide-phone: 640px;
@@ -173,6 +173,28 @@ $breakpoint-tablet: 768px;
         --mobile-content-bottom: color-mix(in oklch, oklch(0.13 0.016 252) 78%, transparent);
         --mobile-content-rail: color-mix(in oklch, oklch(0.42 0.038 252) 70%, var(--color-app-accent) 30%);
         --mobile-content-grid: color-mix(in oklch, oklch(0.4 0.03 252) 30%, transparent);
+    }
+
+    .mobile-bottom-nav-label {
+        display: block;
+        max-width: 100%;
+        white-space: nowrap;
+        text-align: center;
+        line-height: 1rem;
+    }
+
+    @media (max-width: 360px) {
+        .mobile-bottom-nav-label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
     }
 
     @media (min-width: $breakpoint-wide-phone) {

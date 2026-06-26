@@ -490,7 +490,7 @@ All reusable mobile components live in `resources/views/components/mobile`.
 | `<x-mobile.retry-button>` | Action button with retry loading copy and spinner. |
 | `<x-mobile.page-skeleton>` | Full page loading placeholder built from mobile skeleton cards. |
 | `<x-mobile.network-error-state>` | Connection error state with optional Livewire retry action. |
-| `<x-mobile.bottom-navigation>` | Primary mobile navigation. |
+| `<x-mobile.bottom-navigation>` | Primary mobile navigation with large icon targets, a centered Create action, visible labels on standard phone widths, and icon-only presentation on very narrow screens. |
 
 ## Product State Badges
 

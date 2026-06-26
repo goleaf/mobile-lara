@@ -459,7 +459,7 @@ Status values:
 | Welcome screen | tested | `Mobile\Welcome` route and view exist in `apps/mobile-client`. |
 | Auth screens | tested | Login, register, profile update, profile logout, sessions logout, and sessions logout-all consume the mobile auth API service in `apps/mobile-client`. Password reset and email verification remain local validation placeholders until API behavior is documented and delivered through a separately approved implementation slice. |
 | Dashboard | tested | `Mobile\Dashboard` exists and renders in `apps/mobile-client`; Admin/API bootstrap integration is missing. |
-| Bottom navigation | tested | `<x-mobile.bottom-navigation>` exists and is covered by shell tests; feature-gated navigation is not API-controlled yet. |
+| Bottom navigation | tested | `<x-mobile.bottom-navigation>` exists with enlarged icon targets, a taller shell footer track, centered Create action, narrow-screen icon-only fallback, Playwright viewport checks, and shell tests; feature-gated navigation is not API-controlled yet. |
 | Settings | tested | Settings index and sections exist; workspace settings now reads cached bootstrap tenant context and switches tenants through API. Remote config policy remains pending. |
 | Profile | tested | Profile and edit profile screens exist; edit profile syncs account details (`name`, `username`, `phone`, `bio`, `location`, `website`), optional avatar upload, and avatar removal through the API profile endpoint when a valid access token exists. |
 | Notifications page | tested | Local notification inbox exists, server notification authority exists for inbox/read/delete/push-token endpoints, and native push permission/token capture UI remains pending. |

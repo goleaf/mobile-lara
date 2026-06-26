@@ -145,6 +145,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Enforced a single mobile page header: the fixed shell header owns page titles
   across the app, while shared page-header instances now render only compact
   back/action controls instead of duplicate title and description blocks.
+- Enlarged the mobile bottom navigation with taller shell footer tracks,
+  larger icon targets, a stronger centered Create action, visible labels on
+  normal phone widths, and an icon-only fallback on very narrow screens.
 - Refactored the mobile auth/profile boundary to server-only account storage:
   login and registration now authenticate the Laravel session from the API user
   id without creating a local mobile `users` row, profile screens hydrate from
