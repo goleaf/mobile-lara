@@ -16,6 +16,7 @@ test('admin dashboard renders the control plane shell', function (): void {
         ->assertSeeLivewire(Dashboard::class)
         ->assertSee('Mobile Control Dashboard')
         ->assertSee('Tenant authority')
+        ->assertSee(route('admin.tenants'), false)
         ->assertSee('Mobile API');
 });
 

@@ -140,6 +140,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added a policy-gated support-center browser action to mobile support
   settings so disabled native browser policy hides the recovery control and
   blocks direct Livewire calls before native browser handoff.
+- Added audited Admin/API tenant management for platform admins, including
+  tenant create/update controls for lifecycle status, subscription state, slug,
+  and JSON settings.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

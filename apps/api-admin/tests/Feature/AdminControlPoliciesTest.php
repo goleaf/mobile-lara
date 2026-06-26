@@ -3,6 +3,7 @@
 use App\Models\MobileAppVersionPolicy;
 use App\Models\MobileFeatureFlag;
 use App\Models\MobileRemoteConfig;
+use App\Models\Tenant;
 use App\Models\TenantFeatureOverride;
 use App\Models\TenantRemoteConfigOverride;
 use App\Models\User;
@@ -47,6 +48,7 @@ function adminControlPolicyResources(): array
 {
     return [
         [MobileFeatureFlag::class, MobileFeatureFlag::factory()->create()],
+        [Tenant::class, Tenant::factory()->create()],
         [TenantFeatureOverride::class, TenantFeatureOverride::factory()->create()],
         [UserFeatureOverride::class, UserFeatureOverride::factory()->create()],
         [MobileRemoteConfig::class, MobileRemoteConfig::factory()->create()],

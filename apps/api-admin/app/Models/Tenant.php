@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\TenantStatus;
 use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -50,6 +51,49 @@ final class Tenant extends Model
     public function memberships(): HasMany
     {
         return $this->hasMany(TenantUser::class);
+    }
+
+    /**
+     * @param  Builder<Tenant>  $query
+     * @return Builder<Tenant>
+     */
+    public function scopeForAdminIndex(Builder $query): Builder
+    {
+        return $query
+            ->select([
+                'id',
+                'public_id',
+                'name',
+                'slug',
+                'status',
+                'subscription_state',
+                'settings',
+                'updated_at',
+            ])
+            ->withCount('memberships')
+            ->orderBy('name');
+    }
+
+    /**
+     * @param  Builder<Tenant>  $query
+     * @return Builder<Tenant>
+     */
+    public function scopeMatchingAdminSearch(Builder $query, string $search): Builder
+    {
+        $search = trim($search);
+
+        if ($search === '') {
+            return $query;
+        }
+
+        return $query->where(function (Builder $query) use ($search): void {
+            $query
+                ->where('name', 'like', '%'.$search.'%')
+                ->orWhere('slug', 'like', '%'.$search.'%')
+                ->orWhere('public_id', 'like', '%'.$search.'%')
+                ->orWhere('status', 'like', '%'.$search.'%')
+                ->orWhere('subscription_state', 'like', '%'.$search.'%');
+        });
     }
 
     public function isMobileSwitchable(): bool

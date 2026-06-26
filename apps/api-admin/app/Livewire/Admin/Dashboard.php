@@ -19,9 +19,10 @@ final class Dashboard extends Component
         return [
             [
                 'label' => 'Tenant authority',
-                'status' => 'Planned',
-                'detail' => 'Lifecycle, tenant status, settings, and isolation controls.',
-                'tone' => 'neutral',
+                'status' => 'Live',
+                'detail' => 'Lifecycle, tenant status, subscription state, settings, and isolation controls.',
+                'tone' => 'success',
+                'route' => 'admin.tenants',
             ],
             [
                 'label' => 'Mobile API',
