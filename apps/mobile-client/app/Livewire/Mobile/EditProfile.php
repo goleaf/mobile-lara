@@ -135,36 +135,40 @@ final class EditProfile extends Component
         $avatarPathForApi = null;
         $removeAvatarInApi = false;
         $avatarChanged = false;
+        $pendingNativeAvatarUsed = false;
+        $stagedUploadedAvatarPath = null;
 
         if ($this->avatar instanceof UploadedFile) {
-            $avatarPath = $this->avatarStorage->storeUploaded($this->avatar, $previousAvatarPath);
+            $avatarPath = $this->avatarStorage->storeUploaded($this->avatar, deletePrevious: false);
+            $stagedUploadedAvatarPath = $avatarPath;
             $avatarPathForApi = $avatarPath;
             $this->avatarUploadName = $this->avatar->getClientOriginalName();
-            $this->clearPendingNativeAvatar(except: $avatarPath);
             $avatarChanged = true;
         } elseif (is_string($this->pendingNativeAvatarPath)) {
             $avatarPath = $this->pendingNativeAvatarPath;
             $avatarPathForApi = $avatarPath;
-            $this->avatarStorage->delete($previousAvatarPath, except: $avatarPath);
-            $this->pendingNativeAvatarPath = null;
-            $this->pendingNativeAvatarUrl = null;
             $avatarChanged = true;
+            $pendingNativeAvatarUsed = true;
         } elseif ($this->avatarMarkedForRemoval) {
-            $this->avatarStorage->delete($previousAvatarPath);
             $avatarPath = null;
             $removeAvatarInApi = true;
             $this->avatarUploadName = null;
             $avatarChanged = true;
         }
 
-        if ($user instanceof User) {
-            $user->name = $this->name;
-            $user->avatar_path = $avatarPath;
-            $user->save();
-        }
-
         $syncResult = $this->syncProfileWithApi($avatarPathForApi, $removeAvatarInApi);
         $syncedWithApi = $syncResult['synced'];
+
+        if (! $syncedWithApi) {
+            $this->avatarStorage->delete($stagedUploadedAvatarPath);
+            $this->successMessage = null;
+            $message = is_string($syncResult['message'] ?? null)
+                ? $syncResult['message']
+                : 'The mobile API did not accept the profile update.';
+            $this->toastWarning("Profile was not saved because API sync failed: {$message}", 'Profile save blocked');
+
+            return;
+        }
 
         if (array_key_exists('avatar_path', $syncResult)) {
             $apiAvatarPath = $syncResult['avatar_path'];
@@ -175,11 +179,20 @@ final class EditProfile extends Component
             }
 
             $avatarPath = $apiAvatarPath;
+        }
 
-            if ($user instanceof User) {
-                $user->avatar_path = $avatarPath;
-                $user->save();
-            }
+        if ($avatarChanged) {
+            $this->avatarStorage->delete($previousAvatarPath, except: $avatarPath);
+        }
+
+        if ($pendingNativeAvatarUsed) {
+            $this->clearPendingNativeAvatar(except: $avatarPath);
+        }
+
+        if ($user instanceof User) {
+            $user->name = $this->name;
+            $user->avatar_path = $avatarPath;
+            $user->save();
         }
 
         $this->savedAvatarPath = $avatarPath;
@@ -190,10 +203,9 @@ final class EditProfile extends Component
             ? 'Avatar saved to the mobile profile.'
             : $this->nativeAvatarStatus;
 
-        $location = $syncedWithApi ? 'with API.' : 'locally.';
         $this->successMessage = $avatarChanged
-            ? "Profile details and avatar saved {$location}"
-            : "Profile details saved {$location}";
+            ? 'Profile details and avatar saved with API.'
+            : 'Profile details saved with API.';
         $this->toastSuccess($this->successMessage, 'Profile saved');
     }
 
@@ -460,7 +472,7 @@ final class EditProfile extends Component
     }
 
     /**
-     * @return array{synced: bool, avatar_path?: string|null}
+     * @return array{synced: bool, avatar_path?: string|null, message?: string}
      */
     private function syncProfileWithApi(?string $avatarPath = null, bool $removeAvatar = false): array
     {
@@ -484,11 +496,7 @@ final class EditProfile extends Component
 
             return $result;
         } catch (MobileApiException $exception) {
-            if ($exception->mobileCode !== 'missing_access_token') {
-                $this->toastWarning('Profile saved locally and will need API retry when the session is healthy.', 'Profile sync pending');
-            }
-
-            return ['synced' => false];
+            return ['synced' => false, 'message' => $exception->getMessage()];
         }
     }
 }

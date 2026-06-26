@@ -26,7 +26,7 @@ final class AvatarStorageService
         'image/webp' => 'webp',
     ];
 
-    public function storeUploaded(UploadedFile $avatar, ?string $previousPath = null): string
+    public function storeUploaded(UploadedFile $avatar, ?string $previousPath = null, bool $deletePrevious = true): string
     {
         $path = $avatar->store(path: self::DIRECTORY, options: self::DISK);
 
@@ -36,7 +36,9 @@ final class AvatarStorageService
             ]);
         }
 
-        $this->delete($previousPath, except: $path);
+        if ($deletePrevious) {
+            $this->delete($previousPath, except: $path);
+        }
 
         return $path;
     }

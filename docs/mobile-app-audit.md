@@ -71,7 +71,8 @@ The following contracted paths are API-backed and covered by focused tests:
 
 - Authentication and session actions: login, register, profile logout,
   sessions logout, and sessions logout-all.
-- Profile update and avatar sync through `PATCH /auth/profile`.
+- Profile update and avatar sync through `PATCH /auth/profile`, with local
+  user/avatar mirror changes blocked when the API rejects the save.
 - Records create, update, archive, restore, delete, detail delete, and bulk
   list mutations through the records API/sync service when a server record id
   exists.

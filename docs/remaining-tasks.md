@@ -35,6 +35,9 @@ Completed in this pass:
 - Notification read, open-as-read, and read-all actions now call the
   notifications API for server-backed inbox rows before local read-state
   mutation.
+- Profile name/avatar/removal saves now call `PATCH /auth/profile` before the
+  local user/avatar mirror is updated; API rejection leaves the local mirror
+  unchanged.
 - Tests cover API requests, bearer-token headers, stray-request prevention for
   focused suites, and failed API record delete preserving the local cache row.
 

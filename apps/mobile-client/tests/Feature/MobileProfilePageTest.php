@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Livewire\Livewire;
 
 uses(LazilyRefreshDatabase::class);
@@ -132,6 +131,16 @@ test('edit profile screen renders editable fields and saves valid details', func
 
     $avatar = UploadedFile::fake()->image('avatar.png', 256, 256);
 
+    app(AccessTokenService::class)->put('profile-edit-access-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response(mobileProfileApiEnvelope(
+            name: 'Updated Person',
+            email: 'taylor@example.test',
+            avatarPath: 'avatars/api-updated-profile.png',
+        )),
+    ]);
+
     Livewire::actingAs($user)
         ->test(EditProfile::class)
         ->assertSet('name', 'Taylor Mobile')
@@ -164,12 +173,12 @@ test('edit profile screen renders editable fields and saves valid details', func
         ->assertSet('website', 'https://example.test')
         ->assertSet('avatarInitials', 'UP')
         ->assertSet('avatarUploadName', 'avatar.png')
-        ->assertSet('successMessage', 'Profile details and avatar saved locally.')
+        ->assertSet('successMessage', 'Profile details and avatar saved with API.')
         ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
             return $event === 'mobile-toast'
                 && ($params['type'] ?? null) === 'success'
                 && ($params['title'] ?? null) === 'Profile saved'
-                && ($params['message'] ?? null) === 'Profile details and avatar saved locally.';
+                && ($params['message'] ?? null) === 'Profile details and avatar saved with API.';
         })
         ->assertSee('Mobile profile owner')
         ->assertSee('Avatar ready: avatar.png');
@@ -177,10 +186,12 @@ test('edit profile screen renders editable fields and saves valid details', func
     $user->refresh();
 
     expect($user->name)->toBe('Updated Person')
-        ->and($user->avatar_path)->toBeString()
-        ->and(Str::startsWith((string) $user->avatar_path, 'avatars/'))->toBeTrue();
+        ->and($user->avatar_path)->toBe('avatars/api-updated-profile.png');
 
-    Storage::disk('public')->assertExists((string) $user->avatar_path);
+    Storage::disk('public')->assertExists('avatars/api-updated-profile.png');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
+        && $request->hasHeader('Authorization', 'Bearer profile-edit-access-token'));
 });
 
 test('edit profile screen removes a saved avatar on save', function (): void {
@@ -189,6 +200,16 @@ test('edit profile screen removes a saved avatar on save', function (): void {
 
     $user = User::factory()->create([
         'avatar_path' => 'avatars/current.jpg',
+    ]);
+
+    app(AccessTokenService::class)->put('profile-remove-avatar-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response(mobileProfileApiEnvelope(
+            name: (string) $user->name,
+            email: (string) $user->email,
+            avatarPath: null,
+        )),
     ]);
 
     Livewire::actingAs($user)
@@ -202,11 +223,15 @@ test('edit profile screen removes a saved avatar on save', function (): void {
         ->call('saveProfile')
         ->assertSet('savedAvatarPath', null)
         ->assertSet('avatarMarkedForRemoval', false)
-        ->assertSet('successMessage', 'Profile details and avatar saved locally.');
+        ->assertSet('successMessage', 'Profile details and avatar saved with API.');
 
     expect($user->refresh()->avatar_path)->toBeNull();
 
     Storage::disk('public')->assertMissing('avatars/current.jpg');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
+        && $request->hasHeader('Authorization', 'Bearer profile-remove-avatar-token')
+        && $request['remove_avatar'] === true);
 });
 
 test('edit profile syncs account name through api when access token exists', function (): void {
@@ -306,12 +331,62 @@ test('edit profile syncs uploaded avatar through api when access token exists', 
         && $request->hasHeader('Authorization', 'Bearer profile-avatar-access-token'));
 });
 
+test('edit profile does not update local mirror when api rejects profile save', function (): void {
+    Storage::fake('public');
+
+    $user = User::factory()->create([
+        'name' => 'Original Person',
+        'email' => 'original@example.test',
+    ]);
+
+    app(AccessTokenService::class)->put('profile-failure-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response([
+            'success' => false,
+            'error' => [
+                'code' => 'profile_update_failed',
+                'message' => 'The profile update was rejected by the API.',
+                'category' => 'validation',
+                'next_action' => 'fix_form',
+            ],
+            'meta' => ['api_version' => 'v1'],
+        ], 422),
+    ]);
+
+    Livewire::actingAs($user)
+        ->test(EditProfile::class)
+        ->set('name', 'Rejected Person')
+        ->call('saveProfile')
+        ->assertSet('successMessage', null)
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Profile save blocked';
+        });
+
+    expect($user->refresh()->name)->toBe('Original Person');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
+        && $request->hasHeader('Authorization', 'Bearer profile-failure-token'));
+});
+
 test('native camera photo can be previewed and saved as avatar', function (): void {
     Storage::fake('public');
 
     $user = User::factory()->create();
     $photo = UploadedFile::fake()->image('native-camera.jpg', 256, 256);
     $operationId = 'native-camera-avatar';
+
+    app(AccessTokenService::class)->put('profile-native-camera-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response(mobileProfileApiEnvelope(
+            name: (string) $user->name,
+            email: (string) $user->email,
+            avatarPath: 'avatars/api-native-camera.jpg',
+        )),
+    ]);
 
     Livewire::actingAs($user)
         ->test(EditProfile::class)
@@ -322,15 +397,17 @@ test('native camera photo can be previewed and saved as avatar', function (): vo
         ->assertSet('nativeAvatarStatus', 'Camera photo ready to preview and save.')
         ->assertSee('Avatar ready: Camera photo')
         ->call('saveProfile')
-        ->assertSet('savedAvatarPath', fn (?string $path): bool => is_string($path) && Str::startsWith($path, 'avatars/'))
-        ->assertSet('successMessage', 'Profile details and avatar saved locally.');
+        ->assertSet('savedAvatarPath', 'avatars/api-native-camera.jpg')
+        ->assertSet('successMessage', 'Profile details and avatar saved with API.');
 
     $avatarPath = $user->refresh()->avatar_path;
 
-    expect($avatarPath)->toBeString()
-        ->and(Str::startsWith((string) $avatarPath, 'avatars/'))->toBeTrue();
+    expect($avatarPath)->toBe('avatars/api-native-camera.jpg');
 
     Storage::disk('public')->assertExists((string) $avatarPath);
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
+        && $request->hasHeader('Authorization', 'Bearer profile-native-camera-token'));
 });
 
 test('native gallery image can be previewed and saved as avatar', function (): void {
@@ -339,6 +416,16 @@ test('native gallery image can be previewed and saved as avatar', function (): v
     $user = User::factory()->create();
     $photo = UploadedFile::fake()->image('native-gallery.png', 256, 256);
     $operationId = 'native-gallery-avatar';
+
+    app(AccessTokenService::class)->put('profile-native-gallery-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/auth/profile' => Http::response(mobileProfileApiEnvelope(
+            name: (string) $user->name,
+            email: (string) $user->email,
+            avatarPath: 'avatars/api-native-gallery.png',
+        )),
+    ]);
 
     Livewire::actingAs($user)
         ->test(EditProfile::class)
@@ -354,15 +441,17 @@ test('native gallery image can be previewed and saved as avatar', function (): v
         ->assertSet('nativeAvatarStatus', 'Gallery image ready to preview and save.')
         ->assertSee('Avatar ready: Gallery image')
         ->call('saveProfile')
-        ->assertSet('savedAvatarPath', fn (?string $path): bool => is_string($path) && Str::startsWith($path, 'avatars/'))
-        ->assertSet('successMessage', 'Profile details and avatar saved locally.');
+        ->assertSet('savedAvatarPath', 'avatars/api-native-gallery.png')
+        ->assertSet('successMessage', 'Profile details and avatar saved with API.');
 
     $avatarPath = $user->refresh()->avatar_path;
 
-    expect($avatarPath)->toBeString()
-        ->and(Str::startsWith((string) $avatarPath, 'avatars/'))->toBeTrue();
+    expect($avatarPath)->toBe('avatars/api-native-gallery.png');
 
     Storage::disk('public')->assertExists((string) $avatarPath);
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/profile'
+        && $request->hasHeader('Authorization', 'Bearer profile-native-gallery-token'));
 });
 
 test('native avatar controls fall back to browser upload outside NativePHP', function (): void {
@@ -421,6 +510,29 @@ test('profile logout redirects and clears local mobile state', function (): void
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/auth/logout'
         && $request->hasHeader('Authorization', 'Bearer profile-logout-access-token'));
 });
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileProfileApiEnvelope(string $name, string $email, ?string $avatarPath = null): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => [
+                'id' => 123,
+                'name' => $name,
+                'email' => $email,
+                'avatar_path' => $avatarPath,
+                'avatar_url' => is_string($avatarPath) ? "https://api-admin.example.test/storage/{$avatarPath}" : null,
+                'email_verified_at' => '2026-06-25T12:00:00+00:00',
+            ],
+            'session' => ['id' => 99, 'status' => 'active'],
+            'next_bootstrap_required' => true,
+        ],
+        'meta' => ['api_version' => 'v1'],
+    ];
+}
 
 function migrateMobileProfileLocalDatabase(): void
 {

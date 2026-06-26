@@ -141,11 +141,12 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Rechecked the mobile API boundary and tightened user-visible business
   actions so root and nested mobile clients call the Admin/API services before
   mutating server-trusted local mirrors: profile logout, sessions logout and
-  logout-all, record list/edit/detail archive/restore/delete, record bulk
-  status/archive/category/delete actions, and notification read/read-all/open
-  state. Added regression coverage with HTTP fakes and failed-API delete
-  protection so server-backed local records are not removed when API deletion
-  fails.
+  logout-all, profile name/avatar/removal saves, record list/edit/detail
+  archive/restore/delete, record bulk status/archive/category/delete actions,
+  and notification read/read-all/open state. Added regression coverage with
+  HTTP fakes, failed-API profile save protection, and failed-API delete
+  protection so server-backed local mirrors are not changed when the API
+  rejects the action.
 - Added API-backed mobile avatar upload/removal through `PATCH /auth/profile`,
   including Admin/API public-disk storage, avatar path/url payloads, mobile
   multipart profile sync, and local mirror preservation for the current device.
