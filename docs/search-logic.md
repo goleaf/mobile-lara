@@ -124,6 +124,14 @@ tenant-enabled, plan-controlled, permission-aware, price-safe,
 inventory-safe, hosted-payment-safe, offline-limited, privacy-safe,
 auditable, and Admin/API-authoritative.
 
+Messaging And Community Logic is defined in `messaging-community-logic.md`:
+conversation behavior, support chat behavior, message attachments,
+moderation, reports/abuse flow, notification behavior, offline message
+drafts, admin visibility boundaries, and privacy principles must remain
+tenant-enabled, plan-controlled, permission-aware, moderation-ready,
+abuse-report-safe, notification-safe, offline-draft-safe, privacy-safe,
+auditable, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline

@@ -22,6 +22,14 @@ tenant-enabled, plan-controlled, permission-aware, price-safe,
 inventory-safe, hosted-payment-safe, offline-limited, privacy-safe,
 auditable, and Admin/API-authoritative.
 
+Messaging And Community Logic is defined in `messaging-community-logic.md`:
+conversation behavior, support chat behavior, message attachments,
+moderation, reports/abuse flow, notification behavior, offline message
+drafts, admin visibility boundaries, and privacy principles must remain
+tenant-enabled, plan-controlled, permission-aware, moderation-ready,
+abuse-report-safe, notification-safe, offline-draft-safe, privacy-safe,
+auditable, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -394,10 +402,13 @@ become a backdoor into private tenant data.
 
 ### Community/Messaging
 
-Community/messaging supports tenant-scoped conversations, announcements,
-channels, groups, moderation, direct messages, read state, and mobile
-notifications. It should be selected only when tenants have a clear need for
-controlled communication.
+Community/messaging is defined in [Messaging And Community
+Logic](messaging-community-logic.md). It supports tenant-scoped
+conversations, announcements, channels, groups, moderation, direct messages,
+support chat surfaces, message attachments, reports/abuse flow, read state,
+offline message drafts, admin visibility boundaries, privacy principles, and
+mobile notifications. It should be selected only when tenants have a clear
+need for controlled communication.
 
 Admin/API should own membership, moderation, retention, notification policy,
 blocking/reporting, exports, audit, and privacy boundaries. Mobile should own

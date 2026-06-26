@@ -50,6 +50,14 @@ tenant-enabled, plan-controlled, permission-aware, price-safe,
 inventory-safe, hosted-payment-safe, offline-limited, privacy-safe,
 auditable, and Admin/API-authoritative.
 
+Messaging And Community Logic is defined in `docs/messaging-community-logic.md`:
+conversation behavior, support chat behavior, message attachments,
+moderation, reports/abuse flow, notification behavior, offline message
+drafts, admin visibility boundaries, and privacy principles must remain
+tenant-enabled, plan-controlled, permission-aware, moderation-ready,
+abuse-report-safe, notification-safe, offline-draft-safe, privacy-safe,
+auditable, and Admin/API-authoritative.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -267,6 +275,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/logistics-delivery-logic.md](docs/logistics-delivery-logic.md) | Logistics/delivery module logic for delivery job lifecycle, pickup, drop-off, proof of delivery, scan validation, location check-in, failed delivery reasons, offline behavior, and admin monitoring. |
 | [docs/booking-logic.md](docs/booking-logic.md) | Booking module logic for service selection, availability, booking requests, confirmation, cancellation, reschedule, reminders, admin schedule control, tenant rules, and mobile offline limitations. |
 | [docs/commerce-logic.md](docs/commerce-logic.md) | Commerce module logic for catalog browsing, cart behavior, checkout principles, hosted payment boundaries, order lifecycle, invoice/receipt principles, subscription upsell, admin product/control, and mobile offline limitations. |
+| [docs/messaging-community-logic.md](docs/messaging-community-logic.md) | Messaging and community module logic for conversation behavior, support chat behavior, message attachments, moderation, reports/abuse flow, notifications, offline message drafts, admin visibility boundaries, and privacy principles. |
 | [docs/native-feature-strategy.md](docs/native-feature-strategy.md) | NativePHP native feature strategy for logical service boundaries, browser/development fallbacks, permission education, admin feature flags, failure UX, and offline sync. |
 | [docs/camera-media-logic.md](docs/camera-media-logic.md) | Camera and media logic for taking photos, choosing media, previewing media, attaching to records/support, offline storage, upload queues, feature flags, permission denial, size limits, and privacy. |
 | [docs/scanner-logic.md](docs/scanner-logic.md) | QR/barcode scanner logic for scan-to-search, scan-to-create, scan-to-validate, scan history, offline scanning, invalid and duplicate scan behavior, feature flags, and camera permission dependency. |
@@ -347,6 +356,7 @@ contracts.
 - Apply [logistics delivery logic](docs/logistics-delivery-logic.md) before planning delivery job lifecycle, pickup flow, drop-off flow, proof of delivery, scan validation, location check-in, failed delivery reasons, offline behavior, or admin monitoring.
 - Apply [booking logic](docs/booking-logic.md) before planning service selection, availability logic, booking requests, confirmations, cancellations, reschedules, reminders, admin schedule control, tenant rules, or mobile offline limitations.
 - Apply [commerce logic](docs/commerce-logic.md) before planning catalog browsing, cart behavior, checkout, hosted payment boundaries, order lifecycle, invoice/receipt behavior, subscription upsells, admin product/control, or mobile offline commerce limitations.
+- Apply [messaging and community logic](docs/messaging-community-logic.md) before planning conversation behavior, support chat behavior, message attachments, moderation, reports/abuse flow, notifications, offline message drafts, admin visibility boundaries, or privacy behavior.
 - Apply [native feature strategy](docs/native-feature-strategy.md) before planning NativePHP capability use, logical service boundaries, browser/development fallbacks, permission education, admin feature flags, native failure UX, or native/offline sync behavior.
 - Apply [camera and media logic](docs/camera-media-logic.md) before planning photo capture, media selection, media preview, record/support attachments, offline media storage, upload queues, media feature flags, permission-denied media states, media size rules, or media privacy behavior.
 - Apply [scanner logic](docs/scanner-logic.md) before planning QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history, offline scanning, invalid scan behavior, duplicate scan behavior, scanner feature flags, camera dependency, or scanner permission prompts.

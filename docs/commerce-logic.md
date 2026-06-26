@@ -739,5 +739,13 @@ every mobile commerce action to:
 - A documented audit and reporting meaning.
 - A documented support visibility rule.
 
+Messaging And Community Logic is defined in `messaging-community-logic.md`:
+conversation behavior, support chat behavior, message attachments,
+moderation, reports/abuse flow, notification behavior, offline message
+drafts, admin visibility boundaries, and privacy principles must remain
+tenant-enabled, plan-controlled, permission-aware, moderation-ready,
+abuse-report-safe, notification-safe, offline-draft-safe, privacy-safe,
+auditable, and Admin/API-authoritative.
+
 If any of those are unclear, the correct next step is more documentation, not
 application code.
