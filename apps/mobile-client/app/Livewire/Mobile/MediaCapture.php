@@ -3,6 +3,8 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\Native\CameraService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
@@ -20,6 +22,7 @@ use Native\Mobile\Events\Gallery\MediaSelected;
 class MediaCapture extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     public ?string $pendingOperationId = null;
 
@@ -40,9 +43,10 @@ class MediaCapture extends Component
 
     private CameraService $cameras;
 
-    public function boot(CameraService $cameras): void
+    public function boot(CameraService $cameras, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->cameras = $cameras;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function takePhoto(): void
@@ -100,6 +104,12 @@ class MediaCapture extends Component
             return;
         }
 
+        if ($this->cameraFeatureDenied('Media unavailable')) {
+            $this->clearPendingOperation();
+
+            return;
+        }
+
         $this->appendMediaItem($path, $mimeType, 'image', 'Camera photo');
         $this->completePendingOperation('Camera photo captured.');
     }
@@ -108,6 +118,12 @@ class MediaCapture extends Component
     public function handleVideoRecorded(string $path, string $mimeType = 'video/mp4', ?string $id = null): void
     {
         if (! $this->matchesPendingOperation($id, 'record_video')) {
+            return;
+        }
+
+        if ($this->cameraFeatureDenied('Media unavailable')) {
+            $this->clearPendingOperation();
+
             return;
         }
 
@@ -125,6 +141,12 @@ class MediaCapture extends Component
         ?string $id = null,
     ): void {
         if (! $this->matchesPendingOperation($id, null, ['pick_image', 'pick_video', 'pick_multiple_media'])) {
+            return;
+        }
+
+        if ($this->cameraFeatureDenied('Media unavailable')) {
+            $this->clearPendingOperation();
+
             return;
         }
 
@@ -199,6 +221,7 @@ class MediaCapture extends Component
             'cameraCapabilities' => $this->cameras->capabilities(),
             'nativeCameraAvailable' => $this->cameras->isAvailable(),
             'mediaActions' => $this->mediaActions(),
+            'mediaPolicy' => $this->mediaPolicy(),
         ]);
     }
 
@@ -209,6 +232,10 @@ class MediaCapture extends Component
     {
         $this->mediaStatus = null;
         $this->mediaError = null;
+
+        if ($this->cameraFeatureDenied('Media unavailable')) {
+            return;
+        }
 
         $id = $operation.'-'.Str::uuid()->toString();
         $this->pendingOperationId = $id;
@@ -227,6 +254,13 @@ class MediaCapture extends Component
         $this->pendingOperation = null;
         $this->mediaError = $result['message'];
         $this->toastWarning($this->mediaError, 'Native media unavailable');
+    }
+
+    private function clearPendingOperation(): void
+    {
+        $this->pendingOperationId = null;
+        $this->pendingOperation = null;
+        $this->mediaStatus = null;
     }
 
     private function appendMediaItem(string $path, ?string $mimeType, ?string $type, string $source): void
@@ -307,6 +341,10 @@ class MediaCapture extends Component
      */
     private function mediaActions(): array
     {
+        if (! $this->mobileFeatureAllowed('native_camera')) {
+            return [];
+        }
+
         return [
             [
                 'label' => 'Take photo',
@@ -339,5 +377,34 @@ class MediaCapture extends Component
                 'description' => "Choose up to {$this->multipleMediaLimit} mixed items.",
             ],
         ];
+    }
+
+    /**
+     * @return array{camera: array{allowed: bool, message: string}}
+     */
+    private function mediaPolicy(): array
+    {
+        $camera = $this->mobileFeatureDecision('native_camera');
+
+        return [
+            'camera' => [
+                'allowed' => $camera['allowed'],
+                'message' => $camera['message'],
+            ],
+        ];
+    }
+
+    private function cameraFeatureDenied(string $title): bool
+    {
+        $decision = $this->mobileFeatureDecision('native_camera');
+
+        if ($decision['allowed']) {
+            return false;
+        }
+
+        $this->mediaError = $decision['message'];
+        $this->toastWarning($decision['message'], $title);
+
+        return true;
     }
 }

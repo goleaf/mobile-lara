@@ -47,35 +47,42 @@
     </x-mobile.card>
 
     <x-mobile.card title="Capture actions" description="Launch native media flows and wait for NativePHP events.">
-        <div class="grid gap-3">
-            @forelse ($mediaActions as $mediaAction)
-                <div
-                    wire:key="media-action-{{ $mediaAction['action'] }}"
-                    class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
-                >
-                    <div>
-                        <p class="text-base font-semibold text-app-ink dark:text-zinc-100">{{ $mediaAction['label'] }}</p>
-                        <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $mediaAction['description'] }}</p>
-                    </div>
-
-                    <x-mobile.button
-                        wire:click="{{ $mediaAction['action'] }}"
-                        wire:loading.attr="disabled"
-                        wire:target="{{ $mediaAction['action'] }}"
-                        :variant="$mediaAction['variant']"
-                        full
+        @if (! $mediaPolicy['camera']['allowed'])
+            <x-mobile.error-state
+                title="Media capture disabled"
+                :message="$mediaPolicy['camera']['message']"
+            />
+        @else
+            <div class="grid gap-3">
+                @forelse ($mediaActions as $mediaAction)
+                    <div
+                        wire:key="media-action-{{ $mediaAction['action'] }}"
+                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
                     >
-                        <span wire:loading.remove wire:target="{{ $mediaAction['action'] }}">{{ $mediaAction['label'] }}</span>
-                        <span wire:loading wire:target="{{ $mediaAction['action'] }}">Opening</span>
-                    </x-mobile.button>
-                </div>
-            @empty
-                <x-mobile.empty-state
-                    title="No media actions"
-                    description="Camera actions are not configured."
-                />
-            @endforelse
-        </div>
+                        <div>
+                            <p class="text-base font-semibold text-app-ink dark:text-zinc-100">{{ $mediaAction['label'] }}</p>
+                            <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $mediaAction['description'] }}</p>
+                        </div>
+
+                        <x-mobile.button
+                            wire:click="{{ $mediaAction['action'] }}"
+                            wire:loading.attr="disabled"
+                            wire:target="{{ $mediaAction['action'] }}"
+                            :variant="$mediaAction['variant']"
+                            full
+                        >
+                            <span wire:loading.remove wire:target="{{ $mediaAction['action'] }}">{{ $mediaAction['label'] }}</span>
+                            <span wire:loading wire:target="{{ $mediaAction['action'] }}">Opening</span>
+                        </x-mobile.button>
+                    </div>
+                @empty
+                    <x-mobile.empty-state
+                        title="No media actions"
+                        description="Camera actions are not configured."
+                    />
+                @endforelse
+            </div>
+        @endif
     </x-mobile.card>
 
     <x-mobile.card title="Capabilities" description="NativePHP camera plugin methods exposed by this app service.">
