@@ -246,8 +246,11 @@ before implementation scope is added.
   for disabled features. Record create/update/archive/delete and bulk local
   mutations now deny direct Livewire calls before SQLite writes. Attachment
   management and attachment sharing now gate local writes and native share
-  handoff; lower-level NativePHP service calls, voice notes, check-ins, and
-  offline queue writes still need per-action gates.
+  handoff. Voice-note recording, native callbacks, local save/delete actions,
+  and upload queue placeholders now gate cached microphone and sync policy
+  before local writes, file deletes, or queue writes. Check-ins, media
+  capture/file-manager actions, lower-level NativePHP service calls, and
+  remaining offline queue writes still need per-action gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

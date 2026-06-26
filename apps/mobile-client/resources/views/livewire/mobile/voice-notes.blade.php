@@ -68,27 +68,34 @@
     </x-mobile.card>
 
     <x-mobile.card title="Recorder controls" description="Start, pause, resume, stop, and inspect the active native recording.">
-        <div class="grid grid-cols-2 gap-3">
-            @forelse ($recordingActions as $recordingAction)
-                <x-mobile.button
-                    wire:key="voice-note-action-{{ $recordingAction['action'] }}"
-                    wire:click="{{ $recordingAction['action'] }}"
-                    wire:loading.attr="disabled"
-                    wire:target="{{ $recordingAction['action'] }}"
-                    :variant="$recordingAction['variant']"
-                    :disabled="$recordingAction['disabled']"
-                    full
-                >
-                    <span wire:loading.remove wire:target="{{ $recordingAction['action'] }}">{{ $recordingAction['label'] }}</span>
-                    <span wire:loading wire:target="{{ $recordingAction['action'] }}">{{ $recordingAction['loading'] }}</span>
-                </x-mobile.button>
-            @empty
-                <x-mobile.empty-state
-                    title="No controls"
-                    description="Voice note controls are not configured."
-                />
-            @endforelse
-        </div>
+        @if (! $voiceNotePolicy['microphone']['allowed'])
+            <x-mobile.error-state
+                title="Voice note recording disabled"
+                :message="$voiceNotePolicy['microphone']['message']"
+            />
+        @else
+            <div class="grid grid-cols-2 gap-3">
+                @forelse ($recordingActions as $recordingAction)
+                    <x-mobile.button
+                        wire:key="voice-note-action-{{ $recordingAction['action'] }}"
+                        wire:click="{{ $recordingAction['action'] }}"
+                        wire:loading.attr="disabled"
+                        wire:target="{{ $recordingAction['action'] }}"
+                        :variant="$recordingAction['variant']"
+                        :disabled="$recordingAction['disabled']"
+                        full
+                    >
+                        <span wire:loading.remove wire:target="{{ $recordingAction['action'] }}">{{ $recordingAction['label'] }}</span>
+                        <span wire:loading wire:target="{{ $recordingAction['action'] }}">{{ $recordingAction['loading'] }}</span>
+                    </x-mobile.button>
+                @empty
+                    <x-mobile.empty-state
+                        title="No controls"
+                        description="Voice note controls are not configured."
+                    />
+                @endforelse
+            </div>
+        @endif
     </x-mobile.card>
 
     <x-mobile.card title="Current recording" description="Review the returned native audio path before saving.">
@@ -125,32 +132,38 @@
                 >{{ $transcript }}</x-mobile.textarea>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <x-mobile.button wire:click="saveRecording" wire:loading.attr="disabled" wire:target="saveRecording" variant="primary" full>
-                        <span wire:loading.remove wire:target="saveRecording">Save</span>
-                        <span wire:loading wire:target="saveRecording">Saving</span>
-                    </x-mobile.button>
+                    @if ($voiceNotePolicy['microphone']['allowed'])
+                        <x-mobile.button wire:click="saveRecording" wire:loading.attr="disabled" wire:target="saveRecording" variant="primary" full>
+                            <span wire:loading.remove wire:target="saveRecording">Save</span>
+                            <span wire:loading wire:target="saveRecording">Saving</span>
+                        </x-mobile.button>
+                    @endif
 
                     <x-mobile.button wire:click="playVoiceNote" wire:loading.attr="disabled" wire:target="playVoiceNote" variant="secondary" full>
                         <span wire:loading.remove wire:target="playVoiceNote">Play</span>
                         <span wire:loading wire:target="playVoiceNote">Opening</span>
                     </x-mobile.button>
 
-                    <x-mobile.button
-                        wire:click="queueUploadPlaceholder"
-                        wire:loading.attr="disabled"
-                        wire:target="queueUploadPlaceholder"
-                        :disabled="! $savedVoiceNoteId"
-                        variant="secondary"
-                        full
-                    >
-                        <span wire:loading.remove wire:target="queueUploadPlaceholder">Queue upload</span>
-                        <span wire:loading wire:target="queueUploadPlaceholder">Queueing</span>
-                    </x-mobile.button>
+                    @if ($voiceNotePolicy['upload_queue']['allowed'])
+                        <x-mobile.button
+                            wire:click="queueUploadPlaceholder"
+                            wire:loading.attr="disabled"
+                            wire:target="queueUploadPlaceholder"
+                            :disabled="! $savedVoiceNoteId"
+                            variant="secondary"
+                            full
+                        >
+                            <span wire:loading.remove wire:target="queueUploadPlaceholder">Queue upload</span>
+                            <span wire:loading wire:target="queueUploadPlaceholder">Queueing</span>
+                        </x-mobile.button>
+                    @endif
 
-                    <x-mobile.button wire:click="deleteRecording" wire:loading.attr="disabled" wire:target="deleteRecording" variant="danger" full>
-                        <span wire:loading.remove wire:target="deleteRecording">Delete</span>
-                        <span wire:loading wire:target="deleteRecording">Deleting</span>
-                    </x-mobile.button>
+                    @if ($voiceNotePolicy['microphone']['allowed'])
+                        <x-mobile.button wire:click="deleteRecording" wire:loading.attr="disabled" wire:target="deleteRecording" variant="danger" full>
+                            <span wire:loading.remove wire:target="deleteRecording">Delete</span>
+                            <span wire:loading wire:target="deleteRecording">Deleting</span>
+                        </x-mobile.button>
+                    @endif
                 </div>
             </div>
         @else
@@ -211,13 +224,17 @@
                         Play
                     </x-mobile.button>
 
-                    <x-mobile.button wire:click="queueUploadPlaceholder({{ $selectedVoiceNote->getKey() }})" wire:loading.attr="disabled" wire:target="queueUploadPlaceholder({{ $selectedVoiceNote->getKey() }})" variant="secondary" full>
-                        Queue upload
-                    </x-mobile.button>
+                    @if ($voiceNotePolicy['upload_queue']['allowed'])
+                        <x-mobile.button wire:click="queueUploadPlaceholder({{ $selectedVoiceNote->getKey() }})" wire:loading.attr="disabled" wire:target="queueUploadPlaceholder({{ $selectedVoiceNote->getKey() }})" variant="secondary" full>
+                            Queue upload
+                        </x-mobile.button>
+                    @endif
 
-                    <x-mobile.button wire:click="deleteRecording({{ $selectedVoiceNote->getKey() }})" wire:loading.attr="disabled" wire:target="deleteRecording({{ $selectedVoiceNote->getKey() }})" variant="danger" class="col-span-2" full>
-                        Delete voice note
-                    </x-mobile.button>
+                    @if ($voiceNotePolicy['microphone']['allowed'])
+                        <x-mobile.button wire:click="deleteRecording({{ $selectedVoiceNote->getKey() }})" wire:loading.attr="disabled" wire:target="deleteRecording({{ $selectedVoiceNote->getKey() }})" variant="danger" class="col-span-2" full>
+                            Delete voice note
+                        </x-mobile.button>
+                    @endif
                 </div>
             </div>
         </x-mobile.card>
@@ -309,13 +326,17 @@
                                 Play
                             </x-mobile.button>
 
-                            <x-mobile.button wire:click="queueUploadPlaceholder({{ $voiceNote->getKey() }})" wire:loading.attr="disabled" wire:target="queueUploadPlaceholder({{ $voiceNote->getKey() }})" variant="secondary" full>
-                                Queue upload
-                            </x-mobile.button>
+                            @if ($voiceNotePolicy['upload_queue']['allowed'])
+                                <x-mobile.button wire:click="queueUploadPlaceholder({{ $voiceNote->getKey() }})" wire:loading.attr="disabled" wire:target="queueUploadPlaceholder({{ $voiceNote->getKey() }})" variant="secondary" full>
+                                    Queue upload
+                                </x-mobile.button>
+                            @endif
 
-                            <x-mobile.button wire:click="deleteRecording({{ $voiceNote->getKey() }})" wire:loading.attr="disabled" wire:target="deleteRecording({{ $voiceNote->getKey() }})" variant="danger" full>
-                                Delete
-                            </x-mobile.button>
+                            @if ($voiceNotePolicy['microphone']['allowed'])
+                                <x-mobile.button wire:click="deleteRecording({{ $voiceNote->getKey() }})" wire:loading.attr="disabled" wire:target="deleteRecording({{ $voiceNote->getKey() }})" variant="danger" full>
+                                    Delete
+                                </x-mobile.button>
+                            @endif
                         </div>
                     </article>
                 @empty

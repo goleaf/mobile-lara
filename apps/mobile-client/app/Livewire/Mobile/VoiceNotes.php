@@ -3,7 +3,9 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Models\MobileLocalVoiceNote;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\Native\AudioRecordingService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -20,6 +22,7 @@ use Throwable;
 class VoiceNotes extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     public ?string $pendingRecordingId = null;
 
@@ -50,9 +53,10 @@ class VoiceNotes extends Component
 
     private AudioRecordingService $audioRecordings;
 
-    public function boot(AudioRecordingService $audioRecordings): void
+    public function boot(AudioRecordingService $audioRecordings, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->audioRecordings = $audioRecordings;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function startRecording(): void
@@ -60,6 +64,14 @@ class VoiceNotes extends Component
         $this->recordingStatus = null;
         $this->recordingError = null;
         $this->uploadQueueStatus = null;
+
+        if ($this->microphoneFeatureDenied('Recording unavailable')) {
+            $this->recordingState = 'idle';
+            $this->pendingRecordingId = null;
+            $this->recordingReferenceId = null;
+
+            return;
+        }
 
         $id = 'voice-note-'.Str::uuid()->toString();
         $this->pendingRecordingId = $id;
@@ -84,6 +96,10 @@ class VoiceNotes extends Component
 
     public function pauseRecording(): void
     {
+        if ($this->microphoneFeatureDenied('Recording unavailable')) {
+            return;
+        }
+
         $this->applyControlResult(
             result: $this->audioRecordings->pause(),
             stateWhenSuccessful: 'paused',
@@ -93,6 +109,10 @@ class VoiceNotes extends Component
 
     public function resumeRecording(): void
     {
+        if ($this->microphoneFeatureDenied('Recording unavailable')) {
+            return;
+        }
+
         $this->applyControlResult(
             result: $this->audioRecordings->resume(),
             stateWhenSuccessful: 'recording',
@@ -102,6 +122,10 @@ class VoiceNotes extends Component
 
     public function stopRecording(): void
     {
+        if ($this->microphoneFeatureDenied('Recording unavailable')) {
+            return;
+        }
+
         $this->applyControlResult(
             result: $this->audioRecordings->stop(),
             stateWhenSuccessful: 'stopping',
@@ -111,6 +135,10 @@ class VoiceNotes extends Component
 
     public function refreshRecordingStatus(): void
     {
+        if ($this->microphoneFeatureDenied('Status unavailable')) {
+            return;
+        }
+
         $result = $this->audioRecordings->status();
 
         if ($result['success']) {
@@ -128,6 +156,10 @@ class VoiceNotes extends Component
 
     public function saveRecording(): void
     {
+        if ($this->microphoneFeatureDenied('Voice note not saved')) {
+            return;
+        }
+
         $this->validateOnly('transcript');
 
         if (! is_string($this->recordedPath) || $this->recordedPath === '') {
@@ -211,6 +243,10 @@ class VoiceNotes extends Component
 
     public function deleteRecording(?int $voiceNoteId = null): void
     {
+        if ($this->microphoneFeatureDenied('Delete unavailable')) {
+            return;
+        }
+
         $isCurrentRecording = $voiceNoteId === null || $voiceNoteId === $this->savedVoiceNoteId;
         $result = $this->audioRecordings->delete(
             voiceNoteId: $voiceNoteId ?: $this->savedVoiceNoteId,
@@ -239,6 +275,11 @@ class VoiceNotes extends Component
 
     public function queueUploadPlaceholder(?int $voiceNoteId = null): void
     {
+        if ($this->microphoneFeatureDenied('Upload queue unavailable')
+            || $this->mobileFeatureDenied('offline_sync', 'Upload queue unavailable')) {
+            return;
+        }
+
         $result = $this->audioRecordings->queueUploadPlaceholder(
             voiceNoteId: $voiceNoteId ?: $this->savedVoiceNoteId,
             path: $voiceNoteId === null ? $this->recordedPath : null,
@@ -260,6 +301,14 @@ class VoiceNotes extends Component
     public function handleMicrophoneRecorded(string $path, string $mimeType = 'audio/m4a', ?string $id = null): void
     {
         if (! $this->matchesPendingRecording($id)) {
+            return;
+        }
+
+        if ($this->microphoneFeatureDenied('Voice note unavailable')) {
+            $this->pendingRecordingId = null;
+            $this->recordingReferenceId = null;
+            $this->recordingState = 'idle';
+
             return;
         }
 
@@ -302,6 +351,7 @@ class VoiceNotes extends Component
             'selectedVoiceNote' => $this->selectedVoiceNote(),
             'storageAvailable' => $this->storageAvailable(),
             'recordingActions' => $this->recordingActions(),
+            'voiceNotePolicy' => $this->voiceNotePolicy(),
         ]);
     }
 
@@ -382,6 +432,10 @@ class VoiceNotes extends Component
      */
     private function recordingActions(): array
     {
+        if (! $this->mobileFeatureAllowed('native_microphone')) {
+            return [];
+        }
+
         return [
             [
                 'label' => 'Start',
@@ -424,5 +478,30 @@ class VoiceNotes extends Component
                 'description' => 'Read current microphone status from the native bridge.',
             ],
         ];
+    }
+
+    /**
+     * @return array{microphone: array{allowed: bool, message: string}, upload_queue: array{allowed: bool, message: string}}
+     */
+    private function voiceNotePolicy(): array
+    {
+        $microphone = $this->mobileFeatureDecision('native_microphone');
+        $sync = $this->mobileFeatureDecision('offline_sync');
+
+        return [
+            'microphone' => [
+                'allowed' => $microphone['allowed'],
+                'message' => $microphone['message'],
+            ],
+            'upload_queue' => [
+                'allowed' => $microphone['allowed'] && $sync['allowed'],
+                'message' => ! $microphone['allowed'] ? $microphone['message'] : $sync['message'],
+            ],
+        ];
+    }
+
+    private function microphoneFeatureDenied(string $title): bool
+    {
+        return $this->mobileFeatureDenied('native_microphone', $title);
     }
 }

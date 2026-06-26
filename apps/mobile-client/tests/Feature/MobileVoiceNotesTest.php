@@ -5,6 +5,7 @@ use App\Models\MobileLocalOfflineAction;
 use App\Models\MobileLocalVoiceNote;
 use App\Services\MobileLocal\MobileLocalDatabase;
 use App\Services\MobileLocal\OfflineActionRepository;
+use App\Services\MobileLocal\SettingsRepository;
 use App\Services\MobileLocal\VoiceNoteRepository;
 use App\Services\Native\AudioRecordingService;
 use Carbon\CarbonImmutable;
@@ -122,6 +123,104 @@ test('voice notes screen starts native recording with service wrapper', function
         ->and($microphone->pending?->remembered)->toBeTrue();
 });
 
+test('voice note mutations are hidden and blocked by disabled microphone policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileVoiceNotesPolicyBootstrapEnvelope([
+        'native_microphone' => mobileVoiceNotesPolicyFeature(
+            enabled: false,
+            state: 'disabled',
+            message: 'Microphone capture is disabled by admin policy.',
+        ),
+    ]));
+
+    $voiceNote = MobileLocalVoiceNote::factory()->create([
+        'local_file_path' => $this->audioPath,
+        'sync_status' => MobileLocalVoiceNote::SYNC_PENDING,
+    ]);
+
+    Livewire::test(VoiceNotes::class)
+        ->assertSee('Voice note recording disabled')
+        ->assertDontSee('wire:click="startRecording"', false)
+        ->assertDontSee('wire:click="queueUploadPlaceholder('.$voiceNote->getKey().')"', false)
+        ->assertDontSee('wire:click="deleteRecording('.$voiceNote->getKey().')"', false)
+        ->call('startRecording')
+        ->assertSet('pendingRecordingId', null)
+        ->assertSet('recordingState', 'idle')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Recording unavailable'
+                && ($params['message'] ?? null) === 'Microphone capture is disabled by admin policy.';
+        })
+        ->set('pendingRecordingId', 'blocked-voice-id')
+        ->call('handleMicrophoneRecorded', $this->audioPath, 'audio/m4a', 'blocked-voice-id')
+        ->assertSet('recordedPath', null)
+        ->assertSet('recordingState', 'idle')
+        ->set('recordedPath', $this->audioPath)
+        ->set('savedVoiceNoteId', $voiceNote->getKey())
+        ->set('transcript', 'Blocked transcript')
+        ->call('saveRecording')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Voice note not saved';
+        })
+        ->call('queueUploadPlaceholder', $voiceNote->getKey())
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Upload queue unavailable';
+        })
+        ->call('deleteRecording', $voiceNote->getKey())
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Delete unavailable';
+        });
+
+    expect(MobileLocalVoiceNote::query()->count())->toBe(1)
+        ->and(MobileLocalVoiceNote::query()->first()?->transcript)->not->toBe('Blocked transcript')
+        ->and(MobileLocalOfflineAction::query()->count())->toBe(0)
+        ->and(File::exists($this->audioPath))->toBeTrue();
+});
+
+test('voice note upload queue is hidden and blocked when sync policy is disabled', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileVoiceNotesPolicyBootstrapEnvelope(
+        features: [
+            'native_microphone' => mobileVoiceNotesPolicyFeature(enabled: true, state: 'visible'),
+        ],
+        syncEnabled: false,
+        syncReason: 'voice_note_sync_paused_by_admin',
+    ));
+
+    $voiceNote = MobileLocalVoiceNote::factory()->create([
+        'local_file_path' => $this->audioPath,
+        'sync_status' => MobileLocalVoiceNote::SYNC_PENDING,
+    ]);
+
+    Livewire::test(VoiceNotes::class)
+        ->set('recordedPath', $this->audioPath)
+        ->set('savedVoiceNoteId', $voiceNote->getKey())
+        ->assertSee('Recorder controls')
+        ->assertDontSee('wire:click="queueUploadPlaceholder"', false)
+        ->assertDontSee('wire:click="queueUploadPlaceholder('.$voiceNote->getKey().')"', false)
+        ->call('queueUploadPlaceholder', $voiceNote->getKey())
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Upload queue unavailable'
+                && ($params['message'] ?? null) === 'Sync is disabled by the current workspace policy.';
+        })
+        ->call('deleteRecording', $voiceNote->getKey())
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'success'
+                && ($params['title'] ?? null) === 'Voice note deleted';
+        });
+
+    expect(MobileLocalOfflineAction::query()->count())->toBe(0)
+        ->and(MobileLocalVoiceNote::query()->count())->toBe(0);
+});
+
 test('voice notes screen saves queues and deletes a recorded audio file', function (): void {
     Livewire::test(VoiceNotes::class)
         ->set('pendingRecordingId', 'voice-id')
@@ -225,4 +324,69 @@ final class MobileVoiceNotesFakePendingMicrophone extends PendingMicrophone
     {
         //
     }
+}
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @return array<string, mixed>
+ */
+function mobileVoiceNotesPolicyBootstrapEnvelope(array $features = [], bool $syncEnabled = true, ?string $syncReason = null): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => [],
+                'ability_list' => [],
+            ],
+            'features' => [
+                'version' => 'voice-notes-policy',
+                'items' => array_replace([
+                    'native_microphone' => mobileVoiceNotesPolicyFeature(enabled: true, state: 'visible'),
+                ], $features),
+            ],
+            'remote_config' => ['version' => 'voice-notes-policy', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => $syncEnabled, 'reason' => $syncReason],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'voice-notes-policy',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileVoiceNotesPolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'test_policy',
+    ];
 }

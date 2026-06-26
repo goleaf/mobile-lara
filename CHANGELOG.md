@@ -37,6 +37,10 @@ All notable changes to Mobile Lara will be documented in this file.
 - Added API-derived policy checks to record attachment management and sharing
   so disabled attachment permissions or native share features hide controls and
   stop direct Livewire calls before local writes or native handoff.
+- Added API-derived policy checks to mobile voice-note recording, native
+  microphone callbacks, local save/delete mutations, and upload queue
+  placeholders so disabled microphone or sync policy stops direct Livewire
+  calls before local SQLite writes, file deletes, or offline queue writes.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,
