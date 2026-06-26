@@ -1,7 +1,11 @@
 <?php
 
 use App\Livewire\Mobile\Settings\Permissions;
+use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\SettingsRepository;
 use App\Services\Native\SystemService;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Livewire\Livewire;
 use Native\Mobile\System;
 
@@ -71,6 +75,60 @@ test('permissions center can refresh network status without a native prompt', fu
                 && ($params['type'] ?? null) === 'success'
                 && ($params['title'] ?? null) === 'Permission request';
         });
+});
+
+test('permissions center blocks native prompts when api bootstrap disables the feature', function (): void {
+    $mobileLocalDatabasePath = storage_path('framework/testing/mobile-permissions-policy.sqlite');
+
+    File::ensureDirectoryExists(dirname($mobileLocalDatabasePath));
+
+    if (File::exists($mobileLocalDatabasePath)) {
+        File::delete($mobileLocalDatabasePath);
+    }
+
+    config([
+        'database.connections.mobile_local.database' => $mobileLocalDatabasePath,
+        'mobile_local.database' => $mobileLocalDatabasePath,
+        'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
+    ]);
+
+    app(MobileLocalDatabase::class)->ensureFileExists();
+
+    Artisan::call('migrate', [
+        '--database' => 'mobile_local',
+        '--path' => 'database/migrations/mobile-local',
+        '--force' => true,
+    ]);
+
+    app(SettingsRepository::class)->cacheBootstrapContext(mobilePermissionsPolicyBootstrapEnvelope([
+        'native_camera' => mobilePermissionsPolicyFeature(
+            enabled: false,
+            state: 'disabled',
+            reason: 'camera_disabled_by_admin',
+            message: 'Camera is disabled by admin policy.',
+        ),
+    ]));
+
+    try {
+        Livewire::test(Permissions::class)
+            ->assertSee('Blocked by policy')
+            ->assertSee('Disabled by policy')
+            ->assertSee('Policy reason')
+            ->assertSee('camera_disabled_by_admin')
+            ->call('requestPermission', 'camera')
+            ->assertSet('lastPermissionTarget', 'Camera')
+            ->assertSet('lastPermissionStatus', 'Blocked by policy')
+            ->assertSet('permissionError', 'Camera is disabled by admin policy.')
+            ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+                return $event === 'mobile-toast'
+                    && ($params['type'] ?? null) === 'warning'
+                    && ($params['title'] ?? null) === 'Permission unavailable';
+            });
+    } finally {
+        if (File::exists($mobileLocalDatabasePath)) {
+            File::delete($mobileLocalDatabasePath);
+        }
+    }
 });
 
 test('permissions settings screen reports browser fallback for app settings', function (): void {
@@ -148,4 +206,56 @@ final class MobilePermissionsSettingsFakeSystem extends System
     {
         $this->openedSettings = true;
     }
+}
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @return array<string, mixed>
+ */
+function mobilePermissionsPolicyBootstrapEnvelope(array $features): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => ['id' => 'tenant-001', 'name' => 'North Field Team', 'status' => 'active'],
+            'available_tenants' => [],
+            'permissions' => ['status' => 'resolved', 'roles' => [], 'abilities' => [], 'ability_list' => []],
+            'features' => [
+                'version' => 'permissions-policy-test',
+                'items' => array_replace([
+                    'native_biometrics' => mobilePermissionsPolicyFeature(enabled: true, state: 'visible'),
+                    'native_camera' => mobilePermissionsPolicyFeature(enabled: true, state: 'visible'),
+                    'native_files' => mobilePermissionsPolicyFeature(enabled: true, state: 'visible'),
+                    'native_location' => mobilePermissionsPolicyFeature(enabled: true, state: 'visible'),
+                    'native_microphone' => mobilePermissionsPolicyFeature(enabled: true, state: 'visible'),
+                    'notifications' => mobilePermissionsPolicyFeature(enabled: true, state: 'visible'),
+                ], $features),
+            ],
+            'remote_config' => ['version' => 'permissions-policy-test', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => ['status' => 'active', 'features_limited' => false],
+            'notification_preferences' => ['in_app_enabled' => true],
+            'sync' => ['enabled' => true, 'reason' => null],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => ['api_version' => 'v1', 'bootstrap_version' => 'permissions-policy-test'],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobilePermissionsPolicyFeature(bool $enabled, string $state, ?string $reason = null, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $reason,
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'permissions_policy_test',
+    ];
 }

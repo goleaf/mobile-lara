@@ -224,8 +224,10 @@ before implementation scope is added.
 - Continue rewiring lower-level mobile-local actions so server-trusted behavior
   comes from API/bootstrap state instead of local placeholders. Primary
   navigation, dashboard/create/search shortcuts, and direct module routes now
-  use cached Admin/API policy; record mutations, attachments, NativePHP prompts,
-  voice notes, check-ins, and offline queue writes still need per-action gates.
+  use cached Admin/API policy, and the permissions center blocks native prompts
+  for disabled features; record mutations, attachments, lower-level NativePHP
+  service calls, voice notes, check-ins, and offline queue writes still need
+  per-action gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

@@ -3,6 +3,7 @@
 namespace App\Services\Native;
 
 use App\Contracts\MobileLocal\MobileNetworkState;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use Illuminate\Support\Str;
 use Native\Mobile\Biometrics;
 use Nativephp\AllPermissionHandler\AllPermissionHandler;
@@ -12,12 +13,13 @@ use Throwable;
 final class PermissionCenterService
 {
     /**
-     * @var array<string, array{label: string, permission: string, badge: string, description: string, explanation: string, request_label: string, driver: string}>
+     * @var array<string, array{label: string, permission: string, feature: string, ability?: string, badge: string, description: string, explanation: string, request_label: string, driver: string}>
      */
     private const RUNTIME_PERMISSIONS = [
         'camera' => [
             'label' => 'Camera',
             'permission' => 'camera',
+            'feature' => 'native_camera',
             'badge' => 'Media',
             'description' => 'Required for photo capture, video capture, avatar updates, and QR scanner previews.',
             'explanation' => 'The app asks for camera access only when a camera-based workflow needs it.',
@@ -27,6 +29,7 @@ final class PermissionCenterService
         'microphone' => [
             'label' => 'Microphone',
             'permission' => 'microphone',
+            'feature' => 'native_microphone',
             'badge' => 'Audio',
             'description' => 'Required for voice notes and video capture with sound.',
             'explanation' => 'The microphone prompt is separate from camera access and can be recovered from OS settings after denial.',
@@ -36,6 +39,7 @@ final class PermissionCenterService
         'location' => [
             'label' => 'Location',
             'permission' => 'locationWhenInUse',
+            'feature' => 'native_location',
             'badge' => 'Location',
             'description' => 'Required for check-ins, nearby workflows, and location-aware sync context.',
             'explanation' => 'Location is requested for foreground use only and should stay optional until a feature needs a position fix.',
@@ -45,6 +49,8 @@ final class PermissionCenterService
         'notifications' => [
             'label' => 'Notifications',
             'permission' => 'notification',
+            'feature' => 'notifications',
+            'ability' => 'notifications.view',
             'badge' => 'Alerts',
             'description' => 'Required for notification previews, reminders, and future push enrollment.',
             'explanation' => 'Notifications can be denied independently from local inbox storage; use settings recovery if the prompt cannot be shown again.',
@@ -54,6 +60,7 @@ final class PermissionCenterService
         'files' => [
             'label' => 'Storage/files',
             'permission' => 'storage',
+            'feature' => 'native_files',
             'badge' => 'Storage',
             'description' => 'Required for importing, exporting, sharing, and managing local app files.',
             'explanation' => 'The app can use its local sandbox without broad storage access; OS storage permission is only needed for provider-level file access.',
@@ -71,6 +78,7 @@ final class PermissionCenterService
         private readonly FileService $files,
         private readonly MobileNetworkState $network,
         private readonly SystemService $systems,
+        private readonly MobileAccessPolicy $accessPolicy,
     ) {}
 
     /**
@@ -83,6 +91,7 @@ final class PermissionCenterService
      *     description: string,
      *     explanation: string,
      *     request_label: string,
+     *     can_request: bool,
      *     recovery_label: string,
      *     recovery_note: string,
      *     details: list<array{label: string, value: string}>
@@ -125,6 +134,7 @@ final class PermissionCenterService
      *     description: string,
      *     explanation: string,
      *     request_label: string,
+     *     can_request: bool,
      *     recovery_label: string,
      *     recovery_note: string,
      *     details: list<array{label: string, value: string}>
@@ -134,6 +144,25 @@ final class PermissionCenterService
     {
         $definition = self::RUNTIME_PERMISSIONS[$key];
         $nativeRuntimeAvailable = $this->systems->nativeRuntimeAvailable();
+        $decision = $this->policyDecision($key);
+
+        if (! $decision['allowed']) {
+            return [
+                'key' => $key,
+                'label' => $definition['label'],
+                'status' => 'Blocked by policy',
+                'status_variant' => 'warning',
+                'badge' => $definition['badge'],
+                'description' => $definition['description'],
+                'explanation' => $decision['message'],
+                'request_label' => 'Disabled by policy',
+                'can_request' => false,
+                'recovery_label' => $this->systems->platformSettingsLabel(),
+                'recovery_note' => 'Admin/API policy must enable this feature before a native permission prompt is useful.',
+                'details' => $this->policyDetails($decision, $this->runtimePermissionDetails($key, $definition)),
+            ];
+        }
+
         $status = $this->checkedStatus($definition['permission']);
 
         return [
@@ -149,6 +178,7 @@ final class PermissionCenterService
             'description' => $definition['description'],
             'explanation' => $definition['explanation'],
             'request_label' => $definition['request_label'],
+            'can_request' => true,
             'recovery_label' => $this->systems->platformSettingsLabel(),
             'recovery_note' => $this->systems->permissionRecoveryDescription(),
             'details' => $this->runtimePermissionDetails($key, $definition),
@@ -165,6 +195,7 @@ final class PermissionCenterService
      *     description: string,
      *     explanation: string,
      *     request_label: string,
+     *     can_request: bool,
      *     recovery_label: string,
      *     recovery_note: string,
      *     details: list<array{label: string, value: string}>
@@ -173,6 +204,28 @@ final class PermissionCenterService
     private function biometricRow(): array
     {
         $nativeRuntimeAvailable = $this->systems->nativeRuntimeAvailable();
+        $decision = $this->policyDecision('biometrics');
+
+        if (! $decision['allowed']) {
+            return [
+                'key' => 'biometrics',
+                'label' => 'Biometrics',
+                'status' => 'Blocked by policy',
+                'status_variant' => 'warning',
+                'badge' => 'Secure',
+                'description' => 'Required for Face ID, Touch ID, fingerprint, and protected app unlock confirmation.',
+                'explanation' => $decision['message'],
+                'request_label' => 'Disabled by policy',
+                'can_request' => false,
+                'recovery_label' => $this->systems->platformSettingsLabel(),
+                'recovery_note' => 'Admin/API policy must enable biometric unlock before the native prompt is useful.',
+                'details' => $this->policyDetails($decision, [
+                    $this->detail('Driver', 'NativePHP Biometric.Prompt'),
+                    $this->detail('Runtime', $nativeRuntimeAvailable ? 'NativePHP available' : 'Browser fallback'),
+                    $this->detail('Android manifest toggle', $this->configToggleLabel(config('nativephp.permissions.biometric'))),
+                ]),
+            ];
+        }
 
         return [
             'key' => 'biometrics',
@@ -183,6 +236,7 @@ final class PermissionCenterService
             'description' => 'Required for Face ID, Touch ID, fingerprint, and protected app unlock confirmation.',
             'explanation' => 'Biometric unlock uses the device security prompt and falls back to PIN or normal authentication when unavailable.',
             'request_label' => 'Test biometric prompt',
+            'can_request' => true,
             'recovery_label' => $this->systems->platformSettingsLabel(),
             'recovery_note' => 'Biometric enrollment and recovery are controlled by the device security settings.',
             'details' => [
@@ -203,6 +257,7 @@ final class PermissionCenterService
      *     description: string,
      *     explanation: string,
      *     request_label: string,
+     *     can_request: bool,
      *     recovery_label: string,
      *     recovery_note: string,
      *     details: list<array{label: string, value: string}>
@@ -221,6 +276,7 @@ final class PermissionCenterService
             'description' => 'Required for sync, API calls, remote auth, and remote device-session checks.',
             'explanation' => 'Network state does not use an OS permission prompt; the button refreshes the detected connection state.',
             'request_label' => 'Refresh network status',
+            'can_request' => true,
             'recovery_label' => $this->systems->platformSettingsLabel(),
             'recovery_note' => 'Use system settings to recover Wi-Fi, cellular data, VPN, or low-data-mode restrictions.',
             'details' => [
@@ -233,7 +289,7 @@ final class PermissionCenterService
     }
 
     /**
-     * @param  array{label: string, permission: string, badge: string, description: string, explanation: string, request_label: string, driver: string}  $definition
+     * @param  array{label: string, permission: string, feature: string, ability?: string, badge: string, description: string, explanation: string, request_label: string, driver: string}  $definition
      * @return list<array{label: string, value: string}>
      */
     private function runtimePermissionDetails(string $key, array $definition): array
@@ -255,6 +311,12 @@ final class PermissionCenterService
 
         if (! is_array($definition)) {
             return $this->result(false, $key, 'Unknown permission', 'Unknown', 'Unknown permission center item.');
+        }
+
+        $decision = $this->policyDecision($key);
+
+        if (! $decision['allowed']) {
+            return $this->result(false, $key, $definition['label'], 'Blocked by policy', $decision['message']);
         }
 
         if (! $this->nativePermissionHandlerAvailable()) {
@@ -293,6 +355,12 @@ final class PermissionCenterService
      */
     private function requestBiometrics(): array
     {
+        $decision = $this->policyDecision('biometrics');
+
+        if (! $decision['allowed']) {
+            return $this->result(false, 'biometrics', 'Biometrics', 'Blocked by policy', $decision['message']);
+        }
+
         if (! $this->systems->nativeRuntimeAvailable()) {
             return $this->result(
                 false,
@@ -367,6 +435,41 @@ final class PermissionCenterService
             'files' => $this->files->rootPath(),
             default => 'Not configured',
         };
+    }
+
+    /**
+     * @return array{allowed: bool, feature: string, permission: string|null, reason: string|null, message: string, next_action: string|null, source: string}
+     */
+    private function policyDecision(string $key): array
+    {
+        $definition = self::RUNTIME_PERMISSIONS[$key] ?? null;
+
+        if (is_array($definition)) {
+            return $this->accessPolicy->decision(
+                (string) $definition['feature'],
+                is_string($definition['ability'] ?? null) ? $definition['ability'] : null,
+            );
+        }
+
+        if ($key === 'biometrics') {
+            return $this->accessPolicy->decision('native_biometrics');
+        }
+
+        return $this->accessPolicy->decision('settings');
+    }
+
+    /**
+     * @param  array{allowed: bool, feature: string, permission: string|null, reason: string|null, message: string, next_action: string|null, source: string}  $decision
+     * @param  list<array{label: string, value: string}>  $details
+     * @return list<array{label: string, value: string}>
+     */
+    private function policyDetails(array $decision, array $details): array
+    {
+        return array_merge($details, [
+            $this->detail('Policy source', $decision['source']),
+            $this->detail('Policy feature', $decision['feature']),
+            $this->detail('Policy reason', $decision['reason'] ?? 'not specified'),
+        ]);
     }
 
     private function statusLabel(PermissionStatus $status): string

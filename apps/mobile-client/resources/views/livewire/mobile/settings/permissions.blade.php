@@ -46,16 +46,22 @@
                     </dl>
 
                     <div class="grid gap-3 sm:grid-cols-2">
-                        <x-mobile.button
-                            wire:click="requestPermission('{{ $permission['key'] }}')"
-                            wire:loading.attr="disabled"
-                            wire:target="requestPermission('{{ $permission['key'] }}')"
-                            variant="primary"
-                            full
-                        >
-                            <span wire:loading.remove wire:target="requestPermission('{{ $permission['key'] }}')">{{ $permission['request_label'] }}</span>
-                            <span wire:loading wire:target="requestPermission('{{ $permission['key'] }}')">Requesting</span>
-                        </x-mobile.button>
+                        @if ($permission['can_request'])
+                            <x-mobile.button
+                                wire:click="requestPermission('{{ $permission['key'] }}')"
+                                wire:loading.attr="disabled"
+                                wire:target="requestPermission('{{ $permission['key'] }}')"
+                                variant="primary"
+                                full
+                            >
+                                <span wire:loading.remove wire:target="requestPermission('{{ $permission['key'] }}')">{{ $permission['request_label'] }}</span>
+                                <span wire:loading wire:target="requestPermission('{{ $permission['key'] }}')">Requesting</span>
+                            </x-mobile.button>
+                        @else
+                            <x-mobile.button variant="primary" full disabled>
+                                {{ $permission['request_label'] }}
+                            </x-mobile.button>
+                        @endif
 
                         <x-mobile.button
                             wire:click="openAppSettings('{{ $permission['key'] }}')"
