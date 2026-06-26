@@ -310,6 +310,9 @@ tenant-scoped and validates membership server-side.
 | --- | --- | --- | --- |
 | GET | `/api/v1/mobile/tenants` | List tenants available to the current user. | mobile token |
 | POST | `/api/v1/mobile/tenants/current` | Switch current tenant context. | mobile token |
+| GET | `/api/v1/mobile/tenants/invitations` | List pending tenant invitations for the current user. | mobile token |
+| POST | `/api/v1/mobile/tenants/invitations/{tenant}/accept` | Accept a pending tenant invitation by tenant public id. | mobile token |
+| POST | `/api/v1/mobile/tenants/invitations/{tenant}/decline` | Decline a pending tenant invitation by tenant public id. | mobile token |
 
 ## Success Data
 
@@ -326,6 +329,14 @@ Tenant switch responses return refreshed tenant context and
 sync, billing, notification, and version policy still come from the bootstrap
 foundation defaults until those modules are implemented.
 
+Invitation list responses return `invitations` with safe tenant labels, role
+summary, invited/accepted timestamps, null `expires_at` until invitation
+expiry rules exist, and available actions. Accept and decline responses return
+the invitation result, refreshed tenant context, and
+`next_bootstrap_required: true`. Accepting is allowed only for pending
+invitations into switchable tenants. Declining leaves the membership
+fail-closed as `declined`.
+
 ## Gates
 
 Tenant access is controlled by membership, invitation state, suspended state,
@@ -340,8 +351,9 @@ new tenant context.
 
 ## Audit
 
-Tenant switch, failed tenant switch, invitation acceptance, suspended access,
-and cross-tenant denial are audit events.
+Tenant switch, failed tenant switch, invitation acceptance, invitation decline,
+failed invitation response, suspended access, and cross-tenant denial are audit
+events.
 
 ## Tests
 

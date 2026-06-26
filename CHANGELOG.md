@@ -185,6 +185,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   invitations, accepting into an active tenant membership, declining into a
   fail-closed membership state, returning refreshed tenant context, and
   auditing success or failed response attempts.
+- Added mobile workspace invitation controls so the NativePHP client can check
+  pending invitations, accept or decline through the API only, refresh
+  bootstrap after server confirmation, and keep invitation responses out of
+  offline-local authority.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

@@ -3,7 +3,7 @@
 </x-slot:toast>
 
 <section class="safe-x safe-pb flex min-h-full flex-col gap-5 py-6">
-    <x-mobile.loading-state target="refreshTenantContext, switchTenant" message="Updating workspace..." />
+    <x-mobile.loading-state target="refreshTenantContext, switchTenant, refreshInvitations, acceptInvitation, declineInvitation" message="Updating workspace..." />
 
     <x-mobile.page-header
         title="Workspace settings"
@@ -46,6 +46,77 @@
                     {{ $cachedAt ? 'Cached '.$cachedAt : 'No cached bootstrap context yet.' }}
                 </p>
             </x-slot:footer>
+        </x-mobile.card>
+
+        <x-mobile.card title="Pending invitations" description="API-confirmed tenant invitations for this account.">
+            <x-slot:action>
+                <x-mobile.button variant="secondary" size="sm" wire:click="refreshInvitations" wire:target="refreshInvitations" wire:loading.attr="disabled">
+                    Check
+                </x-mobile.button>
+            </x-slot:action>
+
+            <div class="grid gap-3">
+                @forelse ($invitations as $invitation)
+                    @php
+                        $tenant = is_array($invitation['tenant'] ?? null) ? $invitation['tenant'] : [];
+                        $roleSummary = is_array($invitation['role_summary'] ?? null) ? $invitation['role_summary'] : [];
+                        $tenantId = is_string($tenant['id'] ?? null) ? $tenant['id'] : '';
+                        $tenantName = is_string($tenant['name'] ?? null) ? $tenant['name'] : 'Workspace invitation';
+                        $roleLabel = is_string($roleSummary['label'] ?? null) ? $roleSummary['label'] : 'Mobile access';
+                        $invitedAt = is_string($invitation['invited_at'] ?? null) ? $invitation['invited_at'] : null;
+                    @endphp
+
+                    <div wire:key="workspace-invitation-{{ $tenantId }}" class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="min-w-0">
+                                <p class="text-base font-semibold text-app-ink dark:text-zinc-100">{{ $tenantName }}</p>
+                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $roleLabel }}</p>
+                                @if ($invitedAt)
+                                    <p class="mt-1 text-xs font-medium text-app-muted dark:text-zinc-500">Invited {{ $invitedAt }}</p>
+                                @endif
+                            </div>
+
+                            <x-mobile.badge variant="warning">Invited</x-mobile.badge>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-2 gap-3">
+                            <x-mobile.button
+                                variant="accent"
+                                size="sm"
+                                wire:click="acceptInvitation(@js($tenantId))"
+                                wire:target="acceptInvitation, declineInvitation, refreshInvitations"
+                                wire:loading.attr="disabled"
+                                :disabled="$tenantId === ''"
+                            >
+                                Accept
+                            </x-mobile.button>
+
+                            <x-mobile.button
+                                variant="secondary"
+                                size="sm"
+                                wire:click="declineInvitation(@js($tenantId))"
+                                wire:target="acceptInvitation, declineInvitation, refreshInvitations"
+                                wire:loading.attr="disabled"
+                                :disabled="$tenantId === ''"
+                            >
+                                Decline
+                            </x-mobile.button>
+                        </div>
+                    </div>
+                @empty
+                    @if ($invitationsLoaded)
+                        <x-mobile.empty-state
+                            title="No pending invitations"
+                            description="Accepted and declined invitations are removed after API confirmation."
+                        />
+                    @else
+                        <x-mobile.empty-state
+                            title="Invitations not checked"
+                            description="Check online before accepting or declining tenant access."
+                        />
+                    @endif
+                @endforelse
+            </div>
         </x-mobile.card>
 
         <form wire:submit="switchTenant" class="grid gap-5">

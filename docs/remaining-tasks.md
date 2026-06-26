@@ -305,9 +305,10 @@ before implementation scope is added.
 - Decide when to remove or rewire the root Laravel app now that
   `apps/api-admin` and `apps/mobile-client` both exist as Laravel apps.
 - Complete tenancy beyond the foundation tenant list/switch API, mobile
-  workspace switcher, and admin tenant management screen: invitations, tenant
-  settings policy, tenant-scoped resource middleware, and tenant-local cache
-  partition verification.
+  workspace switcher, and audited admin tenant/member management screen:
+  pre-login signed invitation links, invitation resend/revoke/expiry, email
+  delivery, dedicated tenant settings policy, tenant-scoped resource
+  middleware, and tenant-local cache partition verification.
 - Complete admin role/permission management, admin billing management, push
   notification inbox/token workflows, sync policy, and audit foundations.
 - Continue rewiring lower-level mobile-local actions so server-trusted behavior

@@ -23,6 +23,13 @@ final class Workspace extends Component
 
     public string $toastVariant = 'success';
 
+    /**
+     * @var array<int, array<string, mixed>>
+     */
+    public array $invitations = [];
+
+    public bool $invitationsLoaded = false;
+
     protected MobileTenantContextStore $tenantContext;
 
     protected MobileTenantApiService $tenantApi;
@@ -69,6 +76,25 @@ final class Workspace extends Component
         $this->showToast($this->workspaceStatus, 'success');
     }
 
+    public function refreshInvitations(): void
+    {
+        $this->clearFeedback();
+
+        try {
+            $response = $this->tenantApi->invitations();
+        } catch (MobileApiException $exception) {
+            $this->workspaceError = $exception->getMessage();
+            $this->showToast($this->workspaceError, 'error');
+
+            return;
+        }
+
+        $this->invitations = $this->normalizeInvitations($response['data']['invitations'] ?? []);
+        $this->invitationsLoaded = true;
+        $this->workspaceStatus = count($this->invitations) > 0 ? 'Pending invitations refreshed.' : 'No pending invitations.';
+        $this->showToast($this->workspaceStatus, 'success');
+    }
+
     public function switchTenant(): void
     {
         $this->clearFeedback();
@@ -92,6 +118,16 @@ final class Workspace extends Component
         $this->showToast($this->workspaceStatus, 'success');
     }
 
+    public function acceptInvitation(string $tenantId): void
+    {
+        $this->respondToInvitation($tenantId, 'accept');
+    }
+
+    public function declineInvitation(string $tenantId): void
+    {
+        $this->respondToInvitation($tenantId, 'decline');
+    }
+
     public function render(): View
     {
         $context = $this->tenantContext->context();
@@ -100,6 +136,8 @@ final class Workspace extends Component
             'currentTenant' => $context['current_tenant'],
             'availableTenants' => $context['available_tenants'],
             'cachedAt' => $context['cached_at'],
+            'invitations' => $this->invitations,
+            'invitationsLoaded' => $this->invitationsLoaded,
         ]);
     }
 
@@ -114,6 +152,63 @@ final class Workspace extends Component
     {
         $this->toastMessage = $message;
         $this->toastVariant = $variant;
+    }
+
+    private function respondToInvitation(string $tenantId, string $decision): void
+    {
+        $this->clearFeedback();
+
+        if (trim($tenantId) === '') {
+            $this->workspaceError = 'Invitation is not available.';
+            $this->showToast($this->workspaceError, 'error');
+
+            return;
+        }
+
+        try {
+            $response = $decision === 'accept'
+                ? $this->tenantApi->acceptInvitation($tenantId)
+                : $this->tenantApi->declineInvitation($tenantId);
+
+            $this->removeInvitation($tenantId);
+
+            if (($response['data']['next_bootstrap_required'] ?? false) === true) {
+                $this->bootstrap->refresh();
+                $this->syncSelectedTenantFromContext();
+            }
+        } catch (MobileApiException $exception) {
+            $this->workspaceError = $exception->getMessage();
+            $this->showToast($this->workspaceError, 'error');
+
+            return;
+        }
+
+        $this->invitationsLoaded = true;
+        $this->workspaceStatus = $decision === 'accept' ? 'Invitation accepted.' : 'Invitation declined.';
+        $this->showToast($this->workspaceStatus, 'success');
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function normalizeInvitations(mixed $invitations): array
+    {
+        if (! is_array($invitations)) {
+            return [];
+        }
+
+        return array_values(array_filter(
+            $invitations,
+            static fn (mixed $invitation): bool => is_array($invitation),
+        ));
+    }
+
+    private function removeInvitation(string $tenantId): void
+    {
+        $this->invitations = array_values(array_filter(
+            $this->invitations,
+            static fn (array $invitation): bool => ($invitation['tenant']['id'] ?? null) !== $tenantId,
+        ));
     }
 
     private function syncSelectedTenantFromContext(): void

@@ -57,6 +57,41 @@ test('tenant api service switches current tenant with bearer token', function ()
         && $request['tenant_id'] === 'tenant-002');
 });
 
+test('tenant api service lists pending invitations with bearer token', function (): void {
+    app(AccessTokenService::class)->put('tenant-invitation-access-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/tenants/invitations' => Http::response(mobileTenantInvitationEnvelope()),
+    ]);
+
+    $response = app(MobileTenantApiService::class)->invitations();
+
+    expect($response['data']['invitations'][0]['tenant']['id'])->toBe('tenant-003');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/tenants/invitations'
+        && $request->hasHeader('Authorization', 'Bearer tenant-invitation-access-token'));
+});
+
+test('tenant api service accepts and declines invitations with bearer token', function (): void {
+    app(AccessTokenService::class)->put('tenant-invitation-action-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/tenants/invitations/tenant-003/accept' => Http::response(mobileTenantInvitationResponseEnvelope('active')),
+        'https://api-admin.example.test/api/v1/mobile/tenants/invitations/tenant-004/decline' => Http::response(mobileTenantInvitationResponseEnvelope('declined')),
+    ]);
+
+    $accepted = app(MobileTenantApiService::class)->acceptInvitation('tenant-003');
+    $declined = app(MobileTenantApiService::class)->declineInvitation('tenant-004');
+
+    expect($accepted['data']['invitation']['role_summary']['membership_status'])->toBe('active')
+        ->and($declined['data']['invitation']['role_summary']['membership_status'])->toBe('declined');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/tenants/invitations/tenant-003/accept'
+        && $request->hasHeader('Authorization', 'Bearer tenant-invitation-action-token'));
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/tenants/invitations/tenant-004/decline'
+        && $request->hasHeader('Authorization', 'Bearer tenant-invitation-action-token'));
+});
+
 /**
  * @return array<string, mixed>
  */
@@ -73,6 +108,65 @@ function mobileTenantContextEnvelope(string $currentTenantId = 'tenant-001'): ar
             'next_bootstrap_required' => true,
         ],
         'meta' => ['api_version' => 'v1'],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileTenantInvitationEnvelope(): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'invitations' => [
+                mobileTenantInvitationPayload(),
+            ],
+        ],
+        'meta' => ['api_version' => 'v1'],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileTenantInvitationResponseEnvelope(string $status): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'invitation' => mobileTenantInvitationPayload($status),
+            'tenant_context' => [
+                'current_tenant' => $status === 'active' ? mobileTenantPayload('tenant-003', current: true) : null,
+                'available_tenants' => $status === 'active' ? [mobileTenantPayload('tenant-003', current: true)] : [],
+            ],
+            'next_bootstrap_required' => true,
+        ],
+        'meta' => ['api_version' => 'v1'],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileTenantInvitationPayload(string $status = 'invited'): array
+{
+    return [
+        'tenant' => [
+            'id' => 'tenant-003',
+            'name' => 'Invited Field Team',
+            'slug' => 'invited-field-team',
+        ],
+        'role_summary' => [
+            'role' => 'mobile_user',
+            'label' => 'Mobile user',
+            'membership_status' => $status,
+        ],
+        'invited_at' => '2026-06-25T12:00:00+00:00',
+        'accepted_at' => $status === 'active' ? '2026-06-25T12:01:00+00:00' : null,
+        'declined_at' => $status === 'declined' ? '2026-06-25T12:01:00+00:00' : null,
+        'expires_at' => null,
+        'available_actions' => $status === 'invited' ? ['accept', 'decline'] : [],
     ];
 }
 

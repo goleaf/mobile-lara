@@ -31,6 +31,30 @@ final class MobileTenantApiService
         ], accessToken: $this->accessToken());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    public function invitations(): array
+    {
+        return $this->api->get('/tenants/invitations', accessToken: $this->accessToken());
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function acceptInvitation(string $tenantId): array
+    {
+        return $this->api->post('/tenants/invitations/'.rawurlencode($tenantId).'/accept', accessToken: $this->accessToken());
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function declineInvitation(string $tenantId): array
+    {
+        return $this->api->post('/tenants/invitations/'.rawurlencode($tenantId).'/decline', accessToken: $this->accessToken());
+    }
+
     private function accessToken(): string
     {
         $accessToken = $this->accessTokens->get();

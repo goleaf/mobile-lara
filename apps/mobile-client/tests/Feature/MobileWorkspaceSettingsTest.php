@@ -105,6 +105,78 @@ test('workspace settings switches tenant through api and refreshes bootstrap cac
         && $request->hasHeader('Authorization', 'Bearer workspace-access-token'));
 });
 
+test('workspace settings refreshes pending invitations from api', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileWorkspaceBootstrapEnvelope('tenant-001'));
+    app(AccessTokenService::class)->put('workspace-invitation-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/tenants/invitations' => Http::response([
+            'success' => true,
+            'data' => [
+                'invitations' => [
+                    mobileWorkspaceInvitation('tenant-003'),
+                ],
+            ],
+            'meta' => ['api_version' => 'v1'],
+        ]),
+    ]);
+
+    Livewire::test(Workspace::class)
+        ->call('refreshInvitations')
+        ->assertSet('invitationsLoaded', true)
+        ->assertSee('Invited Field Team')
+        ->assertSee('Pending invitations refreshed.');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/tenants/invitations'
+        && $request->hasHeader('Authorization', 'Bearer workspace-invitation-token'));
+});
+
+test('workspace settings accepts pending invitation and refreshes bootstrap cache', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileWorkspaceBootstrapEnvelope('tenant-001'));
+    app(AccessTokenService::class)->put('workspace-invitation-accept-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/tenants/invitations/tenant-003/accept' => Http::response(mobileWorkspaceInvitationResponse('active')),
+        'https://api-admin.example.test/api/v1/mobile/bootstrap' => Http::response(mobileWorkspaceBootstrapEnvelope('tenant-003')),
+    ]);
+
+    Livewire::test(Workspace::class)
+        ->set('invitations', [mobileWorkspaceInvitation('tenant-003')])
+        ->set('invitationsLoaded', true)
+        ->call('acceptInvitation', 'tenant-003')
+        ->assertSet('selectedTenantId', 'tenant-003')
+        ->assertSet('invitations', [])
+        ->assertSee('Invitation accepted.');
+
+    expect(app(SettingsRepository::class)->bootstrapContext()['data']['current_tenant']['id'])->toBe('tenant-003');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/tenants/invitations/tenant-003/accept'
+        && $request->hasHeader('Authorization', 'Bearer workspace-invitation-accept-token'));
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/bootstrap'
+        && $request->hasHeader('Authorization', 'Bearer workspace-invitation-accept-token'));
+});
+
+test('workspace settings declines pending invitation without changing current workspace', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileWorkspaceBootstrapEnvelope('tenant-001'));
+    app(AccessTokenService::class)->put('workspace-invitation-decline-token', CarbonImmutable::now()->addMinutes(15));
+
+    Http::fake([
+        'https://api-admin.example.test/api/v1/mobile/tenants/invitations/tenant-003/decline' => Http::response(mobileWorkspaceInvitationResponse('declined')),
+        'https://api-admin.example.test/api/v1/mobile/bootstrap' => Http::response(mobileWorkspaceBootstrapEnvelope('tenant-001')),
+    ]);
+
+    Livewire::test(Workspace::class)
+        ->set('invitations', [mobileWorkspaceInvitation('tenant-003')])
+        ->set('invitationsLoaded', true)
+        ->call('declineInvitation', 'tenant-003')
+        ->assertSet('selectedTenantId', 'tenant-001')
+        ->assertSet('invitations', [])
+        ->assertSee('Invitation declined.');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api-admin.example.test/api/v1/mobile/tenants/invitations/tenant-003/decline'
+        && $request->hasHeader('Authorization', 'Bearer workspace-invitation-decline-token'));
+});
+
 /**
  * @return array<string, mixed>
  */
@@ -134,6 +206,51 @@ function mobileWorkspaceBootstrapEnvelope(string $currentTenantId): array
             'bootstrap_version' => 'foundation-1',
             'server_time' => '2026-06-25T12:00:00+00:00',
         ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileWorkspaceInvitationResponse(string $status): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'invitation' => mobileWorkspaceInvitation('tenant-003', $status),
+            'tenant_context' => [
+                'current_tenant' => $status === 'active' ? mobileWorkspaceTenant('tenant-003', current: true) : mobileWorkspaceTenant('tenant-001', current: true),
+                'available_tenants' => $status === 'active'
+                    ? [mobileWorkspaceTenant('tenant-003', current: true)]
+                    : [mobileWorkspaceTenant('tenant-001', current: true)],
+            ],
+            'next_bootstrap_required' => true,
+        ],
+        'meta' => ['api_version' => 'v1'],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileWorkspaceInvitation(string $tenantId, string $status = 'invited'): array
+{
+    return [
+        'tenant' => [
+            'id' => $tenantId,
+            'name' => 'Invited Field Team',
+            'slug' => 'invited-field-team',
+        ],
+        'role_summary' => [
+            'role' => 'mobile_user',
+            'label' => 'Mobile user',
+            'membership_status' => $status,
+        ],
+        'invited_at' => '2026-06-25T12:00:00+00:00',
+        'accepted_at' => $status === 'active' ? '2026-06-25T12:01:00+00:00' : null,
+        'declined_at' => $status === 'declined' ? '2026-06-25T12:01:00+00:00' : null,
+        'expires_at' => null,
+        'available_actions' => $status === 'invited' ? ['accept', 'decline'] : [],
     ];
 }
 
