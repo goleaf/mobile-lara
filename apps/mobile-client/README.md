@@ -268,7 +268,9 @@ changes or native share handoff. Scanner capture callbacks and saved
 scan-history deletes/clears are checked against cached scanner policy before
 local scan-history writes or deletes. Notification inbox rendering and
 read/open/read-all actions are checked against cached notification policy
-before local inbox rows are shown or mutated. Core recovery surfaces such as
+before local inbox rows are shown or mutated. Manual sync and conflict
+resolution actions are checked against cached sync policy before local sync
+timestamps or conflict queue statuses change. Core recovery surfaces such as
 dashboard, profile, settings, workspace switching, support, and billing stay
 reachable so users can recover when a tenant or policy state blocks a
 workflow.

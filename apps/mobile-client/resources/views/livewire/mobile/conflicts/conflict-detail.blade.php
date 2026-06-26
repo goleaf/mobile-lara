@@ -48,21 +48,28 @@
     </x-mobile.card>
 
     <x-mobile.card title="Resolution" description="Choose what should happen to this offline action next.">
-        <div class="grid gap-3">
-            <x-mobile.button wire:click="keepLocal" wire:target="keepLocal" wire:loading.attr="disabled" full>
-                <span wire:loading.remove wire:target="keepLocal">Keep local and retry</span>
-                <span wire:loading wire:target="keepLocal">Resolving</span>
-            </x-mobile.button>
+        @if (! $conflictPolicy['resolution']['allowed'])
+            <x-mobile.error-state
+                title="Conflict resolution disabled"
+                :message="$conflictPolicy['resolution']['message']"
+            />
+        @else
+            <div class="grid gap-3">
+                <x-mobile.button wire:click="keepLocal" wire:target="keepLocal" wire:loading.attr="disabled" full>
+                    <span wire:loading.remove wire:target="keepLocal">Keep local and retry</span>
+                    <span wire:loading wire:target="keepLocal">Resolving</span>
+                </x-mobile.button>
 
-            <x-mobile.button variant="secondary" wire:click="acceptRemote" wire:target="acceptRemote" wire:loading.attr="disabled" full>
-                <span wire:loading.remove wire:target="acceptRemote">Accept remote version</span>
-                <span wire:loading wire:target="acceptRemote">Resolving</span>
-            </x-mobile.button>
+                <x-mobile.button variant="secondary" wire:click="acceptRemote" wire:target="acceptRemote" wire:loading.attr="disabled" full>
+                    <span wire:loading.remove wire:target="acceptRemote">Accept remote version</span>
+                    <span wire:loading wire:target="acceptRemote">Resolving</span>
+                </x-mobile.button>
 
-            <x-mobile.button variant="ghost" wire:click="dismissConflict" wire:target="dismissConflict" wire:loading.attr="disabled" full>
-                <span wire:loading.remove wire:target="dismissConflict">Dismiss conflict</span>
-                <span wire:loading wire:target="dismissConflict">Dismissing</span>
-            </x-mobile.button>
-        </div>
+                <x-mobile.button variant="ghost" wire:click="dismissConflict" wire:target="dismissConflict" wire:loading.attr="disabled" full>
+                    <span wire:loading.remove wire:target="dismissConflict">Dismiss conflict</span>
+                    <span wire:loading wire:target="dismissConflict">Dismissing</span>
+                </x-mobile.button>
+            </div>
+        @endif
     </x-mobile.card>
 </section>

@@ -2,7 +2,10 @@
 
 namespace App\Livewire\Mobile\Conflicts;
 
+use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Models\MobileLocalOfflineAction;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\OfflineActionRepository;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Title;
@@ -11,6 +14,9 @@ use Livewire\Component;
 #[Title('Conflict detail')]
 final class ConflictDetail extends Component
 {
+    use DispatchesToasts;
+    use GuardsMobileFeatureActions;
+
     public MobileLocalOfflineAction $offlineAction;
 
     public ?string $statusMessage = null;
@@ -19,9 +25,10 @@ final class ConflictDetail extends Component
 
     private OfflineActionRepository $offlineActions;
 
-    public function boot(OfflineActionRepository $offlineActions): void
+    public function boot(OfflineActionRepository $offlineActions, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->offlineActions = $offlineActions;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(MobileLocalOfflineAction $offlineAction): void
@@ -31,18 +38,30 @@ final class ConflictDetail extends Component
 
     public function keepLocal(): void
     {
+        if ($this->conflictResolutionDenied('Resolution unavailable')) {
+            return;
+        }
+
         $this->offlineAction = $this->offlineActions->keepLocalConflict($this->offlineAction);
         $this->setStatusMessage('Local version will be retried on the next sync.', 'success');
     }
 
     public function acceptRemote(): void
     {
+        if ($this->conflictResolutionDenied('Resolution unavailable')) {
+            return;
+        }
+
         $this->offlineAction = $this->offlineActions->acceptRemoteConflict($this->offlineAction);
         $this->setStatusMessage('Remote version accepted and the local action was cancelled.', 'success');
     }
 
     public function dismissConflict(): void
     {
+        if ($this->conflictResolutionDenied('Resolution unavailable')) {
+            return;
+        }
+
         $this->offlineAction = $this->offlineActions->dismissConflict($this->offlineAction);
         $this->setStatusMessage('Conflict dismissed.', 'warning');
     }
@@ -54,6 +73,7 @@ final class ConflictDetail extends Component
             'localPayloadJson' => $this->prettyJson($this->offlineAction->payload ?? []),
             'remotePayloadJson' => $this->prettyJson($this->remotePayload()),
             'serverPayloadJson' => $this->prettyJson($this->offlineAction->conflict_payload ?? []),
+            'conflictPolicy' => $this->conflictPolicy(),
         ]);
     }
 
@@ -97,5 +117,34 @@ final class ConflictDetail extends Component
     {
         $this->statusMessage = $message;
         $this->statusVariant = $variant;
+    }
+
+    /**
+     * @return array{resolution: array{allowed: bool, message: string}}
+     */
+    private function conflictPolicy(): array
+    {
+        $resolution = $this->mobileFeatureDecision('offline_sync', 'sync.conflicts.resolve');
+
+        return [
+            'resolution' => [
+                'allowed' => $resolution['allowed'],
+                'message' => $resolution['message'],
+            ],
+        ];
+    }
+
+    private function conflictResolutionDenied(string $title): bool
+    {
+        $decision = $this->mobileFeatureDecision('offline_sync', 'sync.conflicts.resolve');
+
+        if ($decision['allowed']) {
+            return false;
+        }
+
+        $this->setStatusMessage($decision['message'], 'warning');
+        $this->toastWarning($decision['message'], $title);
+
+        return true;
     }
 }

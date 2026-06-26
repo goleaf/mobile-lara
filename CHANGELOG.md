@@ -81,6 +81,9 @@ privacy-safe, purpose-limited, and Admin/API-authoritative.
 - Added API-derived policy checks to the mobile notification inbox so disabled
   notification policy hides cached inbox rows and stops direct Livewire calls
   before local read/open/read-all mutations.
+- Added API-derived policy checks to manual sync and conflict resolution so
+  disabled sync policy hides resolution controls and stops direct Livewire
+  calls before local sync timestamps or conflict queue statuses change.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

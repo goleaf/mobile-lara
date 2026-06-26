@@ -7,6 +7,7 @@ use App\Models\MobileLocalOfflineAction;
 use App\Services\MobileLocal\MobileLocalDatabase;
 use App\Services\MobileLocal\OfflineActionRepository;
 use App\Services\MobileLocal\OfflineActionSyncWorker;
+use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -154,6 +155,53 @@ test('conflict detail compares payloads and keeps local version for retry', func
         ->and(app(OfflineActionRepository::class)->readyForSync())->toHaveCount(1);
 });
 
+test('conflict detail blocks resolution by disabled sync policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileConflictPolicyBootstrapEnvelope(
+        features: [
+            'offline_sync' => mobileConflictPolicyFeature(enabled: true, state: 'offline_limited'),
+        ],
+        abilities: [
+            'sync' => ['view' => true, 'conflicts.resolve' => true],
+        ],
+        syncEnabled: false,
+    ));
+
+    $conflict = createPendingConflict();
+
+    Livewire::test(ConflictDetail::class, ['offlineAction' => $conflict])
+        ->assertSee('Conflict resolution disabled')
+        ->assertDontSee('wire:click="keepLocal"', false)
+        ->assertDontSee('wire:click="acceptRemote"', false)
+        ->assertDontSee('wire:click="dismissConflict"', false)
+        ->call('keepLocal')
+        ->assertSet('statusMessage', 'Sync is disabled by the current workspace policy.')
+        ->assertSet('statusVariant', 'warning')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Resolution unavailable'
+                && ($params['message'] ?? null) === 'Sync is disabled by the current workspace policy.';
+        })
+        ->call('acceptRemote')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Resolution unavailable';
+        })
+        ->call('dismissConflict')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Resolution unavailable';
+        });
+
+    $blocked = findConflictAction($conflict->getKey());
+
+    expect($blocked->conflict_status)->toBe(MobileLocalOfflineAction::CONFLICT_PENDING)
+        ->and($blocked->status)->toBe(MobileLocalOfflineAction::STATUS_FAILED)
+        ->and($blocked->conflict_payload)->not->toHaveKey('resolution');
+});
+
 test('conflict detail can accept remote and dismiss conflicts', function (): void {
     $accepted = createPendingConflict('/api/mobile/items/accepted');
     $dismissed = createPendingConflict('/api/mobile/items/dismissed');
@@ -207,4 +255,89 @@ function findConflictAction(int|string $id): MobileLocalOfflineAction
         ->select(MobileLocalOfflineAction::SELECT_COLUMNS)
         ->whereKey($id)
         ->firstOrFail();
+}
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return array<string, mixed>
+ */
+function mobileConflictPolicyBootstrapEnvelope(array $features = [], array $abilities = [], bool $syncEnabled = true): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => $abilities,
+                'ability_list' => mobileConflictPolicyAbilityList($abilities),
+            ],
+            'features' => [
+                'version' => 'conflict-policy',
+                'items' => array_replace([
+                    'offline_sync' => mobileConflictPolicyFeature(enabled: true, state: 'offline_limited'),
+                ], $features),
+            ],
+            'remote_config' => ['version' => 'conflict-policy', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => $syncEnabled, 'reason' => $syncEnabled ? null : 'sync_disabled_by_admin'],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'conflict-policy',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileConflictPolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'test_policy',
+    ];
+}
+
+/**
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return list<string>
+ */
+function mobileConflictPolicyAbilityList(array $abilities): array
+{
+    $abilityList = [];
+
+    foreach ($abilities as $group => $items) {
+        foreach ($items as $ability => $granted) {
+            if ($granted) {
+                $abilityList[] = $group.'.'.$ability;
+            }
+        }
+    }
+
+    return $abilityList;
 }

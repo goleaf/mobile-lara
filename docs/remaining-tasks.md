@@ -279,8 +279,10 @@ before implementation scope is added.
   now gate cached scanner policy before local scan-history writes or deletes.
   Notification inbox rendering and read/open/read-all actions now gate cached
   notification policy before local notification rows are shown or timestamped.
-  Lower-level NativePHP service calls and remaining offline queue writes still
-  need per-action gates.
+  Manual sync and conflict resolution now gate cached sync policy before local
+  sync timestamps or conflict queue statuses change. Lower-level NativePHP
+  service calls and remaining repository-level queue writes still need
+  per-action gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

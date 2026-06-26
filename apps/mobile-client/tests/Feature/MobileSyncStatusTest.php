@@ -91,6 +91,36 @@ test('sync now marks the local sync timestamp when online', function (): void {
     expect(app(SettingsRepository::class)->get()->last_sync_at?->equalTo(CarbonImmutable::now()))->toBeTrue();
 });
 
+test('sync now is blocked by disabled sync policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileSyncStatusPolicyBootstrapEnvelope(
+        features: [
+            'offline_sync' => mobileSyncStatusPolicyFeature(enabled: true, state: 'offline_limited'),
+        ],
+        abilities: [
+            'sync' => ['run' => true, 'view' => true],
+        ],
+        syncEnabled: false,
+    ));
+
+    app(OfflineActionRepository::class)->enqueue(actionType: 'create', endpoint: '/api/mobile/items');
+
+    Livewire::test(SyncStatus::class)
+        ->assertSee('Sync is disabled by the current workspace policy.')
+        ->call('syncNow')
+        ->assertSet('syncInProgress', false)
+        ->assertSet('statusMessage', 'Sync is disabled by the current workspace policy.')
+        ->assertSet('statusVariant', 'warning')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Sync unavailable'
+                && ($params['message'] ?? null) === 'Sync is disabled by the current workspace policy.';
+        });
+
+    expect(app(SettingsRepository::class)->get()->last_sync_at)->toBeNull()
+        ->and(MobileLocalOfflineAction::query()->forStatus(MobileLocalOfflineAction::STATUS_PENDING)->count())->toBe(1);
+});
+
 test('sync now stays queued while offline', function (): void {
     $this->networkState->available = false;
 
@@ -132,4 +162,89 @@ final class MobileSyncStatusFakeNetworkState implements MobileNetworkState
             nativeStatusAvailable: true,
         );
     }
+}
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return array<string, mixed>
+ */
+function mobileSyncStatusPolicyBootstrapEnvelope(array $features = [], array $abilities = [], bool $syncEnabled = true): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => $abilities,
+                'ability_list' => mobileSyncStatusPolicyAbilityList($abilities),
+            ],
+            'features' => [
+                'version' => 'sync-status-policy',
+                'items' => array_replace([
+                    'offline_sync' => mobileSyncStatusPolicyFeature(enabled: true, state: 'offline_limited'),
+                ], $features),
+            ],
+            'remote_config' => ['version' => 'sync-status-policy', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => $syncEnabled, 'reason' => $syncEnabled ? null : 'sync_disabled_by_admin'],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'sync-status-policy',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileSyncStatusPolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'test_policy',
+    ];
+}
+
+/**
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return list<string>
+ */
+function mobileSyncStatusPolicyAbilityList(array $abilities): array
+{
+    $abilityList = [];
+
+    foreach ($abilities as $group => $items) {
+        foreach ($items as $ability => $granted) {
+            if ($granted) {
+                $abilityList[] = $group.'.'.$ability;
+            }
+        }
+    }
+
+    return $abilityList;
 }

@@ -4,6 +4,8 @@ namespace App\Livewire\Mobile;
 
 use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\OfflineActionRepository;
 use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonInterface;
@@ -14,6 +16,7 @@ use Livewire\Component;
 final class SyncStatus extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     public bool $syncInProgress = false;
 
@@ -31,14 +34,20 @@ final class SyncStatus extends Component
         OfflineActionRepository $offlineActions,
         SettingsRepository $settings,
         MobileNetworkState $networkState,
+        MobileAccessPolicy $mobileAccessPolicy,
     ): void {
         $this->offlineActions = $offlineActions;
         $this->settings = $settings;
         $this->networkState = $networkState;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function syncNow(): void
     {
+        if ($this->syncActionDenied('Sync unavailable')) {
+            return;
+        }
+
         $this->syncInProgress = true;
 
         try {
@@ -90,6 +99,7 @@ final class SyncStatus extends Component
     {
         $networkStatus = $this->networkState->status();
         $isOnline = $networkStatus->isOnline;
+        $syncPolicy = $this->syncPolicy();
 
         try {
             $pendingActionCount = $this->offlineActions->pendingCount();
@@ -110,11 +120,12 @@ final class SyncStatus extends Component
             'networkVariant' => $networkStatus->variant(),
             'networkDescription' => $networkStatus->connectionSummary(),
             'summaryVariant' => $this->summaryVariant($storageAvailable, $pendingActionCount, $failedSyncCount),
-            'summaryDescription' => $this->summaryDescription($storageAvailable, $isOnline, $pendingActionCount, $failedSyncCount),
+            'summaryDescription' => $this->summaryDescription($storageAvailable, $isOnline, $pendingActionCount, $failedSyncCount, $syncPolicy['sync']['allowed']),
             'pendingActionCount' => $pendingActionCount,
             'failedSyncCount' => $failedSyncCount,
             'lastSyncLabel' => $this->lastSyncLabel($lastSyncAt),
-            'canSync' => $isOnline && $storageAvailable,
+            'canSync' => $isOnline && $storageAvailable && $syncPolicy['sync']['allowed'],
+            'syncPolicy' => $syncPolicy,
         ];
     }
 
@@ -151,9 +162,14 @@ final class SyncStatus extends Component
         bool $isOnline,
         int $pendingActionCount,
         int $failedSyncCount,
+        bool $syncAllowed,
     ): string {
         if (! $storageAvailable) {
             return 'Local sync storage needs migrations before queue status is available.';
+        }
+
+        if (! $syncAllowed) {
+            return 'Sync is disabled by the current workspace policy.';
         }
 
         if (! $isOnline) {
@@ -174,5 +190,34 @@ final class SyncStatus extends Component
     private function actionLabel(int $count): string
     {
         return $count === 1 ? 'action' : 'actions';
+    }
+
+    /**
+     * @return array{sync: array{allowed: bool, message: string}}
+     */
+    private function syncPolicy(): array
+    {
+        $sync = $this->mobileFeatureDecision('offline_sync', 'sync.run');
+
+        return [
+            'sync' => [
+                'allowed' => $sync['allowed'],
+                'message' => $sync['message'],
+            ],
+        ];
+    }
+
+    private function syncActionDenied(string $title): bool
+    {
+        $decision = $this->mobileFeatureDecision('offline_sync', 'sync.run');
+
+        if ($decision['allowed']) {
+            return false;
+        }
+
+        $this->setStatusMessage($decision['message'], 'warning');
+        $this->toastWarning($decision['message'], $title);
+
+        return true;
     }
 }
