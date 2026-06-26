@@ -23,6 +23,13 @@ flags, user-facing location understanding, and never-collect rules must
 remain tenant-scoped, permission-aware, fallback-safe, offline-clear,
 privacy-safe, purpose-limited, and Admin/API-authoritative.
 
+Voice Note Logic is defined in `voice-note-logic.md`:
+recording, pausing, resuming, local saving, record/support attachments,
+optional future transcription, offline upload queues, microphone-permission
+denial, admin feature flags, privacy, and retention behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear, queue-safe,
+privacy-safe, retention-aware, and Admin/API-authoritative.
+
 This document defines billing and subscription logic for the Mobile Lara SaaS
 system. It explains plan-based access, trial behavior, active subscription
 behavior, expired subscription behavior, suspended billing behavior, plan

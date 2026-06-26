@@ -23,6 +23,13 @@ flags, user-facing location understanding, and never-collect rules must
 remain tenant-scoped, permission-aware, fallback-safe, offline-clear,
 privacy-safe, purpose-limited, and Admin/API-authoritative.
 
+Voice Note Logic is defined in `voice-note-logic.md`:
+recording, pausing, resuming, local saving, record/support attachments,
+optional future transcription, offline upload queues, microphone-permission
+denial, admin feature flags, privacy, and retention behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear, queue-safe,
+privacy-safe, retention-aware, and Admin/API-authoritative.
+
 This document defines the NativePHP native feature strategy for the Mobile Lara
 SaaS mobile client. It explains why native features should be wrapped behind
 logical services, why every native feature must have browser/development

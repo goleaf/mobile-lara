@@ -219,6 +219,13 @@ flags, user-facing location understanding, and never-collect rules must
 remain tenant-scoped, permission-aware, fallback-safe, offline-clear,
 privacy-safe, purpose-limited, and Admin/API-authoritative.
 
+Voice Note Logic is defined in `../../docs/voice-note-logic.md`:
+recording, pausing, resuming, local saving, record/support attachments,
+optional future transcription, offline upload queues, microphone-permission
+denial, admin feature flags, privacy, and retention behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear, queue-safe,
+privacy-safe, retention-aware, and Admin/API-authoritative.
+
 Sync Lifecycle Logic is defined in `../../docs/sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,

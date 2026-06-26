@@ -2,6 +2,13 @@
 
 Updated: 2026-06-26
 
+Voice Note Logic is defined in `voice-note-logic.md`:
+recording, pausing, resuming, local saving, record/support attachments,
+optional future transcription, offline upload queues, microphone-permission
+denial, admin feature flags, privacy, and retention behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear, queue-safe,
+privacy-safe, retention-aware, and Admin/API-authoritative.
+
 This document defines geolocation logic for the Mobile Lara NativePHP client.
 It explains check-ins, location-attached records, accuracy display, permission
 explanation, offline location behavior, privacy boundaries, admin control

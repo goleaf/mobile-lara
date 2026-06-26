@@ -16,6 +16,13 @@ flags, user-facing location understanding, and never-collect rules must
 remain tenant-scoped, permission-aware, fallback-safe, offline-clear,
 privacy-safe, purpose-limited, and Admin/API-authoritative.
 
+Voice Note Logic is defined in `voice-note-logic.md`:
+recording, pausing, resuming, local saving, record/support attachments,
+optional future transcription, offline upload queues, microphone-permission
+denial, admin feature flags, privacy, and retention behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear, queue-safe,
+privacy-safe, retention-aware, and Admin/API-authoritative.
+
 This document defines camera and media logic for the Mobile Lara NativePHP
 client. It explains taking photos, choosing media, previewing media, attaching
 media to records or support, offline media storage principles, upload queue
