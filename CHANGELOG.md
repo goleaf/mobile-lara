@@ -95,6 +95,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added API-derived policy checks to manual sync and conflict resolution so
   disabled sync policy hides resolution controls and stops direct Livewire
   calls before local sync timestamps or conflict queue statuses change.
+- Added cached sync-policy enforcement inside the offline-first queue service
+  so lower-level queue calls cannot write replay intents when offline sync is
+  disabled for the current workspace.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

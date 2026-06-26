@@ -4,6 +4,7 @@ namespace App\Services\MobileLocal;
 
 use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Models\MobileLocalOfflineAction;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use Carbon\CarbonInterface;
 use InvalidArgumentException;
 
@@ -18,6 +19,7 @@ final class OfflineFirstActionQueue
     public function __construct(
         private readonly OfflineActionRepository $offlineActions,
         private readonly MobileNetworkState $networkState,
+        private readonly MobileAccessPolicy $mobileAccessPolicy,
     ) {}
 
     /**
@@ -93,6 +95,10 @@ final class OfflineFirstActionQueue
         ?CarbonInterface $availableAt = null,
     ): ?MobileLocalOfflineAction {
         if ($this->networkState->isAvailable()) {
+            return null;
+        }
+
+        if (! $this->mobileAccessPolicy->allows('offline_sync')) {
             return null;
         }
 

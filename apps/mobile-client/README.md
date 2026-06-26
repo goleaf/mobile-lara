@@ -277,10 +277,11 @@ local scan-history writes or deletes. Notification inbox rendering and
 read/open/read-all actions are checked against cached notification policy
 before local inbox rows are shown or mutated. Manual sync and conflict
 resolution actions are checked against cached sync policy before local sync
-timestamps or conflict queue statuses change. Core recovery surfaces such as
-dashboard, profile, settings, workspace switching, support, and billing stay
-reachable so users can recover when a tenant or policy state blocks a
-workflow.
+timestamps or conflict queue statuses change, and the offline-first queue
+service refuses new replay intents when offline sync is disabled. Core recovery
+surfaces such as dashboard, profile, settings, workspace switching, support,
+and billing stay reachable so users can recover when a tenant or policy state
+blocks a workflow.
 
 Admin Control Center logic in `../../docs/admin-control-center-logic.md`
 defines the server-side controls that mobile receives as API outcomes:

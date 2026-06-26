@@ -1,8 +1,12 @@
 <?php
 
+use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Models\MobileLocalOfflineAction;
 use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\MobileNetworkStatus;
 use App\Services\MobileLocal\OfflineActionRepository;
+use App\Services\MobileLocal\OfflineFirstActionQueue;
+use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -145,3 +149,106 @@ test('offline action repository can list actions by status and cancel actions', 
         ->and($repository->byStatus(MobileLocalOfflineAction::STATUS_CANCELLED))->toHaveCount(1)
         ->and($repository->byStatus(MobileLocalOfflineAction::STATUS_PENDING))->toHaveCount(0);
 });
+
+test('offline first action queue respects cached sync policy before enqueueing', function (): void {
+    $this->app->instance(MobileNetworkState::class, new MobileLocalOfflineQueueFakeNetworkState(available: false));
+
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileOfflineQueuePolicyBootstrapEnvelope(syncEnabled: false));
+
+    $blocked = app(OfflineFirstActionQueue::class)->queueCreate(
+        endpoint: '/api/mobile/items',
+        payload: ['name' => 'Blocked draft'],
+    );
+
+    expect($blocked)->toBeNull()
+        ->and(MobileLocalOfflineAction::query()->count())->toBe(0);
+
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileOfflineQueuePolicyBootstrapEnvelope(syncEnabled: true));
+
+    $queued = app(OfflineFirstActionQueue::class)->queueUpdate(
+        endpoint: '/api/mobile/items/1',
+        payload: ['name' => 'Allowed draft'],
+    );
+
+    expect($queued)->toBeInstanceOf(MobileLocalOfflineAction::class)
+        ->and($queued?->action_type)->toBe(OfflineFirstActionQueue::ACTION_UPDATE)
+        ->and($queued?->method)->toBe('PATCH')
+        ->and(MobileLocalOfflineAction::query()->count())->toBe(1);
+});
+
+final class MobileLocalOfflineQueueFakeNetworkState implements MobileNetworkState
+{
+    public function __construct(public bool $available) {}
+
+    public function isAvailable(): bool
+    {
+        return $this->available;
+    }
+
+    public function status(): MobileNetworkStatus
+    {
+        return new MobileNetworkStatus(
+            isOnline: $this->available,
+            connectionType: $this->available ? 'wifi' : 'none',
+            isMetered: false,
+            source: 'test',
+            nativeStatusAvailable: false,
+        );
+    }
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileOfflineQueuePolicyBootstrapEnvelope(bool $syncEnabled = true): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => [],
+                'ability_list' => [],
+            ],
+            'features' => [
+                'version' => 'offline-queue-policy',
+                'items' => [
+                    'offline_sync' => [
+                        'state' => 'offline_limited',
+                        'visible' => true,
+                        'enabled' => true,
+                        'reason' => null,
+                        'message' => null,
+                        'next_action' => null,
+                        'source' => 'test_policy',
+                    ],
+                ],
+            ],
+            'remote_config' => ['version' => 'offline-queue-policy', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => $syncEnabled, 'reason' => $syncEnabled ? null : 'sync_disabled_by_admin'],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'offline-queue-policy',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
