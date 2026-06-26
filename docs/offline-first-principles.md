@@ -78,6 +78,12 @@ plan limits, feature-flag entitlement ceilings, mobile unavailable-feature state
 and manual admin billing controls must remain Admin/API-authoritative,
 tenant-scoped, auditable, and provider-neutral.
 
+Reporting Logic is defined in `reporting-logic.md`:
+admin measurements, tenant-admin measurements, mobile-visible summaries,
+privacy boundaries, date ranges, exports, feature usage, sync health,
+notification, support, and billing reports must remain tenant-scoped,
+permission-aware, privacy-safe, auditable, and Admin/API-authoritative.
+
 ## Offline-First Statement
 
 Offline-first means useful offline, not trusted offline.

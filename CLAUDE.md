@@ -94,6 +94,12 @@ plan limits, feature-flag entitlement ceilings, mobile unavailable-feature state
 and manual admin billing controls must remain Admin/API-authoritative,
 tenant-scoped, auditable, and provider-neutral.
 
+Reporting Logic is defined in `docs/reporting-logic.md`:
+admin measurements, tenant-admin measurements, mobile-visible summaries,
+privacy boundaries, date ranges, exports, feature usage, sync health,
+notification, support, and billing reports must remain tenant-scoped,
+permission-aware, privacy-safe, auditable, and Admin/API-authoritative.
+
 Sync Lifecycle Logic is defined in `docs/sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,
@@ -184,6 +190,7 @@ Use these docs before changing the product direction:
 - `docs/notifications-logic.md`
 - `docs/support-system-logic.md`
 - `docs/billing-and-plan-logic.md`
+- `docs/reporting-logic.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -226,6 +233,7 @@ Use these docs before changing the product direction:
 - Notifications decisions must follow `docs/notifications-logic.md`.
 - Support system decisions must follow `docs/support-system-logic.md`.
 - Billing and plan decisions must follow `docs/billing-and-plan-logic.md`.
+- Reporting decisions must follow `docs/reporting-logic.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -267,6 +275,7 @@ Use these docs before changing the product direction:
 - Any admin-created notification, system notification, security notification, reminder, push notification, in-app inbox, read/unread behavior, deep link, notification preference, offline notification behavior, tenant targeting, or notification permission boundary must map to `docs/notifications-logic.md`.
 - Any mobile support request, support agent review, support message, support attachment, tenant support context, support visibility, support audit, support notification, or offline support draft behavior must map to `docs/support-system-logic.md`.
 - Any plan-based access, trial behavior, active/expired/suspended subscription state, plan limit, feature-flag entitlement ceiling, mobile plan-blocked state, manual billing control, billing support context, or billing audit behavior must map to `docs/billing-and-plan-logic.md`.
+- Any admin report, tenant-admin report, mobile-visible report, report privacy boundary, date range, export, feature usage report, sync health report, notification report, support report, or billing report must map to `docs/reporting-logic.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.

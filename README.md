@@ -72,6 +72,12 @@ entitlement ceilings, mobile unavailable-feature states, and manual admin
 billing controls stay Admin/API-authoritative, tenant-scoped, auditable, and
 provider-neutral.
 
+The reporting model is explicit: admins, tenant admins, and mobile users see
+only role-appropriate reporting outcomes; privacy boundaries, date ranges,
+exports, feature usage, sync health, notification, support, and billing reports
+stay tenant-scoped, permission-aware, privacy-safe, auditable, and
+Admin/API-authoritative.
+
 The value map is explicit too: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team each receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
 
 The two-system boundary is explicit: Admin/API owns SaaS authority, while mobile owns local execution, native capability use, cache, drafts, queues, and clear state presentation.
@@ -169,6 +175,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/notifications-logic.md](docs/notifications-logic.md) | Notifications logic for admin-created, system, security, reminder, push, inbox, read/unread, deep-link, preference, offline, tenant, and permission behavior. |
 | [docs/support-system-logic.md](docs/support-system-logic.md) | Support system logic for mobile requests, admin/support review, messages, attachments, tenant context, access limits, audit, and offline support drafts. |
 | [docs/billing-and-plan-logic.md](docs/billing-and-plan-logic.md) | Billing and plan logic for plan access, trials, active/expired/suspended subscription states, limits, feature-flag entitlement ceilings, mobile blocked states, and manual admin billing controls. |
+| [docs/reporting-logic.md](docs/reporting-logic.md) | Reporting logic for admin, tenant-admin, and mobile-visible reporting, privacy boundaries, date ranges, exports, feature usage, sync health, notification, support, and billing reports. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
 | [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
@@ -237,6 +244,7 @@ contracts.
 - Apply [notifications logic](docs/notifications-logic.md) before planning admin-created notifications, system notifications, security notifications, reminders, push delivery, in-app inbox, read/unread state, deep links, notification preferences, offline notification behavior, tenant targeting, or notification permission boundaries.
 - Apply [support system logic](docs/support-system-logic.md) before planning mobile support requests, support agent review, support messages, attachments, tenant support context, support visibility, support audit, support notifications, or offline support drafts.
 - Apply [billing and plan logic](docs/billing-and-plan-logic.md) before planning plan-based access, trials, active/expired/suspended subscription states, plan limits, feature-flag plan ceilings, mobile plan-blocked states, manual billing controls, or billing support/audit behavior.
+- Apply [reporting logic](docs/reporting-logic.md) before planning admin reports, tenant-admin reports, mobile-visible summaries, report privacy, date ranges, exports, feature usage reporting, sync health reporting, notification reporting, support reporting, or billing reporting.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
 - Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.

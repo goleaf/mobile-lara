@@ -6,6 +6,11 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Reporting Logic documentation for admin measurements, tenant-admin
+  measurements, mobile-visible summaries, report privacy boundaries, date
+  ranges, exports, feature usage reporting, sync health reporting,
+  notification reporting, support reporting, billing reporting, and
+  Admin/API-authoritative reporting boundaries.
 - Added Billing And Plan Logic documentation for plan-based access, trial
   behavior, active/expired/suspended subscription states, plan limits,
   feature-flag entitlement ceilings, mobile unavailable-feature states, manual
