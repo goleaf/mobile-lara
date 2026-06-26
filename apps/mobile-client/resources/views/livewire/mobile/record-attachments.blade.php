@@ -13,95 +13,105 @@
             </x-slot:action>
         </x-mobile.error-state>
     @else
-        <x-mobile.card title="Attachment picker" description="Record attachments saved locally and queued for upload.">
-            <form wire:submit="createAttachment" class="grid gap-4">
-                <x-mobile.input
-                    name="path"
-                    label="File path"
-                    placeholder="/tmp/mobile-attachments/document.pdf"
-                    hint="A local path, exported file path, or future NativePHP file picker result."
-                    wire:model.live="path"
-                />
+        @if (! $attachmentActionPermissions['manage'])
+            <x-mobile.error-state
+                title="Attachment management disabled"
+                message="Your current workspace role cannot add, link, delete, or queue record attachments from this device."
+            />
+        @endif
 
-                <div class="grid gap-4 sm:grid-cols-2">
+        @if ($attachmentActionPermissions['manage'])
+            <x-mobile.card title="Attachment picker" description="Record attachments saved locally and queued for upload.">
+                <form wire:submit="createAttachment" class="grid gap-4">
                     <x-mobile.input
-                        name="name"
-                        label="Display name"
-                        placeholder="signed-receipt.pdf"
-                        wire:model.live="name"
+                        name="path"
+                        label="File path"
+                        placeholder="/tmp/mobile-attachments/document.pdf"
+                        hint="A local path, exported file path, or future NativePHP file picker result."
+                        wire:model.live="path"
                     />
 
-                    <x-mobile.input
-                        name="mime"
-                        label="MIME type"
-                        placeholder="application/pdf"
-                        wire:model.live="mime"
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <x-mobile.input
+                            name="name"
+                            label="Display name"
+                            placeholder="signed-receipt.pdf"
+                            wire:model.live="name"
+                        />
+
+                        <x-mobile.input
+                            name="mime"
+                            label="MIME type"
+                            placeholder="application/pdf"
+                            wire:model.live="mime"
+                        />
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <x-mobile.select
+                            name="type"
+                            label="Type"
+                            :options="$typeOptions"
+                            wire:model.live="type"
+                        />
+
+                        <x-mobile.input
+                            name="size"
+                            label="Size in bytes"
+                            type="number"
+                            min="0"
+                            placeholder="125000"
+                            wire:model.live="size"
+                        />
+                    </div>
+
+                    <x-mobile.textarea
+                        name="caption"
+                        label="Caption"
+                        rows="3"
+                        placeholder="Why this attachment matters"
+                        wire:model.live="caption"
                     />
-                </div>
 
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <x-mobile.select
-                        name="type"
-                        label="Type"
-                        :options="$typeOptions"
-                        wire:model.live="type"
-                    />
+                    <div class="grid gap-3 sm:grid-cols-4">
+                        <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
+                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Attachments</p>
+                            <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $attachmentCount }}</p>
+                        </div>
 
-                    <x-mobile.input
-                        name="size"
-                        label="Size in bytes"
-                        type="number"
-                        min="0"
-                        placeholder="125000"
-                        wire:model.live="size"
-                    />
-                </div>
+                        <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
+                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Queued</p>
+                            <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $queuedCount }}</p>
+                        </div>
 
-                <x-mobile.textarea
-                    name="caption"
-                    label="Caption"
-                    rows="3"
-                    placeholder="Why this attachment matters"
-                    wire:model.live="caption"
-                />
+                        <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
+                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Pending</p>
+                            <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $pendingCount }}</p>
+                        </div>
 
-                <div class="grid gap-3 sm:grid-cols-4">
-                    <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Attachments</p>
-                        <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $attachmentCount }}</p>
+                        <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
+                            <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Failed</p>
+                            <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $failedCount }}</p>
+                        </div>
                     </div>
 
-                    <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Queued</p>
-                        <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $queuedCount }}</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <x-mobile.submit-button target="createAttachment" variant="accent" loading-label="Saving attachment">
+                            Save attachment
+                        </x-mobile.submit-button>
+
+                        <x-mobile.button wire:click="resetPicker" variant="secondary" full>
+                            Clear picker
+                        </x-mobile.button>
                     </div>
+                </form>
+            </x-mobile.card>
+        @endif
 
-                    <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Pending</p>
-                        <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $pendingCount }}</p>
-                    </div>
-
-                    <div class="rounded-lg border border-app-line bg-app-bg p-3 dark:border-zinc-800 dark:bg-zinc-950">
-                        <p class="text-xs font-semibold uppercase tracking-normal text-app-muted dark:text-zinc-500">Failed</p>
-                        <p class="mt-1 text-xl font-semibold text-app-ink dark:text-zinc-100">{{ $failedCount }}</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                    <x-mobile.submit-button target="createAttachment" variant="accent" loading-label="Saving attachment">
-                        Save attachment
-                    </x-mobile.submit-button>
-
-                    <x-mobile.button wire:click="resetPicker" variant="secondary" full>
-                        Clear picker
-                    </x-mobile.button>
-                </div>
-            </form>
-        </x-mobile.card>
-
-        <x-mobile.card title="Media picker" description="Recent local media that can be linked to this record.">
-            <div class="grid gap-3">
-                @forelse ($mediaItems as $mediaItem)
+        @if ($attachmentActionPermissions['manage'])
+            <x-mobile.card title="Media picker" description="Recent local media that can be linked to this record.">
+                <div class="grid gap-3">
+                    @forelse ($mediaItems as $mediaItem)
                     <article
                         wire:key="record-attachment-media-{{ $mediaItem->id }}"
                         class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
@@ -139,14 +149,15 @@
                             </x-mobile.button>
                         </div>
                     </article>
-                @empty
+                    @empty
                     <x-mobile.empty-state
                         title="No media to link"
                         description="Captured or imported media will appear here after it is stored locally."
                     />
-                @endforelse
-            </div>
-        </x-mobile.card>
+                    @endforelse
+                </div>
+            </x-mobile.card>
+        @endif
 
         @if ($previewAttachment)
             <x-mobile.card title="Attachment preview" description="Selected local attachment details.">
@@ -177,33 +188,37 @@
                         @endforeach
                     </dl>
 
-                    <div class="grid grid-cols-3 gap-2">
-                        <x-mobile.button
-                            wire:click="shareAttachment({{ $previewAttachment->id }})"
-                            wire:loading.attr="disabled"
-                            wire:target="shareAttachment({{ $previewAttachment->id }})"
-                            variant="secondary"
-                            size="sm"
-                            full
-                        >
-                            Share
-                        </x-mobile.button>
+                    <div class="grid gap-2 sm:grid-cols-3">
+                        @if ($attachmentActionPermissions['share'])
+                            <x-mobile.button
+                                wire:click="shareAttachment({{ $previewAttachment->id }})"
+                                wire:loading.attr="disabled"
+                                wire:target="shareAttachment({{ $previewAttachment->id }})"
+                                variant="secondary"
+                                size="sm"
+                                full
+                            >
+                                Share
+                            </x-mobile.button>
+                        @endif
 
                         <x-mobile.button wire:click="clearPreview" variant="secondary" size="sm" full>
                             Close
                         </x-mobile.button>
 
-                        <x-mobile.button
-                            wire:click="deleteAttachment({{ $previewAttachment->id }})"
-                            wire:confirm="Delete this attachment from local storage?"
-                            wire:loading.attr="disabled"
-                            wire:target="deleteAttachment({{ $previewAttachment->id }})"
-                            variant="danger"
-                            size="sm"
-                            full
-                        >
-                            Delete
-                        </x-mobile.button>
+                        @if ($attachmentActionPermissions['manage'])
+                            <x-mobile.button
+                                wire:click="deleteAttachment({{ $previewAttachment->id }})"
+                                wire:confirm="Delete this attachment from local storage?"
+                                wire:loading.attr="disabled"
+                                wire:target="deleteAttachment({{ $previewAttachment->id }})"
+                                variant="danger"
+                                size="sm"
+                                full
+                            >
+                                Delete
+                            </x-mobile.button>
+                        @endif
                     </div>
                 </div>
             </x-mobile.card>
@@ -259,7 +274,7 @@
                             @endif
                         </div>
 
-                        <div class="grid grid-cols-3 gap-2">
+                        <div class="grid gap-2 sm:grid-cols-3">
                             <x-mobile.button
                                 wire:click="previewAttachment({{ $attachment->id }})"
                                 wire:loading.attr="disabled"
@@ -271,28 +286,32 @@
                                 Preview
                             </x-mobile.button>
 
-                            <x-mobile.button
-                                wire:click="shareAttachment({{ $attachment->id }})"
-                                wire:loading.attr="disabled"
-                                wire:target="shareAttachment({{ $attachment->id }})"
-                                variant="secondary"
-                                size="sm"
-                                full
-                            >
-                                Share
-                            </x-mobile.button>
+                            @if ($attachmentActionPermissions['share'])
+                                <x-mobile.button
+                                    wire:click="shareAttachment({{ $attachment->id }})"
+                                    wire:loading.attr="disabled"
+                                    wire:target="shareAttachment({{ $attachment->id }})"
+                                    variant="secondary"
+                                    size="sm"
+                                    full
+                                >
+                                    Share
+                                </x-mobile.button>
+                            @endif
 
-                            <x-mobile.button
-                                wire:click="deleteAttachment({{ $attachment->id }})"
-                                wire:confirm="Delete this attachment from local storage?"
-                                wire:loading.attr="disabled"
-                                wire:target="deleteAttachment({{ $attachment->id }})"
-                                variant="danger"
-                                size="sm"
-                                full
-                            >
-                                Delete
-                            </x-mobile.button>
+                            @if ($attachmentActionPermissions['manage'])
+                                <x-mobile.button
+                                    wire:click="deleteAttachment({{ $attachment->id }})"
+                                    wire:confirm="Delete this attachment from local storage?"
+                                    wire:loading.attr="disabled"
+                                    wire:target="deleteAttachment({{ $attachment->id }})"
+                                    variant="danger"
+                                    size="sm"
+                                    full
+                                >
+                                    Delete
+                                </x-mobile.button>
+                            @endif
                         </div>
                     </article>
                 @empty
@@ -309,9 +328,11 @@
                         Refresh attachments
                     </x-mobile.button>
 
-                    <x-mobile.button wire:click="uploadQueuePlaceholder" variant="secondary" full>
-                        Upload queue placeholder
-                    </x-mobile.button>
+                    @if ($attachmentActionPermissions['manage'])
+                        <x-mobile.button wire:click="uploadQueuePlaceholder" variant="secondary" full>
+                            Upload queue placeholder
+                        </x-mobile.button>
+                    @endif
                 </div>
             </x-slot:footer>
         </x-mobile.card>

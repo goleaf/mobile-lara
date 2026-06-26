@@ -3,8 +3,10 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileRecordActions;
 use App\Models\MobileLocalAttachment;
 use App\Models\MobileLocalRecord;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\AttachmentRepository;
 use App\Services\Native\ShareService;
 use Illuminate\Contracts\View\View;
@@ -17,6 +19,7 @@ use Livewire\Component;
 class RecordAttachments extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileRecordActions;
 
     public MobileLocalRecord $record;
 
@@ -40,10 +43,14 @@ class RecordAttachments extends Component
 
     private ShareService $shares;
 
-    public function boot(AttachmentRepository $attachments, ShareService $shares): void
-    {
+    public function boot(
+        AttachmentRepository $attachments,
+        ShareService $shares,
+        MobileAccessPolicy $mobileAccessPolicy,
+    ): void {
         $this->attachments = $attachments;
         $this->shares = $shares;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(MobileLocalRecord $record): void
@@ -53,6 +60,10 @@ class RecordAttachments extends Component
 
     public function createAttachment(): void
     {
+        if ($this->recordActionDenied('records.attachments.manage', 'Attachment not saved')) {
+            return;
+        }
+
         $validated = $this->validate([
             'path' => ['required', 'string', 'max:500'],
             'name' => ['nullable', 'string', 'max:255'],
@@ -85,6 +96,10 @@ class RecordAttachments extends Component
 
     public function linkMediaItem(int $mediaItemId): void
     {
+        if ($this->recordActionDenied('records.attachments.manage', 'Link unavailable')) {
+            return;
+        }
+
         try {
             $mediaItem = $this->attachments->findMediaItem($mediaItemId);
             $this->attachments->linkMediaItem($this->record, $mediaItem);
@@ -127,6 +142,10 @@ class RecordAttachments extends Component
 
     public function shareAttachment(int $attachmentId): void
     {
+        if ($this->attachmentShareDenied()) {
+            return;
+        }
+
         try {
             $attachment = $this->attachments->findForRecord($this->record, $attachmentId);
         } catch (ModelNotFoundException) {
@@ -150,6 +169,10 @@ class RecordAttachments extends Component
 
     public function deleteAttachment(int $attachmentId): void
     {
+        if ($this->recordActionDenied('records.attachments.manage', 'Delete unavailable')) {
+            return;
+        }
+
         try {
             $attachment = $this->attachments->findForRecord($this->record, $attachmentId);
             $deleted = $this->attachments->delete($attachment);
@@ -179,6 +202,10 @@ class RecordAttachments extends Component
 
     public function uploadQueuePlaceholder(): void
     {
+        if ($this->recordActionDenied('records.attachments.manage', 'Upload queue unavailable')) {
+            return;
+        }
+
         $this->toastInfo('Upload worker placeholder is ready for the future sync queue.', 'Upload queue');
     }
 
@@ -216,6 +243,7 @@ class RecordAttachments extends Component
 
         return view('livewire.mobile.record-attachments', [
             'attachmentCount' => $attachments->count(),
+            'attachmentActionPermissions' => $this->attachmentActionPermissions(),
             'attachments' => $attachments,
             'failedCount' => $attachments->where('upload_status', MobileLocalAttachment::UPLOAD_FAILED)->count(),
             'mediaItems' => $mediaItems,
@@ -247,6 +275,36 @@ class RecordAttachments extends Component
         }
 
         return (int) $size;
+    }
+
+    /**
+     * @return array{manage: bool, share: bool}
+     */
+    private function attachmentActionPermissions(): array
+    {
+        $canManage = $this->recordActionAllowed('records.attachments.manage');
+
+        return [
+            'manage' => $canManage,
+            'share' => $canManage && $this->mobileAccessPolicy->allows('native_share'),
+        ];
+    }
+
+    private function attachmentShareDenied(): bool
+    {
+        if ($this->recordActionDenied('records.attachments.manage', 'Share unavailable')) {
+            return true;
+        }
+
+        $decision = $this->mobileAccessPolicy->decision('native_share');
+
+        if ($decision['allowed']) {
+            return false;
+        }
+
+        $this->toastWarning($decision['message'], 'Share unavailable');
+
+        return true;
     }
 
     /**

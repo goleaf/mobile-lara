@@ -6,6 +6,7 @@ use App\Models\MobileLocalMediaItem;
 use App\Models\MobileLocalRecord;
 use App\Services\MobileLocal\AttachmentRepository;
 use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -153,6 +154,104 @@ test('record attachments component creates links previews shares deletes and exp
     expect(MobileLocalAttachment::withTrashed()->where('name', 'manual.pdf')->first()?->trashed())->toBeTrue();
 });
 
+test('record attachment management is hidden and blocked by cached api policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileRecordAttachmentsPolicyBootstrapEnvelope([
+        'records' => ['view' => true],
+    ]));
+
+    $record = MobileLocalRecord::factory()->active()->create();
+    $mediaItem = MobileLocalMediaItem::factory()->create([
+        'path' => '/tmp/mobile-media/policy-photo.jpg',
+        'type' => MobileLocalMediaItem::TYPE_IMAGE,
+        'mime' => 'image/jpeg',
+    ]);
+
+    $attachment = app(AttachmentRepository::class)->attachFile(
+        record: $record,
+        path: '/tmp/mobile-attachments/policy.pdf',
+        name: 'policy.pdf',
+        mime: 'application/pdf',
+        type: MobileLocalAttachment::TYPE_FILE,
+        size: 1_200,
+        caption: 'Policy protected attachment',
+    );
+
+    Livewire::test(RecordAttachments::class, ['record' => $record])
+        ->assertSee('Attachment management disabled')
+        ->assertDontSee('Save attachment')
+        ->assertDontSee('Link media')
+        ->assertDontSee('Upload queue placeholder')
+        ->assertDontSee('wire:click="deleteAttachment('.$attachment->id.')"', false)
+        ->set('path', '/tmp/mobile-attachments/blocked.pdf')
+        ->set('name', 'blocked.pdf')
+        ->set('type', MobileLocalAttachment::TYPE_FILE)
+        ->call('createAttachment')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Attachment not saved';
+        })
+        ->call('linkMediaItem', $mediaItem->id)
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Link unavailable';
+        })
+        ->call('deleteAttachment', $attachment->id)
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Delete unavailable';
+        })
+        ->call('uploadQueuePlaceholder')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Upload queue unavailable';
+        });
+
+    expect(MobileLocalAttachment::query()->count())->toBe(1)
+        ->and(MobileLocalAttachment::withTrashed()->find($attachment->id)?->trashed())->toBeFalse()
+        ->and(MobileLocalAttachment::query()->where('media_item_id', $mediaItem->id)->exists())->toBeFalse();
+});
+
+test('record attachment sharing is blocked when native share feature is disabled', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileRecordAttachmentsPolicyBootstrapEnvelope([
+        'records' => [
+            'view' => true,
+            'attachments' => ['manage' => true],
+        ],
+    ], [
+        'native_share' => mobileRecordAttachmentsPolicyFeature(
+            enabled: false,
+            state: 'disabled',
+            message: 'Native sharing is disabled by admin policy.',
+        ),
+    ]));
+
+    $record = MobileLocalRecord::factory()->active()->create();
+    $attachment = app(AttachmentRepository::class)->attachFile(
+        record: $record,
+        path: '/tmp/mobile-attachments/share-blocked.pdf',
+        name: 'share-blocked.pdf',
+        mime: 'application/pdf',
+        type: MobileLocalAttachment::TYPE_FILE,
+        size: 1_200,
+        caption: 'Share protected attachment',
+    );
+
+    Livewire::test(RecordAttachments::class, ['record' => $record])
+        ->assertSee('share-blocked.pdf')
+        ->assertDontSee('wire:click="shareAttachment('.$attachment->id.')"', false)
+        ->call('shareAttachment', $attachment->id)
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Share unavailable'
+                && ($params['message'] ?? null) === 'Native sharing is disabled by admin policy.';
+        });
+});
+
 test('record attachments component validates picker input before saving', function (): void {
     $record = MobileLocalRecord::factory()->active()->create();
 
@@ -163,3 +262,95 @@ test('record attachments component validates picker input before saving', functi
         ->call('createAttachment')
         ->assertHasErrors(['path', 'type', 'size']);
 });
+
+/**
+ * @param  array<string, mixed>  $abilities
+ * @param  array<string, array<string, mixed>>  $features
+ * @return array<string, mixed>
+ */
+function mobileRecordAttachmentsPolicyBootstrapEnvelope(array $abilities, array $features = []): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => $abilities,
+                'ability_list' => mobileRecordAttachmentsPolicyAbilityList($abilities),
+            ],
+            'features' => [
+                'version' => 'mobile-record-attachments-policy-test',
+                'items' => array_replace([
+                    'records' => mobileRecordAttachmentsPolicyFeature(enabled: true, state: 'visible'),
+                    'native_share' => mobileRecordAttachmentsPolicyFeature(enabled: true, state: 'visible'),
+                ], $features),
+            ],
+            'remote_config' => ['version' => 'mobile-record-attachments-policy-test', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => true, 'reason' => null],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'mobile-record-attachments-policy-test',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileRecordAttachmentsPolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'disabled_by_policy',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'mobile_record_attachments_policy_test',
+    ];
+}
+
+/**
+ * @param  array<string, mixed>  $abilities
+ * @return list<string>
+ */
+function mobileRecordAttachmentsPolicyAbilityList(array $abilities, string $prefix = ''): array
+{
+    $abilityList = [];
+
+    foreach ($abilities as $key => $value) {
+        $ability = $prefix === '' ? (string) $key : $prefix.'.'.$key;
+
+        if (is_array($value)) {
+            $abilityList = array_merge($abilityList, mobileRecordAttachmentsPolicyAbilityList($value, $ability));
+
+            continue;
+        }
+
+        if ($value === true) {
+            $abilityList[] = $ability;
+        }
+    }
+
+    return $abilityList;
+}
