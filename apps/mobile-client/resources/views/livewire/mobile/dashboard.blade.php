@@ -32,6 +32,33 @@
                     </x-mobile.card>
                 @endif
 
+                @if ($appState['force_update'] || $appState['optional_update'] || $appState['maintenance_enabled'])
+                    <x-mobile.card
+                        :title="$appState['banner_title']"
+                        :description="$appState['message']"
+                    >
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <div class="min-w-0">
+                                <p class="text-sm font-semibold text-app-ink dark:text-zinc-100">{{ $appState['label'] }}</p>
+                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">
+                                    Current {{ $appState['current_version'] }}
+                                    @if ($appState['latest_version'])
+                                        · Latest {{ $appState['latest_version'] }}
+                                    @endif
+                                </p>
+                            </div>
+
+                            <a
+                                href="{{ route($appState['maintenance_enabled'] ? 'mobile.maintenance' : 'mobile.update-required') }}"
+                                wire:navigate
+                                class="inline-flex min-h-10 shrink-0 items-center justify-center rounded-lg border border-app-line bg-app-surface px-3 text-sm font-semibold text-app-ink shadow-sm transition hover:bg-app-bg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+                            >
+                                Review
+                            </a>
+                        </div>
+                    </x-mobile.card>
+                @endif
+
                 <div class="rounded-lg border border-app-line bg-app-surface p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
                     <div class="flex items-start justify-between gap-4">
                         <div class="min-w-0">

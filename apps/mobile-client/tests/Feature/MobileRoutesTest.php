@@ -13,9 +13,11 @@ use App\Livewire\Mobile\Debug;
 use App\Livewire\Mobile\EditProfile;
 use App\Livewire\Mobile\EmailVerification;
 use App\Livewire\Mobile\FileManager;
+use App\Livewire\Mobile\ForceUpdate;
 use App\Livewire\Mobile\ForgotPassword;
 use App\Livewire\Mobile\LocationCheckIn;
 use App\Livewire\Mobile\Login;
+use App\Livewire\Mobile\Maintenance;
 use App\Livewire\Mobile\MediaCapture;
 use App\Livewire\Mobile\MediaGallery;
 use App\Livewire\Mobile\Notifications;
@@ -93,6 +95,8 @@ test('protected mobile routes redirect guests to login', function (string $route
     'unlock' => 'mobile.unlock',
     'pin create' => 'mobile.pin.create',
     'pin confirm' => 'mobile.pin.confirm',
+    'update required' => 'mobile.update-required',
+    'maintenance' => 'mobile.maintenance',
     'pin change' => 'mobile.pin.change',
     'pin remove' => 'mobile.pin.remove',
     'dashboard' => 'mobile.dashboard',
@@ -143,6 +147,8 @@ test('protected mobile routes render for authenticated users', function (string 
     'unlock' => ['mobile.unlock', AppUnlock::class, 'Unlock app'],
     'pin create' => ['mobile.pin.create', PinCreate::class, 'Create PIN'],
     'pin confirm' => ['mobile.pin.confirm', PinConfirm::class, 'Confirm PIN'],
+    'update required' => ['mobile.update-required', ForceUpdate::class, 'Update required'],
+    'maintenance' => ['mobile.maintenance', Maintenance::class, 'Maintenance'],
     'pin change' => ['mobile.pin.change', PinChange::class, 'Change PIN'],
     'pin remove' => ['mobile.pin.remove', PinRemove::class, 'Remove PIN'],
     'dashboard' => ['mobile.dashboard', Dashboard::class, 'Dashboard'],

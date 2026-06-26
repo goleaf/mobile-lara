@@ -15,9 +15,11 @@ use App\Livewire\Mobile\Debug;
 use App\Livewire\Mobile\EditProfile;
 use App\Livewire\Mobile\EmailVerification;
 use App\Livewire\Mobile\FileManager;
+use App\Livewire\Mobile\ForceUpdate;
 use App\Livewire\Mobile\ForgotPassword;
 use App\Livewire\Mobile\LocationCheckIn;
 use App\Livewire\Mobile\Login;
+use App\Livewire\Mobile\Maintenance;
 use App\Livewire\Mobile\MediaCapture;
 use App\Livewire\Mobile\MediaGallery;
 use App\Livewire\Mobile\Notifications;
@@ -77,6 +79,8 @@ Route::middleware(['web'])
             Route::livewire('/unlock', AppUnlock::class)->name('unlock');
             Route::livewire('/pin/create', PinCreate::class)->name('pin.create');
             Route::livewire('/pin/confirm', PinConfirm::class)->name('pin.confirm');
+            Route::livewire('/update-required', ForceUpdate::class)->name('update-required');
+            Route::livewire('/maintenance', Maintenance::class)->name('maintenance');
 
             Route::middleware(['mobile.unlock'])->group(function (): void {
                 Route::livewire('/dashboard', Dashboard::class)->name('dashboard');

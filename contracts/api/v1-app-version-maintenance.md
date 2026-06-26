@@ -6,8 +6,9 @@ Status: partially implemented. `GET /api/v1/mobile/app-version` returns
 resolved app-version and maintenance policy for reported platform/version
 context, bootstrap uses the same resolver, and platform-admin users can manage
 global/platform, tenant, cohort, and version-range policies with confirmation,
-impact preview, audit, and audit-history restore. Support reports and mobile
-force-update/maintenance screens remain pending.
+impact preview, audit, and audit-history restore. The mobile client now renders
+cached bootstrap-driven force-update, optional-update, and maintenance
+experiences. Support-visible impact reporting remains pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 protects the product promise by keeping stale or unsafe mobile builds under
@@ -375,6 +376,8 @@ Automated coverage:
 - `apps/api-admin/tests/Feature/AdminAppVersionPoliciesTest.php`
 - `apps/api-admin/tests/Feature/MobileAppVersionPolicyTest.php`
 - `apps/api-admin/tests/Feature/MobileBootstrapApiTest.php`
+- `apps/mobile-client/tests/Feature/MobileAppVersionStateTest.php`
+- `apps/mobile-client/tests/Feature/MobileAppPolicyScreensTest.php`
 
 Fresh checks:
 
@@ -382,7 +385,9 @@ Fresh checks:
 cd apps/api-admin && php artisan test --compact --filter=AdminAppVersionPoliciesTest
 cd apps/api-admin && php artisan test --compact --filter=MobileAppVersionPolicyTest
 cd apps/api-admin && php artisan test --compact --filter=MobileBootstrapApiTest
+cd apps/mobile-client && php artisan test --compact tests/Feature/MobileAppVersionStateTest.php
+cd apps/mobile-client && php artisan test --compact tests/Feature/MobileAppPolicyScreensTest.php
 ```
 
-Future Phase 11 coverage should add support-visible impact reporting and mobile
-force-update or maintenance UI behavior.
+Future Phase 11 coverage should add support-visible impact reporting and
+browser/native checks for platform store links.

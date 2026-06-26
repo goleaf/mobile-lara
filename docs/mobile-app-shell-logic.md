@@ -287,6 +287,12 @@ Every shell state should document its owner, entry reason, visible user meaning,
 | Permission-blocked | NativePHP capability status, OS permission status, device support, or admin feature eligibility. | A native capability needed by this feature is unavailable or denied. | Learn why permission is needed, open settings if appropriate, use fallback, retry permission, or leave feature. |
 | Feature-disabled | API-resolved feature, plan, role, tenant, app-version, maintenance, offline, or emergency state. | This feature is not available in the current context. | Use alternative allowed workflow, contact admin/support, update app, reconnect, switch tenant, or wait for rollout. |
 
+Current implementation note: cached bootstrap app-version policy is normalized
+inside the mobile client, dashboard banners route optional or blocking states to
+the correct policy screen, force-update recovery can open the configured store
+or support path, and maintenance recovery can retry policy refresh before normal
+navigation resumes.
+
 ## Welcome State
 
 Welcome state is the pre-authenticated shell.

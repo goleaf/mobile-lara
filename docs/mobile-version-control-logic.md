@@ -477,6 +477,12 @@ Mobile should:
 
 The API should return predictable user-facing error categories such as `version`, `stale_client`, `maintenance`, `blocked`, or `retry_later` so mobile can present the correct state without guessing.
 
+Current mobile implementation note: `MobileAppStateStore` normalizes the cached
+bootstrap app-version and maintenance payload, the dashboard shows optional or
+blocking policy banners, `mobile.update-required` presents store/support/logout
+recovery, and `mobile.maintenance` presents retry/support/logout recovery.
+Both screens refresh bootstrap before returning users to normal navigation.
+
 ## Store Links And Update Messages
 
 Store links and update messages are controlled by Admin/API because they affect user trust and recovery.

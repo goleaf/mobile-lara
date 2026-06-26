@@ -3,6 +3,7 @@
 namespace App\Livewire\Mobile;
 
 use App\Services\MobileAccess\MobileAccessPolicy;
+use App\Services\MobileAppState\MobileAppStateStore;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -20,9 +21,12 @@ class Dashboard extends Component
 
     private MobileAccessPolicy $accessPolicy;
 
-    public function boot(MobileAccessPolicy $accessPolicy): void
+    private MobileAppStateStore $appStates;
+
+    public function boot(MobileAccessPolicy $accessPolicy, MobileAppStateStore $appStates): void
     {
         $this->accessPolicy = $accessPolicy;
+        $this->appStates = $appStates;
     }
 
     public function refreshDashboard(): void
@@ -42,6 +46,7 @@ class Dashboard extends Component
             'syncStatus' => $this->syncStatus(),
             'offlineStatus' => $this->offlineStatus(),
             'notificationPreview' => $this->notificationPreview(),
+            'appState' => $this->appStates->current(),
         ]);
     }
 

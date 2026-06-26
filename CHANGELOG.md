@@ -457,6 +457,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   resolver-enforced rollout blocking, API cohort context, and focused coverage.
 - Added maintenance-aware feature gates so app-version maintenance policy blocks
   ordinary enabled features while keeping support behavior available.
+- Added mobile app-version policy screens and dashboard banners so cached
+  bootstrap force-update, optional-update, and maintenance states show
+  Admin/API-provided messages, store/support/logout actions, retry timing, and
+  policy refresh behavior before normal mobile navigation resumes.
 - Added mobile subscription resolution from tenant subscription state/settings,
   `/api/v1/mobile/billing/subscription`, bootstrap subscription metadata, and
   subscription-backed feature plan gates.
