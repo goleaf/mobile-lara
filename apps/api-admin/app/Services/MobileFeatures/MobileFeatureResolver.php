@@ -9,6 +9,7 @@ use App\Models\Tenant;
 use App\Models\TenantFeatureOverride;
 use App\Models\User;
 use App\Models\UserFeatureOverride;
+use App\Services\MobileVersion\MobileAppVersionPolicyResolver;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -44,12 +45,18 @@ final class MobileFeatureResolver
         'reports' => 'reports.view',
     ];
 
+    private const MAINTENANCE_ALLOWED_FEATURES = [
+        'support',
+    ];
+
+    public function __construct(private MobileAppVersionPolicyResolver $versions) {}
+
     /**
      * @param  array{current_tenant?: array<string, mixed>|null}  $tenantContext
      * @param  array<string, mixed>  $permissions
      * @return array<string, mixed>
      */
-    public function resolve(User $user, array $tenantContext, array $permissions, ?Request $request = null): array
+    public function resolve(User $user, array $tenantContext, array $permissions, ?Request $request = null, ?array $appVersion = null): array
     {
         $tenant = $this->tenantFromContext($tenantContext);
         $globalFlags = $this->globalFlags();
@@ -60,13 +67,15 @@ final class MobileFeatureResolver
         $planKey = $this->planKey($tenantContext);
         $cohortKey = $this->cohortKey($request);
         $deviceContext = $this->deviceContext($request);
+        $maintenanceContext = $this->maintenanceContext($request, $tenantContext, $appVersion);
 
         return [
-            'version' => 'feature-flags-foundation-3',
+            'version' => 'feature-flags-foundation-4',
             'reported_app_version' => $reportedVersion,
             'plan_key' => $planKey,
             'cohort_key' => $cohortKey,
             'device_context' => $deviceContext,
+            'maintenance' => $maintenanceContext,
             'resolved_at' => CarbonImmutable::now()->toIso8601String(),
             'tenant_id' => $tenant?->public_id,
             'items' => collect($keys)
@@ -81,6 +90,7 @@ final class MobileFeatureResolver
                         $planKey,
                         $cohortKey,
                         $deviceContext,
+                        $maintenanceContext,
                     ),
                 ])
                 ->all(),
@@ -169,6 +179,7 @@ final class MobileFeatureResolver
         string $planKey,
         ?string $cohortKey,
         array $deviceContext,
+        array $maintenanceContext,
     ): array {
         $resolved = $this->baseFeature($key, $flag);
 
@@ -192,6 +203,7 @@ final class MobileFeatureResolver
             }
         }
 
+        $resolved = $this->applyMaintenanceGate($key, $resolved, $maintenanceContext);
         $resolved = $this->applyPlanGate($resolved, $planKey);
         $resolved = $this->applyCohortGate($resolved, $cohortKey);
         $resolved = $this->applyDeviceGate($resolved, $deviceContext);
@@ -250,6 +262,31 @@ final class MobileFeatureResolver
             offlineBehavior: (string) $payload['offline_behavior'],
             source: 'emergency_gate',
             nextAction: 'contact_support',
+        );
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     * @param  array{enabled: bool, message: string|null, support_url: string|null, retry_after: int|null, allowed_actions: array<int, string>, policy_version: string|null}  $maintenanceContext
+     * @return array<string, mixed>
+     */
+    private function applyMaintenanceGate(string $key, array $payload, array $maintenanceContext): array
+    {
+        if (($maintenanceContext['enabled'] ?? false) !== true || $payload['enabled'] !== true || in_array($key, self::MAINTENANCE_ALLOWED_FEATURES, true)) {
+            return $payload;
+        }
+
+        return $this->payload(
+            state: MobileFeatureState::Blocked,
+            reason: 'maintenance_mode',
+            message: is_string($maintenanceContext['message'] ?? null) ? $maintenanceContext['message'] : 'The mobile app is temporarily in maintenance.',
+            minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
+            requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            allowedCohorts: $this->stringList($payload['allowed_cohorts'] ?? []),
+            deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
+            offlineBehavior: (string) $payload['offline_behavior'],
+            source: 'maintenance_gate',
+            nextAction: 'retry',
         );
     }
 
@@ -477,6 +514,27 @@ final class MobileFeatureResolver
         $cohort = $this->normalizedKey($cohort);
 
         return $cohort !== null && preg_match('/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/', $cohort) === 1 ? $cohort : null;
+    }
+
+    /**
+     * @param  array{current_tenant?: array<string, mixed>|null}  $tenantContext
+     * @param  array<string, mixed>|null  $appVersion
+     * @return array{enabled: bool, message: string|null, support_url: string|null, retry_after: int|null, allowed_actions: array<int, string>, policy_version: string|null}
+     */
+    private function maintenanceContext(?Request $request, array $tenantContext, ?array $appVersion): array
+    {
+        $resolved = $appVersion ?? ($request instanceof Request ? $this->versions->resolve($request, $tenantContext) : []);
+        $maintenance = is_array($resolved['maintenance'] ?? null) ? $resolved['maintenance'] : [];
+        $retryAfter = $maintenance['retry_after'] ?? $resolved['retry_after'] ?? null;
+
+        return [
+            'enabled' => ($maintenance['enabled'] ?? false) === true,
+            'message' => is_string($maintenance['message'] ?? null) ? $maintenance['message'] : (is_string($resolved['message'] ?? null) ? $resolved['message'] : null),
+            'support_url' => is_string($maintenance['support_url'] ?? null) ? $maintenance['support_url'] : (is_string($resolved['support_url'] ?? null) ? $resolved['support_url'] : null),
+            'retry_after' => is_numeric($retryAfter) ? (int) $retryAfter : null,
+            'allowed_actions' => $this->stringList($resolved['allowed_actions'] ?? []),
+            'policy_version' => is_string($resolved['policy_version'] ?? null) ? $resolved['policy_version'] : null,
+        ];
     }
 
     /**

@@ -228,3 +228,5 @@ All notable changes to Mobile Lara will be documented in this file.
   emergency-disabled states cannot be bypassed by lower-scope overrides.
 - Added feature flag cohort gates with admin-managed allowed cohorts,
   resolver-enforced rollout blocking, API cohort context, and focused coverage.
+- Added maintenance-aware feature gates so app-version maintenance policy blocks
+  ordinary enabled features while keeping support behavior available.

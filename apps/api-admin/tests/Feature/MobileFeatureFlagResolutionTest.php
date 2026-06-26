@@ -2,6 +2,7 @@
 
 use App\Enums\MobileFeatureState;
 use App\Enums\TenantUserRole;
+use App\Models\MobileAppVersionPolicy;
 use App\Models\MobileFeatureFlag;
 use App\Models\Tenant;
 use App\Models\TenantFeatureOverride;
@@ -283,6 +284,56 @@ test('emergency feature gates cannot be bypassed by tenant or user overrides', f
         ->assertJsonPath('data.features.records.reason', 'incident_response')
         ->assertJsonPath('data.features.records.message', 'Records are temporarily paused.')
         ->assertJsonPath('data.features.records.next_action', 'contact_support');
+});
+
+test('maintenance mode blocks ordinary enabled features but leaves support available', function (): void {
+    $user = User::factory()->create([
+        'email' => 'feature-maintenance@example.com',
+        'password' => 'password-secret',
+    ]);
+    $tenant = Tenant::factory()->create();
+
+    TenantUser::factory()->for($tenant)->for($user)->current()->role(TenantUserRole::TenantAdmin)->create();
+    MobileAppVersionPolicy::factory()->create([
+        'platform' => 'ios',
+        'maintenance_enabled' => true,
+        'maintenance_message' => 'Scheduled maintenance is active.',
+        'retry_after_seconds' => 600,
+        'allowed_actions' => ['retry', 'support', 'logout'],
+    ]);
+    MobileFeatureFlag::factory()->create([
+        'key' => 'records',
+        'name' => 'Records',
+        'default_state' => MobileFeatureState::Visible,
+        'offline_behavior' => 'queueable',
+    ]);
+    MobileFeatureFlag::factory()->create([
+        'key' => 'support',
+        'name' => 'Support',
+        'default_state' => MobileFeatureState::Visible,
+    ]);
+
+    $accessToken = mobileFeatureAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->withHeaders([
+            'X-Mobile-Platform' => 'ios',
+            'X-Mobile-App-Version' => '1.0.0',
+        ])
+        ->getJson('/api/v1/mobile/features')
+        ->assertOk()
+        ->assertJsonPath('data.maintenance.enabled', true)
+        ->assertJsonPath('data.maintenance.message', 'Scheduled maintenance is active.')
+        ->assertJsonPath('data.maintenance.retry_after', 600)
+        ->assertJsonPath('data.features.records.state', 'blocked')
+        ->assertJsonPath('data.features.records.enabled', false)
+        ->assertJsonPath('data.features.records.source', 'maintenance_gate')
+        ->assertJsonPath('data.features.records.reason', 'maintenance_mode')
+        ->assertJsonPath('data.features.records.message', 'Scheduled maintenance is active.')
+        ->assertJsonPath('data.features.records.next_action', 'retry')
+        ->assertJsonPath('data.features.support.state', 'visible')
+        ->assertJsonPath('data.features.support.enabled', true)
+        ->assertJsonPath('data.features.support.source', 'global_default');
 });
 
 function mobileFeatureAccessToken($test, User $user): string
