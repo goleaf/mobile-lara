@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\Billing\MobileSubscriptionResolver;
 use App\Services\MobileFeatures\MobileFeatureResolver;
 use App\Services\MobilePermissions\MobilePermissionResolver;
 use App\Services\Tenancy\MobileTenantContextResolver;
@@ -17,6 +18,7 @@ final class FeatureIndexController extends Controller
         private MobileTenantContextResolver $tenants,
         private MobilePermissionResolver $permissions,
         private MobileFeatureResolver $features,
+        private MobileSubscriptionResolver $subscriptions,
     ) {}
 
     /**
@@ -38,11 +40,16 @@ final class FeatureIndexController extends Controller
 
         $tenantContext = $this->tenants->resolve($user);
         $permissions = $this->permissions->resolve($user, $tenantContext);
-        $features = $this->features->resolve($user, $tenantContext, $permissions, $request);
+        $subscription = $this->subscriptions->resolve($tenantContext);
+        $features = $this->features->resolve($user, [
+            ...$tenantContext,
+            'subscription' => $subscription,
+        ], $permissions, $request);
 
         return MobileApiResponse::success([
             'features' => $features['items'],
             'tenant_id' => $features['tenant_id'],
+            'subscription' => $subscription,
             'plan_key' => $features['plan_key'],
             'cohort_key' => $features['cohort_key'],
             'device_context' => $features['device_context'],

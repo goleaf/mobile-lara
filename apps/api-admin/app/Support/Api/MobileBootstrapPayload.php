@@ -15,6 +15,7 @@ final class MobileBootstrapPayload
      * @param  array<string, mixed>  $features
      * @param  array<string, mixed>  $remoteConfig
      * @param  array<string, mixed>  $appVersion
+     * @param  array<string, mixed>  $subscription
      * @return array<string, mixed>
      */
     public static function make(
@@ -26,6 +27,7 @@ final class MobileBootstrapPayload
         array $features = [],
         array $remoteConfig = [],
         array $appVersion = [],
+        array $subscription = [],
     ): array {
         $now = CarbonImmutable::now();
 
@@ -39,12 +41,7 @@ final class MobileBootstrapPayload
             'remote_config' => $remoteConfig ?: self::foundationRemoteConfig($now),
             'app_version' => $appVersion ?: self::appVersion($request),
             'maintenance' => $appVersion['maintenance'] ?? self::maintenance(),
-            'subscription' => [
-                'status' => 'active',
-                'plan' => 'foundation',
-                'features_limited' => false,
-                'limits' => [],
-            ],
+            'subscription' => $subscription ?: self::subscription($now),
             'notification_preferences' => [
                 'push_enabled' => false,
                 'in_app_enabled' => true,
@@ -65,7 +62,7 @@ final class MobileBootstrapPayload
     /**
      * @return array<string, mixed>
      */
-    public static function meta(array $features = [], array $remoteConfig = []): array
+    public static function meta(array $features = [], array $remoteConfig = [], array $subscription = []): array
     {
         $now = CarbonImmutable::now();
 
@@ -73,6 +70,7 @@ final class MobileBootstrapPayload
             'bootstrap_version' => 'foundation-1',
             'config_version' => is_string($remoteConfig['config_version'] ?? null) ? $remoteConfig['config_version'] : 'remote-config-foundation-1',
             'features_version' => is_string($features['version'] ?? null) ? $features['version'] : 'foundation-1',
+            'subscription_version' => is_string($subscription['subscription_version'] ?? null) ? $subscription['subscription_version'] : 'subscription-foundation-1',
             'sync_cursor' => null,
             'issued_at' => $now->toIso8601String(),
             'fresh_until' => $now->addMinutes(15)->toIso8601String(),
@@ -195,6 +193,42 @@ final class MobileBootstrapPayload
             'message' => null,
             'support_url' => null,
             'retry_after' => null,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function subscription(CarbonImmutable $now): array
+    {
+        return [
+            'status' => 'active',
+            'plan' => [
+                'key' => 'foundation',
+                'name' => 'Foundation',
+                'tier' => 'foundation',
+            ],
+            'trial' => [
+                'active' => false,
+                'ends_at' => null,
+                'days_remaining' => null,
+            ],
+            'features_limited' => false,
+            'limits' => [],
+            'usage' => [],
+            'available_actions' => ['view_plan', 'support'],
+            'billing_portal' => [
+                'available' => false,
+                'url' => null,
+                'reason' => 'billing_api_pending',
+            ],
+            'feature_impacts' => [
+                'paid_features_blocked' => false,
+                'reason' => null,
+            ],
+            'source' => 'foundation_default',
+            'resolved_at' => $now->toIso8601String(),
+            'subscription_version' => 'subscription-foundation-1',
         ];
     }
 

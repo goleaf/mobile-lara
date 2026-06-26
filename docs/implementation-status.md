@@ -202,14 +202,14 @@ Status values:
 | --- | --- |
 | Root application | A Laravel 13 + Livewire 4 + NativePHP Mobile app remains at the repository root as a transition mirror. |
 | Requested monorepo paths | `apps/api-admin` and `apps/mobile-client` are now separate Laravel applications. |
-| API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status`, `GET /api/v1/mobile/contracts`, public `GET /api/v1/mobile/app-version`, auth endpoints, authenticated `GET /api/v1/mobile/bootstrap`, `GET /api/v1/mobile/config`, `GET /api/v1/mobile/features`, `GET /api/v1/mobile/tenants`, and `POST /api/v1/mobile/tenants/current`. |
+| API routes | `apps/api-admin/routes/api.php` exposes versioned routes at `GET /api/v1/mobile/status`, `GET /api/v1/mobile/contracts`, public `GET /api/v1/mobile/app-version`, auth endpoints, authenticated `GET /api/v1/mobile/bootstrap`, `GET /api/v1/mobile/config`, `GET /api/v1/mobile/features`, `GET /api/v1/mobile/billing/subscription`, `GET /api/v1/mobile/tenants`, and `POST /api/v1/mobile/tenants/current`. |
 | Mobile routes | The root transition app still exposes 52 `mobile.*` Livewire routes; `apps/mobile-client/routes/web.php` now exposes 53 `mobile.*` routes including `mobile.settings.workspace`. |
 | Active database | API/admin migrations now include users, framework tables, mobile device sessions, hashed mobile access/refresh tokens, security audit events, tenants, tenant-user memberships, feature flag tables, remote config tables, and app-version policy tables. Broader control-plane domain schema remains pending. |
 | Mobile local database | Dedicated `mobile_local` connection, local migrations, local models, repositories, and health command exist in `apps/mobile-client`. |
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, registered policies for current mobile control-plane resources, audited global feature flag controls, audited global remote config controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, and foundation tenant list/switch endpoints. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 89 tests / 747 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 431 tests / 3427 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, and tenant workspace behavior. `apps/api-admin` passes `php artisan test --compact` with 93 tests / 771 assertions covering admin routing, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -282,7 +282,7 @@ Status values:
 | Records/content contract | documented | `v1-records.md` defines server record routes and offline/idempotency behavior; endpoints are not implemented. |
 | Sync contract | documented | `v1-sync.md` defines sync bootstrap, push, pull, acknowledgement, and conflict behavior; endpoints are not implemented. |
 | Support contract | documented | `v1-support.md` defines support ticket/message behavior; API is not implemented. |
-| Billing contract | documented | `v1-billing.md` defines subscription/plan presentation behavior; API is not implemented. |
+| Billing contract | partial | `v1-billing.md` defines subscription/plan presentation behavior; `GET /billing/subscription` returns current tenant subscription state and plan hints. Provider billing, invoices, usage writes, admin billing UI, and audit workflows remain pending. |
 | Reports contract | documented | `v1-reports.md` defines permission-safe report summaries; API is not implemented. |
 | Diagnostics contract | documented | `v1-diagnostics.md` defines privacy-safe diagnostics upload behavior; API is not implemented. |
 
@@ -362,7 +362,7 @@ Status values:
 | Remote config | tested | Bootstrap returns resolved remote config from foundation defaults, global config, tenant overrides, freshness metadata, compatibility metadata, and deterministic config versions. |
 | App version rules | tested | Bootstrap returns resolved version policy from foundation defaults or active tenant, cohort, platform, and global policies. |
 | Maintenance mode | tested | Bootstrap returns maintenance state, message, support URL, and retry timing from active version policy. |
-| Subscription status | partial | Bootstrap returns active foundation subscription status until billing exists. |
+| Subscription status | tested | Bootstrap returns current tenant subscription state, plan, trial, limits, usage, billing portal state, feature impacts, and subscription metadata from Admin/API-owned tenant data. |
 | Notification preferences | partial | Bootstrap returns in-app enabled/push pending defaults until notification API exists. |
 | Sync settings | partial | Bootstrap returns sync disabled with local offline queue allowed until server sync endpoints exist. |
 | Unread notification count | partial | Bootstrap returns `0` until server notifications exist. |
@@ -526,12 +526,12 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Plans/subscriptions | not started | Documented only. |
+| Plans/subscriptions | partial | `MobileSubscriptionResolver` reads tenant `subscription_state` and mobile-safe billing settings for bootstrap, `/billing/subscription`, and feature plan gates. Provider plans/subscriptions remain pending. |
 | Invoice placeholders | not started | Documented only. |
 | Usage events | not started | Documented only. |
 | Admin billing screens | not started | Admin shell exists; billing screens are not implemented yet. |
-| Plan-based feature availability | partial | Feature flags can require plan keys and the resolver fails closed against the current foundation plan key; real billing plans/subscriptions remain pending. |
-| Mobile plan/status display | not started | Required after bootstrap/billing API. |
+| Plan-based feature availability | tested | Feature flags can require plan keys and the resolver uses the current tenant subscription plan key before returning mobile-safe feature outcomes. Richer billing authority remains pending. |
+| Mobile plan/status display | partial | API/bootstrap now expose mobile-safe plan/status payloads; mobile UI integration remains pending. |
 | Trial/expired/suspended behavior | documented | Implementation missing. |
 
 ## Phase 24 - Support System
@@ -618,7 +618,7 @@ Status values:
 | Check | Status | Notes |
 | --- | --- | --- |
 | API/admin formatting | tested | `vendor/bin/pint --dirty --format agent` passes in `apps/api-admin`. |
-| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 89 tests / 747 assertions. |
+| API/admin tests | tested | `php artisan test --compact` passes in `apps/api-admin` with 93 tests / 771 assertions. |
 | API/admin frontend build | tested | `npm run build` passes in `apps/api-admin`. |
 | API routes verification | tested | `php artisan route:list --except-vendor` shows 20 app routes including app-version, auth, bootstrap, config, contracts, features, status, and tenant context routes. |
 | Admin navigation verification | tested | Admin dashboard smoke coverage exists; browser-level verification remains future. |
@@ -633,8 +633,8 @@ Status values:
 
 ## Highest-Priority Implementation Order
 
-1. Replace bootstrap foundation defaults with real subscription, notification,
-   and sync policy modules.
+1. Replace bootstrap foundation defaults with real notification and sync policy
+   modules.
 2. Migrate existing mobile-local features behind API-derived policy instead of
    letting local screens remain standalone authority.
 

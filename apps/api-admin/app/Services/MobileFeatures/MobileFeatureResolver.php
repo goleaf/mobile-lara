@@ -499,7 +499,9 @@ final class MobileFeatureResolver
     private function planKey(array $tenantContext): string
     {
         $currentTenant = is_array($tenantContext['current_tenant'] ?? null) ? $tenantContext['current_tenant'] : [];
-        $plan = Arr::get($currentTenant, 'plan')
+        $plan = Arr::get($tenantContext, 'subscription.plan.key')
+            ?? Arr::get($tenantContext, 'subscription.plan')
+            ?? Arr::get($currentTenant, 'plan')
             ?? Arr::get($currentTenant, 'subscription.plan')
             ?? Arr::get($currentTenant, 'billing.plan');
 

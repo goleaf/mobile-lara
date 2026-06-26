@@ -2,7 +2,11 @@
 
 Updated: 2026-06-26
 
-Status: documented. Endpoint is planned for Phase 23.
+Status: partially implemented. `GET /api/v1/mobile/billing/subscription`
+returns mobile-safe subscription state from the current tenant's
+Admin/API-owned subscription state and settings. Provider billing integration,
+invoices, usage event writes, admin billing screens, and billing audit workflows
+remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 keeps billing and entitlement authority centralized while mobile receives only
@@ -180,7 +184,7 @@ Billing endpoints expose mobile-safe plan and subscription state. Admin/API
 owns plans, subscriptions, usage, invoice placeholders, plan-based feature
 availability, and suspended/trial/expired behavior.
 
-## Planned Route
+## Implemented Route
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
@@ -188,8 +192,18 @@ availability, and suspended/trial/expired behavior.
 
 ## Success Data
 
-The response returns `plan`, `subscription_status`, `trial`, `limits`,
-`usage`, `available_actions`, `billing_portal`, and `feature_impacts`.
+The response returns `status`, `plan`, `trial`, `features_limited`, `limits`,
+`usage`, `available_actions`, `billing_portal`, `feature_impacts`, `source`,
+`resolved_at`, and `subscription_version`.
+
+The current implementation resolves:
+
+- `status` from the current tenant's `subscription_state`.
+- `plan`, `limits`, `usage`, trial dates, and billing portal URL from
+  mobile-safe tenant settings.
+- `features_limited` and `feature_impacts` from active/trialing versus
+  past-due, expired, canceled, suspended, unknown, or missing tenant states.
+- `subscription_version` as a deterministic support/debug key.
 
 ## Gates
 
@@ -208,5 +222,12 @@ billing portal access, and feature denials caused by billing.
 
 ## Tests
 
-Phase 23 should verify plan-feature resolution, trial/expired/suspended
-states, no raw provider secrets, and bootstrap subscription status.
+Current coverage:
+
+```bash
+cd apps/api-admin && php artisan test --compact --filter=MobileBillingSubscriptionTest
+```
+
+Future Phase 23 coverage should add provider integration, invoice placeholders,
+usage event writes, admin billing screens, richer role authorization, and audit
+history for plan or subscription changes.

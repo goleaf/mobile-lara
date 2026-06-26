@@ -234,3 +234,6 @@ All notable changes to Mobile Lara will be documented in this file.
   resolver-enforced rollout blocking, API cohort context, and focused coverage.
 - Added maintenance-aware feature gates so app-version maintenance policy blocks
   ordinary enabled features while keeping support behavior available.
+- Added mobile subscription resolution from tenant subscription state/settings,
+  `/api/v1/mobile/billing/subscription`, bootstrap subscription metadata, and
+  subscription-backed feature plan gates.

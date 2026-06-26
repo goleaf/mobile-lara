@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\Mobile\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Mobile\Auth\ProfileController;
 use App\Http\Controllers\Api\V1\Mobile\Auth\RefreshTokenController;
 use App\Http\Controllers\Api\V1\Mobile\Auth\RegisterController;
+use App\Http\Controllers\Api\V1\Mobile\Billing\SubscriptionController;
 use App\Http\Controllers\Api\V1\Mobile\BootstrapController;
 use App\Http\Controllers\Api\V1\Mobile\ConfigController;
 use App\Http\Controllers\Api\V1\Mobile\ContractIndexController;
@@ -31,6 +32,7 @@ Route::prefix('v1')
                     Route::get('/bootstrap', BootstrapController::class)->name('bootstrap');
                     Route::get('/config', ConfigController::class)->name('config');
                     Route::get('/features', FeatureIndexController::class)->name('features.index');
+                    Route::get('/billing/subscription', SubscriptionController::class)->name('billing.subscription');
                     Route::get('/tenants', TenantIndexController::class)->name('tenants.index');
                     Route::post('/tenants/current', SwitchTenantController::class)->name('tenants.current');
                 });

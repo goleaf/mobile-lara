@@ -5,8 +5,9 @@ Updated: 2026-06-26
 Status: implemented as the Phase 10 foundation endpoint with Phase 7
 role-derived permission payloads, Phase 8 feature-flag resolution, Phase 9
 remote-config resolution, and Phase 11 app-version/maintenance resolution.
-Domain-specific billing, notification, sync, and full permission-management
-modules still need to replace the remaining explicit foundation defaults.
+Domain-specific notification, sync, and full permission-management modules
+still need to replace the remaining explicit foundation defaults. Subscription
+status now comes from the current tenant's Admin/API-owned subscription state.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract is
 the main API path for turning central SaaS control into mobile operating
@@ -208,10 +209,10 @@ The current foundation implementation returns real authenticated user,
 device-session, current tenant, available tenant membership context, a
 server-derived permission payload based on the current active tenant role,
 resolved feature-flag outcomes, resolved remote config, and resolved
-app-version/maintenance policy. It still returns explicit disabled or pending
-states for billing, notifications, and sync modules whose authoritative
-Admin/API data models are not implemented yet. Mobile must treat those states
-as fail-closed outcomes.
+app-version/maintenance policy, and resolved subscription state. It still
+returns explicit disabled or pending states for notifications and sync modules
+whose authoritative Admin/API data models are not implemented yet. Mobile must
+treat those states as fail-closed outcomes.
 
 `permissions` includes:
 
@@ -226,7 +227,8 @@ as fail-closed outcomes.
 ## Metadata
 
 `meta` should include `api_version`, `server_time`, `bootstrap_version`,
-`config_version`, `features_version`, `sync_cursor`, and freshness timestamps.
+`config_version`, `features_version`, `subscription_version`, `sync_cursor`,
+and freshness timestamps.
 
 ## Gates
 

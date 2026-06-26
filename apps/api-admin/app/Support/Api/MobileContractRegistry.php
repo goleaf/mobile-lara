@@ -99,8 +99,8 @@ final class MobileContractRegistry
                 self::route('GET', '/support/tickets/{ticket}', 'planned', 'mobile-token'),
                 self::route('POST', '/support/tickets/{ticket}/messages', 'planned', 'mobile-token'),
             ]),
-            self::group('billing', 'v1-billing.md', 'documented', 'Plan, subscription, trial, expired, suspended, quota, invoice placeholder, and upgrade state.', [
-                self::route('GET', '/billing/subscription', 'planned', 'mobile-token'),
+            self::group('billing', 'v1-billing.md', 'partial', 'Plan, subscription, trial, expired, suspended, quota, invoice placeholder, and upgrade state.', [
+                self::route('GET', '/billing/subscription', 'implemented', 'mobile-token'),
             ]),
             self::group('reports', 'v1-reports.md', 'documented', 'Tenant/user-safe report summaries and exports controlled by permissions and feature flags.', [
                 self::route('GET', '/reports', 'planned', 'mobile-token'),

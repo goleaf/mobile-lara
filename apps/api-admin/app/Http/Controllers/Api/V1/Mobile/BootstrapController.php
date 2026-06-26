@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Mobile;
 use App\Http\Controllers\Controller;
 use App\Models\MobileDeviceSession;
 use App\Models\User;
+use App\Services\Billing\MobileSubscriptionResolver;
 use App\Services\MobileConfig\MobileRemoteConfigResolver;
 use App\Services\MobileFeatures\MobileFeatureResolver;
 use App\Services\MobilePermissions\MobilePermissionResolver;
@@ -23,6 +24,7 @@ final class BootstrapController extends Controller
         private MobileFeatureResolver $features,
         private MobileRemoteConfigResolver $config,
         private MobileAppVersionPolicyResolver $versions,
+        private MobileSubscriptionResolver $subscriptions,
     ) {}
 
     /**
@@ -45,8 +47,13 @@ final class BootstrapController extends Controller
 
         $tenantContext = $this->tenants->resolve($user);
         $permissions = $this->permissions->resolve($user, $tenantContext);
+        $subscription = $this->subscriptions->resolve($tenantContext);
+        $tenantContextWithSubscription = [
+            ...$tenantContext,
+            'subscription' => $subscription,
+        ];
         $appVersion = $this->versions->resolve($request, $tenantContext);
-        $features = $this->features->resolve($user, $tenantContext, $permissions, $request, $appVersion);
+        $features = $this->features->resolve($user, $tenantContextWithSubscription, $permissions, $request, $appVersion);
         $remoteConfig = $this->config->resolve($user, $tenantContext);
 
         return MobileApiResponse::success(
@@ -59,8 +66,9 @@ final class BootstrapController extends Controller
                 $features,
                 $remoteConfig,
                 $appVersion,
+                $subscription,
             ),
-            MobileBootstrapPayload::meta($features, $remoteConfig),
+            MobileBootstrapPayload::meta($features, $remoteConfig, $subscription),
         );
     }
 }

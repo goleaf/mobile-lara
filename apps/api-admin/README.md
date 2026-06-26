@@ -232,8 +232,8 @@ Implemented foundation:
 - `GET /api/v1/mobile/bootstrap` returns the first authenticated mobile
   operating context with real user, device-session, current tenant, and
   available tenant data, role-derived permission payloads, resolved feature
-  flags, resolved remote config, and explicit foundation defaults for pending
-  subscription, notification, and sync modules.
+  flags, resolved remote config, resolved subscription state, and explicit
+  foundation defaults for pending notification and sync modules.
 - `GET /api/v1/mobile/app-version` returns resolved app-version, update, and
   maintenance policy for the reported mobile platform/version context.
 - `GET /api/v1/mobile/config` returns resolved mobile-safe remote config with
@@ -241,6 +241,8 @@ Implemented foundation:
   config version metadata.
 - `GET /api/v1/mobile/features` returns resolved mobile-safe feature outcomes
   for the current user and tenant through the standard response envelope.
+- `GET /api/v1/mobile/billing/subscription` returns mobile-safe subscription,
+  plan, trial, billing portal, and feature-impact state for the current tenant.
 - `GET /api/v1/mobile/tenants` returns the authenticated user's tenant context.
 - `POST /api/v1/mobile/tenants/current` switches the current tenant after
   membership/lifecycle checks and records a security audit event.
@@ -263,6 +265,9 @@ Implemented foundation:
 - `App\Services\MobileVersion\MobileAppVersionPolicyResolver` resolves
   supported, optional-update, force-update, blocked, and maintenance outcomes
   from tenant, cohort, platform, and global fallback policy order.
+- `App\Services\Billing\MobileSubscriptionResolver` resolves tenant
+  subscription state and mobile-safe plan/limit hints from Admin/API-owned
+  tenant data.
 - Policies are registered for current mobile control-plane resources:
   feature flags, tenant/user feature overrides, remote config, tenant remote
   config overrides, and app-version policies.
@@ -313,9 +318,9 @@ Implemented foundation:
   controls, tenant and user feature override controls, remote config admin
   controls, tenant remote config controls, app version admin controls, remote
   config resolution, feature maintenance/plan/cohort/device/emergency/app-version
-  gates, tenant/cohort app version policy, app-version range resolution,
-  resource policies, success envelope, error envelope, contract catalogue, and
-  contract Markdown file coverage.
+  gates, tenant/cohort app version policy, app-version range resolution, mobile
+  billing subscription resolution, resource policies, success envelope, error
+  envelope, contract catalogue, and contract Markdown file coverage.
 
 Still pending:
 
