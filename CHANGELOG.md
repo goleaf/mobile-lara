@@ -223,3 +223,5 @@ All notable changes to Mobile Lara will be documented in this file.
   snapshots, and focused API/bootstrap coverage.
 - Added a fail-closed emergency feature gate so global, tenant, or user
   emergency-disabled states cannot be bypassed by lower-scope overrides.
+- Added feature flag cohort gates with admin-managed allowed cohorts,
+  resolver-enforced rollout blocking, API cohort context, and focused coverage.

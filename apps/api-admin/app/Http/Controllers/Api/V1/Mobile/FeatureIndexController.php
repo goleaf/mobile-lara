@@ -44,6 +44,7 @@ final class FeatureIndexController extends Controller
             'features' => $features['items'],
             'tenant_id' => $features['tenant_id'],
             'plan_key' => $features['plan_key'],
+            'cohort_key' => $features['cohort_key'],
             'device_context' => $features['device_context'],
             'version' => $features['version'],
             'reported_app_version' => $features['reported_app_version'],

@@ -203,6 +203,49 @@ test('device gates block enabled features on unsupported platforms', function ()
         ->assertJsonPath('data.features.native_camera.device_constraints.platforms.0', 'android');
 });
 
+test('cohort gates block enabled features outside the rollout cohort', function (): void {
+    $user = User::factory()->create([
+        'email' => 'feature-cohort@example.com',
+        'password' => 'password-secret',
+    ]);
+    $tenant = Tenant::factory()->create();
+
+    TenantUser::factory()->for($tenant)->for($user)->current()->role(TenantUserRole::TenantAdmin)->create();
+    MobileFeatureFlag::factory()->create([
+        'key' => 'records',
+        'name' => 'Records',
+        'default_state' => MobileFeatureState::Visible,
+        'allowed_cohorts' => ['early-access'],
+    ]);
+
+    $accessToken = mobileFeatureAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->withHeaders([
+            'X-Mobile-Cohort' => 'general',
+        ])
+        ->getJson('/api/v1/mobile/features')
+        ->assertOk()
+        ->assertJsonPath('data.cohort_key', 'general')
+        ->assertJsonPath('data.features.records.state', 'blocked')
+        ->assertJsonPath('data.features.records.enabled', false)
+        ->assertJsonPath('data.features.records.source', 'cohort_gate')
+        ->assertJsonPath('data.features.records.reason', 'cohort_not_included')
+        ->assertJsonPath('data.features.records.next_action', 'contact_admin')
+        ->assertJsonPath('data.features.records.allowed_cohorts.0', 'early-access');
+
+    $this->withToken($accessToken)
+        ->withHeaders([
+            'X-Mobile-Cohort' => 'early-access',
+        ])
+        ->getJson('/api/v1/mobile/features')
+        ->assertOk()
+        ->assertJsonPath('data.cohort_key', 'early-access')
+        ->assertJsonPath('data.features.records.state', 'visible')
+        ->assertJsonPath('data.features.records.enabled', true)
+        ->assertJsonPath('data.features.records.source', 'global_default');
+});
+
 test('emergency feature gates cannot be bypassed by tenant or user overrides', function (): void {
     $user = User::factory()->create([
         'email' => 'feature-emergency@example.com',

@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
     'message',
     'minimum_app_version',
     'required_plans',
+    'allowed_cohorts',
     'device_constraints',
     'offline_behavior',
     'metadata',
@@ -34,6 +35,7 @@ final class MobileFeatureFlag extends Model
         return [
             'default_state' => MobileFeatureState::class,
             'required_plans' => 'array',
+            'allowed_cohorts' => 'array',
             'device_constraints' => 'array',
             'metadata' => 'array',
         ];
@@ -55,6 +57,7 @@ final class MobileFeatureFlag extends Model
                 'message',
                 'minimum_app_version',
                 'required_plans',
+                'allowed_cohorts',
                 'device_constraints',
                 'offline_behavior',
                 'metadata',

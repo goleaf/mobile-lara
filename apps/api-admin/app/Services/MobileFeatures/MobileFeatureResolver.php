@@ -58,12 +58,14 @@ final class MobileFeatureResolver
         $keys = $this->featureKeys($globalFlags, $tenantOverrides, $userOverrides);
         $reportedVersion = $this->reportedVersion($request);
         $planKey = $this->planKey($tenantContext);
+        $cohortKey = $this->cohortKey($request);
         $deviceContext = $this->deviceContext($request);
 
         return [
-            'version' => 'feature-flags-foundation-2',
+            'version' => 'feature-flags-foundation-3',
             'reported_app_version' => $reportedVersion,
             'plan_key' => $planKey,
+            'cohort_key' => $cohortKey,
             'device_context' => $deviceContext,
             'resolved_at' => CarbonImmutable::now()->toIso8601String(),
             'tenant_id' => $tenant?->public_id,
@@ -77,6 +79,7 @@ final class MobileFeatureResolver
                         $permissions,
                         $reportedVersion,
                         $planKey,
+                        $cohortKey,
                         $deviceContext,
                     ),
                 ])
@@ -108,7 +111,7 @@ final class MobileFeatureResolver
     private function globalFlags(): Collection
     {
         return MobileFeatureFlag::query()
-            ->select(['id', 'key', 'name', 'default_state', 'reason', 'message', 'minimum_app_version', 'required_plans', 'device_constraints', 'offline_behavior', 'metadata'])
+            ->select(['id', 'key', 'name', 'default_state', 'reason', 'message', 'minimum_app_version', 'required_plans', 'allowed_cohorts', 'device_constraints', 'offline_behavior', 'metadata'])
             ->get()
             ->keyBy('key');
     }
@@ -164,6 +167,7 @@ final class MobileFeatureResolver
         array $permissions,
         ?string $reportedVersion,
         string $planKey,
+        ?string $cohortKey,
         array $deviceContext,
     ): array {
         $resolved = $this->baseFeature($key, $flag);
@@ -189,6 +193,7 @@ final class MobileFeatureResolver
         }
 
         $resolved = $this->applyPlanGate($resolved, $planKey);
+        $resolved = $this->applyCohortGate($resolved, $cohortKey);
         $resolved = $this->applyDeviceGate($resolved, $deviceContext);
         $resolved = $this->applyPermissionGate($key, $resolved, $permissions);
 
@@ -213,6 +218,7 @@ final class MobileFeatureResolver
             message: $flag?->message,
             minimumAppVersion: $flag?->minimum_app_version,
             requiredPlans: $this->stringList($flag?->required_plans),
+            allowedCohorts: $this->stringList($flag?->allowed_cohorts),
             deviceConstraints: $this->deviceConstraints($flag?->device_constraints),
             offlineBehavior: $flag?->offline_behavior ?? $default['offline_behavior'],
             source: $flag instanceof MobileFeatureFlag ? 'global_default' : 'foundation_default',
@@ -239,6 +245,7 @@ final class MobileFeatureResolver
             message: is_string($payload['message'] ?? null) ? $payload['message'] : 'This feature is temporarily unavailable.',
             minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
             requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            allowedCohorts: $this->stringList($payload['allowed_cohorts'] ?? []),
             deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
             offlineBehavior: (string) $payload['offline_behavior'],
             source: 'emergency_gate',
@@ -264,6 +271,7 @@ final class MobileFeatureResolver
             message: $message,
             minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
             requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            allowedCohorts: $this->stringList($payload['allowed_cohorts'] ?? []),
             deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
             offlineBehavior: $offlineBehavior ?: (string) $payload['offline_behavior'],
             source: $source,
@@ -288,10 +296,37 @@ final class MobileFeatureResolver
             message: 'This feature is not included in the current plan.',
             minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
             requiredPlans: $requiredPlans,
+            allowedCohorts: $this->stringList($payload['allowed_cohorts'] ?? []),
             deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
             offlineBehavior: (string) $payload['offline_behavior'],
             source: 'plan_gate',
             nextAction: 'upgrade_plan',
+        );
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    private function applyCohortGate(array $payload, ?string $cohortKey): array
+    {
+        $allowedCohorts = $this->stringList($payload['allowed_cohorts'] ?? []);
+
+        if ($payload['enabled'] !== true || $allowedCohorts === [] || ($cohortKey !== null && in_array($cohortKey, $allowedCohorts, true))) {
+            return $payload;
+        }
+
+        return $this->payload(
+            state: MobileFeatureState::Blocked,
+            reason: 'cohort_not_included',
+            message: 'This feature is not available for your rollout group.',
+            minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
+            requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            allowedCohorts: $allowedCohorts,
+            deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
+            offlineBehavior: (string) $payload['offline_behavior'],
+            source: 'cohort_gate',
+            nextAction: 'contact_admin',
         );
     }
 
@@ -335,6 +370,7 @@ final class MobileFeatureResolver
             message: 'This feature is not available on this device.',
             minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
             requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            allowedCohorts: $this->stringList($payload['allowed_cohorts'] ?? []),
             deviceConstraints: $constraints,
             offlineBehavior: (string) $payload['offline_behavior'],
             source: 'device_gate',
@@ -365,6 +401,7 @@ final class MobileFeatureResolver
             message: 'This feature is not available for your current role.',
             minimumAppVersion: is_string($payload['minimum_app_version'] ?? null) ? $payload['minimum_app_version'] : null,
             requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            allowedCohorts: $this->stringList($payload['allowed_cohorts'] ?? []),
             deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
             offlineBehavior: (string) $payload['offline_behavior'],
             source: 'permission_gate',
@@ -394,6 +431,7 @@ final class MobileFeatureResolver
             message: is_string($payload['message'] ?? null) ? $payload['message'] : 'Update the app to use this feature.',
             minimumAppVersion: $minimumAppVersion,
             requiredPlans: $this->stringList($payload['required_plans'] ?? []),
+            allowedCohorts: $this->stringList($payload['allowed_cohorts'] ?? []),
             deviceConstraints: $this->deviceConstraints($payload['device_constraints'] ?? []),
             offlineBehavior: (string) $payload['offline_behavior'],
             source: 'app_version_gate',
@@ -429,6 +467,16 @@ final class MobileFeatureResolver
             ?? Arr::get($currentTenant, 'billing.plan');
 
         return $this->normalizedKey($plan) ?? 'foundation';
+    }
+
+    private function cohortKey(?Request $request): ?string
+    {
+        $cohort = $request?->header('X-Mobile-Cohort')
+            ?? $request?->header('X-Mobile-Rollout-Cohort');
+
+        $cohort = $this->normalizedKey($cohort);
+
+        return $cohort !== null && preg_match('/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/', $cohort) === 1 ? $cohort : null;
     }
 
     /**
@@ -481,6 +529,7 @@ final class MobileFeatureResolver
         ?string $message,
         ?string $minimumAppVersion,
         array $requiredPlans,
+        array $allowedCohorts,
         array $deviceConstraints,
         string $offlineBehavior,
         string $source,
@@ -494,6 +543,7 @@ final class MobileFeatureResolver
             'next_action' => $nextAction ?? $this->nextAction($state),
             'minimum_app_version' => $minimumAppVersion,
             'required_plans' => $requiredPlans,
+            'allowed_cohorts' => $allowedCohorts,
             'device_constraints' => $deviceConstraints,
             'offline_behavior' => $offlineBehavior,
             'message' => $message,

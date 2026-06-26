@@ -159,6 +159,19 @@
                 @enderror
             </label>
 
+            <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                Allowed cohorts
+                <input
+                    type="text"
+                    wire:model.blur="form.allowed_cohorts"
+                    class="h-11 rounded-lg border border-zinc-300 bg-white px-3 text-sm text-zinc-950 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-zinc-400 dark:focus:ring-zinc-800"
+                    autocomplete="off"
+                >
+                @error('form.allowed_cohorts')
+                    <span class="text-xs font-medium text-red-600 dark:text-red-400">{{ $message }}</span>
+                @enderror
+            </label>
+
             <div class="grid gap-4 sm:grid-cols-2">
                 <label class="grid gap-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
                     Allowed platforms
@@ -239,6 +252,7 @@
                                         <div class="grid gap-1">
                                             <span>{{ $featureFlag->reason ?: 'none' }}</span>
                                             <span class="text-xs text-zinc-500 dark:text-zinc-400">Plans {{ $this->planGateLabel($featureFlag) }}</span>
+                                            <span class="text-xs text-zinc-500 dark:text-zinc-400">Cohorts {{ $this->cohortGateLabel($featureFlag) }}</span>
                                             <span class="text-xs text-zinc-500 dark:text-zinc-400">Devices {{ $this->deviceGateLabel($featureFlag) }}</span>
                                         </div>
                                     </td>
