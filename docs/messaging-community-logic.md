@@ -8,6 +8,12 @@ tenant-enabled, plan-controlled, permission-aware, opt-in-only,
 provider-neutral, human-reviewed, privacy-safe, audit-ready,
 rate-limited, cost-aware, and Admin/API-authoritative.
 
+Acceptance Principles are defined in `acceptance-principles.md`:
+every feature must document purpose, admin control, mobile behavior,
+API dependency, offline behavior, permission behavior, feature flag
+behavior, tenant behavior, error behavior, security behavior, and
+documentation requirements before implementation planning begins.
+
 Updated: 2026-06-26
 
 This document defines messaging and community logic for Mobile Lara. It

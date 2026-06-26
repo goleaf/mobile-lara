@@ -1,5 +1,11 @@
 # AI Feature Logic
 
+Acceptance Principles are defined in `acceptance-principles.md`:
+every feature must document purpose, admin control, mobile behavior,
+API dependency, offline behavior, permission behavior, feature flag
+behavior, tenant behavior, error behavior, security behavior, and
+documentation requirements before implementation planning begins.
+
 Updated: 2026-06-26
 
 This document defines AI feature logic for Mobile Lara as an optional future

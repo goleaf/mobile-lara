@@ -17,6 +17,12 @@ Use this document with [Product Positioning](product-positioning.md): the
 principles protect the six positioning angles from drifting into web-only,
 mobile-only, or tenant-unsafe behavior.
 
+Use this document with [Acceptance Principles](acceptance-principles.md): every
+future feature must turn these principles into documented purpose, admin
+control, mobile behavior, API dependency, offline behavior, permission
+behavior, feature flag behavior, tenant behavior, error behavior, security
+behavior, and documentation requirements before implementation planning begins.
+
 Use this document with [Admin Safety Principles](admin-safety-principles.md):
 admin authority stays trustworthy only when dangerous controls are confirmed,
 audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated.
@@ -233,6 +239,12 @@ tenant opt-in, privacy, and human-review principles must remain
 tenant-enabled, plan-controlled, permission-aware, opt-in-only,
 provider-neutral, human-reviewed, privacy-safe, audit-ready,
 rate-limited, cost-aware, and Admin/API-authoritative.
+
+Acceptance Principles are defined in `acceptance-principles.md`:
+every feature must document purpose, admin control, mobile behavior,
+API dependency, offline behavior, permission behavior, feature flag
+behavior, tenant behavior, error behavior, security behavior, and
+documentation requirements before implementation planning begins.
 
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,

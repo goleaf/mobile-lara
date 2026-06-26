@@ -66,6 +66,12 @@ tenant-enabled, plan-controlled, permission-aware, opt-in-only,
 provider-neutral, human-reviewed, privacy-safe, audit-ready,
 rate-limited, cost-aware, and Admin/API-authoritative.
 
+Acceptance Principles are defined in `docs/acceptance-principles.md`:
+every feature must document purpose, admin control, mobile behavior,
+API dependency, offline behavior, permission behavior, feature flag
+behavior, tenant behavior, error behavior, security behavior, and
+documentation requirements before implementation planning begins.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -261,6 +267,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/product-positioning.md](docs/product-positioning.md) | Product positioning as SaaS control center, mobile client platform, API-first system, offline-capable system, feature-controlled platform, and tenant-based product. |
 | [docs/product-principles.md](docs/product-principles.md) | Core product principles for admin control, API-first mobile behavior, feature control, tenant isolation, offline use, security, documentation, and modular expansion. |
 | [docs/documentation-first-architecture.md](docs/documentation-first-architecture.md) | Documentation-first architecture principles for feature docs, admin mobile effects, screen API dependencies, sync behavior, permission ownership, risks, and acceptance criteria. |
+| [docs/acceptance-principles.md](docs/acceptance-principles.md) | Project-wide acceptance principles for feature purpose, admin control, mobile behavior, API dependency, offline behavior, permission behavior, feature flags, tenant behavior, errors, security, and documentation requirements. |
 | [docs/user-roles.md](docs/user-roles.md) | Main logical user roles, responsibilities, limitations, visibility, and control boundaries. |
 | [docs/role-permission-logic.md](docs/role-permission-logic.md) | Role and permission logic for platform-level, tenant-level, admin-user, and mobile-user permissions, API access, mobile UI visibility, feature flag interaction, and suspended users or tenants. |
 | [docs/audit-logic.md](docs/audit-logic.md) | Audit logic for admin actions, security events, support/compliance history, mobile activity representation, audit questions, and audit data protection. |
@@ -343,6 +350,7 @@ contracts.
 - Use Eloquent and Laravel resources for API-facing data. Do not use raw SQL strings.
 - Apply [core product principles](docs/product-principles.md) before feature implementation.
 - Apply [documentation-first architecture](docs/documentation-first-architecture.md) before coding any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change.
+- Apply [acceptance principles](docs/acceptance-principles.md) before implementation planning for any feature purpose, admin control, mobile behavior, API dependency, offline behavior, permission behavior, feature flag behavior, tenant behavior, error behavior, security behavior, or documentation requirement.
 - Apply [target user roles](docs/user-roles.md) before designing permissions, visibility, support, billing, or mobile access.
 - Apply [role and permission logic](docs/role-permission-logic.md) before planning platform-level permissions, tenant-level permissions, admin-user permissions, mobile-user permissions, API access, mobile UI visibility, feature flag interaction, suspended users, or suspended tenants.
 - Apply [audit logic](docs/audit-logic.md) before planning admin actions, security events, support actions, mobile activity summaries, API decisions, sync outcomes, compliance-relevant changes, audit history views, or audit exports.

@@ -4,7 +4,7 @@ Updated: 2026-06-26
 
 This document defines documentation-first architecture principles for Mobile Lara. It explains how product ideas, admin controls, mobile screens, API dependencies, sync behavior, permissions, and risks must be documented before implementation. It is documentation only and does not define endpoints, routes, database fields, migrations, controllers, Livewire components, resources, policies, jobs, services, NativePHP plugins, or application logic.
 
-Use this document with [Product Vision](product-vision.md), [Product Positioning](product-positioning.md), [Core Product Principles](product-principles.md), [Target User Roles](user-roles.md), [SaaS Value Map](saas-value-map.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX Principles](mobile-ux-principles.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), and [Mobile Version Control Logic](mobile-version-control-logic.md): documentation is the agreement that prevents stakeholder value, authority, API behavior, admin controls, feature flags, remote config, mobile-version policy, mobile UX, offline behavior, permissions, and risk handling from drifting during implementation.
+Use this document with [Product Vision](product-vision.md), [Product Positioning](product-positioning.md), [Core Product Principles](product-principles.md), [Acceptance Principles](acceptance-principles.md), [Target User Roles](user-roles.md), [SaaS Value Map](saas-value-map.md), [API-First Principles](api-first-principles.md), [Two-System Boundary Logic](two-system-boundary.md), [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client Responsibilities](mobile-client-responsibilities.md), [Mobile UX Principles](mobile-ux-principles.md), [Admin Control Center Logic](admin-control-center-logic.md), [Feature Flag Logic](feature-flag-logic.md), [Remote Configuration Logic](remote-configuration-logic.md), and [Mobile Version Control Logic](mobile-version-control-logic.md): documentation is the agreement that prevents stakeholder value, authority, API behavior, admin controls, feature flags, remote config, mobile-version policy, mobile UX, offline behavior, permissions, risk handling, and acceptance criteria from drifting during implementation.
 
 Mobile App Shell Logic is defined in `mobile-app-shell-logic.md`:
 shell states must coordinate welcome, authenticated, locked, offline, maintenance, forced update, tenant
@@ -213,6 +213,12 @@ tenant opt-in, privacy, and human-review principles must remain
 tenant-enabled, plan-controlled, permission-aware, opt-in-only,
 provider-neutral, human-reviewed, privacy-safe, audit-ready,
 rate-limited, cost-aware, and Admin/API-authoritative.
+
+Acceptance Principles are defined in `acceptance-principles.md`:
+every feature must document purpose, admin control, mobile behavior,
+API dependency, offline behavior, permission behavior, feature flag
+behavior, tenant behavior, error behavior, security behavior, and
+documentation requirements before implementation planning begins.
 
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,

@@ -816,5 +816,11 @@ tenant-enabled, plan-controlled, permission-aware, opt-in-only,
 provider-neutral, human-reviewed, privacy-safe, audit-ready,
 rate-limited, cost-aware, and Admin/API-authoritative.
 
+Acceptance Principles are defined in `acceptance-principles.md`:
+every feature must document purpose, admin control, mobile behavior,
+API dependency, offline behavior, permission behavior, feature flag
+behavior, tenant behavior, error behavior, security behavior, and
+documentation requirements before implementation planning begins.
+
 If any of those are unclear, the correct next step is more documentation, not
 application code.
