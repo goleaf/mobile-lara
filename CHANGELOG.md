@@ -37,6 +37,13 @@ report visibility must remain tenant-enabled, plan-controlled,
 permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
 and Admin/API-authoritative.
 
+Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
+delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
+scan validation, location check-in, failed delivery reasons, offline
+behavior, and admin monitoring must remain tenant-enabled, plan-controlled,
+permission-aware, scan-safe, location-purpose-limited, offline-clear,
+privacy-safe, auditable, and Admin/API-authoritative.
+
 Voice Note Logic is defined in `docs/voice-note-logic.md`:
 recording, pausing, resuming, local saving, record/support attachments,
 optional future transcription, offline upload queues, microphone-permission
@@ -48,6 +55,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Logistics Delivery Logic documentation for delivery job lifecycle,
+  pickup flow, drop-off flow, proof of delivery, scan validation, location
+  check-in, failed delivery reasons, offline behavior, admin monitoring,
+  privacy, risks, and readiness checks.
 - Added Field Service Logic documentation for work order lifecycle,
   technician mobile flow, check-in/check-out, photos, notes, future
   signatures, offline behavior, admin dispatch/control principles, report

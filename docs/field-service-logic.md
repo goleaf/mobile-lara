@@ -2,6 +2,13 @@
 
 Updated: 2026-06-26
 
+Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
+delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
+scan validation, location check-in, failed delivery reasons, offline
+behavior, and admin monitoring must remain tenant-enabled, plan-controlled,
+permission-aware, scan-safe, location-purpose-limited, offline-clear,
+privacy-safe, auditable, and Admin/API-authoritative.
+
 This document defines field service module logic for Mobile Lara. It explains
 work order lifecycle, technician mobile flow, check-in/check-out, photos,
 notes, signatures as a future capability, offline behavior, admin dispatch and

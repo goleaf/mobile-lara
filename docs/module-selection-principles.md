@@ -7,6 +7,13 @@ report visibility must remain tenant-enabled, plan-controlled,
 permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
 and Admin/API-authoritative.
 
+Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
+delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
+scan validation, location check-in, failed delivery reasons, offline
+behavior, and admin monitoring must remain tenant-enabled, plan-controlled,
+permission-aware, scan-safe, location-purpose-limited, offline-clear,
+privacy-safe, auditable, and Admin/API-authoritative.
+
 Updated: 2026-06-26
 
 This document defines module selection principles for optional industry modules
@@ -291,10 +298,11 @@ diagnostics dependencies must be documented before use.
 
 ### Logistics
 
-Logistics supports route, stop, pickup, delivery, inventory movement, scan,
-proof-of-delivery, status update, and exception workflows. It should be
-selected when tenants need reliable mobile execution under changing network
-conditions.
+Logistics is defined in [Logistics Delivery
+Logic](logistics-delivery-logic.md). It supports route, stop, pickup,
+delivery, inventory movement, scan, proof-of-delivery, status update, and
+exception workflows. It should be selected when tenants need reliable mobile
+execution under changing network conditions.
 
 Admin/API should own route authority, stop order meaning, barcode/QR meaning,
 exception rules, proof acceptance, reporting, and conflict handling. Mobile

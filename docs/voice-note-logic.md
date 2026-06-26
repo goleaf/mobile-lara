@@ -23,6 +23,13 @@ report visibility must remain tenant-enabled, plan-controlled,
 permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
 and Admin/API-authoritative.
 
+Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
+delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
+scan validation, location check-in, failed delivery reasons, offline
+behavior, and admin monitoring must remain tenant-enabled, plan-controlled,
+permission-aware, scan-safe, location-purpose-limited, offline-clear,
+privacy-safe, auditable, and Admin/API-authoritative.
+
 This document defines voice note logic for the Mobile Lara NativePHP client. It
 explains recording, pausing, resuming, saving locally, attaching to records and
 support, transcription as an optional future feature, offline upload queues,
