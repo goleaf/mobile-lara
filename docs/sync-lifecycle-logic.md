@@ -15,7 +15,8 @@ retry jobs, queue tables, or application logic.
 Use this document with [Product Principles](product-principles.md), [Two-System
 Boundary Logic](two-system-boundary.md), [API-First Principles](api-first-principles.md),
 [Offline-First Principles](offline-first-principles.md), [Mobile Client
-Responsibilities](mobile-client-responsibilities.md), [NativePHP Local
+Responsibilities](mobile-client-responsibilities.md), [Offline UX
+Logic](offline-ux-logic.md), [NativePHP Local
 Storage](nativephp-local-storage.md), [Multi-Tenant Mobile Logic](multi-tenant-mobile-logic.md),
 [Authentication Principles](authentication-principles.md), [Mobile App Lock
 Principles](mobile-app-lock-principles.md), [Mobile App Shell Logic](mobile-app-shell-logic.md),
@@ -30,6 +31,12 @@ Contract](../contracts/api/v1-sync.md): sync exists so mobile
 can reconcile useful local work with server authority while Admin/API remains
 authoritative for access, validation, permissions, feature availability,
 tenant boundaries, billing, conflict decisions, audit, and canonical state.
+
+Offline UX Logic is defined in `offline-ux-logic.md`:
+offline UX must calmly explain banners, disabled online-only actions,
+local drafts, pending indicators, retry, sync success or failure,
+saved-local versus synced state, and data-loss prevention whenever
+connection changes.
 
 ## Sync Lifecycle Statement
 

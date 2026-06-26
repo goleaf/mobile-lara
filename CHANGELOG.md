@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Offline UX Logic documentation for offline banners, pending action
+  indicators, disabled online-only actions, local drafts, retry behavior, sync
+  success/failure feedback, saved-local versus synced status, and calm
+  connection-loss behavior.
 - Added Conflict Resolution Logic documentation for conflict causes,
   auto-resolution, user-choice recovery, admin/support review, mobile conflict
   UX, admin monitoring, audit, and data-loss prevention.

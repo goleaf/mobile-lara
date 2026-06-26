@@ -138,6 +138,12 @@ offline messaging to keep users productive, but protected reads, writes,
 conflicts, billing, permissions, feature access, audit, and tenant authority
 must wait for API confirmation before becoming trusted.
 
+Offline UX Logic is defined in `offline-ux-logic.md`:
+offline UX must calmly explain banners, disabled online-only actions,
+local drafts, pending indicators, retry, sync success or failure,
+saved-local versus synced state, and data-loss prevention whenever
+connection changes.
+
 Sync Lifecycle Logic is defined in `sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,

@@ -17,8 +17,8 @@ Use this document with [Product Principles](product-principles.md), [Two-System
 Boundary Logic](two-system-boundary.md), [API-First Principles](api-first-principles.md),
 [Mobile Client Responsibilities](mobile-client-responsibilities.md), [NativePHP
 Local Storage](nativephp-local-storage.md), [Sync Lifecycle Logic](sync-lifecycle-logic.md),
-[Multi-Tenant Mobile Logic](multi-tenant-mobile-logic.md), [Authentication
-Principles](authentication-principles.md), [Mobile App Lock Principles](mobile-app-lock-principles.md),
+[Offline UX Logic](offline-ux-logic.md), [Multi-Tenant Mobile Logic](multi-tenant-mobile-logic.md),
+[Authentication Principles](authentication-principles.md), [Mobile App Lock Principles](mobile-app-lock-principles.md),
 [Mobile App Shell Logic](mobile-app-shell-logic.md), [Mobile Dashboard
 Logic](mobile-dashboard-logic.md), [Mobile Settings Logic](mobile-settings-logic.md),
 [Role And Permission Logic](role-permission-logic.md), [Feature Flag Logic](feature-flag-logic.md),
@@ -32,9 +32,18 @@ users productive with cache, drafts, and queued intents while sync lifecycle
 behavior defines bootstrap, pull, push, retry, conflict, acknowledgement,
 status, manual sync, background sync, and health monitoring. Conflict
 resolution defines auto-resolution, user choice, admin/support review, audit,
-and data-loss prevention. Admin/API remains authoritative for access,
+and data-loss prevention. Offline UX Logic defines calm user-facing banners,
+disabled online-only actions, local draft messages, pending indicators, retry,
+sync success/failure feedback, saved-local versus synced status, and
+connection-loss recovery. Admin/API remains authoritative for access,
 validation, permission, billing, feature, tenant, sync, conflict, audit, and
 security decisions.
+
+Offline UX Logic is defined in `offline-ux-logic.md`:
+offline UX must calmly explain banners, disabled online-only actions,
+local drafts, pending indicators, retry, sync success or failure,
+saved-local versus synced state, and data-loss prevention whenever
+connection changes.
 
 ## Offline-First Statement
 

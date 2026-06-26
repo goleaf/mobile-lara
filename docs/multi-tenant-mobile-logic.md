@@ -21,7 +21,8 @@ Local Storage](nativephp-local-storage.md), [Mobile App Shell Logic](mobile-app-
 [Role And Permission Logic](role-permission-logic.md), [Feature Flag Logic](feature-flag-logic.md),
 [Remote Configuration Logic](remote-configuration-logic.md), [Tenant Lifecycle
 Logic](tenant-lifecycle-logic.md), [Tenant Admin Logic](tenant-admin-logic.md),
-[Offline-First Principles](offline-first-principles.md), [Sync Lifecycle
+[Offline-First Principles](offline-first-principles.md), [Offline UX
+Logic](offline-ux-logic.md), [Sync Lifecycle
 Logic](sync-lifecycle-logic.md), [Conflict Resolution Logic](conflict-resolution-logic.md),
 [Audit Logic](audit-logic.md), [Data Privacy Principles](data-privacy-principles.md),
 [Admin Safety Principles](admin-safety-principles.md), and [API v1 Tenancy
@@ -35,6 +36,12 @@ how tenant-scoped conflicts are shown, audited, auto-resolved, user-resolved, or
 escalated without cross-tenant leakage. Admin/API remains authoritative for
 tenant access, tenant state, permissions, features, config, sync acceptance, and
 logout/session revocation.
+
+Offline UX Logic is defined in `offline-ux-logic.md`:
+offline UX must calmly explain banners, disabled online-only actions,
+local drafts, pending indicators, retry, sync success or failure,
+saved-local versus synced state, and data-loss prevention whenever
+connection changes.
 
 ## Multi-Tenant Mobile Statement
 

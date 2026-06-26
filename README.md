@@ -25,6 +25,11 @@ intents, sync state, and offline messaging to keep users productive, while API
 authority remains required for protected reads, writes, conflicts, billing,
 permissions, feature access, audit, and tenant authority.
 
+The offline UX model is explicit: mobile should calmly explain offline
+banners, pending actions, disabled online-only actions, local drafts, retry
+state, sync success, sync failure, saved-local versus synced status, and
+data-loss prevention without creating panic when connection is lost.
+
 The sync lifecycle model is explicit: mobile sync moves through bootstrap,
 pull, push, retry, conflict detection, conflict resolution, acknowledgement,
 status communication, manual sync, background sync, and admin health
@@ -123,6 +128,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/tenant-admin-logic.md](docs/tenant-admin-logic.md) | Tenant admin logic for tenant-scoped controls, platform-only boundaries, invitations, delegated mobile-feature management, reports, support, and cross-tenant isolation. |
 | [docs/multi-tenant-mobile-logic.md](docs/multi-tenant-mobile-logic.md) | Multi-tenant mobile logic for tenant choice, remembered tenant context, safe tenant switching, tenant-scoped cache, per-tenant permissions/features, sync after switch, and logout cleanup. |
 | [docs/offline-first-principles.md](docs/offline-first-principles.md) | Offline-first principles for offline mobile capability, online-only API authority, cache rules, never-cache rules, offline state messaging, queued action logic, pending-change UX, and admin-controlled offline limits. |
+| [docs/offline-ux-logic.md](docs/offline-ux-logic.md) | Offline UX logic for offline banners, pending action indicators, disabled online-only actions, local drafts, retry, sync success/failure feedback, saved-local versus synced status, and calm connection-loss behavior. |
 | [docs/sync-lifecycle-logic.md](docs/sync-lifecycle-logic.md) | Sync lifecycle logic for bootstrap sync, pull changes, push local changes, retries, conflict detection, conflict resolution, acknowledgement, status communication, manual sync, background sync, and admin sync health monitoring. |
 | [docs/conflict-resolution-logic.md](docs/conflict-resolution-logic.md) | Conflict resolution logic for conflict causes, auto-resolution, user choice, admin/support review, mobile conflict UX, admin monitoring, audit, and data-loss prevention. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
@@ -184,6 +190,7 @@ contracts.
 - Apply [tenant admin logic](docs/tenant-admin-logic.md) before planning tenant-admin controls, invitations, delegated mobile-feature management, tenant reports, tenant support, tenant admin safety, or cross-tenant isolation behavior.
 - Apply [multi-tenant mobile logic](docs/multi-tenant-mobile-logic.md) before planning mobile tenant choice, remembered tenant context, tenant switching, tenant-scoped cache, per-tenant permissions or features, sync after tenant switch, offline tenant behavior, or logout tenant cleanup.
 - Apply [offline-first principles](docs/offline-first-principles.md) before planning offline-capable mobile screens, local cache, drafts, queued actions, sync state, pending changes, conflict behavior, or admin-controlled offline limits.
+- Apply [offline UX logic](docs/offline-ux-logic.md) before planning offline banners, pending indicators, disabled online-only actions, local draft messaging, retry messaging, sync success/failure feedback, saved-local versus synced states, or connection-loss recovery.
 - Apply [sync lifecycle logic](docs/sync-lifecycle-logic.md) before planning bootstrap sync, pull, push, retry, conflict detection, conflict resolution, acknowledgement, sync status communication, manual sync, background sync, or admin sync health monitoring.
 - Apply [conflict resolution logic](docs/conflict-resolution-logic.md) before planning conflict detection, auto-resolution, user-choice recovery, admin/support review, mobile conflict messaging, conflict monitoring, audit, or data-loss prevention.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.

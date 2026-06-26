@@ -55,6 +55,12 @@ offline messaging to keep users productive, but protected reads, writes,
 conflicts, billing, permissions, feature access, audit, and tenant authority
 must wait for API confirmation before becoming trusted.
 
+Offline UX Logic is defined in `docs/offline-ux-logic.md`:
+offline UX must calmly explain banners, disabled online-only actions,
+local drafts, pending indicators, retry, sync success or failure,
+saved-local versus synced state, and data-loss prevention whenever
+connection changes.
+
 Sync Lifecycle Logic is defined in `docs/sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,
@@ -136,6 +142,7 @@ Use these docs before changing the product direction:
 - `docs/tenant-admin-logic.md`
 - `docs/multi-tenant-mobile-logic.md`
 - `docs/offline-first-principles.md`
+- `docs/offline-ux-logic.md`
 - `docs/sync-lifecycle-logic.md`
 - `docs/conflict-resolution-logic.md`
 - `docs/saas-value-map.md`
@@ -171,6 +178,7 @@ Use these docs before changing the product direction:
 - Tenant admin decisions must follow `docs/tenant-admin-logic.md`.
 - Multi-tenant mobile decisions must follow `docs/multi-tenant-mobile-logic.md`.
 - Offline-first decisions must follow `docs/offline-first-principles.md`.
+- Offline UX decisions must follow `docs/offline-ux-logic.md`.
 - Sync lifecycle decisions must follow `docs/sync-lifecycle-logic.md`.
 - Conflict resolution decisions must follow `docs/conflict-resolution-logic.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
@@ -205,6 +213,7 @@ Use these docs before changing the product direction:
 - Any tenant-admin control, invitation, delegated mobile-feature management, tenant report, tenant support workflow, tenant admin safety decision, or cross-tenant isolation behavior must map to `docs/tenant-admin-logic.md`.
 - Any mobile tenant choice, remembered tenant context, tenant switch, tenant-scoped cache, per-tenant permission or feature state, post-switch sync behavior, offline tenant behavior, or logout tenant cleanup must map to `docs/multi-tenant-mobile-logic.md`.
 - Any offline-capable mobile screen, local cache, draft, queued action, pending change, sync status, conflict state, offline message, never-cache rule, or admin offline limit must map to `docs/offline-first-principles.md`.
+- Any offline banner, pending indicator, disabled online-only action, local draft message, retry message, sync success/failure feedback, saved-local versus synced state, or connection-loss recovery behavior must map to `docs/offline-ux-logic.md`.
 - Any bootstrap sync, pull, push, retry, conflict detection, conflict resolution, acknowledgement, sync status communication, manual sync, background sync, or admin sync health monitoring behavior must map to `docs/sync-lifecycle-logic.md`.
 - Any conflict cause, auto-resolution, user-choice recovery, admin/support review, mobile conflict message, conflict monitoring, conflict audit, or data-loss prevention behavior must map to `docs/conflict-resolution-logic.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
