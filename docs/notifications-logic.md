@@ -43,6 +43,12 @@ support replies, diagnostic requests, attachment outcomes, case status changes,
 support-agent visibility, audit, and offline support draft reminders must stay
 tenant-scoped, least-privilege, privacy-safe, and Admin/API-authoritative.
 
+Billing And Plan Logic is defined in `billing-and-plan-logic.md`:
+plan-based access, trial behavior, active/expired/suspended subscription states,
+plan limits, feature-flag entitlement ceilings, mobile unavailable-feature states,
+and manual admin billing controls must remain Admin/API-authoritative,
+tenant-scoped, auditable, and provider-neutral.
+
 ## Notifications Statement
 
 Notifications help the right user notice the right event at the right time

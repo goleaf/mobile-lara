@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Billing And Plan Logic documentation for plan-based access, trial
+  behavior, active/expired/suspended subscription states, plan limits,
+  feature-flag entitlement ceilings, mobile unavailable-feature states, manual
+  admin billing controls, and provider-neutral billing boundaries.
 - Added Support System Logic documentation for mobile support requests,
   admin/support review, support messages, attachments, tenant context, support
   access limits, audit, notifications, and offline support drafts.

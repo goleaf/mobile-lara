@@ -56,6 +56,12 @@ support requests, support messages, attachments, tenant context, support-agent
 visibility, audit, notifications, and offline support drafts must remain
 tenant-scoped, least-privilege, privacy-safe, and Admin/API-authoritative.
 
+Billing And Plan Logic is defined in `billing-and-plan-logic.md`:
+plan-based access, trial behavior, active/expired/suspended subscription states,
+plan limits, feature-flag entitlement ceilings, mobile unavailable-feature states,
+and manual admin billing controls must remain Admin/API-authoritative,
+tenant-scoped, auditable, and provider-neutral.
+
 ## Module Statement
 
 The records/content module is the shared tenant workspace for structured mobile

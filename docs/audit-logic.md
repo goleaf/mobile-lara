@@ -94,6 +94,12 @@ support requests, support messages, attachments, tenant context, support-agent
 visibility, audit, notifications, and offline support drafts must remain
 tenant-scoped, least-privilege, privacy-safe, and Admin/API-authoritative.
 
+Billing And Plan Logic is defined in `billing-and-plan-logic.md`:
+plan-based access, trial behavior, active/expired/suspended subscription states,
+plan limits, feature-flag entitlement ceilings, mobile unavailable-feature states,
+and manual admin billing controls must remain Admin/API-authoritative,
+tenant-scoped, auditable, and provider-neutral.
+
 Sync Lifecycle Logic is defined in `sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,

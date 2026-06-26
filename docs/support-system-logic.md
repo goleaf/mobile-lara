@@ -34,11 +34,18 @@ Logic](multi-tenant-mobile-logic.md), [Offline-First Principles](offline-first-p
 [Conflict Resolution Logic](conflict-resolution-logic.md), [Records/Content
 Module Logic](records-content-module-logic.md), [Search Logic](search-logic.md),
 [Forms And Drafts Logic](forms-drafts-logic.md), [Notifications
-Logic](notifications-logic.md), and [API v1 Support
+Logic](notifications-logic.md), [Billing And Plan
+Logic](billing-and-plan-logic.md), and [API v1 Support
 Contract](../contracts/api/v1-support.md): support is a tenant-scoped recovery
 and assistance workflow, and Admin/API remains authoritative for request
 acceptance, case state, assignment, visibility, diagnostics policy, attachment
 acceptance, audit, notifications, and tenant boundaries.
+
+Billing And Plan Logic is defined in `billing-and-plan-logic.md`:
+plan-based access, trial behavior, active/expired/suspended subscription states,
+plan limits, feature-flag entitlement ceilings, mobile unavailable-feature
+states, and manual admin billing controls must remain Admin/API-authoritative,
+tenant-scoped, auditable, and provider-neutral.
 
 ## Support System Statement
 
