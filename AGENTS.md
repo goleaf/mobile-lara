@@ -192,6 +192,13 @@ feature flag mistakes, billing restrictions, admin misconfiguration,
 support access, privacy, and data conflicts must document prevention
 principles and documentation requirements before implementation.
 
+Testing Strategy Principles are defined in `docs/testing-strategy-principles.md`:
+future tests for API contracts, admin controls, mobile feature visibility,
+permissions, feature flags, remote config, authentication, tenant isolation,
+offline sync, conflict behavior, native feature fallbacks, notification flows,
+billing rules, and app version rules must map to documented authority, risk,
+and user-visible behavior before implementation.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -281,6 +288,7 @@ Use these docs before changing the product direction:
 - `docs/documentation-first-architecture.md`
 - `docs/acceptance-principles.md`
 - `docs/risk-map.md`
+- `docs/testing-strategy-principles.md`
 - `docs/user-roles.md`
 - `docs/role-permission-logic.md`
 - `docs/audit-logic.md`
@@ -340,6 +348,7 @@ Use these docs before changing the product direction:
 - Documentation-first architecture decisions must follow `docs/documentation-first-architecture.md`.
 - Acceptance decisions must follow `docs/acceptance-principles.md`.
 - Risk decisions must follow `docs/risk-map.md`.
+- Testing strategy decisions must follow `docs/testing-strategy-principles.md`.
 - Role and permission decisions must follow `docs/role-permission-logic.md`.
 - Audit decisions must follow `docs/audit-logic.md`.
 - Data privacy decisions must follow `docs/data-privacy-principles.md`.
@@ -393,6 +402,7 @@ Use these docs before changing the product direction:
 - Any feature, admin control, mobile screen, sync behavior, permission, or risk-sensitive change must be documented before implementation according to `docs/documentation-first-architecture.md`.
 - Any feature purpose, admin control, mobile behavior, API dependency, offline behavior, permission behavior, feature flag behavior, tenant behavior, error behavior, security behavior, or documentation requirement must map to `docs/acceptance-principles.md`.
 - Any API dependency, offline sync, tenant isolation, mobile secure storage, NativePHP plugin availability, app store release, forced update, feature flag mistake, billing restriction, admin misconfiguration, support access, privacy, or data conflict risk must map to `docs/risk-map.md`.
+- Any future test plan for API contracts, admin controls, mobile feature visibility, permissions, feature flags, remote config, authentication, tenant isolation, offline sync, conflict behavior, native feature fallbacks, notification flows, billing rules, or app version rules must map to `docs/testing-strategy-principles.md`.
 - Any feature must pass the core principles checklist in `docs/product-principles.md`.
 - Any feature that changes visibility or control must map behavior to the role model in `docs/user-roles.md`.
 - Any platform-level permission, tenant-level permission, admin-user permission, mobile-user permission, API access rule, mobile UI visibility rule, feature-flag access interaction, suspended-user behavior, or suspended-tenant behavior must map to `docs/role-permission-logic.md`.

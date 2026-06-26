@@ -768,5 +768,12 @@ feature flag mistakes, billing restrictions, admin misconfiguration,
 support access, privacy, and data conflicts must document prevention
 principles and documentation requirements before implementation.
 
+Testing Strategy Principles are defined in `testing-strategy-principles.md`:
+future tests for API contracts, admin controls, mobile feature visibility,
+permissions, feature flags, remote config, authentication, tenant isolation,
+offline sync, conflict behavior, native feature fallbacks, notification flows,
+billing rules, and app version rules must map to documented authority, risk,
+and user-visible behavior before implementation.
+
 If any of those are unclear, the correct next step is more documentation, not
 application code.

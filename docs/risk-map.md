@@ -1,5 +1,12 @@
 # Risk Map
 
+Testing Strategy Principles are defined in `testing-strategy-principles.md`:
+future tests for API contracts, admin controls, mobile feature visibility,
+permissions, feature flags, remote config, authentication, tenant isolation,
+offline sync, conflict behavior, native feature fallbacks, notification flows,
+billing rules, and app version rules must map to documented authority, risk,
+and user-visible behavior before implementation.
+
 Updated: 2026-06-26
 
 This document defines the risk map for the Mobile Lara SaaS mobile/admin
@@ -14,6 +21,7 @@ JavaScript, queues, provider integrations, app-store configuration, or
 application logic.
 
 Use this document with [Acceptance Principles](acceptance-principles.md),
+[Testing Strategy Principles](testing-strategy-principles.md),
 [Documentation-First Architecture](documentation-first-architecture.md),
 [Product Principles](product-principles.md), [Two-System Boundary
 Logic](two-system-boundary.md), [API-First Principles](api-first-principles.md),

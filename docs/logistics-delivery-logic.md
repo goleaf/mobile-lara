@@ -46,6 +46,13 @@ feature flag mistakes, billing restrictions, admin misconfiguration,
 support access, privacy, and data conflicts must document prevention
 principles and documentation requirements before implementation.
 
+Testing Strategy Principles are defined in `testing-strategy-principles.md`:
+future tests for API contracts, admin controls, mobile feature visibility,
+permissions, feature flags, remote config, authentication, tenant isolation,
+offline sync, conflict behavior, native feature fallbacks, notification flows,
+billing rules, and app version rules must map to documented authority, risk,
+and user-visible behavior before implementation.
+
 This document defines logistics and delivery module logic for Mobile Lara. It
 explains delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline behavior,

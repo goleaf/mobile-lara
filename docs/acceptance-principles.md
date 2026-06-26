@@ -7,6 +7,13 @@ feature flag mistakes, billing restrictions, admin misconfiguration,
 support access, privacy, and data conflicts must document prevention
 principles and documentation requirements before implementation.
 
+Testing Strategy Principles are defined in `testing-strategy-principles.md`:
+future tests for API contracts, admin controls, mobile feature visibility,
+permissions, feature flags, remote config, authentication, tenant isolation,
+offline sync, conflict behavior, native feature fallbacks, notification flows,
+billing rules, and app version rules must map to documented authority, risk,
+and user-visible behavior before implementation.
+
 Updated: 2026-06-26
 
 This document defines acceptance principles for every Mobile Lara feature. It
@@ -22,6 +29,7 @@ Use this document with [Product Vision](product-vision.md), [Product
 Positioning](product-positioning.md), [Core Product
 Principles](product-principles.md), [Documentation-First
 Architecture](documentation-first-architecture.md), [Risk Map](risk-map.md),
+[Testing Strategy Principles](testing-strategy-principles.md),
 [Two-System Boundary Logic](two-system-boundary.md), [API-First
 Principles](api-first-principles.md),
 [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client
@@ -75,7 +83,8 @@ Every feature must answer these questions before implementation:
 9. What does failure look like to admins, mobile users, support, and the API?
 10. What security and privacy boundaries protect the feature?
 11. Which risk-map entries apply, and which prevention principles are required?
-12. Which Markdown documents record the answers?
+12. Which future test surfaces should prove the documented behavior?
+13. Which Markdown documents record the answers?
 
 If any answer is unclear, the feature is not ready for implementation.
 

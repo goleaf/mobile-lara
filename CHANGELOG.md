@@ -81,6 +81,13 @@ feature flag mistakes, billing restrictions, admin misconfiguration,
 support access, privacy, and data conflicts must document prevention
 principles and documentation requirements before implementation.
 
+Testing Strategy Principles are defined in `docs/testing-strategy-principles.md`:
+future tests for API contracts, admin controls, mobile feature visibility,
+permissions, feature flags, remote config, authentication, tenant isolation,
+offline sync, conflict behavior, native feature fallbacks, notification flows,
+billing rules, and app version rules must map to documented authority, risk,
+and user-visible behavior before implementation.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -99,6 +106,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Testing Strategy Principles documentation for future API contract,
+  admin control, mobile feature visibility, permission, feature flag, remote
+  config, authentication, tenant isolation, offline sync, conflict behavior,
+  NativePHP fallback, notification, billing, and app-version test coverage.
 - Added Risk Map documentation for API dependency, offline sync, tenant
   isolation, mobile secure storage, NativePHP plugin availability, app store
   releases, forced updates, feature flag mistakes, billing restrictions, admin
