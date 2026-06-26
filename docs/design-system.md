@@ -196,6 +196,13 @@ denial, size limits, and privacy behavior must remain tenant-scoped,
 permission-aware, fallback-safe, queue-safe, privacy-safe, and
 Admin/API-authoritative.
 
+Scanner Logic is defined in `scanner-logic.md`:
+QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history,
+offline scanning, invalid scan handling, duplicate scan handling, admin
+feature flags, and camera/permission dependency behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear,
+duplicate-safe, privacy-safe, and Admin/API-authoritative.
+
 Sync Lifecycle Logic is defined in `sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,

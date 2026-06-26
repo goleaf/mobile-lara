@@ -2,10 +2,21 @@
 
 All notable changes to Mobile Lara will be documented in this file.
 
+Scanner Logic is defined in `docs/scanner-logic.md`:
+QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history,
+offline scanning, invalid scan handling, duplicate scan handling, admin
+feature flags, and camera/permission dependency behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear,
+duplicate-safe, privacy-safe, and Admin/API-authoritative.
+
 ## Unreleased
 
 ### Added
 
+- Added Scanner Logic documentation for QR/barcode scan-to-search,
+  scan-to-create, scan-to-validate, scan history, offline scanning, invalid
+  scan behavior, duplicate scan behavior, admin feature-flag control, and
+  camera permission dependency principles.
 - Added Camera And Media Logic documentation for taking photos, choosing media,
   previewing media, attaching media to records or support, offline media
   storage, upload queues, admin feature-flag control, permission denial

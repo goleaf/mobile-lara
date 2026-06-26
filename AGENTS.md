@@ -113,6 +113,13 @@ denial, size limits, and privacy behavior must remain tenant-scoped,
 permission-aware, fallback-safe, queue-safe, privacy-safe, and
 Admin/API-authoritative.
 
+Scanner Logic is defined in `docs/scanner-logic.md`:
+QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history,
+offline scanning, invalid scan handling, duplicate scan handling, admin
+feature flags, and camera/permission dependency behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear,
+duplicate-safe, privacy-safe, and Admin/API-authoritative.
+
 Sync Lifecycle Logic is defined in `docs/sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,
@@ -206,6 +213,7 @@ Use these docs before changing the product direction:
 - `docs/reporting-logic.md`
 - `docs/native-feature-strategy.md`
 - `docs/camera-media-logic.md`
+- `docs/scanner-logic.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -251,6 +259,7 @@ Use these docs before changing the product direction:
 - Reporting decisions must follow `docs/reporting-logic.md`.
 - Native feature decisions must follow `docs/native-feature-strategy.md`.
 - Camera and media decisions must follow `docs/camera-media-logic.md`.
+- Scanner decisions must follow `docs/scanner-logic.md`.
 - Two-system boundary decisions must follow `docs/two-system-boundary.md`.
 - API-first decisions must follow `docs/api-first-principles.md`.
 - Admin/API responsibility decisions must follow `docs/admin-api-responsibilities.md`.
@@ -295,6 +304,7 @@ Use these docs before changing the product direction:
 - Any admin report, tenant-admin report, mobile-visible report, report privacy boundary, date range, export, feature usage report, sync health report, notification report, support report, or billing report must map to `docs/reporting-logic.md`.
 - Any NativePHP capability, native feature boundary, browser/development fallback, native permission education, native feature flag, native failure state, native diagnostic, or native/offline sync behavior must map to `docs/native-feature-strategy.md`.
 - Any photo capture, media selection, media preview, record/support attachment, offline media storage, upload queue, media feature flag, permission-denied media state, media size rule, media privacy rule, media support visibility, or media sync behavior must map to `docs/camera-media-logic.md`.
+- Any QR/barcode scan, scan-to-search, scan-to-create, scan-to-validate, scan history, offline scanning, invalid scan, duplicate scan, scanner feature flag, scanner permission state, camera dependency, manual fallback, or scanner privacy behavior must map to `docs/scanner-logic.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.

@@ -2,6 +2,13 @@
 
 Updated: 2026-06-26
 
+Scanner Logic is defined in `scanner-logic.md`:
+QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history,
+offline scanning, invalid scan handling, duplicate scan handling, admin
+feature flags, and camera/permission dependency behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear,
+duplicate-safe, privacy-safe, and Admin/API-authoritative.
+
 This document defines camera and media logic for the Mobile Lara NativePHP
 client. It explains taking photos, choosing media, previewing media, attaching
 media to records or support, offline media storage principles, upload queue

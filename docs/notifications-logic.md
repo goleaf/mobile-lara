@@ -68,6 +68,13 @@ denial, size limits, and privacy behavior must remain tenant-scoped,
 permission-aware, fallback-safe, queue-safe, privacy-safe, and
 Admin/API-authoritative.
 
+Scanner Logic is defined in `scanner-logic.md`:
+QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history,
+offline scanning, invalid scan handling, duplicate scan handling, admin
+feature flags, and camera/permission dependency behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear,
+duplicate-safe, privacy-safe, and Admin/API-authoritative.
+
 ## Notifications Statement
 
 Notifications help the right user notice the right event at the right time

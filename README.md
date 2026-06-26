@@ -1,5 +1,12 @@
 # Mobile Lara
 
+Scanner Logic is defined in `docs/scanner-logic.md`:
+QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history,
+offline scanning, invalid scan handling, duplicate scan handling, admin
+feature flags, and camera/permission dependency behavior must remain
+tenant-scoped, permission-aware, fallback-safe, offline-clear,
+duplicate-safe, privacy-safe, and Admin/API-authoritative.
+
 Mobile Lara is a planned SaaS platform for centrally managed NativePHP mobile applications. Its product vision is remote control with local resilience: administrators govern mobile behavior centrally, while mobile users keep working through a focused NativePHP client.
 
 The product is positioned as a tenant-based SaaS control center with an API-first, feature-controlled, offline-capable mobile workforce/client platform.
@@ -87,6 +94,12 @@ The camera and media model is explicit: photo capture, media selection,
 preview, record/support attachments, offline media storage, upload queues,
 feature-flag control, permission denial, size limits, and privacy handling stay
 tenant-scoped, permission-aware, queue-safe, fallback-safe, and
+Admin/API-authoritative.
+
+The scanner model is explicit: QR/barcode scan-to-search, scan-to-create,
+scan-to-validate, scan history, offline scanning, invalid scan handling,
+duplicate scan handling, feature-flag control, and camera permission dependency
+stay tenant-scoped, privacy-safe, duplicate-safe, fallback-safe, and
 Admin/API-authoritative.
 
 The value map is explicit too: platform owner, tenant business, tenant admin, mobile worker/client, support team, and billing/operations team each receive different value from admin control, mobile access, offline sync, notifications, reports, security, and feature flags.
@@ -189,6 +202,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/reporting-logic.md](docs/reporting-logic.md) | Reporting logic for admin, tenant-admin, and mobile-visible reporting, privacy boundaries, date ranges, exports, feature usage, sync health, notification, support, and billing reports. |
 | [docs/native-feature-strategy.md](docs/native-feature-strategy.md) | NativePHP native feature strategy for logical service boundaries, browser/development fallbacks, permission education, admin feature flags, failure UX, and offline sync. |
 | [docs/camera-media-logic.md](docs/camera-media-logic.md) | Camera and media logic for taking photos, choosing media, previewing media, attaching to records/support, offline storage, upload queues, feature flags, permission denial, size limits, and privacy. |
+| [docs/scanner-logic.md](docs/scanner-logic.md) | QR/barcode scanner logic for scan-to-search, scan-to-create, scan-to-validate, scan history, offline scanning, invalid and duplicate scan behavior, feature flags, and camera permission dependency. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
 | [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
@@ -260,6 +274,7 @@ contracts.
 - Apply [reporting logic](docs/reporting-logic.md) before planning admin reports, tenant-admin reports, mobile-visible summaries, report privacy, date ranges, exports, feature usage reporting, sync health reporting, notification reporting, support reporting, or billing reporting.
 - Apply [native feature strategy](docs/native-feature-strategy.md) before planning NativePHP capability use, logical service boundaries, browser/development fallbacks, permission education, admin feature flags, native failure UX, or native/offline sync behavior.
 - Apply [camera and media logic](docs/camera-media-logic.md) before planning photo capture, media selection, media preview, record/support attachments, offline media storage, upload queues, media feature flags, permission-denied media states, media size rules, or media privacy behavior.
+- Apply [scanner logic](docs/scanner-logic.md) before planning QR/barcode scan-to-search, scan-to-create, scan-to-validate, scan history, offline scanning, invalid scan behavior, duplicate scan behavior, scanner feature flags, camera dependency, or scanner permission prompts.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
 - Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.
