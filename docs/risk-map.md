@@ -13,6 +13,13 @@ rollback, app store release, forced update, documentation update, and Git
 change-history decisions must preserve documented authority, compatibility,
 rollback, support, audit, and user-visible behavior before release.
 
+Documentation Audit is defined in `documentation-audit.md`:
+project documentation for two-system architecture, Admin/API authority, mobile
+client execution, API-first communication, feature flags, remote config,
+tenancy, permissions, offline sync, NativePHP features, notifications, billing,
+support, reports, security, risks, and release principles must use consistent
+authority language and resolve contradictions before implementation.
+
 Updated: 2026-06-26
 
 This document defines the risk map for the Mobile Lara SaaS mobile/admin

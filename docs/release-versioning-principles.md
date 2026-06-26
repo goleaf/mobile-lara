@@ -2,6 +2,13 @@
 
 Updated: 2026-06-26
 
+Documentation Audit is defined in `documentation-audit.md`:
+project documentation for two-system architecture, Admin/API authority, mobile
+client execution, API-first communication, feature flags, remote config,
+tenancy, permissions, offline sync, NativePHP features, notifications, billing,
+support, reports, security, risks, and release principles must use consistent
+authority language and resolve contradictions before implementation.
+
 This document defines release and versioning principles for the Mobile Lara
 SaaS mobile/admin system. It explains API versioning, mobile app versioning,
 admin release process, feature rollout process, rollback principles, app store

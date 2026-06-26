@@ -92,6 +92,13 @@ rollback, app store release, forced update, documentation update, and Git
 change-history decisions must preserve documented authority, compatibility,
 rollback, support, audit, and user-visible behavior before release.
 
+Documentation Audit is defined in `docs/documentation-audit.md`:
+project documentation for two-system architecture, Admin/API authority, mobile
+client execution, API-first communication, feature flags, remote config,
+tenancy, permissions, offline sync, NativePHP features, notifications, billing,
+support, reports, security, risks, and release principles must use consistent
+authority language and resolve contradictions before implementation.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -291,6 +298,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/risk-map.md](docs/risk-map.md) | SaaS mobile/admin risk map for API dependency, offline sync, tenant isolation, mobile secure storage, NativePHP plugin availability, app store releases, forced updates, feature flags, billing restrictions, admin misconfiguration, support access, privacy, and data conflicts. |
 | [docs/testing-strategy-principles.md](docs/testing-strategy-principles.md) | Testing strategy principles for future API contract, admin control, mobile feature visibility, permission, feature flag, remote config, authentication, tenant isolation, offline sync, conflict, NativePHP fallback, notification, billing, and app-version tests. |
 | [docs/release-versioning-principles.md](docs/release-versioning-principles.md) | Release and versioning principles for API versioning, mobile app versioning, admin releases, feature rollout, rollback, app store releases, forced updates, documentation updates, Git commits, and change history. |
+| [docs/documentation-audit.md](docs/documentation-audit.md) | Documentation audit contract for consistent two-system architecture, Admin/API authority, mobile execution, API-first behavior, feature flags, remote config, tenancy, permissions, offline sync, NativePHP features, notifications, billing, support, reports, security, risks, and release principles. |
 | [docs/user-roles.md](docs/user-roles.md) | Main logical user roles, responsibilities, limitations, visibility, and control boundaries. |
 | [docs/role-permission-logic.md](docs/role-permission-logic.md) | Role and permission logic for platform-level, tenant-level, admin-user, and mobile-user permissions, API access, mobile UI visibility, feature flag interaction, and suspended users or tenants. |
 | [docs/audit-logic.md](docs/audit-logic.md) | Audit logic for admin actions, security events, support/compliance history, mobile activity representation, audit questions, and audit data protection. |
@@ -377,6 +385,7 @@ contracts.
 - Apply the [risk map](docs/risk-map.md) before planning API dependency, offline sync, tenant isolation, secure storage, NativePHP plugin availability, app store releases, forced updates, feature flags, billing restrictions, admin configuration, support access, privacy, or data-conflict behavior.
 - Apply [testing strategy principles](docs/testing-strategy-principles.md) before planning future tests for API contracts, admin controls, mobile feature visibility, permissions, feature flags, remote config, authentication, tenant isolation, offline sync, conflicts, native fallbacks, notifications, billing, or app-version rules.
 - Apply [release and versioning principles](docs/release-versioning-principles.md) before planning API versions, mobile app versions, admin releases, feature rollout, rollback, app-store releases, forced updates, documentation updates, Git commits, or change-history decisions.
+- Apply the [documentation audit](docs/documentation-audit.md) before accepting docs that could blur Admin/API authority, mobile local execution, API-first behavior, tenancy, permissions, feature flags, remote config, offline sync, NativePHP capabilities, notifications, billing, support, reports, security, risks, or release principles.
 - Apply [target user roles](docs/user-roles.md) before designing permissions, visibility, support, billing, or mobile access.
 - Apply [role and permission logic](docs/role-permission-logic.md) before planning platform-level permissions, tenant-level permissions, admin-user permissions, mobile-user permissions, API access, mobile UI visibility, feature flag interaction, suspended users, or suspended tenants.
 - Apply [audit logic](docs/audit-logic.md) before planning admin actions, security events, support actions, mobile activity summaries, API decisions, sync outcomes, compliance-relevant changes, audit history views, or audit exports.
