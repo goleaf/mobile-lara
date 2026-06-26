@@ -21,6 +21,20 @@ This file is the required implementation gate for Mobile Lara. It translates the
 product Markdown corpus into an executable checklist and records the current
 state before new implementation work continues.
 
+## Current Delivery Mode
+
+The 2026-06-26 implementation prompt authorizes delivery work against this
+checklist. Implementation must still move in small, reviewable phase slices:
+read the relevant Markdown, preserve the Admin/API authority boundary, update
+the related docs, add focused tests where possible, run the relevant quality
+checks, and commit only the files that belong to that slice.
+
+Before any new code change, this file must remain the working gate for what is
+implemented, tested, documented, partial, not started, or blocked. If a local
+worktree already contains uncommitted files, the next slice must either adopt
+that work after inspection or leave it untouched and stage only the current
+phase files.
+
 Product Vision is defined in `docs/product-vision.md`. Status is tracked
 against the vision before implementation grows.
 
@@ -395,7 +409,7 @@ Status values:
 | Admin/API system | `apps/api-admin` contains a Laravel 13 app, protected Livewire dashboard shell, registered policies for current mobile control-plane resources, audited tenant lifecycle/settings/membership controls, audited global feature flag controls, audited global remote config controls, audited app-version policy controls, remote config resolver/API, app-version/maintenance resolver/API, admin session auth, shared API response envelope, mobile status endpoint, public contract catalogue endpoint, mobile auth/token/session endpoints, foundation tenant list/switch endpoints, and tenant-scoped records API foundation. Broader SaaS modules remain pending. |
 | Contracts directory | `contracts/api` exists with response-envelope guidance, `v1-foundation.md`, and documented v1 contracts for auth, bootstrap, tenancy, features, remote config, app version/maintenance, records, sync, notifications, support, billing, reports, and diagnostics. |
 | Scripts directory | `scripts` exists with root helper guidance; no custom helper scripts are needed yet. |
-| Tests | `apps/mobile-client` passes `php artisan test --compact` with 490 tests / 3822 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, tenant workspace behavior, mobile invitation check/accept/decline actions, cached app-version/maintenance screens, optional-update dashboard banners, mobile records API/sync services, mobile remote config store/settings consumers, and cached policy guards for mobile record, attachment, profile share, record-detail share, media-gallery share, support-center browser handoff, voice-note, check-in, media-capture, file-manager, scanner, notification inbox, manual sync, conflict resolution, offline queue writes, and developer native debug actions. `apps/api-admin` passes `php artisan test --compact` with 114 tests / 987 assertions covering admin routing, tenant lifecycle/membership management controls, authenticated tenant invitation list/accept/decline flows, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, mobile notification policy state, mobile sync policy state, tenant-scoped records API behavior, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
+| Tests | `apps/mobile-client` passes `php artisan test --compact` with 492 tests / 3860 assertions covering routes, Livewire, NativePHP wrappers, local storage, API auth, bootstrap, tenant workspace behavior, mobile invitation check/accept/decline actions, cached app-version/maintenance screens, optional-update dashboard banners, mobile records API/sync services, mobile remote config store/settings consumers, privacy-safe diagnostics export/share, and cached policy guards for mobile record, attachment, profile share, record-detail share, media-gallery share, support-center browser handoff, diagnostics share, voice-note, check-in, media-capture, file-manager, scanner, notification inbox, manual sync, conflict resolution, offline queue writes, and developer native debug actions. `apps/api-admin` passes `php artisan test --compact` with 114 tests / 987 assertions covering admin routing, tenant lifecycle/membership management controls, authenticated tenant invitation list/accept/decline flows, feature flag controls, tenant and user feature override controls, remote config controls, tenant remote config controls, app version controls, current resource policies, scoped and version-ranged app version policy, remote config resolution, API envelopes, contract catalogue, mobile auth, bootstrap, tenant context switching, role-derived mobile permission payloads, mobile billing subscription state, mobile notification policy state, mobile sync policy state, tenant-scoped records API behavior, and feature flag resolution with maintenance, plan, cohort, device, emergency, and app-version gates. |
 | Native tooling | `apps/mobile-client` exposes NativePHP commands and `native:plugin:validate` passes with two non-fatal third-party manifest warnings. Xcode/Android simulator verification remains external-tooling dependent. |
 
 ## Phase 1 - Repository Foundation
@@ -510,7 +524,7 @@ Status values:
 | Protected admin routes | tested | `/admin/dashboard` and current control pages are protected by session auth, platform-admin middleware, and resource policies for current mobile control-plane actions. |
 | Protected API routes | partial | Auth, bootstrap, tenant list/switch, and profile routes are mobile-token protected; resource permission middleware/policies remain pending. |
 | Mobile permission payload | tested | Bootstrap returns nested role-derived ability state for the current active tenant and fails closed for invited/suspended memberships. |
-| Mobile permission-aware UI | tested | Permission settings/center exists for NativePHP device permissions and now uses `MobileAccessPolicy` before offering camera, microphone, location, notification, file, or biometric prompts. `MobileAccessPolicy` also consumes cached Admin/API bootstrap permissions to hide blocked shortcuts and route-block records, notifications, sync conflicts, media/files, scanner, and location screens; record create/update/archive/delete, bulk mutations, attachment management, attachment sharing, profile sharing, record-detail sharing, media-gallery sharing, support-center browser handoff, voice-note recording callbacks, local voice-note save/delete, voice-note upload queue placeholders, NativePHP location callbacks, local check-in creation, media capture callbacks, file manager read/write/copy/move/import/export/delete/share actions, scanner capture callbacks, saved scan-history deletes/clears, notification read/open/read-all actions, manual sync, conflict resolution actions, offline-first queue writes, and developer debug native wrapper calls/callbacks now deny direct Livewire/service calls before local SQLite writes, native share/location/media/scanner/browser/device/dialog/storage handoff, file deletes, imports/exports, scan-history deletes, notification timestamp writes, sync timestamp writes, conflict queue status changes, or offline queue writes. Remaining diagnostics/report native share flows and legal/billing browser flows still need feature-specific policy gates. |
+| Mobile permission-aware UI | tested | Permission settings/center exists for NativePHP device permissions and now uses `MobileAccessPolicy` before offering camera, microphone, location, notification, file, or biometric prompts. `MobileAccessPolicy` also consumes cached Admin/API bootstrap permissions to hide blocked shortcuts and route-block records, notifications, sync conflicts, media/files, scanner, and location screens; record create/update/archive/delete, bulk mutations, attachment management, attachment sharing, profile sharing, record-detail sharing, media-gallery sharing, support-center browser handoff, voice-note recording callbacks, local voice-note save/delete, voice-note upload queue placeholders, NativePHP location callbacks, local check-in creation, media capture callbacks, file manager read/write/copy/move/import/export/delete/share actions, scanner capture callbacks, saved scan-history deletes/clears, notification read/open/read-all actions, manual sync, conflict resolution actions, offline-first queue writes, diagnostics share actions, and developer debug native wrapper calls/callbacks now deny direct Livewire/service calls before local SQLite writes, native share/location/media/scanner/browser/device/dialog/storage handoff, file deletes, imports/exports, scan-history deletes, notification timestamp writes, sync timestamp writes, conflict queue status changes, diagnostics native handoff, or offline queue writes. Remaining report native share flows and billing browser flows still need feature-specific policy gates. |
 
 ## Phase 8 - Feature Flags
 
@@ -646,7 +660,7 @@ Status values:
 | Attach media to records/support | partial | Record attachment surfaces exist; support/API missing. |
 | Offline media queue | partial | Local media models exist; API upload/replay missing. |
 | File import/export | partial | File manager exists and local import/export actions are gated by cached `native_files` policy; API policy remains missing. |
-| Native share | partial | Share service exists and profile, record-detail, media-gallery, and file-manager share actions are gated by cached `native_share` policy; diagnostics/report flows remain incomplete. |
+| Native share | partial | Share service exists and profile, record-detail, media-gallery, file-manager, and diagnostics share actions are gated by cached `native_share` policy; report flows remain incomplete. |
 
 ## Phase 18 - Scanner
 
@@ -772,15 +786,15 @@ Status values:
 
 | Feature | Status | Notes |
 | --- | --- | --- |
-| Diagnostics screen | partial | Debug page exists. |
-| App version/API URL/current tenant/user | partial | Some debug context exists; bootstrap tenant/API integration missing. |
-| Feature/config snapshots | not started | Requires bootstrap stores. |
-| Network/sync status | partial | Local network/sync surfaces exist. |
-| Failed sync actions | partial | Local offline action/conflict surfaces exist. |
-| Device info | partial | Device service exists. |
-| Export diagnostics as JSON | not started | Required. |
-| Native share diagnostics | not started | Share service exists; diagnostics export integration missing. |
-| Private data protection | partial | Principles documented; redaction implementation incomplete. |
+| Diagnostics screen | tested | Debug page now includes a diagnostics export preview sourced from a dedicated report builder. |
+| App version/API URL/current tenant/user | tested | Diagnostics snapshot includes app version, redacted API base URL, cached tenant id/status, and cached/auth user id without email/name. |
+| Feature/config snapshots | tested | Diagnostics snapshot summarizes cached feature states and redacted remote config values. |
+| Network/sync status | tested | Diagnostics snapshot includes NativePHP/fallback network state, sync policy, last sync time, and queue counts. |
+| Failed sync actions | tested | Diagnostics snapshot includes failed action metadata only; queued payloads and headers are never exported. |
+| Device info | tested | Diagnostics snapshot includes safe device-service fields with browser-runtime fallbacks. |
+| Export diagnostics as JSON | tested | Debug page downloads `mobile-lara-diagnostics.json` through a Livewire file-download action. |
+| Native share diagnostics | tested | Debug share action now shares the same redacted diagnostics JSON through the NativePHP share wrapper and remains gated by cached `native_share` policy. |
+| Private data protection | tested | Redaction removes tokens, API credentials, bearer values, emails, queued payloads, and headers; coverage verifies secrets are absent from exported JSON. |
 
 ## Phase 29 - Documentation Completion
 

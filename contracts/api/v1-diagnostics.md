@@ -17,7 +17,8 @@ and future module expansion principles.
 
 Updated: 2026-06-26
 
-Status: documented. Endpoint is planned for Phase 28.
+Status: documented. Mobile-local diagnostics export/share is implemented; API
+upload endpoint remains planned.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 supports scalable SaaS operations by giving support safe mobile context without
@@ -367,6 +368,20 @@ Admin/API owns acceptance, support visibility, audit, and privacy boundaries.
 | --- | --- | --- | --- |
 | POST | `/api/v1/mobile/diagnostics` | Upload a privacy-filtered diagnostics snapshot. | mobile token |
 
+## Implemented Mobile Behavior
+
+The mobile debug/diagnostics screen now builds a local redacted diagnostics
+snapshot for support review and user-controlled export. The snapshot includes
+safe app/runtime context, redacted API base URL, cached tenant id/status,
+cached or authenticated user id, feature-state summary, redacted remote config,
+network status, sync policy/queue counts, failed sync action metadata, and safe
+device-service fields.
+
+Mobile exports the snapshot as `mobile-lara-diagnostics.json` through a
+Livewire download. Native sharing uses the same redacted JSON through the
+NativePHP share wrapper and remains gated by the cached `native_share` feature
+policy.
+
 ## Success Data
 
 The response returns `diagnostic_id`, `received_at`, `support_ticket_id`,
@@ -388,8 +403,9 @@ status, app version, remote config, privacy settings, and support policy.
 
 ## Offline Behavior
 
-Mobile may export/share diagnostics locally. Upload requires API availability
-and user confirmation when private context is included.
+Mobile may export/share diagnostics locally with redaction applied before the
+handoff. Upload requires API availability and user confirmation when private
+context is included.
 
 ## Audit
 
@@ -398,5 +414,8 @@ visibility.
 
 ## Tests
 
-Phase 28 should verify redaction, payload validation, ticket linking, tenant
-isolation, and no secrets in accepted snapshots.
+Phase 28 mobile coverage verifies local snapshot redaction, JSON download,
+NativePHP share fallback/gating, failed sync metadata summarization, tenant/user
+context handling, and no tokens, API credentials, queued payloads, headers, or
+emails in exported snapshots. API upload coverage remains pending with the
+planned endpoint.

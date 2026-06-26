@@ -6,6 +6,7 @@ use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Livewire\Concerns\DispatchesToasts;
 use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Services\MobileAccess\MobileAccessPolicy;
+use App\Services\MobileDiagnostics\MobileDiagnosticsReportBuilder;
 use App\Services\Native\BrowserService;
 use App\Services\Native\DeviceService;
 use App\Services\Native\LocalNotifications\LocalNotificationService;
@@ -25,6 +26,7 @@ use Native\Mobile\Events\Camera\PhotoTaken;
 use Native\Mobile\Events\PushNotification\TokenGenerated;
 use Native\Mobile\Facades\Camera;
 use Native\Mobile\SecureStorage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 #[Title('Developer Debug')]
 class Debug extends Component
@@ -57,6 +59,8 @@ class Debug extends Component
 
     public ?string $shareStatus = null;
 
+    public ?string $diagnosticsStatus = null;
+
     public ?string $pendingCameraTestId = null;
 
     public ?string $pendingNotificationTestId = null;
@@ -76,6 +80,8 @@ class Debug extends Component
 
     private LocalNotificationService $localNotifications;
 
+    private MobileDiagnosticsReportBuilder $diagnostics;
+
     public function boot(
         NativeDialogService $dialogs,
         MobileNetworkState $networkState,
@@ -83,6 +89,7 @@ class Debug extends Component
         BrowserService $browsers,
         ShareService $shares,
         LocalNotificationService $localNotifications,
+        MobileDiagnosticsReportBuilder $diagnostics,
         MobileAccessPolicy $mobileAccessPolicy,
     ): void {
         $this->dialogs = $dialogs;
@@ -91,6 +98,7 @@ class Debug extends Component
         $this->browsers = $browsers;
         $this->shares = $shares;
         $this->localNotifications = $localNotifications;
+        $this->diagnostics = $diagnostics;
         $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
@@ -373,11 +381,25 @@ class Debug extends Component
         }
 
         $result = $this->shares->shareText(
-            title: 'Mobile Lara debug snapshot',
-            text: $this->debugSnapshotText(),
+            title: 'Mobile Lara diagnostics JSON',
+            text: $this->diagnostics->toJson(),
         );
 
         $this->rememberShareResult($result, 'Debug shared', 'Share unavailable');
+    }
+
+    public function exportDiagnosticsJson(): StreamedResponse
+    {
+        $this->diagnosticsStatus = 'Diagnostics JSON export prepared.';
+        $json = $this->diagnostics->toJson();
+
+        return response()->streamDownload(
+            static function () use ($json): void {
+                echo $json;
+            },
+            'mobile-lara-diagnostics.json',
+            ['Content-Type' => 'application/json']
+        );
     }
 
     public function shareReportPlaceholder(): void
@@ -532,6 +554,7 @@ class Debug extends Component
         return view('livewire.mobile.debug', [
             'browserActions' => $this->browserActions(),
             'debugRows' => $this->debugRows(),
+            'diagnosticsRows' => $this->diagnostics->summaryRows(),
             'dialogActions' => $this->dialogActions(),
             'dialogResultRows' => $this->dialogResultRows(),
             'shareActions' => $this->shareActions(),
@@ -901,6 +924,7 @@ class Debug extends Component
             'haptics' => ['Haptics', $this->hapticStatus],
             'browser' => ['Browser', $this->browserStatus],
             'share' => ['Share', $this->shareStatus],
+            'diagnostics' => ['Diagnostics', $this->diagnosticsStatus],
         ] as $key => [$label, $value]) {
             if (! is_string($value) || $value === '') {
                 continue;
@@ -930,13 +954,6 @@ class Debug extends Component
         }
 
         $this->toastWarning($result['message'], $failureTitle);
-    }
-
-    private function debugSnapshotText(): string
-    {
-        return collect($this->debugRows())
-            ->map(static fn (array $row): string => "{$row['label']}: {$row['value']}")
-            ->implode(PHP_EOL);
     }
 
     /**

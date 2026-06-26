@@ -485,6 +485,13 @@ Implemented foundation:
   defaults when offline or uninitialized, and feeds dashboard widgets, sync
   settings, upload-limit hints, app-lock policy copy, support URLs, and legal
   URLs.
+- `App\Services\MobileDiagnostics\MobileDiagnosticsReportBuilder` builds a
+  privacy-safe diagnostics snapshot from cached bootstrap context, feature
+  state, redacted remote config, network state, sync queue counts, failed sync
+  action metadata, and safe device-service fields. The developer debug screen
+  previews that snapshot, exports `mobile-lara-diagnostics.json` through a
+  Livewire download, and shares the same redacted JSON through the NativePHP
+  share wrapper when the cached `native_share` policy allows it.
 - Login and register refresh bootstrap immediately after authentication, so
   the next phase can hydrate tenant, permission, feature, config, version,
   subscription, notification, and sync policy from one cached context.
@@ -508,6 +515,7 @@ php artisan test --compact --filter=MobileAuthApiServiceTest
 php artisan test --compact --filter=MobileBootstrapServiceTest
 php artisan test --compact --filter=MobileTenantApiServiceTest
 php artisan test --compact --filter=MobileWorkspaceSettingsTest
+php artisan test --compact tests/Feature/MobileDiagnosticsReportTest.php tests/Feature/MobileDebugDialogExamplesTest.php tests/Feature/NativeShareServiceTest.php
 vendor/bin/pint --dirty --format agent
 npm run build
 php artisan native:plugin:validate --no-interaction

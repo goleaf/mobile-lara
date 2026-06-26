@@ -531,6 +531,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   without creating settings rows, validates URLs safely, falls back to bundled
   defaults, and applies config to dashboard widgets, sync settings, upload
   limits, app-lock copy, support links, and legal links.
+- Added a mobile diagnostics report builder and debug-screen export/share flow
+  that previews safe diagnostic categories, downloads
+  `mobile-lara-diagnostics.json`, shares the same redacted JSON through the
+  NativePHP share wrapper, and strips tokens, API credentials, bearer values,
+  emails, queued payloads, and headers from support snapshots.
 - Added the API/admin app version and maintenance foundation with
   minimum-version force updates, optional update states, public `/app-version`
   API output, bootstrap maintenance integration, and focused policy coverage.

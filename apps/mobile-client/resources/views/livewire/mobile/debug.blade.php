@@ -24,6 +24,48 @@
         </div>
     </x-mobile.card>
 
+    <x-mobile.card title="Diagnostics export" description="Privacy-safe app, tenant, feature, config, network, device, and sync snapshot.">
+        <div class="grid gap-4">
+            <div class="grid gap-3">
+                @forelse ($diagnosticsRows as $diagnosticsRow)
+                    <div
+                        wire:key="diagnostics-row-{{ $diagnosticsRow['key'] }}"
+                        class="rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
+                    >
+                        <p class="text-sm font-medium text-app-muted dark:text-zinc-400">{{ $diagnosticsRow['label'] }}</p>
+                        <p class="mt-1 break-words text-base font-semibold text-app-ink dark:text-zinc-100">{{ $diagnosticsRow['value'] }}</p>
+                    </div>
+                @empty
+                    <x-mobile.empty-state
+                        title="No diagnostics available"
+                        description="Diagnostics summary rows are not available."
+                    />
+                @endforelse
+            </div>
+
+            <x-mobile.button
+                wire:click="exportDiagnosticsJson"
+                wire:loading.attr="disabled"
+                wire:target="exportDiagnosticsJson"
+                variant="primary"
+                class="w-full"
+            >
+                <span wire:loading.remove wire:target="exportDiagnosticsJson">
+                    Export diagnostics JSON
+                </span>
+                <span wire:loading wire:target="exportDiagnosticsJson">
+                    Exporting
+                </span>
+            </x-mobile.button>
+
+            @if ($diagnosticsStatus)
+                <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-500/30 dark:bg-emerald-500/10">
+                    <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-100">{{ $diagnosticsStatus }}</p>
+                </div>
+            @endif
+        </div>
+    </x-mobile.card>
+
     <livewire:mobile.network-status />
 
     <x-mobile.card
