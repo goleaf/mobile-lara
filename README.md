@@ -99,6 +99,12 @@ tenancy, permissions, offline sync, NativePHP features, notifications, billing,
 support, reports, security, risks, and release principles must use consistent
 authority language and resolve contradictions before implementation.
 
+Feature Dependency Map is defined in `docs/feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -299,6 +305,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/testing-strategy-principles.md](docs/testing-strategy-principles.md) | Testing strategy principles for future API contract, admin control, mobile feature visibility, permission, feature flag, remote config, authentication, tenant isolation, offline sync, conflict, NativePHP fallback, notification, billing, and app-version tests. |
 | [docs/release-versioning-principles.md](docs/release-versioning-principles.md) | Release and versioning principles for API versioning, mobile app versioning, admin releases, feature rollout, rollback, app store releases, forced updates, documentation updates, Git commits, and change history. |
 | [docs/documentation-audit.md](docs/documentation-audit.md) | Documentation audit contract for consistent two-system architecture, Admin/API authority, mobile execution, API-first behavior, feature flags, remote config, tenancy, permissions, offline sync, NativePHP features, notifications, billing, support, reports, security, risks, and release principles. |
+| [docs/feature-dependency-map.md](docs/feature-dependency-map.md) | Feature dependency map for authentication, tenant context, permissions, feature flags, remote config, API availability, offline cache, NativePHP permissions, subscription plan, and admin settings. |
 | [docs/user-roles.md](docs/user-roles.md) | Main logical user roles, responsibilities, limitations, visibility, and control boundaries. |
 | [docs/role-permission-logic.md](docs/role-permission-logic.md) | Role and permission logic for platform-level, tenant-level, admin-user, and mobile-user permissions, API access, mobile UI visibility, feature flag interaction, and suspended users or tenants. |
 | [docs/audit-logic.md](docs/audit-logic.md) | Audit logic for admin actions, security events, support/compliance history, mobile activity representation, audit questions, and audit data protection. |
@@ -386,6 +393,7 @@ contracts.
 - Apply [testing strategy principles](docs/testing-strategy-principles.md) before planning future tests for API contracts, admin controls, mobile feature visibility, permissions, feature flags, remote config, authentication, tenant isolation, offline sync, conflicts, native fallbacks, notifications, billing, or app-version rules.
 - Apply [release and versioning principles](docs/release-versioning-principles.md) before planning API versions, mobile app versions, admin releases, feature rollout, rollback, app-store releases, forced updates, documentation updates, Git commits, or change-history decisions.
 - Apply the [documentation audit](docs/documentation-audit.md) before accepting docs that could blur Admin/API authority, mobile local execution, API-first behavior, tenancy, permissions, feature flags, remote config, offline sync, NativePHP capabilities, notifications, billing, support, reports, security, risks, or release principles.
+- Apply the [feature dependency map](docs/feature-dependency-map.md) before planning feature behavior that depends on authentication, tenant context, permissions, feature flags, remote config, API availability, offline cache, NativePHP permissions, subscription plan, or admin settings.
 - Apply [target user roles](docs/user-roles.md) before designing permissions, visibility, support, billing, or mobile access.
 - Apply [role and permission logic](docs/role-permission-logic.md) before planning platform-level permissions, tenant-level permissions, admin-user permissions, mobile-user permissions, API access, mobile UI visibility, feature flag interaction, suspended users, or suspended tenants.
 - Apply [audit logic](docs/audit-logic.md) before planning admin actions, security events, support actions, mobile activity summaries, API decisions, sync outcomes, compliance-relevant changes, audit history views, or audit exports.

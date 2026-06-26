@@ -40,6 +40,12 @@ API compatibility, mobile app version safety, admin rollout control, rollback
 options, app-store constraints, forced update discipline, documentation updates,
 and traceable Git history before behavior reaches users.
 
+Use this document with [Feature Dependency
+Map](feature-dependency-map.md): every feature should resolve authentication,
+tenant context, permissions, feature flags, remote config, API availability,
+offline cache, NativePHP permissions, subscription plan, and admin settings
+before mobile behavior or admin rollout is considered ready.
+
 Use this document with [Admin Safety Principles](admin-safety-principles.md):
 admin authority stays trustworthy only when dangerous controls are confirmed,
 audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated.
@@ -289,6 +295,12 @@ client execution, API-first communication, feature flags, remote config,
 tenancy, permissions, offline sync, NativePHP features, notifications, billing,
 support, reports, security, risks, and release principles must use consistent
 authority language and resolve contradictions before implementation.
+
+Feature Dependency Map is defined in `feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
 
 Logistics Delivery Logic is defined in `logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,

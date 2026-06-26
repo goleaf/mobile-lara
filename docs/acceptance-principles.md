@@ -27,6 +27,12 @@ tenancy, permissions, offline sync, NativePHP features, notifications, billing,
 support, reports, security, risks, and release principles must use consistent
 authority language and resolve contradictions before implementation.
 
+Feature Dependency Map is defined in `feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
+
 Updated: 2026-06-26
 
 This document defines acceptance principles for every Mobile Lara feature. It
@@ -44,6 +50,7 @@ Principles](product-principles.md), [Documentation-First
 Architecture](documentation-first-architecture.md), [Risk Map](risk-map.md),
 [Testing Strategy Principles](testing-strategy-principles.md),
 [Release And Versioning Principles](release-versioning-principles.md),
+[Feature Dependency Map](feature-dependency-map.md),
 [Two-System Boundary Logic](two-system-boundary.md), [API-First
 Principles](api-first-principles.md),
 [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client
@@ -67,7 +74,8 @@ Principles](module-selection-principles.md), and [AI Feature
 Logic](ai-feature-logic.md): acceptance is the project-wide gate that prevents
 features from moving into implementation before purpose, authority, API
 dependency, mobile behavior, offline behavior, permissions, feature flags,
-tenant scope, errors, security, risks, and documentation are clear.
+tenant scope, dependency prerequisites, errors, security, risks, and
+documentation are clear.
 
 ## Acceptance Statement
 
@@ -99,8 +107,11 @@ Every feature must answer these questions before implementation:
 11. Which risk-map entries apply, and which prevention principles are required?
 12. Which release, versioning, rollout, rollback, documentation, and Git history
     rules apply?
-13. Which future test surfaces should prove the documented behavior?
-14. Which Markdown documents record the answers?
+13. Which authentication, tenant, permission, feature flag, remote config, API,
+    offline cache, NativePHP permission, subscription plan, and admin setting
+    dependencies apply?
+14. Which future test surfaces should prove the documented behavior?
+15. Which Markdown documents record the answers?
 
 If any answer is unclear, the feature is not ready for implementation.
 

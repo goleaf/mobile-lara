@@ -13,6 +13,12 @@ tenancy, permissions, offline sync, NativePHP features, notifications, billing,
 support, reports, security, risks, and release principles must use consistent
 authority language and resolve contradictions before implementation.
 
+Feature Dependency Map is defined in `feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
+
 Updated: 2026-06-26
 
 This document defines testing strategy principles for future Mobile Lara
@@ -27,9 +33,10 @@ API endpoints, local storage schemas, UI components, CSS, JavaScript, queues,
 provider integrations, app-store configuration, or application logic.
 
 Use this document with [Acceptance Principles](acceptance-principles.md),
-[Risk Map](risk-map.md), [Documentation-First
-[Release And Versioning Principles](release-versioning-principles.md),
-[Documentation-First Architecture](documentation-first-architecture.md), [API-First
+[Risk Map](risk-map.md), [Release And Versioning
+Principles](release-versioning-principles.md), [Feature Dependency
+Map](feature-dependency-map.md), [Documentation-First
+Architecture](documentation-first-architecture.md), [API-First
 Principles](api-first-principles.md), [Two-System Boundary
 Logic](two-system-boundary.md), [Admin/API
 Responsibilities](admin-api-responsibilities.md), [Mobile Client
@@ -45,8 +52,9 @@ Strategy](native-feature-strategy.md), [Notifications
 Logic](notifications-logic.md), [Billing And Plan
 Logic](billing-and-plan-logic.md), and [Mobile Version Control
 Logic](mobile-version-control-logic.md): future tests must prove that the
-documented authority boundaries, release/versioning rules, rollback paths, and
-user-visible states are enforced by the system that owns them.
+documented authority boundaries, dependency gates, release/versioning rules,
+rollback paths, and user-visible states are enforced by the system that owns
+them.
 
 ## Testing Strategy Statement
 

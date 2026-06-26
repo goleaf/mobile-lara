@@ -212,6 +212,12 @@ tenancy, permissions, offline sync, NativePHP features, notifications, billing,
 support, reports, security, risks, and release principles must use consistent
 authority language and resolve contradictions before implementation.
 
+Feature Dependency Map is defined in `docs/feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -304,6 +310,7 @@ Use these docs before changing the product direction:
 - `docs/testing-strategy-principles.md`
 - `docs/release-versioning-principles.md`
 - `docs/documentation-audit.md`
+- `docs/feature-dependency-map.md`
 - `docs/user-roles.md`
 - `docs/role-permission-logic.md`
 - `docs/audit-logic.md`
@@ -366,6 +373,7 @@ Use these docs before changing the product direction:
 - Testing strategy decisions must follow `docs/testing-strategy-principles.md`.
 - Release and versioning decisions must follow `docs/release-versioning-principles.md`.
 - Documentation audit and contradiction-resolution decisions must follow `docs/documentation-audit.md`.
+- Feature dependency decisions must follow `docs/feature-dependency-map.md`.
 - Role and permission decisions must follow `docs/role-permission-logic.md`.
 - Audit decisions must follow `docs/audit-logic.md`.
 - Data privacy decisions must follow `docs/data-privacy-principles.md`.
@@ -422,6 +430,7 @@ Use these docs before changing the product direction:
 - Any future test plan for API contracts, admin controls, mobile feature visibility, permissions, feature flags, remote config, authentication, tenant isolation, offline sync, conflict behavior, native feature fallbacks, notification flows, billing rules, or app version rules must map to `docs/testing-strategy-principles.md`.
 - Any API versioning, mobile app versioning, admin release, feature rollout, rollback, app store release, forced update, documentation update, Git commit, or change-history decision must map to `docs/release-versioning-principles.md`.
 - Any project documentation that describes two-system architecture, Admin/API authority, mobile execution, API-first behavior, feature flags, remote config, tenancy, permissions, offline sync, NativePHP features, notifications, billing, support, reports, security, risks, or release principles must map to `docs/documentation-audit.md`.
+- Any feature behavior that depends on authentication, tenant context, permissions, feature flags, remote config, API availability, offline cache, NativePHP permissions, subscription plan, or admin settings must map to `docs/feature-dependency-map.md`.
 - Any feature must pass the core principles checklist in `docs/product-principles.md`.
 - Any feature that changes visibility or control must map behavior to the role model in `docs/user-roles.md`.
 - Any platform-level permission, tenant-level permission, admin-user permission, mobile-user permission, API access rule, mobile UI visibility rule, feature-flag access interaction, suspended-user behavior, or suspended-tenant behavior must map to `docs/role-permission-logic.md`.

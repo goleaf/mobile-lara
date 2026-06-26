@@ -20,6 +20,12 @@ tenancy, permissions, offline sync, NativePHP features, notifications, billing,
 support, reports, security, risks, and release principles must use consistent
 authority language and resolve contradictions before implementation.
 
+Feature Dependency Map is defined in `feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
+
 Updated: 2026-06-26
 
 This document defines the risk map for the Mobile Lara SaaS mobile/admin
@@ -36,6 +42,7 @@ application logic.
 Use this document with [Acceptance Principles](acceptance-principles.md),
 [Testing Strategy Principles](testing-strategy-principles.md),
 [Release And Versioning Principles](release-versioning-principles.md),
+[Feature Dependency Map](feature-dependency-map.md),
 [Documentation-First Architecture](documentation-first-architecture.md),
 [Product Principles](product-principles.md), [Two-System Boundary
 Logic](two-system-boundary.md), [API-First Principles](api-first-principles.md),
@@ -58,7 +65,8 @@ Storage](nativephp-local-storage.md), [NativePHP Runbook](nativephp-run.md),
 Logic](reporting-logic.md), and [AI Feature Logic](ai-feature-logic.md): risks
 must be documented before implementation so controls, fallback behavior, admin
 impact, mobile impact, privacy boundaries, support visibility, audit meaning,
-release/versioning impact, and rollback options are clear before code exists.
+release/versioning impact, dependency failure states, and rollback options are
+clear before code exists.
 
 ## Risk Map Statement
 

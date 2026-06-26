@@ -66,6 +66,12 @@ tenancy, permissions, offline sync, NativePHP features, notifications, billing,
 support, reports, security, risks, and release principles must use consistent
 authority language and resolve contradictions before implementation.
 
+Feature Dependency Map is defined in `feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
+
 This document defines logistics and delivery module logic for Mobile Lara. It
 explains delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline behavior,

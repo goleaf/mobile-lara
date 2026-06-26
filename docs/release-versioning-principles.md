@@ -9,6 +9,12 @@ tenancy, permissions, offline sync, NativePHP features, notifications, billing,
 support, reports, security, risks, and release principles must use consistent
 authority language and resolve contradictions before implementation.
 
+Feature Dependency Map is defined in `feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
+
 This document defines release and versioning principles for the Mobile Lara
 SaaS mobile/admin system. It explains API versioning, mobile app versioning,
 admin release process, feature rollout process, rollback principles, app store
@@ -23,7 +29,8 @@ schemas, UI components, CSS, JavaScript, queues, or application logic.
 Use this document with [Acceptance Principles](acceptance-principles.md),
 [Risk Map](risk-map.md), [Testing Strategy
 Principles](testing-strategy-principles.md), [Documentation-First
-Architecture](documentation-first-architecture.md), [API-First
+Architecture](documentation-first-architecture.md), [Feature Dependency
+Map](feature-dependency-map.md), [API-First
 Principles](api-first-principles.md), [Two-System Boundary
 Logic](two-system-boundary.md), [Admin/API
 Responsibilities](admin-api-responsibilities.md), [Mobile Client
@@ -40,7 +47,8 @@ Logic](sync-lifecycle-logic.md), [Conflict Resolution
 Logic](conflict-resolution-logic.md), [Audit Logic](audit-logic.md), and [Data
 Privacy Principles](data-privacy-principles.md): releases must preserve the
 documented authority boundaries, tenant boundaries, API contracts, mobile
-states, rollback options, and change history before new behavior reaches users.
+states, dependency gates, rollback options, and change history before new
+behavior reaches users.
 
 ## Release Principle Statement
 

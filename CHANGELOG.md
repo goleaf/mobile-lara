@@ -101,6 +101,12 @@ tenancy, permissions, offline sync, NativePHP features, notifications, billing,
 support, reports, security, risks, and release principles must use consistent
 authority language and resolve contradictions before implementation.
 
+Feature Dependency Map is defined in `docs/feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
+
 Logistics Delivery Logic is defined in `docs/logistics-delivery-logic.md`:
 delivery job lifecycle, pickup flow, drop-off flow, proof of delivery,
 scan validation, location check-in, failed delivery reasons, offline
@@ -119,6 +125,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Feature Dependency Map documentation for major feature dependencies on
+  authentication, tenant context, permissions, feature flags, remote config,
+  API availability, offline cache, NativePHP permissions, subscription plan,
+  and admin settings.
 - Added Documentation Audit documentation for consistent two-system
   architecture, Admin/API authority, mobile-client execution, API-first
   behavior, feature flags, remote config, tenancy, permissions, offline sync,

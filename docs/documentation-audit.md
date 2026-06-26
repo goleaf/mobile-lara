@@ -2,6 +2,12 @@
 
 Updated: 2026-06-26
 
+Feature Dependency Map is defined in `feature-dependency-map.md`:
+major features must document dependencies on authentication, tenant context,
+permissions, feature flags, remote config, API availability, offline cache,
+NativePHP permissions, subscription plan, and admin settings before
+implementation planning or release decisions.
+
 This document audits the Mobile Lara documentation set for consistency across
 the two-system SaaS mobile/admin concept. It explains the shared language that
 all project Markdown files should use when describing architecture, Admin/API
@@ -21,7 +27,8 @@ Principles](product-principles.md), [Documentation-First
 Architecture](documentation-first-architecture.md), [Acceptance
 Principles](acceptance-principles.md), [Risk Map](risk-map.md), [Testing
 Strategy Principles](testing-strategy-principles.md), [Release And Versioning
-Principles](release-versioning-principles.md), [Two-System Boundary
+Principles](release-versioning-principles.md), [Feature Dependency
+Map](feature-dependency-map.md), [Two-System Boundary
 Logic](two-system-boundary.md), [Admin/API
 Responsibilities](admin-api-responsibilities.md), [Mobile Client
 Responsibilities](mobile-client-responsibilities.md), [API-First
@@ -101,6 +108,7 @@ confusing local ownership with authority.
 | Security | Security is enforced by least privilege, tenant isolation, secure token storage, secure local cache boundaries, audit, privacy defaults, and conservative offline behavior. | [Data Privacy Principles](data-privacy-principles.md), [Authentication Principles](authentication-principles.md), [Mobile App Lock Principles](mobile-app-lock-principles.md), [Audit Logic](audit-logic.md) |
 | Risks | Risks must name prevention principles, support meaning, audit meaning, rollback options, and documentation requirements before coding. | [Risk Map](risk-map.md), [Acceptance Principles](acceptance-principles.md) |
 | Release principles | Releases separate deployment from exposure, preserve compatibility, roll out by policy, document rollback, and keep Git history traceable. | [Release And Versioning Principles](release-versioning-principles.md), [Mobile Version Control Logic](mobile-version-control-logic.md) |
+| Feature dependencies | Major features must resolve authentication, tenant context, permissions, feature flags, remote config, API availability, offline cache, NativePHP permissions, subscription plan, and admin settings before implementation planning. | [Feature Dependency Map](feature-dependency-map.md), [Acceptance Principles](acceptance-principles.md) |
 
 ## Cross-Document Rules
 
