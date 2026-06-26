@@ -23,6 +23,13 @@ assistant must be tenant-enabled, plan-controlled, permission-aware,
 mobile-hidden when unavailable, feature-flag-safe, documented before
 implementation, and Admin/API-authoritative.
 
+Field Service Logic is defined in `field-service-logic.md`:
+work order lifecycle, technician mobile flow, check-in/check-out, photos,
+notes, future signatures, offline behavior, admin dispatch/control, and
+report visibility must remain tenant-enabled, plan-controlled,
+permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
+and Admin/API-authoritative.
+
 Voice Note Logic is defined in `voice-note-logic.md`:
 recording, pausing, resuming, local saving, record/support attachments,
 optional future transcription, offline upload queues, microphone-permission

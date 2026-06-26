@@ -1,5 +1,12 @@
 # Module Selection Principles
 
+Field Service Logic is defined in `field-service-logic.md`:
+work order lifecycle, technician mobile flow, check-in/check-out, photos,
+notes, future signatures, offline behavior, admin dispatch/control, and
+report visibility must remain tenant-enabled, plan-controlled,
+permission-aware, offline-clear, evidence-safe, privacy-safe, auditable,
+and Admin/API-authoritative.
+
 Updated: 2026-06-26
 
 This document defines module selection principles for optional industry modules
@@ -268,11 +275,12 @@ documentation is accepted.
 
 ### Field Service
 
-Field service supports mobile work performed away from a desk: jobs, visits,
-check-ins, notes, media, signatures or confirmations, issue reports, and
-completion status. It should be selected when tenants need mobile users to
-receive assigned work, capture evidence, work offline at job sites, and sync
-results later.
+Field service is defined in [Field Service Logic](field-service-logic.md). It
+supports mobile work performed away from a desk: jobs, visits, check-ins,
+notes, media, signatures or confirmations, issue reports, and completion
+status. It should be selected when tenants need mobile users to receive
+assigned work, capture evidence, work offline at job sites, and sync results
+later.
 
 Admin/API should own job assignment authority, tenant scheduling rules, user
 permission, location/media policy, reports, support visibility, and conflict

@@ -48,6 +48,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ### Added
 
+- Added Field Service Logic documentation for work order lifecycle,
+  technician mobile flow, check-in/check-out, photos, notes, future
+  signatures, offline behavior, admin dispatch/control principles, report
+  visibility, privacy, risks, and readiness checks.
 - Added Module Selection Principles documentation for optional industry
   modules, tenant enablement, plan control, mobile unavailable states,
   documentation-before-implementation rules, module-specific risks, rollout,
