@@ -26,10 +26,17 @@ Logic](multi-tenant-mobile-logic.md), [Offline-First Principles](offline-first-p
 Module Logic](records-content-module-logic.md), [Mobile Dashboard Logic](mobile-dashboard-logic.md),
 [Mobile Settings Logic](mobile-settings-logic.md), [Mobile Permission
 Logic](mobile-permission-logic.md), [Mobile App Lock Principles](mobile-app-lock-principles.md),
-and [API v1 Records Contract](../contracts/api/v1-records.md): search is a
-tenant-scoped discovery capability, and Admin/API remains authoritative for
-what can be searched, filtered, sorted, returned, cached, scanned, saved,
-shared, audited, retained, or hidden.
+[Forms And Drafts Logic](forms-drafts-logic.md), and [API v1 Records
+Contract](../contracts/api/v1-records.md): search is a tenant-scoped discovery
+capability, and Admin/API remains authoritative for what can be searched,
+filtered, sorted, returned, cached, scanned, saved, shared, audited, retained,
+or hidden.
+
+Forms And Drafts Logic is defined in `forms-drafts-logic.md`:
+search forms, saved filter forms, and draft-discovery behavior must stay simple,
+validated, autosave-aware where useful, offline-draft safe, API-submitted when
+needed, admin-controlled, and explicit about local-save versus server-accepted
+state so user work is protected without bypassing authority.
 
 ## Search Statement
 

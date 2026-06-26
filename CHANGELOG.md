@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Forms And Drafts Logic documentation for simple forms, multi-step
+  forms, validation, autosave, offline drafts, online/offline submit behavior,
+  submit feedback, admin-controlled form availability, and data-loss
+  prevention.
 - Added Search Logic documentation for local search, API search, recent
   searches, saved filters, filtering, sorting, scan-to-search, offline search
   limitations, privacy, tenant isolation, admin controls, feature flags, and

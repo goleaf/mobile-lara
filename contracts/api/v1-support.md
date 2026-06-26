@@ -162,6 +162,11 @@ privacy-preserving, and explicit about local-cache limits versus
 API-authoritative results, including recent searches, saved filters, filtering,
 sorting, scan-to-search, offline limits, and admin-controlled boundaries.
 
+Forms And Drafts Logic is defined in `../../docs/forms-drafts-logic.md`:
+mobile forms must stay simple, validated, autosave-aware, offline-draft
+safe, API-submitted, admin-controlled, and explicit about local-save versus
+server-accepted state so user work is protected without bypassing authority.
+
 Sync Lifecycle Logic is defined in `../../docs/sync-lifecycle-logic.md`:
 sync moves from bootstrap readiness to pull, push, retry, conflict
 resolution, acknowledgement, status communication, manual sync,

@@ -51,6 +51,11 @@ privacy-preserving, and explicit about local-cache limits versus
 API-authoritative results, including recent searches, saved filters, filtering,
 sorting, scan-to-search, offline limits, and admin-controlled boundaries.
 
+Forms And Drafts Logic is defined in `forms-drafts-logic.md`:
+mobile forms must stay simple, validated, autosave-aware, offline-draft
+safe, API-submitted, admin-controlled, and explicit about local-save versus
+server-accepted state so user work is protected without bypassing authority.
+
 ## Conflict Resolution Statement
 
 Conflict resolution protects user work without weakening server authority.
