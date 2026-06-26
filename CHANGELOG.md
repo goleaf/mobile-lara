@@ -161,6 +161,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   endpoints for list/create/detail/message creation, metadata-only attachment
   references, diagnostic references, tenant isolation, audit history, and a
   mobile support API service.
+- Added mobile support ticket list, create, detail, and reply screens wired to
+  the support API service, protected by cached support feature/permission
+  policy, and covered by focused Livewire route/action tests.
 
 ### Added
 

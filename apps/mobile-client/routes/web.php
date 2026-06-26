@@ -52,6 +52,9 @@ use App\Livewire\Mobile\Settings\Storage as SettingsStorage;
 use App\Livewire\Mobile\Settings\Support as SettingsSupport;
 use App\Livewire\Mobile\Settings\Sync as SettingsSync;
 use App\Livewire\Mobile\Settings\Workspace as SettingsWorkspace;
+use App\Livewire\Mobile\SupportTicketCreate;
+use App\Livewire\Mobile\SupportTicketDetail;
+use App\Livewire\Mobile\SupportTickets;
 use App\Livewire\Mobile\TermsOfService;
 use App\Livewire\Mobile\VoiceNotes;
 use App\Livewire\Mobile\Welcome;
@@ -99,6 +102,15 @@ Route::middleware(['web'])
                 Route::livewire('/settings/support', SettingsSupport::class)->name('settings.support');
                 Route::livewire('/settings/legal', SettingsLegal::class)->name('settings.legal');
                 Route::livewire('/settings/developer', SettingsDeveloper::class)->name('settings.developer');
+                Route::livewire('/support', SupportTickets::class)
+                    ->middleware('mobile.feature:support,support.view')
+                    ->name('support.index');
+                Route::livewire('/support/create', SupportTicketCreate::class)
+                    ->middleware('mobile.feature:support,support.create')
+                    ->name('support.create');
+                Route::livewire('/support/{ticket}', SupportTicketDetail::class)
+                    ->middleware('mobile.feature:support,support.view')
+                    ->name('support.show');
                 Route::livewire('/sessions', Sessions::class)->name('sessions');
                 Route::livewire('/account/delete', AccountDeletion::class)->name('account.delete');
                 Route::livewire('/activity', ActivityFeed::class)->name('activity');

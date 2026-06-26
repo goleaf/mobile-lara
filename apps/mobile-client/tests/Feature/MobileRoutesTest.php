@@ -49,6 +49,8 @@ use App\Livewire\Mobile\Settings\Storage as SettingsStorage;
 use App\Livewire\Mobile\Settings\Support as SettingsSupport;
 use App\Livewire\Mobile\Settings\Sync as SettingsSync;
 use App\Livewire\Mobile\Settings\Workspace as SettingsWorkspace;
+use App\Livewire\Mobile\SupportTicketCreate;
+use App\Livewire\Mobile\SupportTickets;
 use App\Livewire\Mobile\TermsOfService;
 use App\Livewire\Mobile\ToastCenter;
 use App\Livewire\Mobile\VoiceNotes;
@@ -115,6 +117,8 @@ test('protected mobile routes redirect guests to login', function (string $route
     'settings support' => 'mobile.settings.support',
     'settings legal' => 'mobile.settings.legal',
     'settings developer' => 'mobile.settings.developer',
+    'support index' => 'mobile.support.index',
+    'support create' => 'mobile.support.create',
     'conflicts index' => 'mobile.conflicts.index',
     'sessions' => 'mobile.sessions',
     'account delete' => 'mobile.account.delete',
@@ -167,6 +171,8 @@ test('protected mobile routes render for authenticated users', function (string 
     'settings support' => ['mobile.settings.support', SettingsSupport::class, 'Support settings'],
     'settings legal' => ['mobile.settings.legal', SettingsLegal::class, 'Legal settings'],
     'settings developer' => ['mobile.settings.developer', SettingsDeveloper::class, 'Developer settings'],
+    'support index' => ['mobile.support.index', SupportTickets::class, 'Support tickets'],
+    'support create' => ['mobile.support.create', SupportTicketCreate::class, 'Create support ticket'],
     'conflicts index' => ['mobile.conflicts.index', ConflictList::class, 'Sync conflicts'],
     'sessions' => ['mobile.sessions', Sessions::class, 'Sessions'],
     'account delete' => ['mobile.account.delete', AccountDeletion::class, 'Delete account'],

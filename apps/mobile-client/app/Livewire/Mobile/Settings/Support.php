@@ -82,8 +82,15 @@ final class Support extends SettingsSectionPage
         ],
         [
             'label' => 'Contact support',
-            'description' => 'Placeholder for message, logs, and ticket submission.',
-            'badge' => 'Next',
+            'description' => 'Create and review API-backed support tickets for the current workspace.',
+            'route' => 'mobile.support.index',
+            'badge' => 'Live',
+        ],
+        [
+            'label' => 'New support ticket',
+            'description' => 'Send a new requester-scoped support ticket through the API.',
+            'route' => 'mobile.support.create',
+            'badge' => 'API',
         ],
         [
             'label' => 'Diagnostics',

@@ -417,10 +417,10 @@ before implementation scope is added.
   user-controlled and redacted. The API diagnostics upload endpoint now stores
   current-tenant snapshots after server-side redaction and audit, and
   platform admins can review redacted diagnostics reports. Requester-scoped
-  support ticket/message APIs now exist for mobile callers, but ticket-linked
-  support queues, mobile support screens, offline support drafts, report native
-  share flows, and billing browser flows still need feature-specific policy
-  gates.
+  support ticket/message APIs and mobile support ticket list/create/detail/reply
+  screens now exist for mobile callers, but ticket-linked support queues,
+  offline support drafts, report native share flows, and billing browser flows
+  still need feature-specific policy gates.
 - Complete the records/content module beyond the API and records-only sync
   foundation: admin records management screens, standalone
   category/tag/note/attachment endpoints, upload/storage handling, richer

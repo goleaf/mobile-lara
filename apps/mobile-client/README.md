@@ -475,6 +475,11 @@ Implemented foundation:
 - `App\Services\MobileSupport\MobileSupportApiService` calls the API/admin
   support ticket list/create/detail and message-create endpoints with the
   stored access token.
+- `App\Livewire\Mobile\SupportTickets`,
+  `App\Livewire\Mobile\SupportTicketCreate`, and
+  `App\Livewire\Mobile\SupportTicketDetail` expose the support list, create,
+  detail, and reply flow through the API-backed service while respecting cached
+  support feature/permission gates.
 - Returned access and refresh tokens are stored through `MobileTokenStore`,
   which defaults to NativePHP secure storage and uses the session adapter for
   tests or safe development fallback.
