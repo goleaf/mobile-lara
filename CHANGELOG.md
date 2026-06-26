@@ -138,6 +138,20 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 
 ## Unreleased
 
+- Added a protected platform-admin Mobile Diagnostics page for reviewing
+  privacy-filtered uploaded diagnostics snapshots by tenant, device, sync
+  status, feature/config version, and redacted JSON detail.
+- Added records-only server sync endpoints for `GET /api/v1/mobile/sync/bootstrap`,
+  `GET /api/v1/mobile/sync/pull`, `POST /api/v1/mobile/sync/push`, and
+  `POST /api/v1/mobile/sync/acknowledge`, including tenant/permission/policy
+  gates, idempotent replay, sync event storage, stale-version conflict
+  responses, delete-as-archive behavior, and audit history.
+- Added `App\Services\MobileSync\MobileSyncApiService` in the mobile client so
+  the NativePHP app can call the dedicated sync bootstrap, pull, push, and
+  acknowledgement contract with the stored access token.
+- Updated sync policy payloads so server replay endpoints are advertised as
+  ready when tenant sync gates pass.
+
 ### Added
 
 - Added Final Consistency Review documentation for API-only mobile authority,

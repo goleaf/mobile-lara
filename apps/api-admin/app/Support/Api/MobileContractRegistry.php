@@ -82,11 +82,11 @@ final class MobileContractRegistry
                 self::route('DELETE', '/records/{record}', 'implemented-as-archive', 'mobile-token'),
                 self::route('POST', '/records/{record}/restore', 'implemented', 'mobile-token'),
             ]),
-            self::group('sync', 'v1-sync.md', 'documented', 'Offline queue bootstrap, push, pull, acknowledgement, conflicts, and replay safety.', [
-                self::route('GET', '/sync/bootstrap', 'planned', 'mobile-token'),
-                self::route('POST', '/sync/push', 'planned', 'mobile-token'),
-                self::route('GET', '/sync/pull', 'planned', 'mobile-token'),
-                self::route('POST', '/sync/acknowledge', 'planned', 'mobile-token'),
+            self::group('sync', 'v1-sync.md', 'partial', 'Offline queue bootstrap, push, pull, acknowledgement, conflicts, and replay safety.', [
+                self::route('GET', '/sync/bootstrap', 'implemented', 'mobile-token'),
+                self::route('POST', '/sync/push', 'implemented-records-only', 'mobile-token'),
+                self::route('GET', '/sync/pull', 'implemented-records-only', 'mobile-token'),
+                self::route('POST', '/sync/acknowledge', 'implemented', 'mobile-token'),
             ]),
             self::group('notifications', 'v1-notifications.md', 'documented', 'Notification preferences, push tokens, inbox, read state, deletes, and deep links.', [
                 self::route('GET', '/notifications', 'planned', 'mobile-token'),

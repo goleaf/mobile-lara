@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Auth\LogoutController;
 use App\Livewire\Admin\AppVersionPolicies;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\FeatureFlags;
+use App\Livewire\Admin\MobileDiagnosticReports;
 use App\Livewire\Admin\RemoteConfigs;
 use App\Livewire\Admin\TenantFeatureOverrides;
 use App\Livewire\Admin\TenantRemoteConfigOverrides;
@@ -34,6 +35,7 @@ Route::middleware(['web'])
                     Route::livewire('/mobile/config', RemoteConfigs::class)->name('mobile.config');
                     Route::livewire('/mobile/tenant-config', TenantRemoteConfigOverrides::class)->name('mobile.tenant-config');
                     Route::livewire('/mobile/app-versions', AppVersionPolicies::class)->name('mobile.app-versions');
+                    Route::livewire('/mobile/diagnostics', MobileDiagnosticReports::class)->name('mobile.diagnostics');
                     Route::post('/logout', LogoutController::class)->name('logout');
                 });
             });

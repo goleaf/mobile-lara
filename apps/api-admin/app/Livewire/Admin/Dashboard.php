@@ -73,6 +73,13 @@ final class Dashboard extends Component
                 'route' => 'admin.mobile.app-versions',
             ],
             [
+                'label' => 'Diagnostics',
+                'status' => 'Live',
+                'detail' => 'Privacy-filtered mobile troubleshooting snapshots uploaded through the API.',
+                'tone' => 'success',
+                'route' => 'admin.mobile.diagnostics',
+            ],
+            [
                 'label' => 'Offline sync',
                 'status' => 'Planned',
                 'detail' => 'Replay windows, conflict modes, retry limits, and stale thresholds.',

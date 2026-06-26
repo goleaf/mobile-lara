@@ -387,7 +387,11 @@ through app-version policy before old mobile clients lose support.
 - [v1-records.md](v1-records.md) defines the partial implemented records
   foundation for tenant-scoped list, create, detail, update, archive, restore,
   category/tag resolution, note append, attachment metadata, and activity
-  timeline responses.
+  timeline responses, plus records-only sync replay/pull acknowledgement
+  behavior.
+- [v1-sync.md](v1-sync.md) defines the partial implemented sync foundation for
+  sync bootstrap, records-only pull, idempotent records push, conflict
+  responses, sync event storage, and acknowledgement.
 - [v1-diagnostics.md](v1-diagnostics.md) defines the partial implemented
   diagnostics foundation for mobile-local export/share and authenticated
   current-tenant upload with server-side redaction and audit history.

@@ -17,10 +17,12 @@ and future module expansion principles.
 
 Updated: 2026-06-26
 
-Status: partially implemented. Bootstrap now returns resolved sync policy from
+Status: partially implemented. Bootstrap returns resolved sync policy from
 tenant settings, remote config, permission state, subscription state, and
-maintenance policy. Dedicated sync bootstrap, push, pull, acknowledgement,
-conflict tracking, and admin monitoring endpoints remain planned for Phase 14.
+maintenance policy. Dedicated sync bootstrap, record pull, record push,
+acknowledgement, idempotent replay, conflict responses, and sync event storage
+are implemented; admin monitoring and non-record collection replay remain
+pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 supports offline-capable mobile work while Admin/API remains authoritative for
@@ -369,13 +371,13 @@ Sync endpoints let the mobile client replay queued local intents and pull
 server changes while the Admin/API remains authoritative for acceptance,
 conflict decisions, tenant boundaries, and audit.
 
-## Planned Routes
+## Implemented Routes
 
 | Method | Path | Purpose | Auth |
 | --- | --- | --- | --- |
 | GET | `/api/v1/mobile/sync/bootstrap` | Return sync policy and cursors. | mobile token |
-| POST | `/api/v1/mobile/sync/push` | Submit queued idempotent mobile intents. | mobile token |
-| GET | `/api/v1/mobile/sync/pull` | Pull server changes after a cursor. | mobile token |
+| POST | `/api/v1/mobile/sync/push` | Submit queued idempotent record intents. | mobile token |
+| GET | `/api/v1/mobile/sync/pull` | Pull record changes after a cursor. | mobile token |
 | POST | `/api/v1/mobile/sync/acknowledge` | Acknowledge delivered changes. | mobile token |
 
 ## Success Data
@@ -383,14 +385,25 @@ conflict decisions, tenant boundaries, and audit.
 Responses return `accepted`, `rejected`, `conflicts`, `server_changes`,
 `next_cursor`, `retry_after`, and `sync_policy`.
 
-Push items require stable client intent IDs and idempotency keys.
+Push items require stable `client_intent_id` and `idempotency_key` values.
+Record push currently supports `create`, `update`, `archive`, `restore`, and
+`delete`. Mobile `delete` is accepted as archive instead of hard delete because
+mobile hard-delete authority is intentionally not implemented.
 
 Bootstrap currently returns `sync` with `enabled`, `manual_sync_enabled`,
 `offline_queue_enabled`, `server_replay_enabled`, `mode`, `reason`,
 `max_batch_size`, `retry_after_seconds`, `stale_after_seconds`,
 `conflict_policy`, `server_endpoints`, `source`, `resolved_at`, and
-`policy_version`. `server_replay_enabled` stays `false` until the Phase 14
-sync replay endpoints exist.
+`policy_version`. When sync gates pass, `server_replay_enabled` is `true`,
+`mode` is `server_replay_ready`, and `server_endpoints.push`,
+`server_endpoints.pull`, and `server_endpoints.acknowledge` are true.
+
+Pull returns `server_changes.records` using the same mobile record resource as
+the records contract and a `next_cursor` for subsequent requests.
+
+Push stores a `mobile_sync_events` row per idempotency key and returns prior
+outcomes unchanged on duplicate replay. Stale `base_sync_version` values return
+conflicts with the remote record payload.
 
 ## Gates
 
@@ -410,12 +423,14 @@ resolution, replay abuse, and sync disabling.
 
 ## Tests
 
-Current policy coverage:
+Current policy and endpoint coverage:
 
 ```bash
 cd apps/api-admin && php artisan test --compact --filter=MobileSyncPolicyTest
+cd apps/api-admin && php artisan test --compact --filter=MobileSyncApiTest
+cd apps/mobile-client && php artisan test --compact --filter=MobileSyncApiServiceTest
 ```
 
-Future Phase 14 coverage should verify idempotency, tenant isolation, cursor
-behavior, conflict states, retry behavior, admin monitoring, and fail-closed
-stale policy.
+Remaining Phase 14 coverage should verify non-record collections, admin
+monitoring, richer retry windows, and full mobile worker integration with the
+dedicated push/pull/acknowledge service.

@@ -463,7 +463,13 @@ Implemented foundation:
   fail-closed no-tenant behavior for bootstrap.
 - `App\Services\Sync\MobileSyncPolicyResolver` resolves tenant sync policy from
   tenant settings, remote config, permissions, subscription state, and
-  maintenance policy while marking server replay endpoints as pending.
+  maintenance policy and marks server replay endpoints ready when sync gates
+  pass.
+- `GET /api/v1/mobile/sync/bootstrap`, `GET /api/v1/mobile/sync/pull`,
+  `POST /api/v1/mobile/sync/push`, and
+  `POST /api/v1/mobile/sync/acknowledge` provide records-only sync bootstrap,
+  cursor pull, idempotent replay, conflict responses, sync event storage, and
+  acknowledgement.
 - Policies are registered for current mobile control-plane resources:
   feature flags, tenant/user feature overrides, remote config, tenant remote
   config overrides, and app-version policies.
@@ -531,10 +537,10 @@ Still pending:
 - Admin tenant management, invitations, full permission management UI,
   broader resource policy expansion, and broader control-plane audit.
 - Admin records/content management screens, standalone records subresource
-  endpoints, sync conflict/replay endpoints, notifications, support, billing
-  admin, and reports.
-- Protected domain routes for sync, notifications, support, billing, reports,
-  diagnostics, and remaining feature/config/version policy surfaces.
+  endpoints, non-record sync replay, admin sync monitoring, notifications,
+  support, billing admin, and reports.
+- Protected domain routes for notifications, support, billing, reports, and
+  remaining feature/config/version policy surfaces.
 
 Verification commands for this app:
 

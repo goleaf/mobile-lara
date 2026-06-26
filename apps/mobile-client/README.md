@@ -465,6 +465,10 @@ Implemented foundation:
   `App\Services\MobileRecords\MobileRecordSyncService` call the API/admin
   records endpoints for local-first create/update/archive/restore sync
   attempts, then store server record IDs and sync versions in local metadata.
+- `App\Services\MobileSync\MobileSyncApiService` calls
+  `GET /sync/bootstrap`, `GET /sync/pull`, `POST /sync/push`, and
+  `POST /sync/acknowledge` with the stored access token so the mobile client
+  can consume the dedicated records-only sync contract.
 - Returned access and refresh tokens are stored through `MobileTokenStore`,
   which defaults to NativePHP secure storage and uses the session adapter for
   tests or safe development fallback.

@@ -53,7 +53,7 @@ test('mobile bootstrap returns the foundation operating context for an authentic
             ->where('data.features.maintenance.enabled', false)
             ->where('data.features.device_context.platform', 'ios')
             ->where('data.features.items.records.state', 'disabled')
-            ->where('data.features.items.offline_sync.state', 'offline_limited')
+            ->where('data.features.items.offline_sync.state', 'visible')
             ->where('data.remote_config.values.sync.manual_sync_enabled', false)
             ->where('data.app_version.reported_version', '1.2.3')
             ->where('data.app_version.reported_version_code', '123')

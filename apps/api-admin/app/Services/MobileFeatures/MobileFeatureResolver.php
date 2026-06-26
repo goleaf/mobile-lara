@@ -22,7 +22,7 @@ final class MobileFeatureResolver
      */
     private const FOUNDATION_DEFAULTS = [
         'records' => ['state' => MobileFeatureState::Disabled, 'reason' => 'records_api_pending', 'offline_behavior' => 'online_only'],
-        'offline_sync' => ['state' => MobileFeatureState::OfflineLimited, 'reason' => 'sync_api_pending', 'offline_behavior' => 'queue_local_only'],
+        'offline_sync' => ['state' => MobileFeatureState::Visible, 'reason' => null, 'offline_behavior' => 'queue_and_replay'],
         'notifications' => ['state' => MobileFeatureState::Disabled, 'reason' => 'notifications_api_pending', 'offline_behavior' => 'online_only'],
         'support' => ['state' => MobileFeatureState::Disabled, 'reason' => 'support_api_pending', 'offline_behavior' => 'online_only'],
         'billing' => ['state' => MobileFeatureState::Disabled, 'reason' => 'billing_api_pending', 'offline_behavior' => 'online_only'],

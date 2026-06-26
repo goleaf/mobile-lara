@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\MobileAppVersionPolicy;
+use App\Models\MobileDiagnosticReport;
 use App\Models\MobileFeatureFlag;
 use App\Models\MobileRemoteConfig;
 use App\Models\Tenant;
@@ -10,6 +11,7 @@ use App\Models\TenantFeatureOverride;
 use App\Models\TenantRemoteConfigOverride;
 use App\Models\UserFeatureOverride;
 use App\Policies\MobileAppVersionPolicyPolicy;
+use App\Policies\MobileDiagnosticReportPolicy;
 use App\Policies\MobileFeatureFlagPolicy;
 use App\Policies\MobileRemoteConfigPolicy;
 use App\Policies\TenantFeatureOverridePolicy;
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(MobileFeatureFlag::class, MobileFeatureFlagPolicy::class);
+        Gate::policy(MobileDiagnosticReport::class, MobileDiagnosticReportPolicy::class);
         Gate::policy(TenantFeatureOverride::class, TenantFeatureOverridePolicy::class);
         Gate::policy(UserFeatureOverride::class, UserFeatureOverridePolicy::class);
         Gate::policy(MobileRemoteConfig::class, MobileRemoteConfigPolicy::class);

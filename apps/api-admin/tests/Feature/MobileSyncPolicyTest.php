@@ -37,14 +37,14 @@ test('mobile bootstrap returns tenant sync policy', function (): void {
         ->assertJsonPath('data.sync.enabled', true)
         ->assertJsonPath('data.sync.manual_sync_enabled', true)
         ->assertJsonPath('data.sync.offline_queue_enabled', true)
-        ->assertJsonPath('data.sync.server_replay_enabled', false)
-        ->assertJsonPath('data.sync.mode', 'policy_ready_server_endpoints_pending')
+        ->assertJsonPath('data.sync.server_replay_enabled', true)
+        ->assertJsonPath('data.sync.mode', 'server_replay_ready')
         ->assertJsonPath('data.sync.reason', null)
         ->assertJsonPath('data.sync.max_batch_size', 75)
         ->assertJsonPath('data.sync.retry_after_seconds', 120)
         ->assertJsonPath('data.sync.stale_after_seconds', 1800)
         ->assertJsonPath('data.sync.conflict_policy', 'user_review')
-        ->assertJsonPath('data.sync.server_endpoints.push', false)
+        ->assertJsonPath('data.sync.server_endpoints.push', true)
         ->assertJsonPath('meta.sync_policy_version', fn (string $version): bool => str_starts_with($version, 'sync-'));
 });
 
