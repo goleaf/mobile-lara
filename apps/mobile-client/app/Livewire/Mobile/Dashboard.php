@@ -4,6 +4,7 @@ namespace App\Livewire\Mobile;
 
 use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileAppState\MobileAppStateStore;
+use App\Services\MobileConfig\MobileRemoteConfigStore;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -23,10 +24,13 @@ class Dashboard extends Component
 
     private MobileAppStateStore $appStates;
 
-    public function boot(MobileAccessPolicy $accessPolicy, MobileAppStateStore $appStates): void
+    private MobileRemoteConfigStore $remoteConfig;
+
+    public function boot(MobileAccessPolicy $accessPolicy, MobileAppStateStore $appStates, MobileRemoteConfigStore $remoteConfig): void
     {
         $this->accessPolicy = $accessPolicy;
         $this->appStates = $appStates;
+        $this->remoteConfig = $remoteConfig;
     }
 
     public function refreshDashboard(): void
@@ -66,23 +70,23 @@ class Dashboard extends Component
      */
     private function quickStats(): array
     {
-        return [
+        $stats = [
             [
-                'key' => 'tasks-ready',
-                'label' => 'Ready tasks',
+                'key' => 'local_records',
+                'label' => 'Local records',
                 'value' => '12',
                 'description' => 'Available offline',
                 'variant' => 'success',
             ],
             [
-                'key' => 'pending-sync',
+                'key' => 'sync_status',
                 'label' => 'Pending sync',
                 'value' => '3',
                 'description' => 'Queued changes',
                 'variant' => 'warning',
             ],
             [
-                'key' => 'alerts',
+                'key' => 'notifications',
                 'label' => 'New alerts',
                 'value' => '2',
                 'description' => 'Need review',
@@ -96,6 +100,13 @@ class Dashboard extends Component
                 'variant' => 'neutral',
             ],
         ];
+
+        $widgets = $this->remoteConfig->dashboardWidgets();
+
+        return array_values(array_filter(
+            $stats,
+            fn (array $stat): bool => in_array($stat['key'], $widgets, true),
+        )) ?: $stats;
     }
 
     /**

@@ -472,6 +472,11 @@ Implemented foundation:
 - `App\Services\MobileBootstrap\MobileBootstrapService` calls
   `GET /bootstrap` with the stored access token and caches the response in the
   mobile-local settings row.
+- `App\Services\MobileConfig\MobileRemoteConfigStore` reads cached bootstrap
+  remote config without creating local settings rows, applies bundled safe
+  defaults when offline or uninitialized, and feeds dashboard widgets, sync
+  settings, upload-limit hints, app-lock policy copy, support URLs, and legal
+  URLs.
 - Login and register refresh bootstrap immediately after authentication, so
   the next phase can hydrate tenant, permission, feature, config, version,
   subscription, notification, and sync policy from one cached context.

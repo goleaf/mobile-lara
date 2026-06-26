@@ -15,17 +15,24 @@ final class SettingsRepository
 
     public function get(): MobileLocalSetting
     {
-        $this->mobileLocalDatabase->ensureFileExists();
-
-        $settings = MobileLocalSetting::query()
-            ->forKey($this->settingsKey())
-            ->first();
+        $settings = $this->find();
 
         if ($settings instanceof MobileLocalSetting) {
             return $settings;
         }
 
         return MobileLocalSetting::query()->create($this->defaultAttributes());
+    }
+
+    public function find(): ?MobileLocalSetting
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+
+        $settings = MobileLocalSetting::query()
+            ->forKey($this->settingsKey())
+            ->first();
+
+        return $settings instanceof MobileLocalSetting ? $settings : null;
     }
 
     /**
@@ -106,6 +113,21 @@ final class SettingsRepository
         $context = $this->get()->bootstrap_context;
 
         return is_array($context) ? $context : null;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function cachedBootstrapContext(): ?array
+    {
+        $context = $this->find()?->bootstrap_context;
+
+        return is_array($context) ? $context : null;
+    }
+
+    public function bootstrapCachedAt(): ?CarbonInterface
+    {
+        return $this->find()?->bootstrap_cached_at;
     }
 
     public function setBiometricEnabled(bool $enabled): MobileLocalSetting

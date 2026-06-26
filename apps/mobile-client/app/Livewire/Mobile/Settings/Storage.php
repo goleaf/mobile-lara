@@ -3,6 +3,7 @@
 namespace App\Livewire\Mobile\Settings;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Services\MobileConfig\MobileRemoteConfigStore;
 use App\Services\MobileLocal\MobileStorageManager;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Title;
@@ -24,9 +25,12 @@ final class Storage extends Component
 
     private MobileStorageManager $storage;
 
-    public function boot(MobileStorageManager $storage): void
+    private MobileRemoteConfigStore $remoteConfig;
+
+    public function boot(MobileStorageManager $storage, MobileRemoteConfigStore $remoteConfig): void
     {
         $this->storage = $storage;
+        $this->remoteConfig = $remoteConfig;
     }
 
     public function confirmClearCache(): void
@@ -100,6 +104,7 @@ final class Storage extends Component
     public function render(): View
     {
         $snapshot = $this->storage->snapshot();
+        $uploadConfig = $this->remoteConfig->uploadSettings();
 
         return view('livewire.mobile.settings.storage', [
             'storageRows' => [
@@ -117,6 +122,16 @@ final class Storage extends Component
                     'label' => 'Export destination',
                     'value' => $snapshot['export_path'],
                     'description' => 'Placeholder path for a future local data export file.',
+                ],
+                [
+                    'label' => 'Attachment upload limit',
+                    'value' => $uploadConfig['max_attachment_mb'].' MB',
+                    'description' => 'Cached Admin/API upload guidance for future record and support attachments.',
+                ],
+                [
+                    'label' => 'Allowed upload types',
+                    'value' => implode(', ', $uploadConfig['allowed_mime_types']),
+                    'description' => 'Mobile-safe MIME hints from remote config; API upload validation remains authoritative.',
                 ],
             ],
         ]);

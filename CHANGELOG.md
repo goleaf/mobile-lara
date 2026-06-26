@@ -514,6 +514,10 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added the API/admin tenant remote config override page with tenant-scoped
   JSON-object validation, mobile impact preview, audited create/update,
   dashboard navigation, and restore-from-audit coverage.
+- Added a mobile remote config store/cache that reads cached bootstrap config
+  without creating settings rows, validates URLs safely, falls back to bundled
+  defaults, and applies config to dashboard widgets, sync settings, upload
+  limits, app-lock copy, support links, and legal links.
 - Added the API/admin app version and maintenance foundation with
   minimum-version force updates, optional update states, public `/app-version`
   API output, bootstrap maintenance integration, and focused policy coverage.

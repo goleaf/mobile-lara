@@ -5,6 +5,7 @@ namespace App\Livewire\Mobile\Settings;
 use App\Livewire\Concerns\DispatchesToasts;
 use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Services\MobileAccess\MobileAccessPolicy;
+use App\Services\MobileConfig\MobileRemoteConfigStore;
 use App\Services\Native\BrowserService;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Title;
@@ -27,10 +28,13 @@ final class Support extends SettingsSectionPage
 
     private BrowserService $browsers;
 
-    public function boot(BrowserService $browsers, MobileAccessPolicy $mobileAccessPolicy): void
+    private MobileRemoteConfigStore $remoteConfig;
+
+    public function boot(BrowserService $browsers, MobileAccessPolicy $mobileAccessPolicy, MobileRemoteConfigStore $remoteConfig): void
     {
         $this->browsers = $browsers;
         $this->mobileAccessPolicy = $mobileAccessPolicy;
+        $this->remoteConfig = $remoteConfig;
     }
 
     public function openSupportCenter(): void
@@ -44,7 +48,7 @@ final class Support extends SettingsSectionPage
             return;
         }
 
-        $result = $this->browsers->openSupportCenter();
+        $result = $this->browsers->openSupportCenter($this->remoteConfig->supportUrl());
 
         if ($result['success']) {
             $this->supportStatus = $result['message'];
@@ -65,6 +69,8 @@ final class Support extends SettingsSectionPage
             'sectionStatus' => self::STATUS,
             'sectionTitle' => self::TITLE,
             'supportBrowserPolicy' => $this->mobileFeatureDecision('native_browser'),
+            'supportConfig' => $this->remoteConfig->supportSettings(),
+            'supportConfigSnapshot' => $this->remoteConfig->snapshot(),
         ]);
     }
 

@@ -401,8 +401,10 @@ before implementation scope is added.
   debug native-action wrappers now gate cached camera, notification, share,
   browser, device, dialog, and secure-storage policy before native wrapper
   handoff. Support settings now gates native browser handoff before opening
-  the support center. Remaining diagnostics/report native share flows and
-  legal/billing browser flows still need feature-specific policy gates.
+  the cached remote-config support center URL, and legal settings now gates
+  configured terms/privacy URLs before native browser handoff. Remaining
+  diagnostics/report native share flows and billing browser flows still need
+  feature-specific policy gates.
 - Complete the records/content module beyond the API foundation: admin records
   management screens, standalone category/tag/note/attachment endpoints,
   upload/storage handling, hard-delete policy, conflict responses, sync replay

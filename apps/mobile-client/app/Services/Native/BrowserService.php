@@ -129,12 +129,12 @@ final class BrowserService
     /**
      * @return array{success: bool, operation: string, message: string, url?: string, mode?: string, driver?: string}
      */
-    public function openPrivacyPolicy(): array
+    public function openPrivacyPolicy(?string $url = null): array
     {
         return $this->openUsing(
             operation: 'open_privacy_policy',
             mode: self::MODE_IN_APP,
-            url: $this->configuredUrl('privacy_policy_url', route('mobile.privacy')),
+            url: $url ?? $this->configuredUrl('privacy_policy_url', route('mobile.privacy')),
             unavailableMessage: 'Native in-app browser is unavailable in this browser runtime.',
             openedMessage: 'Privacy policy opened.',
             failedMessage: 'Unable to open the privacy policy.',
@@ -144,12 +144,12 @@ final class BrowserService
     /**
      * @return array{success: bool, operation: string, message: string, url?: string, mode?: string, driver?: string}
      */
-    public function openSupportCenter(): array
+    public function openSupportCenter(?string $url = null): array
     {
         return $this->openUsing(
             operation: 'open_support_center',
             mode: self::MODE_IN_APP,
-            url: $this->configuredUrl('support_center_url', route('mobile.settings.support')),
+            url: $url ?? $this->configuredUrl('support_center_url', route('mobile.settings.support')),
             unavailableMessage: 'Native in-app browser is unavailable in this browser runtime.',
             openedMessage: 'Support center opened.',
             failedMessage: 'Unable to open the support center.',

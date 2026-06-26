@@ -14,8 +14,11 @@ foundation, global, and tenant-scoped mobile config with freshness,
 compatibility, fallback, and deterministic version metadata. Platform-admin
 users can manage global config defaults with JSON validation, impact preview,
 audit, and audit-history restore. They can also manage tenant overrides with
-the same safety workflow. Publish workflows, plan/version/feature gates, and
-mobile local cache integration remain pending.
+the same safety workflow. The mobile client reads cached bootstrap remote config
+through `MobileRemoteConfigStore` for support/legal links, sync summaries,
+upload-limit hints, dashboard widgets, and app-lock policy copy. Publish
+workflows, targeted mobile config refresh, stale-cache UI, and richer
+plan/version/feature gates remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 lets admins adjust safe mobile behavior without turning the mobile app into a
@@ -403,6 +406,8 @@ Automated coverage:
 - `apps/api-admin/tests/Feature/AdminTenantRemoteConfigOverridesTest.php`
 - `apps/api-admin/tests/Feature/MobileRemoteConfigResolutionTest.php`
 - `apps/api-admin/tests/Feature/MobileBootstrapApiTest.php`
+- `apps/mobile-client/tests/Feature/MobileRemoteConfigStoreTest.php`
+- `apps/mobile-client/tests/Feature/MobileSettingsSectionsTest.php`
 
 Fresh checks:
 
@@ -411,8 +416,9 @@ cd apps/api-admin && php artisan test --compact --filter=AdminRemoteConfigsTest
 cd apps/api-admin && php artisan test --compact --filter=AdminTenantRemoteConfigOverridesTest
 cd apps/api-admin && php artisan test --compact --filter=MobileRemoteConfigResolutionTest
 cd apps/api-admin && php artisan test --compact --filter=MobileBootstrapApiTest
+cd apps/mobile-client && php artisan test --compact tests/Feature/MobileRemoteConfigStoreTest.php tests/Feature/MobileSettingsSectionsTest.php
 ```
 
-Future Phase 9 coverage should add publish workflows, mobile stale-cache
-behavior, plan/version/feature gate interactions, and invalid config failure
-modes beyond JSON-object validation.
+Future Phase 9 coverage should add publish workflows, targeted mobile config
+refresh, stale-cache freshness UI, plan/version/feature gate interactions, and
+invalid config failure modes beyond JSON-object validation.

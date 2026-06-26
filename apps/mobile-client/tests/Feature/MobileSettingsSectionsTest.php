@@ -110,6 +110,47 @@ test('support settings opens configured support center through native browser se
     ]);
 });
 
+test('support settings prefers cached remote config support url over app config fallback', function (): void {
+    migrateMobileSettingsSectionsLocalDatabase();
+
+    config([
+        'mobile_browser.links.support_center_url' => 'https://fallback.example.test/support',
+        'nativephp-internal.running' => true,
+    ]);
+
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileSettingsSectionsPolicyBootstrapEnvelope(
+        features: [],
+        remoteConfigValues: [
+            'support' => [
+                'url' => 'https://tenant.example/support',
+                'diagnostics_enabled' => true,
+            ],
+        ],
+    ));
+
+    $browser = new MobileSettingsSectionsFakeBrowser;
+    $this->app->instance(BrowserService::class, new BrowserService($browser));
+
+    try {
+        Livewire::test(Support::class)
+            ->assertSee('Admin/API support config')
+            ->assertSee('https://tenant.example/support')
+            ->assertSee('Enabled by config')
+            ->call('openSupportCenter')
+            ->assertSet('supportStatus', 'Support center opened.');
+
+        expect($browser->openedUrls)->toBe([
+            ['mode' => 'in_app', 'url' => 'https://tenant.example/support'],
+        ]);
+    } finally {
+        $mobileLocalDatabasePath = storage_path('framework/testing/mobile-settings-sections-policy.sqlite');
+
+        if (File::exists($mobileLocalDatabasePath)) {
+            File::delete($mobileLocalDatabasePath);
+        }
+    }
+});
+
 test('support settings browser action is hidden and blocked by disabled browser policy', function (): void {
     migrateMobileSettingsSectionsLocalDatabase();
 
@@ -134,6 +175,57 @@ test('support settings browser action is hidden and blocked by disabled browser 
                     && ($params['title'] ?? null) === 'Support unavailable'
                     && ($params['message'] ?? null) === 'Support center browser is disabled by admin policy.';
             });
+    } finally {
+        $mobileLocalDatabasePath = storage_path('framework/testing/mobile-settings-sections-policy.sqlite');
+
+        if (File::exists($mobileLocalDatabasePath)) {
+            File::delete($mobileLocalDatabasePath);
+        }
+    }
+});
+
+test('legal settings opens cached remote config legal links through native browser service', function (): void {
+    migrateMobileSettingsSectionsLocalDatabase();
+
+    config(['nativephp-internal.running' => true]);
+
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileSettingsSectionsPolicyBootstrapEnvelope(
+        features: [],
+        remoteConfigValues: [
+            'legal' => [
+                'terms_url' => 'https://tenant.example/terms',
+                'privacy_url' => 'https://tenant.example/privacy',
+            ],
+        ],
+    ));
+
+    $browser = new MobileSettingsSectionsFakeBrowser;
+    $this->app->instance(BrowserService::class, new BrowserService($browser));
+
+    try {
+        Livewire::test(Legal::class)
+            ->assertSee('Admin/API legal links')
+            ->assertSee('https://tenant.example/terms')
+            ->assertSee('https://tenant.example/privacy')
+            ->call('openTerms')
+            ->assertSet('legalStatus', 'In-app browser opened.')
+            ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+                return $event === 'mobile-toast'
+                    && ($params['type'] ?? null) === 'success'
+                    && ($params['title'] ?? null) === 'Terms opened';
+            })
+            ->call('openPrivacy')
+            ->assertSet('legalStatus', 'In-app browser opened.')
+            ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+                return $event === 'mobile-toast'
+                    && ($params['type'] ?? null) === 'success'
+                    && ($params['title'] ?? null) === 'Privacy opened';
+            });
+
+        expect($browser->openedUrls)->toBe([
+            ['mode' => 'in_app', 'url' => 'https://tenant.example/terms'],
+            ['mode' => 'in_app', 'url' => 'https://tenant.example/privacy'],
+        ]);
     } finally {
         $mobileLocalDatabasePath = storage_path('framework/testing/mobile-settings-sections-policy.sqlite');
 
@@ -185,9 +277,10 @@ function migrateMobileSettingsSectionsLocalDatabase(): void
 
 /**
  * @param  array<string, array<string, mixed>>  $features
+ * @param  array<string, array<string, mixed>>  $remoteConfigValues
  * @return array<string, mixed>
  */
-function mobileSettingsSectionsPolicyBootstrapEnvelope(array $features): array
+function mobileSettingsSectionsPolicyBootstrapEnvelope(array $features, array $remoteConfigValues = []): array
 {
     return [
         'success' => true,
@@ -210,7 +303,11 @@ function mobileSettingsSectionsPolicyBootstrapEnvelope(array $features): array
                 'version' => 'mobile-settings-sections-policy-test',
                 'items' => $features,
             ],
-            'remote_config' => ['version' => 'mobile-settings-sections-policy-test', 'values' => []],
+            'remote_config' => [
+                'version' => 'mobile-settings-sections-policy-test',
+                'config_version' => 'mobile-settings-sections-policy-test',
+                'values' => $remoteConfigValues,
+            ],
             'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
             'maintenance' => ['enabled' => false],
             'subscription' => [
