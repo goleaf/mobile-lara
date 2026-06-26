@@ -134,6 +134,13 @@ device visibility, and user-controlled diagnostics sharing must remain
 tenant-scoped, permission-aware, support-scoped, privacy-safe, redacted,
 audit-ready, and Admin/API-authoritative.
 
+Module Selection Principles are defined in `docs/module-selection-principles.md`:
+optional industry modules such as field service, logistics, ecommerce,
+booking, education, events, support, community/messaging, reports, and AI
+assistant must be tenant-enabled, plan-controlled, permission-aware,
+mobile-hidden when unavailable, feature-flag-safe, documented before
+implementation, and Admin/API-authoritative.
+
 Voice Note Logic is defined in `docs/voice-note-logic.md`:
 recording, pausing, resuming, local saving, record/support attachments,
 optional future transcription, offline upload queues, microphone-permission
@@ -238,6 +245,7 @@ Use these docs before changing the product direction:
 - `docs/geolocation-logic.md`
 - `docs/voice-note-logic.md`
 - `docs/device-network-diagnostics-logic.md`
+- `docs/module-selection-principles.md`
 - `docs/saas-value-map.md`
 - `docs/two-system-boundary.md`
 - `docs/api-first-principles.md`
@@ -281,6 +289,7 @@ Use these docs before changing the product direction:
 - Support system decisions must follow `docs/support-system-logic.md`.
 - Billing and plan decisions must follow `docs/billing-and-plan-logic.md`.
 - Reporting decisions must follow `docs/reporting-logic.md`.
+- Module selection decisions must follow `docs/module-selection-principles.md`.
 - Native feature decisions must follow `docs/native-feature-strategy.md`.
 - Camera and media decisions must follow `docs/camera-media-logic.md`.
 - Scanner decisions must follow `docs/scanner-logic.md`.
@@ -333,6 +342,7 @@ Use these docs before changing the product direction:
 - Any check-in, check-out, location-attached record, accuracy display, location permission explanation, offline location capture, location privacy boundary, location feature flag, user-facing location explanation, or never-collect rule must map to `docs/geolocation-logic.md`.
 - Any voice-note recording, pause, resume, local save, record/support audio attachment, optional transcription, offline upload queue, microphone denial, voice-note feature flag, audio privacy rule, or retention behavior must map to `docs/voice-note-logic.md`.
 - Any device information, network status, offline detection, diagnostics export, support troubleshooting context, diagnostics redaction, mobile-device admin visibility, diagnostic support sharing, or user-controlled diagnostics behavior must map to `docs/device-network-diagnostics-logic.md`.
+- Any optional industry module, including field service, logistics, ecommerce, booking, education, events, support, community/messaging, reports, or AI assistant, must map to `docs/module-selection-principles.md`.
 - Any feature, report, notification, sync behavior, security control, billing rule, or feature flag must map to stakeholder value in `docs/saas-value-map.md`.
 - Any mobile cache, draft, queue, native capability, offline behavior, or local state must map to the ownership rules in `docs/two-system-boundary.md`.
 - Any mobile/API behavior, boot context, response shape, mobile error, sync replay, conflict, or tenant-scoped response must map to `docs/api-first-principles.md`.

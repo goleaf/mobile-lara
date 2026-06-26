@@ -1,5 +1,12 @@
 # Device, Network, And Diagnostics Logic
 
+Module Selection Principles are defined in `module-selection-principles.md`:
+optional industry modules such as field service, logistics, ecommerce,
+booking, education, events, support, community/messaging, reports, and AI
+assistant must be tenant-enabled, plan-controlled, permission-aware,
+mobile-hidden when unavailable, feature-flag-safe, documented before
+implementation, and Admin/API-authoritative.
+
 Updated: 2026-06-26
 
 This document defines device, network, and diagnostics logic for the Mobile

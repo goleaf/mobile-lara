@@ -21,6 +21,13 @@ device visibility, and user-controlled diagnostics sharing must remain
 tenant-scoped, permission-aware, support-scoped, privacy-safe, redacted,
 audit-ready, and Admin/API-authoritative.
 
+Module Selection Principles are defined in `docs/module-selection-principles.md`:
+optional industry modules such as field service, logistics, ecommerce,
+booking, education, events, support, community/messaging, reports, and AI
+assistant must be tenant-enabled, plan-controlled, permission-aware,
+mobile-hidden when unavailable, feature-flag-safe, documented before
+implementation, and Admin/API-authoritative.
+
 Voice Note Logic is defined in `docs/voice-note-logic.md`:
 recording, pausing, resuming, local saving, record/support attachments,
 optional future transcription, offline upload queues, microphone-permission
@@ -233,6 +240,7 @@ If a capability is disabled, unlicensed, blocked by version policy, denied by pe
 | [docs/geolocation-logic.md](docs/geolocation-logic.md) | Geolocation logic for check-ins, location-attached records, accuracy display, permission explanation, offline behavior, privacy boundaries, feature flags, user understanding, and never-collect rules. |
 | [docs/voice-note-logic.md](docs/voice-note-logic.md) | Voice note logic for recording, pausing, resuming, local saving, record/support attachments, optional future transcription, offline upload queues, permission denial, admin feature flags, privacy, and retention. |
 | [docs/device-network-diagnostics-logic.md](docs/device-network-diagnostics-logic.md) | Device, network, and diagnostics logic for device information use, network status use, offline detection, diagnostics export, support context, redaction, admin device visibility, and user-controlled sharing. |
+| [docs/module-selection-principles.md](docs/module-selection-principles.md) | Module selection principles for optional industry modules, tenant enablement, plan control, mobile unavailable states, documentation-before-implementation rules, and module-specific risks. |
 | [docs/saas-value-map.md](docs/saas-value-map.md) | SaaS value map connecting stakeholders to admin control, mobile access, offline sync, notifications, reports, security, and feature flags. |
 | [docs/two-system-boundary.md](docs/two-system-boundary.md) | Logical boundary between Admin/API authority and mobile-client execution, caching, API-only behavior, remote control, and offline behavior. |
 | [docs/api-first-principles.md](docs/api-first-principles.md) | API-first principles for mobile/API communication, predictable responses, context payloads, mobile-friendly errors, sync/conflict behavior, and tenant protection. |
@@ -308,6 +316,7 @@ contracts.
 - Apply [geolocation logic](docs/geolocation-logic.md) before planning check-ins, location-attached records, accuracy display, location permission prompts, offline location capture, location privacy, location feature flags, user-facing location explanations, or never-collect rules.
 - Apply [voice note logic](docs/voice-note-logic.md) before planning recording, pausing, resuming, local voice-note saving, record/support audio attachments, optional transcription, offline upload queues, microphone-denial recovery, audio feature flags, privacy, or retention.
 - Apply [device, network, and diagnostics logic](docs/device-network-diagnostics-logic.md) before planning device information use, network status use, offline detection, diagnostics export, support troubleshooting context, diagnostics redaction, admin mobile-device visibility, or user-controlled diagnostics sharing.
+- Apply [module selection principles](docs/module-selection-principles.md) before planning optional industry modules such as field service, logistics, ecommerce, booking, education, events, support, community/messaging, reports, or AI assistant.
 - Apply the [SaaS value map](docs/saas-value-map.md) before prioritizing features, reports, notifications, offline sync, security controls, billing logic, or feature flags.
 - Apply the [two-system boundary](docs/two-system-boundary.md) before deciding what belongs in Admin/API, what belongs in mobile, what must go through API, and what can be cached locally.
 - Apply [API-first principles](docs/api-first-principles.md) before planning mobile/API contracts, boot context, mobile feature purpose, API errors, sync replay, conflict behavior, or tenant-scoped responses.

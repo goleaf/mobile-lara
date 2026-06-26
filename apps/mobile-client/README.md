@@ -223,6 +223,13 @@ device visibility, and user-controlled diagnostics sharing must remain
 tenant-scoped, permission-aware, support-scoped, privacy-safe, redacted,
 audit-ready, and Admin/API-authoritative.
 
+Module Selection Principles are defined in `../../docs/module-selection-principles.md`:
+optional industry modules such as field service, logistics, ecommerce,
+booking, education, events, support, community/messaging, reports, and AI
+assistant must be tenant-enabled, plan-controlled, permission-aware,
+mobile-hidden when unavailable, feature-flag-safe, documented before
+implementation, and Admin/API-authoritative.
+
 Voice Note Logic is defined in `../../docs/voice-note-logic.md`:
 recording, pausing, resuming, local saving, record/support attachments,
 optional future transcription, offline upload queues, microphone-permission

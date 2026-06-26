@@ -9,6 +9,13 @@ device visibility, and user-controlled diagnostics sharing must remain
 tenant-scoped, permission-aware, support-scoped, privacy-safe, redacted,
 audit-ready, and Admin/API-authoritative.
 
+Module Selection Principles are defined in `module-selection-principles.md`:
+optional industry modules such as field service, logistics, ecommerce,
+booking, education, events, support, community/messaging, reports, and AI
+assistant must be tenant-enabled, plan-controlled, permission-aware,
+mobile-hidden when unavailable, feature-flag-safe, documented before
+implementation, and Admin/API-authoritative.
+
 This document defines voice note logic for the Mobile Lara NativePHP client. It
 explains recording, pausing, resuming, saving locally, attaching to records and
 support, transcription as an optional future feature, offline upload queues,
