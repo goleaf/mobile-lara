@@ -7,6 +7,8 @@ use App\Livewire\Concerns\GuardsMobileRecordActions;
 use App\Models\MobileLocalRecord;
 use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\RecordRepository;
+use App\Services\MobileRecords\MobileRecordSyncResult;
+use App\Services\MobileRecords\MobileRecordSyncService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
@@ -48,10 +50,16 @@ class RecordCreate extends Component
 
     private RecordRepository $records;
 
-    public function boot(RecordRepository $records, MobileAccessPolicy $mobileAccessPolicy): void
-    {
+    private MobileRecordSyncService $recordSync;
+
+    public function boot(
+        RecordRepository $records,
+        MobileAccessPolicy $mobileAccessPolicy,
+        MobileRecordSyncService $recordSync,
+    ): void {
         $this->records = $records;
         $this->mobileAccessPolicy = $mobileAccessPolicy;
+        $this->recordSync = $recordSync;
     }
 
     public function save(): void
@@ -152,8 +160,31 @@ class RecordCreate extends Component
             return;
         }
 
-        $this->toastSuccess($successMessage, $successTitle);
+        $syncResult = $submitMode === 'draft' ? null : $this->recordSync->create($record);
+        $record = $syncResult?->record ?? $record;
+
+        $this->toastForSyncResult($syncResult, $successMessage, $successTitle);
         $this->redirectRoute('mobile.records.show', ['record' => $record], navigate: true);
+    }
+
+    private function toastForSyncResult(
+        ?MobileRecordSyncResult $syncResult,
+        string $fallbackMessage,
+        string $fallbackTitle,
+    ): void {
+        if ($syncResult?->synced) {
+            $this->toastSuccess('Record saved to Admin/API and cached locally.', 'Record synced');
+
+            return;
+        }
+
+        if ($syncResult?->failed()) {
+            $this->toastWarning("Saved locally. API sync needs retry: {$syncResult->message}", 'Record saved locally');
+
+            return;
+        }
+
+        $this->toastSuccess($fallbackMessage, $fallbackTitle);
     }
 
     /**

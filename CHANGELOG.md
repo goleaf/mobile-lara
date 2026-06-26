@@ -500,6 +500,11 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
   activity timeline entries, security audit events, mobile list/detail/create/
   update/archive/restore endpoints, contract catalogue updates, and focused
   feature coverage.
+- Added mobile records API and local-first sync services so record
+  create/update/archive/restore actions write local SQLite first, attempt the
+  Admin/API records contract when online and authenticated, store returned
+  server IDs/sync versions in local metadata, preserve offline pending work,
+  and record API failure retry context.
 - Added the API/admin app version policy control page with confirmation,
   mobile impact preview, audited create/update, dashboard navigation, and
   restore-from-audit coverage.

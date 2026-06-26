@@ -440,6 +440,10 @@ Implemented foundation:
 - `App\Services\MobileAuth\MobileAuthApiService` calls the API/admin auth
   endpoints for login, register, refresh, logout, logout-all, current user, and
   profile update.
+- `App\Services\MobileRecords\MobileRecordApiService` and
+  `App\Services\MobileRecords\MobileRecordSyncService` call the API/admin
+  records endpoints for local-first create/update/archive/restore sync
+  attempts, then store server record IDs and sync versions in local metadata.
 - Returned access and refresh tokens are stored through `MobileTokenStore`,
   which defaults to NativePHP secure storage and uses the session adapter for
   tests or safe development fallback.

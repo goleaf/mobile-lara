@@ -393,7 +393,8 @@ before implementation scope is added.
 - Complete the records/content module beyond the API foundation: admin records
   management screens, standalone category/tag/note/attachment endpoints,
   upload/storage handling, hard-delete policy, conflict responses, sync replay
-  acceptance, and mobile API consumption of the authoritative records contract.
+  acceptance, dedicated pull/reconcile sync, and mobile list/detail hydration
+  from the authoritative records contract.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

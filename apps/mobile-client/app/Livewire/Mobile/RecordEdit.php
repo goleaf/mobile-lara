@@ -7,6 +7,8 @@ use App\Livewire\Concerns\GuardsMobileRecordActions;
 use App\Models\MobileLocalRecord;
 use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\RecordRepository;
+use App\Services\MobileRecords\MobileRecordSyncResult;
+use App\Services\MobileRecords\MobileRecordSyncService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
@@ -50,10 +52,16 @@ class RecordEdit extends Component
 
     private RecordRepository $records;
 
-    public function boot(RecordRepository $records, MobileAccessPolicy $mobileAccessPolicy): void
-    {
+    private MobileRecordSyncService $recordSync;
+
+    public function boot(
+        RecordRepository $records,
+        MobileAccessPolicy $mobileAccessPolicy,
+        MobileRecordSyncService $recordSync,
+    ): void {
         $this->records = $records;
         $this->mobileAccessPolicy = $mobileAccessPolicy;
+        $this->recordSync = $recordSync;
     }
 
     public function mount(MobileLocalRecord $record): void
@@ -113,7 +121,10 @@ class RecordEdit extends Component
             return;
         }
 
-        $this->toastSuccess('Record archived locally.', 'Record archived');
+        $syncResult = $this->recordSync->archive($this->record);
+        $this->record = $syncResult->record;
+
+        $this->toastForSyncResult($syncResult, 'Record archived locally.', 'Record archived');
     }
 
     public function restoreRecord(): void
@@ -131,7 +142,10 @@ class RecordEdit extends Component
             return;
         }
 
-        $this->toastSuccess('Record restored locally.', 'Record restored');
+        $syncResult = $this->recordSync->restore($this->record);
+        $this->record = $syncResult->record;
+
+        $this->toastForSyncResult($syncResult, 'Record restored locally.', 'Record restored');
     }
 
     public function deleteRecord(): void
@@ -234,8 +248,31 @@ class RecordEdit extends Component
             return;
         }
 
-        $this->toastSuccess($successMessage, $successTitle);
+        $syncResult = $submitMode === 'draft' ? null : $this->recordSync->save($this->record);
+        $this->record = $syncResult?->record ?? $this->record;
+
+        $this->toastForSyncResult($syncResult, $successMessage, $successTitle);
         $this->redirectRoute('mobile.records.show', ['record' => $this->record], navigate: true);
+    }
+
+    private function toastForSyncResult(
+        ?MobileRecordSyncResult $syncResult,
+        string $fallbackMessage,
+        string $fallbackTitle,
+    ): void {
+        if ($syncResult?->synced) {
+            $this->toastSuccess('Record synced with Admin/API and cached locally.', 'Record synced');
+
+            return;
+        }
+
+        if ($syncResult?->failed()) {
+            $this->toastWarning("Saved locally. API sync needs retry: {$syncResult->message}", 'Record saved locally');
+
+            return;
+        }
+
+        $this->toastSuccess($fallbackMessage, $fallbackTitle);
     }
 
     /**

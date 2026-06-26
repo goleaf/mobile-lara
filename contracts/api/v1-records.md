@@ -2,7 +2,10 @@
 
 Updated: 2026-06-26
 
-Status: documented. Endpoints are planned for Phase 12.
+Status: partially implemented. API/admin endpoints and mobile local-to-API
+create/update/archive/restore sync attempts are implemented; dedicated sync
+pull/push/acknowledgement, conflict, standalone subresource, upload, and
+admin-management endpoints remain pending.
 
 Product Vision is defined in `../../docs/product-vision.md`: this contract
 lets mobile users do tenant-scoped work while Admin/API remains the source of
@@ -372,6 +375,12 @@ and attachment metadata can be registered without trusting mobile file storage
 as server truth. Standalone category, tag, note, attachment, hard-delete,
 conflict, and sync replay endpoints remain future work.
 
+The mobile client now has a records API service and a local-first sync service:
+record create/update/archive/restore Livewire actions write local SQLite first,
+attempt the API when online and authenticated, store the returned server record
+ID and sync version in local metadata, and leave local work pending or failed
+with retry context when the API is unavailable or denies the write.
+
 ## Gates
 
 Records are controlled by tenant membership, record permissions, feature flags,
@@ -382,6 +391,9 @@ limits, and maintenance mode.
 
 Mobile may cache records locally, create drafts, and queue idempotent intents.
 The API decides conflicts, accepted writes, rejected writes, and server truth.
+Current mobile behavior stores server identity in local record metadata rather
+than changing the local schema; full reconciliation waits for dedicated sync
+pull/push/acknowledgement contracts.
 
 ## Audit
 
@@ -396,4 +408,6 @@ Phase 12 should verify tenant isolation, explicit selects/eager loads,
 permissions, idempotency keys, conflict responses, and activity timeline.
 Current feature coverage verifies tenant isolation, permission denial, online
 create/update/archive/restore, category/tag/note/attachment metadata creation,
-activity/audit events, and non-leaking cross-tenant record lookups.
+activity/audit events, non-leaking cross-tenant record lookups, mobile record
+API calls with bearer tokens, local-to-API sync metadata, offline pending
+behavior, and API failure retry context.

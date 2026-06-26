@@ -167,6 +167,59 @@ final class RecordRepository
     }
 
     /**
+     * @param  array<string, mixed>  $serverRecord
+     */
+    public function markApiSynced(MobileLocalRecord $record, array $serverRecord): MobileLocalRecord
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+
+        $metadata = $record->metadataWith([]);
+        $metadata['server_record'] = [
+            'id' => $this->stringOrNull($serverRecord['id'] ?? null),
+            'tenant_id' => $this->stringOrNull($serverRecord['tenant_id'] ?? null),
+            'sync_version' => $this->stringOrNull($serverRecord['sync_version'] ?? null),
+            'updated_at' => $this->stringOrNull($serverRecord['updated_at'] ?? null),
+            'synced_at' => CarbonImmutable::now()->toIso8601String(),
+        ];
+
+        $category = is_array($serverRecord['category'] ?? null) ? $serverRecord['category'] : [];
+        $categoryName = $this->stringOrNull($category['name'] ?? null);
+
+        if ($categoryName !== null) {
+            $metadata['category_label'] = $categoryName;
+        }
+
+        unset($metadata['api_sync_error']);
+
+        $record->forceFill([
+            'metadata' => $metadata,
+            'sync_status' => MobileLocalRecord::SYNC_SYNCED,
+        ])->save();
+
+        return $this->find($record->getKey());
+    }
+
+    public function markApiSyncFailed(MobileLocalRecord $record, string $message, ?string $code = null): MobileLocalRecord
+    {
+        $this->mobileLocalDatabase->ensureFileExists();
+
+        $metadata = $record->metadataWith([
+            'api_sync_error' => [
+                'code' => $code,
+                'message' => $message,
+                'failed_at' => CarbonImmutable::now()->toIso8601String(),
+            ],
+        ]);
+
+        $record->forceFill([
+            'metadata' => $metadata,
+            'sync_status' => MobileLocalRecord::SYNC_FAILED,
+        ])->save();
+
+        return $this->find($record->getKey());
+    }
+
+    /**
      * @param  list<string>  $tagSlugs
      * @return list<int>
      */
@@ -433,5 +486,10 @@ final class RecordRepository
     private function boundedLimit(int $limit): int
     {
         return max(1, min($limit, 100));
+    }
+
+    private function stringOrNull(mixed $value): ?string
+    {
+        return is_string($value) && trim($value) !== '' ? trim($value) : null;
     }
 }

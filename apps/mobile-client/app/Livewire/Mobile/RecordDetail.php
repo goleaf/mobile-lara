@@ -9,6 +9,8 @@ use App\Models\MobileLocalRecord;
 use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\MediaItemRepository;
 use App\Services\MobileLocal\RecordRepository;
+use App\Services\MobileRecords\MobileRecordSyncResult;
+use App\Services\MobileRecords\MobileRecordSyncService;
 use App\Services\Native\ShareService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -31,15 +33,19 @@ class RecordDetail extends Component
 
     private ShareService $shares;
 
+    private MobileRecordSyncService $recordSync;
+
     public function boot(
         RecordRepository $records,
         MediaItemRepository $mediaItems,
         ShareService $shares,
+        MobileRecordSyncService $recordSync,
         MobileAccessPolicy $mobileAccessPolicy,
     ): void {
         $this->records = $records;
         $this->mediaItems = $mediaItems;
         $this->shares = $shares;
+        $this->recordSync = $recordSync;
         $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
@@ -62,7 +68,10 @@ class RecordDetail extends Component
             return;
         }
 
-        $this->toastSuccess('Record archived locally.', 'Record archived');
+        $syncResult = $this->recordSync->archive($this->record);
+        $this->record = $syncResult->record;
+
+        $this->toastForSyncResult($syncResult, 'Record archived locally.', 'Record archived');
     }
 
     public function restoreRecord(): void
@@ -79,7 +88,30 @@ class RecordDetail extends Component
             return;
         }
 
-        $this->toastSuccess('Record restored locally.', 'Record restored');
+        $syncResult = $this->recordSync->restore($this->record);
+        $this->record = $syncResult->record;
+
+        $this->toastForSyncResult($syncResult, 'Record restored locally.', 'Record restored');
+    }
+
+    private function toastForSyncResult(
+        MobileRecordSyncResult $syncResult,
+        string $fallbackMessage,
+        string $fallbackTitle,
+    ): void {
+        if ($syncResult->synced) {
+            $this->toastSuccess('Record synced with Admin/API and cached locally.', 'Record synced');
+
+            return;
+        }
+
+        if ($syncResult->failed()) {
+            $this->toastWarning("Saved locally. API sync needs retry: {$syncResult->message}", 'Record saved locally');
+
+            return;
+        }
+
+        $this->toastSuccess($fallbackMessage, $fallbackTitle);
     }
 
     public function deleteRecord(): void
