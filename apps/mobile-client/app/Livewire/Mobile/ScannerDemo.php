@@ -3,7 +3,9 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Models\MobileLocalScanHistory;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\ScanHistoryRepository;
 use App\Services\Native\ScannerService;
 use Illuminate\Contracts\View\View;
@@ -19,6 +21,7 @@ use Native\Mobile\Events\Scanner\ScannerCancelled;
 class ScannerDemo extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     public ?string $pendingScanId = null;
 
@@ -47,10 +50,14 @@ class ScannerDemo extends Component
 
     private ScanHistoryRepository $scanHistoryRepository;
 
-    public function boot(ScannerService $scanners, ScanHistoryRepository $scanHistoryRepository): void
-    {
+    public function boot(
+        ScannerService $scanners,
+        ScanHistoryRepository $scanHistoryRepository,
+        MobileAccessPolicy $mobileAccessPolicy,
+    ): void {
         $this->scanners = $scanners;
         $this->scanHistoryRepository = $scanHistoryRepository;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function startSingleScan(): void
@@ -104,6 +111,13 @@ class ScannerDemo extends Component
     public function handleCodeScanned(string $data, string $format, ?string $id = null): void
     {
         if (! $this->matchesPendingScan($id)) {
+            return;
+        }
+
+        if ($this->scannerFeatureDenied('Scanner unavailable')) {
+            $this->pendingScanId = null;
+            $this->pendingScanMode = null;
+
             return;
         }
 
@@ -172,6 +186,7 @@ class ScannerDemo extends Component
             'nativeScannerAvailable' => $this->scanners->isAvailable(),
             'scannerCapabilities' => $this->scanners->capabilities(),
             'scannerActions' => $this->scannerActions(),
+            'scannerPolicy' => $this->scannerPolicy(),
         ]);
     }
 
@@ -180,6 +195,10 @@ class ScannerDemo extends Component
      */
     private function startNativeScan(string $mode, callable $launcher): void
     {
+        if ($this->scannerFeatureDenied('Scanner unavailable')) {
+            return;
+        }
+
         $format = $this->normalizedSelectedFormat();
 
         if ($format === null) {
@@ -268,6 +287,10 @@ class ScannerDemo extends Component
      */
     private function scannerActions(): array
     {
+        if (! $this->mobileFeatureAllowed('native_scanner')) {
+            return [];
+        }
+
         return [
             [
                 'label' => 'Single scan',
@@ -282,5 +305,34 @@ class ScannerDemo extends Component
                 'description' => 'Keep listening for multiple scan events when supported.',
             ],
         ];
+    }
+
+    /**
+     * @return array{scanner: array{allowed: bool, message: string}}
+     */
+    private function scannerPolicy(): array
+    {
+        $scanner = $this->mobileFeatureDecision('native_scanner');
+
+        return [
+            'scanner' => [
+                'allowed' => $scanner['allowed'],
+                'message' => $scanner['message'],
+            ],
+        ];
+    }
+
+    private function scannerFeatureDenied(string $title): bool
+    {
+        $decision = $this->mobileFeatureDecision('native_scanner');
+
+        if ($decision['allowed']) {
+            return false;
+        }
+
+        $this->scanError = $decision['message'];
+        $this->toastWarning($decision['message'], $title);
+
+        return true;
     }
 }

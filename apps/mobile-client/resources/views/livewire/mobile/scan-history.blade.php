@@ -87,14 +87,21 @@
                         Clear search
                     </x-mobile.button>
 
-                    <x-mobile.button
-                        wire:click="clearHistory"
-                        wire:confirm="Clear the currently shown scan history items from this device?"
-                        variant="danger"
-                        full
-                    >
-                        Clear shown
-                    </x-mobile.button>
+                    @if ($scanHistoryPolicy['scanner']['allowed'])
+                        <x-mobile.button
+                            wire:click="clearHistory"
+                            wire:confirm="Clear the currently shown scan history items from this device?"
+                            variant="danger"
+                            full
+                        >
+                            Clear shown
+                        </x-mobile.button>
+                    @else
+                        <x-mobile.error-state
+                            title="Scan history actions disabled"
+                            :message="$scanHistoryPolicy['scanner']['message']"
+                        />
+                    @endif
                 </div>
             </div>
         </x-mobile.card>
@@ -140,19 +147,21 @@
                             {{ $scan->actionResultPreview() }}
                         </p>
 
-                        <div class="flex justify-end">
-                            <x-mobile.button
-                                wire:click="deleteScan({{ $scan->id }})"
-                                wire:confirm="Delete this scan history item from this device?"
-                                wire:loading.attr="disabled"
-                                wire:target="deleteScan({{ $scan->id }})"
-                                variant="danger"
-                                size="sm"
-                            >
-                                <span wire:loading.remove wire:target="deleteScan({{ $scan->id }})">Delete</span>
-                                <span wire:loading wire:target="deleteScan({{ $scan->id }})">Deleting</span>
-                            </x-mobile.button>
-                        </div>
+                        @if ($scanHistoryPolicy['scanner']['allowed'])
+                            <div class="flex justify-end">
+                                <x-mobile.button
+                                    wire:click="deleteScan({{ $scan->id }})"
+                                    wire:confirm="Delete this scan history item from this device?"
+                                    wire:loading.attr="disabled"
+                                    wire:target="deleteScan({{ $scan->id }})"
+                                    variant="danger"
+                                    size="sm"
+                                >
+                                    <span wire:loading.remove wire:target="deleteScan({{ $scan->id }})">Delete</span>
+                                    <span wire:loading wire:target="deleteScan({{ $scan->id }})">Deleting</span>
+                                </x-mobile.button>
+                            </div>
+                        @endif
                     </article>
                 @empty
                     <x-mobile.empty-state

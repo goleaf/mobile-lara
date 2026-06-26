@@ -3,6 +3,7 @@
 use App\Livewire\Mobile\ScanHistory;
 use App\Models\MobileLocalScanHistory;
 use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\SettingsRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -120,8 +121,109 @@ test('scan history page deletes one row and clears the current filtered rows', f
         ->and(MobileLocalScanHistory::query()->whereKey($qr->id)->exists())->toBeTrue();
 });
 
+test('scan history page blocks local mutations by disabled scanner policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileScanHistoryPolicyBootstrapEnvelope([
+        'native_scanner' => mobileScanHistoryPolicyFeature(
+            enabled: false,
+            state: 'disabled',
+            message: 'Scanner history is disabled by admin policy.',
+        ),
+    ]));
+
+    $scan = MobileLocalScanHistory::factory()->create([
+        'raw_value' => 'https://example.test/protected-scan',
+    ]);
+
+    Livewire::test(ScanHistory::class)
+        ->assertSee('Scan history actions disabled')
+        ->assertDontSee('wire:click="clearHistory"', false)
+        ->assertDontSee('wire:click="deleteScan('.$scan->id.')"', false)
+        ->call('deleteScan', $scan->id)
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Delete unavailable'
+                && ($params['message'] ?? null) === 'Scanner history is disabled by admin policy.';
+        })
+        ->call('clearHistory')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Clear unavailable'
+                && ($params['message'] ?? null) === 'Scanner history is disabled by admin policy.';
+        });
+
+    expect(MobileLocalScanHistory::query()->whereKey($scan->id)->exists())->toBeTrue()
+        ->and(MobileLocalScanHistory::query()->count())->toBe(1);
+});
+
 test('scan history page renders empty state without local rows', function (): void {
     Livewire::test(ScanHistory::class)
         ->assertSee('No saved scans')
         ->assertSee('0 shown');
 });
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @return array<string, mixed>
+ */
+function mobileScanHistoryPolicyBootstrapEnvelope(array $features = []): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => [],
+                'ability_list' => [],
+            ],
+            'features' => [
+                'version' => 'scan-history-policy',
+                'items' => array_replace([
+                    'native_scanner' => mobileScanHistoryPolicyFeature(enabled: true, state: 'visible'),
+                ], $features),
+            ],
+            'remote_config' => ['version' => 'scan-history-policy', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => true, 'reason' => null],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'scan-history-policy',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileScanHistoryPolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'test_policy',
+    ];
+}

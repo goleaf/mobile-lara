@@ -57,57 +57,64 @@
     </x-mobile.card>
 
     <x-mobile.card title="Scan setup" description="Choose a format, set the native prompt, then open the scanner.">
-        <div class="grid gap-4">
-            <x-mobile.select
-                wire:model="selectedFormat"
-                name="selectedFormat"
-                label="Barcode format"
-                :options="$formatSelectOptions"
+        @if (! $scannerPolicy['scanner']['allowed'])
+            <x-mobile.error-state
+                title="Scanner disabled"
+                :message="$scannerPolicy['scanner']['message']"
             />
+        @else
+            <div class="grid gap-4">
+                <x-mobile.select
+                    wire:model="selectedFormat"
+                    name="selectedFormat"
+                    label="Barcode format"
+                    :options="$formatSelectOptions"
+                />
 
-            <x-mobile.input
-                wire:model.blur="prompt"
-                name="prompt"
-                label="Scanner prompt"
-                maxlength="120"
-            />
+                <x-mobile.input
+                    wire:model.blur="prompt"
+                    name="prompt"
+                    label="Scanner prompt"
+                    maxlength="120"
+                />
 
-            <div class="grid gap-3">
-                @forelse ($scannerActions as $scannerAction)
-                    <div
-                        wire:key="scanner-action-{{ $scannerAction['action'] }}"
-                        class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
-                    >
-                        <div>
-                            <p class="text-base font-semibold text-app-ink dark:text-zinc-100">{{ $scannerAction['label'] }}</p>
-                            <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $scannerAction['description'] }}</p>
-                        </div>
-
-                        <x-mobile.button
-                            wire:click="{{ $scannerAction['action'] }}"
-                            wire:loading.attr="disabled"
-                            wire:target="{{ $scannerAction['action'] }}"
-                            :variant="$scannerAction['variant']"
-                            full
+                <div class="grid gap-3">
+                    @forelse ($scannerActions as $scannerAction)
+                        <div
+                            wire:key="scanner-action-{{ $scannerAction['action'] }}"
+                            class="grid gap-3 rounded-lg border border-app-line bg-app-bg p-4 dark:border-zinc-800 dark:bg-zinc-950"
                         >
-                            <span wire:loading.remove wire:target="{{ $scannerAction['action'] }}">{{ $scannerAction['label'] }}</span>
-                            <span wire:loading wire:target="{{ $scannerAction['action'] }}">Opening</span>
-                        </x-mobile.button>
-                    </div>
-                @empty
-                    <x-mobile.empty-state
-                        title="No scanner actions"
-                        description="Scanner actions are not configured."
-                    />
-                @endforelse
-            </div>
+                            <div>
+                                <p class="text-base font-semibold text-app-ink dark:text-zinc-100">{{ $scannerAction['label'] }}</p>
+                                <p class="mt-1 text-sm leading-5 text-app-muted dark:text-zinc-400">{{ $scannerAction['description'] }}</p>
+                            </div>
 
-            @if ($pendingScanMode === 'continuous')
-                <x-mobile.button wire:click="stopContinuousScan" variant="secondary" full>
-                    Stop continuous tracking
-                </x-mobile.button>
-            @endif
-        </div>
+                            <x-mobile.button
+                                wire:click="{{ $scannerAction['action'] }}"
+                                wire:loading.attr="disabled"
+                                wire:target="{{ $scannerAction['action'] }}"
+                                :variant="$scannerAction['variant']"
+                                full
+                            >
+                                <span wire:loading.remove wire:target="{{ $scannerAction['action'] }}">{{ $scannerAction['label'] }}</span>
+                                <span wire:loading wire:target="{{ $scannerAction['action'] }}">Opening</span>
+                            </x-mobile.button>
+                        </div>
+                    @empty
+                        <x-mobile.empty-state
+                            title="No scanner actions"
+                            description="Scanner actions are not configured."
+                        />
+                    @endforelse
+                </div>
+
+                @if ($pendingScanMode === 'continuous')
+                    <x-mobile.button wire:click="stopContinuousScan" variant="secondary" full>
+                        Stop continuous tracking
+                    </x-mobile.button>
+                @endif
+            </div>
+        @endif
     </x-mobile.card>
 
     <x-mobile.card title="Latest result" description="Most recent QR or barcode payload returned by the native scanner.">

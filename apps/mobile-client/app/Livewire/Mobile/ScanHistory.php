@@ -3,7 +3,9 @@
 namespace App\Livewire\Mobile;
 
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
 use App\Models\MobileLocalScanHistory;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\MobileLocal\ScanHistoryRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,6 +17,7 @@ use Livewire\Component;
 class ScanHistory extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     private const FILTER_ALL = 'all';
 
@@ -51,9 +54,10 @@ class ScanHistory extends Component
 
     private ScanHistoryRepository $scanHistory;
 
-    public function boot(ScanHistoryRepository $scanHistory): void
+    public function boot(ScanHistoryRepository $scanHistory, MobileAccessPolicy $mobileAccessPolicy): void
     {
         $this->scanHistory = $scanHistory;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function mount(int $limit = 30, string $filter = self::FILTER_ALL, string $search = ''): void
@@ -80,6 +84,10 @@ class ScanHistory extends Component
 
     public function deleteScan(int $scanHistoryId): void
     {
+        if ($this->scannerFeatureDenied('Delete unavailable')) {
+            return;
+        }
+
         try {
             $deleted = $this->scanHistory->delete($scanHistoryId);
         } catch (QueryException) {
@@ -99,6 +107,10 @@ class ScanHistory extends Component
 
     public function clearHistory(): void
     {
+        if ($this->scannerFeatureDenied('Clear unavailable')) {
+            return;
+        }
+
         try {
             $deletedCount = $this->scanHistory->clear(
                 scanType: $this->scanTypeFilter(),
@@ -149,6 +161,7 @@ class ScanHistory extends Component
             'historyCount' => $scanHistory->count(),
             'metrics' => $this->metrics($stats),
             'scanHistory' => $scanHistory,
+            'scanHistoryPolicy' => $this->scanHistoryPolicy(),
             'storageAvailable' => $storageAvailable,
         ]);
     }
@@ -266,5 +279,25 @@ class ScanHistory extends Component
     private function validFilter(string $filter): string
     {
         return in_array($filter, self::FILTERS, true) ? $filter : self::FILTER_ALL;
+    }
+
+    /**
+     * @return array{scanner: array{allowed: bool, message: string}}
+     */
+    private function scanHistoryPolicy(): array
+    {
+        $scanner = $this->mobileFeatureDecision('native_scanner');
+
+        return [
+            'scanner' => [
+                'allowed' => $scanner['allowed'],
+                'message' => $scanner['message'],
+            ],
+        ];
+    }
+
+    private function scannerFeatureDenied(string $title): bool
+    {
+        return $this->mobileFeatureDenied('native_scanner', $title);
     }
 }
