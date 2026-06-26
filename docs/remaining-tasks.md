@@ -288,8 +288,11 @@ before implementation scope is added.
   notification policy before local notification rows are shown or timestamped.
   Manual sync and conflict resolution now gate cached sync policy before local
   sync timestamps or conflict queue statuses change. `OfflineFirstActionQueue`
-  now gates cached sync policy before writing new replay intents. Lower-level
-  NativePHP service calls still need per-action gates.
+  now gates cached sync policy before writing new replay intents. Developer
+  debug native-action wrappers now gate cached camera, notification, share,
+  browser, device, dialog, and secure-storage policy before native wrapper
+  handoff. Remaining non-debug NativePHP service calls still need per-action
+  gates.
 - Run formatting, tests, route verification, builds, and NativePHP validation
   after each implementation slice.
 

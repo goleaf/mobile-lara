@@ -2,7 +2,41 @@
 
 use App\Livewire\Mobile\Debug;
 use App\Livewire\Mobile\NetworkStatus;
+use App\Services\MobileLocal\MobileLocalDatabase;
+use App\Services\MobileLocal\SettingsRepository;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Livewire\Livewire;
+
+beforeEach(function (): void {
+    $this->mobileLocalDatabasePath = storage_path('framework/testing/mobile-debug-policy.sqlite');
+
+    File::ensureDirectoryExists(dirname($this->mobileLocalDatabasePath));
+
+    if (File::exists($this->mobileLocalDatabasePath)) {
+        File::delete($this->mobileLocalDatabasePath);
+    }
+
+    config([
+        'database.connections.mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_local.database' => $this->mobileLocalDatabasePath,
+        'mobile_local.migrations.path' => database_path('migrations/mobile-local'),
+    ]);
+
+    app(MobileLocalDatabase::class)->ensureFileExists();
+
+    Artisan::call('migrate', [
+        '--database' => 'mobile_local',
+        '--path' => 'database/migrations/mobile-local',
+        '--force' => true,
+    ]);
+});
+
+afterEach(function (): void {
+    if (File::exists($this->mobileLocalDatabasePath)) {
+        File::delete($this->mobileLocalDatabasePath);
+    }
+});
 
 test('debug screen renders native dialog examples', function (): void {
     Livewire::test(Debug::class)
@@ -159,6 +193,66 @@ test('debug notification test uses the local notification abstraction', function
         ->not->toBe('');
 });
 
+test('debug native actions are hidden and blocked by cached mobile policy', function (): void {
+    app(SettingsRepository::class)->cacheBootstrapContext(mobileDebugPolicyBootstrapEnvelope([
+        'native_camera' => mobileDebugPolicyFeature(
+            enabled: false,
+            state: 'disabled',
+            message: 'Camera debug tests are disabled by admin policy.',
+        ),
+        'native_share' => mobileDebugPolicyFeature(
+            enabled: false,
+            state: 'disabled',
+            message: 'Share debug tests are disabled by admin policy.',
+        ),
+        'notifications' => mobileDebugPolicyFeature(
+            enabled: false,
+            state: 'disabled',
+            message: 'Notification debug tests are disabled by admin policy.',
+        ),
+    ], abilities: [
+        'notifications' => ['view' => true],
+    ]));
+
+    Livewire::test(Debug::class)
+        ->assertDontSee('Test camera')
+        ->assertDontSee('Test notifications')
+        ->assertDontSee('Share debug snapshot')
+        ->assertDontSee('Share report placeholder')
+        ->call('testCameraExample')
+        ->assertSet('cameraStatus', 'Camera debug tests are disabled by admin policy.')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Camera unavailable'
+                && ($params['message'] ?? null) === 'Camera debug tests are disabled by admin policy.';
+        })
+        ->call('testNotificationsExample')
+        ->assertSet('notificationStatus', 'Notification debug tests are disabled by admin policy.')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Notifications unavailable'
+                && ($params['message'] ?? null) === 'Notification debug tests are disabled by admin policy.';
+        })
+        ->call('shareDebugSnapshot')
+        ->assertSet('shareStatus', 'Share debug tests are disabled by admin policy.')
+        ->assertDispatched('mobile-toast', function (string $event, array $params): bool {
+            return $event === 'mobile-toast'
+                && ($params['type'] ?? null) === 'warning'
+                && ($params['title'] ?? null) === 'Share unavailable'
+                && ($params['message'] ?? null) === 'Share debug tests are disabled by admin policy.';
+        })
+        ->set('pendingCameraTestId', 'debug-camera-test')
+        ->call('handleDebugPhotoTaken', '/tmp/native-avatar.jpg', 'image/jpeg', 'debug-camera-test')
+        ->assertSet('pendingCameraTestId', null)
+        ->assertSet('cameraStatus', 'Camera debug tests are disabled by admin policy.')
+        ->set('pendingNotificationTestId', 'debug-push-test')
+        ->call('handleDebugPushTokenGenerated', 'abcdef1234567890', 'debug-push-test')
+        ->assertSet('pendingNotificationTestId', null)
+        ->assertSet('notificationStatus', 'Notification debug tests are disabled by admin policy.');
+});
+
 test('debug native event callbacks update pending camera and notification statuses', function (): void {
     Livewire::test(Debug::class)
         ->set('pendingCameraTestId', 'debug-camera-test')
@@ -170,6 +264,93 @@ test('debug native event callbacks update pending camera and notification status
         ->assertSet('pendingNotificationTestId', null)
         ->assertSet('notificationStatus', 'Push token generated: abcdef...7890.');
 });
+
+/**
+ * @param  array<string, array<string, mixed>>  $features
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return array<string, mixed>
+ */
+function mobileDebugPolicyBootstrapEnvelope(array $features = [], array $abilities = []): array
+{
+    return [
+        'success' => true,
+        'data' => [
+            'user' => ['id' => 123, 'name' => 'Mobile User', 'email' => 'mobile@example.com'],
+            'current_tenant' => [
+                'id' => 'tenant-001',
+                'name' => 'North Field Team',
+                'status' => 'active',
+                'subscription_state' => 'active',
+            ],
+            'available_tenants' => [],
+            'permissions' => [
+                'status' => 'resolved',
+                'roles' => [],
+                'abilities' => $abilities,
+                'ability_list' => mobileDebugPolicyAbilityList($abilities),
+            ],
+            'features' => [
+                'version' => 'debug-policy',
+                'items' => array_replace([
+                    'native_camera' => mobileDebugPolicyFeature(enabled: true, state: 'visible'),
+                    'native_share' => mobileDebugPolicyFeature(enabled: true, state: 'visible'),
+                    'notifications' => mobileDebugPolicyFeature(enabled: true, state: 'visible'),
+                ], $features),
+            ],
+            'remote_config' => ['version' => 'debug-policy', 'values' => []],
+            'app_version' => ['status' => 'supported', 'maintenance' => ['enabled' => false]],
+            'maintenance' => ['enabled' => false],
+            'subscription' => [
+                'status' => 'active',
+                'features_limited' => false,
+                'feature_impacts' => ['paid_features_blocked' => false, 'reason' => null],
+            ],
+            'notification_preferences' => ['in_app_enabled' => true, 'push_enabled' => false],
+            'sync' => ['enabled' => true, 'reason' => null],
+            'unread_notification_count' => 0,
+        ],
+        'meta' => [
+            'api_version' => 'v1',
+            'bootstrap_version' => 'debug-policy',
+            'server_time' => '2026-06-25T12:00:00+00:00',
+        ],
+    ];
+}
+
+/**
+ * @return array<string, mixed>
+ */
+function mobileDebugPolicyFeature(bool $enabled, string $state, ?string $message = null): array
+{
+    return [
+        'state' => $state,
+        'visible' => $state !== 'hidden',
+        'enabled' => $enabled,
+        'reason' => $enabled ? null : 'feature_disabled_by_admin',
+        'message' => $message,
+        'next_action' => $enabled ? null : 'contact_admin',
+        'source' => 'test_policy',
+    ];
+}
+
+/**
+ * @param  array<string, array<string, bool>>  $abilities
+ * @return list<string>
+ */
+function mobileDebugPolicyAbilityList(array $abilities): array
+{
+    $abilityList = [];
+
+    foreach ($abilities as $group => $items) {
+        foreach ($items as $ability => $granted) {
+            if ($granted) {
+                $abilityList[] = $group.'.'.$ability;
+            }
+        }
+    }
+
+    return $abilityList;
+}
 
 test('debug dialog actions update the last payload', function (string $action, string $type, string $status): void {
     $component = Livewire::test(Debug::class)

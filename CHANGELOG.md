@@ -98,6 +98,9 @@ privacy-safe, retention-aware, and Admin/API-authoritative.
 - Added cached sync-policy enforcement inside the offline-first queue service
   so lower-level queue calls cannot write replay intents when offline sync is
   disabled for the current workspace.
+- Added API-derived policy checks to the developer debug native-action surface
+  so disabled camera, share, notification, browser, device, dialog, or secure
+  storage policy hides debug controls and blocks direct wrapper calls/callbacks.
 - Added Notifications Logic documentation for admin-created notifications,
   system notifications, security notifications, reminder notifications, push
   principles, in-app inbox, read/unread behavior, deep links, preferences,

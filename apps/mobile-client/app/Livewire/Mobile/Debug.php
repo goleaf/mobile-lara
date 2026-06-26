@@ -4,6 +4,8 @@ namespace App\Livewire\Mobile;
 
 use App\Contracts\MobileLocal\MobileNetworkState;
 use App\Livewire\Concerns\DispatchesToasts;
+use App\Livewire\Concerns\GuardsMobileFeatureActions;
+use App\Services\MobileAccess\MobileAccessPolicy;
 use App\Services\Native\BrowserService;
 use App\Services\Native\DeviceService;
 use App\Services\Native\LocalNotifications\LocalNotificationService;
@@ -28,6 +30,7 @@ use Native\Mobile\SecureStorage;
 class Debug extends Component
 {
     use DispatchesToasts;
+    use GuardsMobileFeatureActions;
 
     /**
      * @var array<string, mixed>|null
@@ -80,6 +83,7 @@ class Debug extends Component
         BrowserService $browsers,
         ShareService $shares,
         LocalNotificationService $localNotifications,
+        MobileAccessPolicy $mobileAccessPolicy,
     ): void {
         $this->dialogs = $dialogs;
         $this->networkState = $networkState;
@@ -87,10 +91,15 @@ class Debug extends Component
         $this->browsers = $browsers;
         $this->shares = $shares;
         $this->localNotifications = $localNotifications;
+        $this->mobileAccessPolicy = $mobileAccessPolicy;
     }
 
     public function showAlertExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_dialogs', 'Dialog unavailable', 'dialog')) {
+            return;
+        }
+
         $this->rememberDialogResult(
             $this->dialogs->alert(
                 title: 'Native alert',
@@ -104,6 +113,10 @@ class Debug extends Component
 
     public function showConfirmExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_dialogs', 'Dialog unavailable', 'dialog')) {
+            return;
+        }
+
         $this->rememberDialogResult(
             $this->dialogs->confirm(
                 title: 'Confirm action',
@@ -118,6 +131,10 @@ class Debug extends Component
 
     public function showPromptExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_dialogs', 'Dialog unavailable', 'dialog')) {
+            return;
+        }
+
         $this->validateOnly('promptValue');
 
         $this->rememberDialogResult(
@@ -135,6 +152,10 @@ class Debug extends Component
 
     public function showToastExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_dialogs', 'Dialog unavailable', 'dialog')) {
+            return;
+        }
+
         $this->rememberDialogResult(
             $this->dialogs->toast(
                 message: 'Saved with NativePHP toast.',
@@ -146,6 +167,10 @@ class Debug extends Component
 
     public function showSnackbarExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_dialogs', 'Dialog unavailable', 'dialog')) {
+            return;
+        }
+
         $this->rememberDialogResult(
             $this->dialogs->snackbar(
                 message: 'Background sync queued.',
@@ -200,6 +225,10 @@ class Debug extends Component
 
     public function testStorageExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_secure_storage', 'Storage unavailable', 'storage')) {
+            return;
+        }
+
         if (! $this->nativeBridgeIsAvailable()) {
             $this->storageStatus = 'Native secure storage is unavailable in this browser runtime.';
             $this->toastWarning($this->storageStatus, 'Storage fallback active');
@@ -228,6 +257,10 @@ class Debug extends Component
 
     public function testCameraExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_camera', 'Camera unavailable', 'camera')) {
+            return;
+        }
+
         if (! $this->nativeBridgeIsAvailable()) {
             $this->cameraStatus = 'Native camera is unavailable in this browser runtime.';
             $this->toastInfo($this->cameraStatus, 'Camera fallback active');
@@ -257,6 +290,10 @@ class Debug extends Component
 
     public function testNotificationsExample(): void
     {
+        if ($this->nativeDebugActionDenied('notifications', 'Notifications unavailable', 'notifications', 'notifications.view')) {
+            return;
+        }
+
         $testId = 'debug-notifications-'.Str::uuid()->toString();
         $result = $this->localNotifications->testNotification($testId);
 
@@ -277,6 +314,10 @@ class Debug extends Component
 
     public function testFlashlightExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_device', 'Device unavailable', 'flashlight')) {
+            return;
+        }
+
         $result = $this->devices->toggleFlashlight();
         $this->flashlightStatus = $result['message'];
 
@@ -291,6 +332,10 @@ class Debug extends Component
 
     public function testVibrationExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_device', 'Device unavailable', 'vibration')) {
+            return;
+        }
+
         $result = $this->devices->vibrate();
         $this->vibrationStatus = $result['message'];
 
@@ -305,6 +350,10 @@ class Debug extends Component
 
     public function testHapticsExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_device', 'Device unavailable', 'haptics')) {
+            return;
+        }
+
         $result = $this->devices->hapticFeedback();
         $this->hapticStatus = $result['message'];
 
@@ -319,6 +368,10 @@ class Debug extends Component
 
     public function shareDebugSnapshot(): void
     {
+        if ($this->nativeDebugActionDenied('native_share', 'Share unavailable', 'share')) {
+            return;
+        }
+
         $result = $this->shares->shareText(
             title: 'Mobile Lara debug snapshot',
             text: $this->debugSnapshotText(),
@@ -329,6 +382,10 @@ class Debug extends Component
 
     public function shareReportPlaceholder(): void
     {
+        if ($this->nativeDebugActionDenied('native_share', 'Share unavailable', 'share')) {
+            return;
+        }
+
         $result = $this->shares->shareUrl(
             title: 'Mobile Lara report placeholder',
             text: 'Share this placeholder report link while the server-side report workflow is being connected.',
@@ -340,6 +397,10 @@ class Debug extends Component
 
     public function openExternalBrowserExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_browser', 'Browser unavailable', 'browser')) {
+            return;
+        }
+
         $result = $this->browsers->openExternalUrl((string) config('mobile_browser.links.external_url'));
 
         $this->rememberBrowserResult($result, 'Browser opened', 'Browser unavailable');
@@ -347,6 +408,10 @@ class Debug extends Component
 
     public function openInAppBrowserExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_browser', 'Browser unavailable', 'browser')) {
+            return;
+        }
+
         $result = $this->browsers->openInAppUrl((string) config('mobile_browser.links.in_app_url'));
 
         $this->rememberBrowserResult($result, 'Browser opened', 'Browser unavailable');
@@ -354,6 +419,10 @@ class Debug extends Component
 
     public function openOAuthBrowserExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_browser', 'Browser unavailable', 'browser')) {
+            return;
+        }
+
         $result = $this->browsers->openOAuthUrl((string) config('mobile_browser.links.oauth_url'));
 
         $this->rememberBrowserResult($result, 'Browser opened', 'Browser unavailable');
@@ -361,6 +430,10 @@ class Debug extends Component
 
     public function openPrivacyPolicyBrowserExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_browser', 'Browser unavailable', 'browser')) {
+            return;
+        }
+
         $result = $this->browsers->openPrivacyPolicy();
 
         $this->rememberBrowserResult($result, 'Privacy opened', 'Browser unavailable');
@@ -368,6 +441,10 @@ class Debug extends Component
 
     public function openSupportCenterBrowserExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_browser', 'Browser unavailable', 'browser')) {
+            return;
+        }
+
         $result = $this->browsers->openSupportCenter();
 
         $this->rememberBrowserResult($result, 'Support opened', 'Browser unavailable');
@@ -375,6 +452,10 @@ class Debug extends Component
 
     public function openBillingPortalPlaceholderExample(): void
     {
+        if ($this->nativeDebugActionDenied('native_browser', 'Browser unavailable', 'browser')) {
+            return;
+        }
+
         $result = $this->browsers->openBillingPortalPlaceholder();
 
         $this->rememberBrowserResult($result, 'Billing opened', 'Browser unavailable');
@@ -384,6 +465,12 @@ class Debug extends Component
     public function handleDebugPhotoTaken(string $path, string $mimeType = 'image/jpeg', ?string $id = null): void
     {
         if (! $this->matchesPendingCameraTest($id)) {
+            return;
+        }
+
+        if ($this->nativeDebugActionDenied('native_camera', 'Camera unavailable', 'camera')) {
+            $this->pendingCameraTestId = null;
+
             return;
         }
 
@@ -420,6 +507,12 @@ class Debug extends Component
     public function handleDebugPushTokenGenerated(string $token, ?string $id = null): void
     {
         if (! $this->matchesPendingNotificationTest($id)) {
+            return;
+        }
+
+        if ($this->nativeDebugActionDenied('notifications', 'Notifications unavailable', 'notifications', 'notifications.view')) {
+            $this->pendingNotificationTestId = null;
+
             return;
         }
 
@@ -562,33 +655,38 @@ class Debug extends Component
      */
     private function dialogActions(): array
     {
-        return [
+        return $this->filterNativeDebugActions([
             [
                 'label' => 'Alert',
                 'action' => 'showAlertExample',
                 'variant' => 'primary',
+                'feature' => 'native_dialogs',
             ],
             [
                 'label' => 'Confirm',
                 'action' => 'showConfirmExample',
                 'variant' => 'secondary',
+                'feature' => 'native_dialogs',
             ],
             [
                 'label' => 'Prompt',
                 'action' => 'showPromptExample',
                 'variant' => 'secondary',
+                'feature' => 'native_dialogs',
             ],
             [
                 'label' => 'Toast',
                 'action' => 'showToastExample',
                 'variant' => 'accent',
+                'feature' => 'native_dialogs',
             ],
             [
                 'label' => 'Snackbar',
                 'action' => 'showSnackbarExample',
                 'variant' => 'ghost',
+                'feature' => 'native_dialogs',
             ],
-        ];
+        ]);
     }
 
     /**
@@ -596,43 +694,51 @@ class Debug extends Component
      */
     private function testActions(): array
     {
-        return [
+        return $this->filterNativeDebugActions([
             [
                 'label' => 'Test dialogs',
                 'action' => 'showAlertExample',
                 'variant' => 'primary',
+                'feature' => 'native_dialogs',
             ],
             [
                 'label' => 'Test storage',
                 'action' => 'testStorageExample',
                 'variant' => 'secondary',
+                'feature' => 'native_secure_storage',
             ],
             [
                 'label' => 'Test camera',
                 'action' => 'testCameraExample',
                 'variant' => 'secondary',
+                'feature' => 'native_camera',
             ],
             [
                 'label' => 'Test notifications',
                 'action' => 'testNotificationsExample',
                 'variant' => 'accent',
+                'feature' => 'notifications',
+                'permission' => 'notifications.view',
             ],
             [
                 'label' => 'Test flashlight',
                 'action' => 'testFlashlightExample',
                 'variant' => 'secondary',
+                'feature' => 'native_device',
             ],
             [
                 'label' => 'Test vibration',
                 'action' => 'testVibrationExample',
                 'variant' => 'secondary',
+                'feature' => 'native_device',
             ],
             [
                 'label' => 'Test haptics',
                 'action' => 'testHapticsExample',
                 'variant' => 'ghost',
+                'feature' => 'native_device',
             ],
-        ];
+        ]);
     }
 
     /**
@@ -679,38 +785,44 @@ class Debug extends Component
      */
     private function browserActions(): array
     {
-        return [
+        return $this->filterNativeDebugActions([
             [
                 'label' => 'External URL',
                 'action' => 'openExternalBrowserExample',
                 'variant' => 'primary',
+                'feature' => 'native_browser',
             ],
             [
                 'label' => 'In-app link',
                 'action' => 'openInAppBrowserExample',
                 'variant' => 'secondary',
+                'feature' => 'native_browser',
             ],
             [
                 'label' => 'OAuth link',
                 'action' => 'openOAuthBrowserExample',
                 'variant' => 'accent',
+                'feature' => 'native_browser',
             ],
             [
                 'label' => 'Privacy policy',
                 'action' => 'openPrivacyPolicyBrowserExample',
                 'variant' => 'secondary',
+                'feature' => 'native_browser',
             ],
             [
                 'label' => 'Support center',
                 'action' => 'openSupportCenterBrowserExample',
                 'variant' => 'secondary',
+                'feature' => 'native_browser',
             ],
             [
                 'label' => 'Billing portal',
                 'action' => 'openBillingPortalPlaceholderExample',
                 'variant' => 'ghost',
+                'feature' => 'native_browser',
             ],
-        ];
+        ]);
     }
 
     /**
@@ -718,18 +830,20 @@ class Debug extends Component
      */
     private function shareActions(): array
     {
-        return [
+        return $this->filterNativeDebugActions([
             [
                 'label' => 'Share debug snapshot',
                 'action' => 'shareDebugSnapshot',
                 'variant' => 'primary',
+                'feature' => 'native_share',
             ],
             [
                 'label' => 'Share report placeholder',
                 'action' => 'shareReportPlaceholder',
                 'variant' => 'secondary',
+                'feature' => 'native_share',
             ],
-        ];
+        ]);
     }
 
     /**
@@ -912,5 +1026,57 @@ class Debug extends Component
         }
 
         return Str::substr($token, 0, 6).'...'.Str::substr($token, -4);
+    }
+
+    /**
+     * @param  list<array{label: string, action: string, variant: string, feature?: string, permission?: string}>  $actions
+     * @return list<array{label: string, action: string, variant: string}>
+     */
+    private function filterNativeDebugActions(array $actions): array
+    {
+        return array_values(array_map(
+            static fn (array $action): array => [
+                'label' => $action['label'],
+                'action' => $action['action'],
+                'variant' => $action['variant'],
+            ],
+            array_filter(
+                $actions,
+                fn (array $action): bool => $this->mobileFeatureAllowed(
+                    (string) ($action['feature'] ?? 'settings'),
+                    is_string($action['permission'] ?? null) ? $action['permission'] : null,
+                ),
+            ),
+        ));
+    }
+
+    private function nativeDebugActionDenied(string $feature, string $title, string $statusKey, ?string $permission = null): bool
+    {
+        $decision = $this->mobileFeatureDecision($feature, $permission);
+
+        if ($decision['allowed']) {
+            return false;
+        }
+
+        $this->setNativeDebugStatus($statusKey, $decision['message']);
+        $this->toastWarning($decision['message'], $title);
+
+        return true;
+    }
+
+    private function setNativeDebugStatus(string $statusKey, string $message): void
+    {
+        match ($statusKey) {
+            'browser' => $this->browserStatus = $message,
+            'camera' => $this->cameraStatus = $message,
+            'dialog' => $this->dialogStatus = $message,
+            'flashlight' => $this->flashlightStatus = $message,
+            'haptics' => $this->hapticStatus = $message,
+            'notifications' => $this->notificationStatus = $message,
+            'share' => $this->shareStatus = $message,
+            'storage' => $this->storageStatus = $message,
+            'vibration' => $this->vibrationStatus = $message,
+            default => null,
+        };
     }
 }

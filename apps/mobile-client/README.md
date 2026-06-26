@@ -281,7 +281,9 @@ timestamps or conflict queue statuses change, and the offline-first queue
 service refuses new replay intents when offline sync is disabled. Core recovery
 surfaces such as dashboard, profile, settings, workspace switching, support,
 and billing stay reachable so users can recover when a tenant or policy state
-blocks a workflow.
+blocks a workflow. Developer debug native-action examples use the same cached
+policy before camera, notification, share, browser, device, dialog, or secure
+storage wrapper calls.
 
 Admin Control Center logic in `../../docs/admin-control-center-logic.md`
 defines the server-side controls that mobile receives as API outcomes:
