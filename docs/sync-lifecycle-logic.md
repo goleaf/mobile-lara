@@ -83,6 +83,13 @@ fallbacks, permission education, admin feature-flag control, native failure
 UX, and offline sync behavior must remain feature-scoped, tenant-safe,
 privacy-aware, fallback-safe, and Admin/API-authoritative.
 
+Camera And Media Logic is defined in `camera-media-logic.md`:
+photo capture, media selection, media preview, record/support attachments,
+offline media storage, upload queues, feature-flag control, permission
+denial, size limits, and privacy behavior must remain tenant-scoped,
+permission-aware, fallback-safe, queue-safe, privacy-safe, and
+Admin/API-authoritative.
+
 ## Sync Lifecycle Statement
 
 Sync is the lifecycle that turns local mobile work into server-reviewed

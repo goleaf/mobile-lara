@@ -2,6 +2,13 @@
 
 Updated: 2026-06-26
 
+Camera And Media Logic is defined in `camera-media-logic.md`:
+photo capture, media selection, media preview, record/support attachments,
+offline media storage, upload queues, feature-flag control, permission
+denial, size limits, and privacy behavior must remain tenant-scoped,
+permission-aware, fallback-safe, queue-safe, privacy-safe, and
+Admin/API-authoritative.
+
 This document defines the NativePHP native feature strategy for the Mobile Lara
 SaaS mobile client. It explains why native features should be wrapped behind
 logical services, why every native feature must have browser/development

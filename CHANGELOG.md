@@ -6,6 +6,10 @@ All notable changes to Mobile Lara will be documented in this file.
 
 ### Added
 
+- Added Camera And Media Logic documentation for taking photos, choosing media,
+  previewing media, attaching media to records or support, offline media
+  storage, upload queues, admin feature-flag control, permission denial
+  behavior, media size limits, and privacy-safe tenant boundaries.
 - Added Native Feature Strategy documentation for NativePHP capability
   boundaries, logical service wrapping principles, browser/development
   fallbacks, permission education, admin feature-flag control, native failure

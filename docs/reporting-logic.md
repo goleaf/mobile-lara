@@ -2,6 +2,13 @@
 
 Updated: 2026-06-26
 
+Camera And Media Logic is defined in `camera-media-logic.md`:
+photo capture, media selection, media preview, record/support attachments,
+offline media storage, upload queues, feature-flag control, permission
+denial, size limits, and privacy behavior must remain tenant-scoped,
+permission-aware, fallback-safe, queue-safe, privacy-safe, and
+Admin/API-authoritative.
+
 This document defines reporting logic for the Mobile Lara SaaS system. It
 explains what platform admins need to measure, what tenant admins need to
 measure, what mobile users may see, privacy boundaries, date range principles,
