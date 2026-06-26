@@ -28,6 +28,7 @@ application logic.
 
 Use this document with [Acceptance Principles](acceptance-principles.md),
 [Testing Strategy Principles](testing-strategy-principles.md),
+[Release And Versioning Principles](release-versioning-principles.md),
 [Documentation-First Architecture](documentation-first-architecture.md),
 [Product Principles](product-principles.md), [Two-System Boundary
 Logic](two-system-boundary.md), [API-First Principles](api-first-principles.md),
@@ -50,7 +51,7 @@ Storage](nativephp-local-storage.md), [NativePHP Runbook](nativephp-run.md),
 Logic](reporting-logic.md), and [AI Feature Logic](ai-feature-logic.md): risks
 must be documented before implementation so controls, fallback behavior, admin
 impact, mobile impact, privacy boundaries, support visibility, audit meaning,
-and rollback options are clear before code exists.
+release/versioning impact, and rollback options are clear before code exists.
 
 ## Risk Map Statement
 

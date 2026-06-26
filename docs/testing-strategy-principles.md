@@ -21,7 +21,8 @@ provider integrations, app-store configuration, or application logic.
 
 Use this document with [Acceptance Principles](acceptance-principles.md),
 [Risk Map](risk-map.md), [Documentation-First
-Architecture](documentation-first-architecture.md), [API-First
+[Release And Versioning Principles](release-versioning-principles.md),
+[Documentation-First Architecture](documentation-first-architecture.md), [API-First
 Principles](api-first-principles.md), [Two-System Boundary
 Logic](two-system-boundary.md), [Admin/API
 Responsibilities](admin-api-responsibilities.md), [Mobile Client
@@ -37,8 +38,8 @@ Strategy](native-feature-strategy.md), [Notifications
 Logic](notifications-logic.md), [Billing And Plan
 Logic](billing-and-plan-logic.md), and [Mobile Version Control
 Logic](mobile-version-control-logic.md): future tests must prove that the
-documented authority boundaries and user-visible states are enforced by the
-system that owns them.
+documented authority boundaries, release/versioning rules, rollback paths, and
+user-visible states are enforced by the system that owns them.
 
 ## Testing Strategy Statement
 

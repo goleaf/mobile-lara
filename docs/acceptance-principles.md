@@ -36,6 +36,7 @@ Positioning](product-positioning.md), [Core Product
 Principles](product-principles.md), [Documentation-First
 Architecture](documentation-first-architecture.md), [Risk Map](risk-map.md),
 [Testing Strategy Principles](testing-strategy-principles.md),
+[Release And Versioning Principles](release-versioning-principles.md),
 [Two-System Boundary Logic](two-system-boundary.md), [API-First
 Principles](api-first-principles.md),
 [Admin/API Responsibilities](admin-api-responsibilities.md), [Mobile Client
@@ -89,8 +90,10 @@ Every feature must answer these questions before implementation:
 9. What does failure look like to admins, mobile users, support, and the API?
 10. What security and privacy boundaries protect the feature?
 11. Which risk-map entries apply, and which prevention principles are required?
-12. Which future test surfaces should prove the documented behavior?
-13. Which Markdown documents record the answers?
+12. Which release, versioning, rollout, rollback, documentation, and Git history
+    rules apply?
+13. Which future test surfaces should prove the documented behavior?
+14. Which Markdown documents record the answers?
 
 If any answer is unclear, the feature is not ready for implementation.
 

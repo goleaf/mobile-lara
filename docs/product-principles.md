@@ -34,6 +34,12 @@ documented product authority, tenant boundary, API dependency, offline behavior,
 feature control, billing rule, native fallback, and app-version rule rather than
 testing accidental implementation details.
 
+Use this document with [Release And Versioning
+Principles](release-versioning-principles.md): release decisions should preserve
+API compatibility, mobile app version safety, admin rollout control, rollback
+options, app-store constraints, forced update discipline, documentation updates,
+and traceable Git history before behavior reaches users.
+
 Use this document with [Admin Safety Principles](admin-safety-principles.md):
 admin authority stays trustworthy only when dangerous controls are confirmed,
 audited, impact-previewed, mobile-previewed, rollback-aware, and tenant-isolated.
