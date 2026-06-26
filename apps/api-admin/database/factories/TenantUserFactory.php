@@ -61,4 +61,13 @@ class TenantUserFactory extends Factory
             'suspended_at' => now(),
         ]);
     }
+
+    public function declined(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'status' => TenantUserStatus::Declined,
+            'accepted_at' => null,
+            'suspended_at' => null,
+        ]);
+    }
 }

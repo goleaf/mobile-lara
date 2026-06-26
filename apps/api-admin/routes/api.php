@@ -14,8 +14,11 @@ use App\Http\Controllers\Api\V1\Mobile\ConfigController;
 use App\Http\Controllers\Api\V1\Mobile\ContractIndexController;
 use App\Http\Controllers\Api\V1\Mobile\FeatureIndexController;
 use App\Http\Controllers\Api\V1\Mobile\StatusController;
+use App\Http\Controllers\Api\V1\Mobile\Tenants\AcceptTenantInvitationController;
+use App\Http\Controllers\Api\V1\Mobile\Tenants\DeclineTenantInvitationController;
 use App\Http\Controllers\Api\V1\Mobile\Tenants\SwitchTenantController;
 use App\Http\Controllers\Api\V1\Mobile\Tenants\TenantIndexController;
+use App\Http\Controllers\Api\V1\Mobile\Tenants\TenantInvitationIndexController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')
@@ -35,6 +38,9 @@ Route::prefix('v1')
                     Route::get('/billing/subscription', SubscriptionController::class)->name('billing.subscription');
                     Route::get('/tenants', TenantIndexController::class)->name('tenants.index');
                     Route::post('/tenants/current', SwitchTenantController::class)->name('tenants.current');
+                    Route::get('/tenants/invitations', TenantInvitationIndexController::class)->name('tenants.invitations.index');
+                    Route::post('/tenants/invitations/{tenant}/accept', AcceptTenantInvitationController::class)->name('tenants.invitations.accept');
+                    Route::post('/tenants/invitations/{tenant}/decline', DeclineTenantInvitationController::class)->name('tenants.invitations.decline');
                 });
 
                 Route::prefix('auth')

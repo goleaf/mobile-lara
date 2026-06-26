@@ -90,6 +90,11 @@ final class SaveTenantMembershipAction
                 'accepted_at' => $membership->accepted_at,
                 'suspended_at' => $membership->suspended_at ?: now(),
             ],
+            TenantUserStatus::Declined->value => [
+                'invited_at' => $membership->invited_at,
+                'accepted_at' => null,
+                'suspended_at' => null,
+            ],
             default => [
                 'invited_at' => $membership->invited_at,
                 'accepted_at' => $membership->accepted_at ?: now(),

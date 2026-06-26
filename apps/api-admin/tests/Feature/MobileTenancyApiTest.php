@@ -129,6 +129,141 @@ test('mobile tenant switch denies invited or suspended memberships', function (T
     'suspended membership' => [TenantUserStatus::Suspended, 'membership_suspended'],
 ]);
 
+test('mobile tenant invitations endpoint lists only pending invitations', function (): void {
+    $user = User::factory()->create([
+        'email' => 'invitee@example.com',
+        'password' => 'password-secret',
+    ]);
+    $invitedTenant = Tenant::factory()->create(['name' => 'Invited Tenant']);
+    $activeTenant = Tenant::factory()->create(['name' => 'Active Tenant']);
+
+    TenantUser::factory()
+        ->for($invitedTenant)
+        ->for($user)
+        ->invited()
+        ->role(TenantUserRole::TenantManager)
+        ->create();
+    TenantUser::factory()->for($activeTenant)->for($user)->current()->create();
+
+    $accessToken = mobileTenancyAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->getJson('/api/v1/mobile/tenants/invitations')
+        ->assertOk()
+        ->assertJsonPath('data.invitations.0.tenant.id', $invitedTenant->public_id)
+        ->assertJsonPath('data.invitations.0.tenant.name', 'Invited Tenant')
+        ->assertJsonPath('data.invitations.0.role_summary.role', 'tenant_manager')
+        ->assertJsonPath('data.invitations.0.role_summary.membership_status', 'invited')
+        ->assertJsonPath('data.invitations.0.available_actions.0', 'accept')
+        ->assertJsonPath('data.invitations.0.available_actions.1', 'decline')
+        ->assertJsonCount(1, 'data.invitations')
+        ->assertJsonPath('meta.tenant_invitation_version', 'foundation-tenant-invitation-1');
+});
+
+test('mobile users can accept pending tenant invitations through the api', function (): void {
+    $user = User::factory()->create([
+        'email' => 'accept@example.com',
+        'password' => 'password-secret',
+    ]);
+    $tenant = Tenant::factory()->create(['name' => 'Accepted Tenant']);
+
+    $membership = TenantUser::factory()
+        ->for($tenant)
+        ->for($user)
+        ->invited()
+        ->role(TenantUserRole::MobileUser)
+        ->create();
+
+    $accessToken = mobileTenancyAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->postJson("/api/v1/mobile/tenants/invitations/{$tenant->public_id}/accept")
+        ->assertOk()
+        ->assertJsonPath('data.invitation.tenant.id', $tenant->public_id)
+        ->assertJsonPath('data.invitation.role_summary.membership_status', 'active')
+        ->assertJsonPath('data.tenant_context.current_tenant.id', $tenant->public_id)
+        ->assertJsonPath('data.next_bootstrap_required', true);
+
+    $membership->refresh();
+
+    expect($membership->status)->toBe(TenantUserStatus::Active)
+        ->and($membership->is_current)->toBeTrue()
+        ->and($membership->accepted_at)->not->toBeNull()
+        ->and(SecurityAuditEvent::query()
+            ->where('event', 'mobile_tenant_invitation_accepted')
+            ->where('user_id', $user->id)
+            ->where('metadata->tenant_public_id', $tenant->public_id)
+            ->exists())->toBeTrue();
+});
+
+test('mobile users can decline pending tenant invitations without changing current tenant', function (): void {
+    $user = User::factory()->create([
+        'email' => 'decline@example.com',
+        'password' => 'password-secret',
+    ]);
+    $currentTenant = Tenant::factory()->create(['name' => 'Current Tenant']);
+    $invitedTenant = Tenant::factory()->create(['name' => 'Declined Tenant']);
+
+    TenantUser::factory()->for($currentTenant)->for($user)->current()->create();
+    $membership = TenantUser::factory()
+        ->for($invitedTenant)
+        ->for($user)
+        ->invited()
+        ->role(TenantUserRole::TenantManager)
+        ->create();
+
+    $accessToken = mobileTenancyAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->postJson("/api/v1/mobile/tenants/invitations/{$invitedTenant->public_id}/decline")
+        ->assertOk()
+        ->assertJsonPath('data.invitation.tenant.id', $invitedTenant->public_id)
+        ->assertJsonPath('data.invitation.role_summary.membership_status', 'declined')
+        ->assertJsonPath('data.invitation.available_actions', [])
+        ->assertJsonPath('data.tenant_context.current_tenant.id', $currentTenant->public_id)
+        ->assertJsonPath('data.next_bootstrap_required', true);
+
+    $membership->refresh();
+
+    expect($membership->status)->toBe(TenantUserStatus::Declined)
+        ->and($membership->is_current)->toBeFalse()
+        ->and($membership->accepted_at)->toBeNull()
+        ->and(SecurityAuditEvent::query()
+            ->where('event', 'mobile_tenant_invitation_declined')
+            ->where('user_id', $user->id)
+            ->where('metadata->tenant_public_id', $invitedTenant->public_id)
+            ->exists())->toBeTrue();
+});
+
+test('mobile invitation responses deny unavailable or non pending invitations', function (): void {
+    $user = User::factory()->create([
+        'email' => 'no-pending@example.com',
+        'password' => 'password-secret',
+    ]);
+    $tenant = Tenant::factory()->create();
+
+    TenantUser::factory()->for($tenant)->for($user)->create([
+        'status' => TenantUserStatus::Active,
+    ]);
+
+    $accessToken = mobileTenancyAccessToken($this, $user);
+
+    $this->withToken($accessToken)
+        ->postJson("/api/v1/mobile/tenants/invitations/{$tenant->public_id}/accept")
+        ->assertNotFound()
+        ->assertJsonPath('success', false)
+        ->assertJsonPath('error.code', 'invitation_unavailable')
+        ->assertJsonPath('error.next_action', 'refresh_invitations')
+        ->assertJsonPath('meta.reason', 'no_pending_invitation');
+
+    expect(SecurityAuditEvent::query()
+        ->where('event', 'mobile_tenant_invitation_failed')
+        ->where('user_id', $user->id)
+        ->where('metadata->tenant_public_id', $tenant->public_id)
+        ->where('metadata->reason', 'no_pending_invitation')
+        ->exists())->toBeTrue();
+});
+
 test('mobile tenants endpoint requires a valid token', function (): void {
     $this->getJson('/api/v1/mobile/tenants')
         ->assertUnauthorized()

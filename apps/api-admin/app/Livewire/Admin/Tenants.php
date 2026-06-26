@@ -199,6 +199,7 @@ final class Tenants extends Component
         return match ($status) {
             TenantUserStatus::Active->value => 'success',
             TenantUserStatus::Invited->value => 'warning',
+            TenantUserStatus::Declined->value,
             TenantUserStatus::Suspended->value => 'danger',
             default => 'neutral',
         };

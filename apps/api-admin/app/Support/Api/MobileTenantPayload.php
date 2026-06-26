@@ -41,4 +41,37 @@ final class MobileTenantPayload
             'disabled_reason' => $membership->disabledReason(),
         ];
     }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function invitation(TenantUser $membership): array
+    {
+        $tenant = $membership->tenant;
+
+        if (! $tenant instanceof Tenant) {
+            return [];
+        }
+
+        $role = $membership->role instanceof TenantUserRole ? $membership->role : TenantUserRole::MobileUser;
+        $membershipStatus = $membership->status instanceof TenantUserStatus ? $membership->status : TenantUserStatus::Suspended;
+
+        return [
+            'tenant' => [
+                'id' => $tenant->public_id,
+                'name' => $tenant->name,
+                'slug' => $tenant->slug,
+            ],
+            'role_summary' => [
+                'role' => $role->value,
+                'label' => $role->label(),
+                'membership_status' => $membershipStatus->value,
+            ],
+            'invited_at' => $membership->invited_at?->toIso8601String(),
+            'accepted_at' => $membership->accepted_at?->toIso8601String(),
+            'declined_at' => $membershipStatus === TenantUserStatus::Declined ? $membership->updated_at?->toIso8601String() : null,
+            'expires_at' => null,
+            'available_actions' => $membershipStatus === TenantUserStatus::Invited ? ['accept', 'decline'] : [],
+        ];
+    }
 }
